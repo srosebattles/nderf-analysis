@@ -7,8 +7,10 @@ bibliography it returned, so it's clear what I had in hand before the hypotheses
 ## Where things stand
 
 - **I haven't looked into any of these sources yet.** When the bibliography was added to this page,
-  I hadn't opened, read, or checked any of the sources in it. The one exception is J. Steve
-  Miller's book, which prompted the project, as the prompt explains.
+  I hadn't opened, read, or checked any of the sources in it, with one exception: I have read
+  J. Steve Miller's *Is Christianity Compatible with Deathbed and Near-Death Experiences?* (2023),
+  which is part of what prompted this personal project. The prompt gets its title wrong, as *Is
+  Christianity Compatible with Near Death Experiences?*; it's listed under Q1 of the bibliography.
 - **The bibliography is unverified.** It's the model's output, reproduced as returned. I haven't
   checked that each source exists, that the links work, or that the summaries match what the
   sources actually say.
