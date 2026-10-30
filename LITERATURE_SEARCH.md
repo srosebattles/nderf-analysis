@@ -21,7 +21,8 @@ bibliography it returned, so it's clear what I had in hand before the hypotheses
 
 | | |
 | --- | --- |
-| Model | Claude Opus 5.5 (Anthropic) |
+| Model | Claude Opus 5.5 (Anthropic), "Extra" setting |
+| Interface | Claude.ai |
 | Date run | 2026-10-30 |
 | Added to this repository | 2026-10-30 |
 
