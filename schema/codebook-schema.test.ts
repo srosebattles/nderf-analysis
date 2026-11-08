@@ -555,3 +555,10 @@ test('a name such as Jesús is recorded as a name, never as Jesus', () => {
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'jesus' }); }), false);
   assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), false);
 });
+
+test("a relative's report uses the kinship parts, and only a relative's", () => {
+  const mother = { role: 'parent', sex: 'female', greats: 0, side: 'not_stated', link: 'blood', words: 'his mother' };
+  assert.equal(parses((c) => { c.episodes[0].reporter.role = 'relative'; }), false);
+  assert.equal(parses((c) => { Object.assign(c.episodes[0].reporter, { role: 'relative', relationship: mother }); }), true);
+  assert.equal(parses((c) => { c.episodes[0].reporter.relationship = mother; }), false); // the experiencer
+});

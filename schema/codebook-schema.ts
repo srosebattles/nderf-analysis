@@ -421,11 +421,30 @@ export const CodingRun = obj({
 });
 export type CodingRun = z.infer<typeof CodingRun>;
 
+/** Built from parts, so counts can be as granular as needed (grandmothers versus grandfathers).
+ *  Finer detail (a second cousin once removed) stays only in the words. */
+export const Relationship = obj({
+  role: z.enum([
+    'parent', 'child', 'sibling', 'grandparent', 'grandchild', 'aunt_or_uncle', 'niece_or_nephew', 'cousin',
+    'spouse', 'partner', 'godparent', 'godchild', 'ancestor_unspecified', 'relative_unspecified',
+  ]),
+  sex: z.enum(['female', 'male', 'not_stated']), // from a gendered word or pronouns, never from a name
+  greats: z.number().int().min(0), // "fifth great-grandfather" is 5
+  side: z.enum(['maternal', 'paternal', 'not_stated']),
+  link: z.enum(['blood', 'half', 'step', 'in_law', 'adoptive', 'foster', 'by_marriage', 'former', 'not_stated']),
+  words: CopiedText,
+});
+export type Relationship = z.infer<typeof Relationship>;
+
 export const Reporter = obj({
   role: z.enum(['experiencer', 'experiencer_assisted', 'relative', 'clinician', 'other', 'unknown']),
-  relationship: CopiedText.nullable(), // for relatives; will reuse area 3's kinship vocabulary
+  /** For a relative: how the reporter is related to the experiencer (the experiencer's mother
+   *  reporting: parent, female), in area 3's kinship parts. */
+  relationship: Relationship.nullable(),
   assistance: z.enum(['interviewed', 'transcribed', 'typed_by_other', 'other']).nullable(),
   evidence: z.array(Evidence),
+}).refine((r) => (r.role === 'relative') === (r.relationship !== null), {
+  message: 'relationship is given exactly for a relative',
 });
 export type Reporter = z.infer<typeof Reporter>;
 
@@ -727,20 +746,6 @@ export type NamedFigureSubcategory = z.infer<typeof NamedFigureSubcategory>;
 /** Our own spelling, not copied text, so variant spellings and titles of one figure group together. */
 export const CanonicalName = z.string().min(1).max(80);
 
-/** Built from parts, so counts can be as granular as needed (grandmothers versus grandfathers).
- *  Finer detail (a second cousin once removed) stays only in the words. */
-export const Relationship = obj({
-  role: z.enum([
-    'parent', 'child', 'sibling', 'grandparent', 'grandchild', 'aunt_or_uncle', 'niece_or_nephew', 'cousin',
-    'spouse', 'partner', 'godparent', 'godchild', 'ancestor_unspecified', 'relative_unspecified',
-  ]),
-  sex: z.enum(['female', 'male', 'not_stated']), // from a gendered word or pronouns, never from a name
-  greats: z.number().int().min(0), // "fifth great-grandfather" is 5
-  side: z.enum(['maternal', 'paternal', 'not_stated']),
-  link: z.enum(['blood', 'half', 'step', 'in_law', 'adoptive', 'foster', 'by_marriage', 'former', 'not_stated']),
-  words: CopiedText,
-});
-export type Relationship = z.infer<typeof Relationship>;
 
 export const FriendType = z.enum([
   'childhood_friend', 'school_friend_or_classmate', 'close_friend', 'coworker', 'military_comrade',

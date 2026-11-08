@@ -130,7 +130,9 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   purpose. A stated age is recorded when given.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
   someone else). Reports by relatives or clinicians are not firsthand and are excluded from the
-  primary analysis. Reporter is recorded per experience, since one page can mix both.
+  primary analysis. Reporter is recorded per experience, since one page can mix both. A
+  relative's relationship to the experiencer uses area 3's kinship parts (role, sex, side,
+  link).
 - **Gender** is copied from NDERF's structured field (no LLM needed).
 - **Country** is recorded as claims with a role (origin, residence, experience location,
   unspecified) and a source. One country per person is resolved for the culture analysis:
@@ -707,6 +709,10 @@ These weren't settled in the clusters above; they were needed to write the schem
 - Area 3: designed and in the schema (v4 draft). Next: trial coding on practice round 1.
   The full schema exports to about 80 KB of JSON Schema, so the coding prompt may need to
   code in passes.
+- Pre-registered tables to build before the codebook is frozen: named figures (canonical
+  name, subcategory, traditions); visual features, keyed on figure category and feature;
+  which confessional content and Marian titles are Catholic-specific and which are shared.
+- Review of the choices made while writing the schema (above).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
