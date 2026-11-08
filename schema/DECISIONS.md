@@ -527,19 +527,41 @@ has an item on the age of the deceased, so all of this comes from the text.
   lives; universal salvation; divinity of Jesus; atonement; the self as divine; the departed
   are aware of people and events on earth (soul sleep, taught by Seventh-day Adventists and
   Jehovah's Witnesses, denies it outright); the departed pray or intercede for the living.
-  Hell and judgment: to be split (pending). Grows during trial coding; frozen before the
-  holdout.
+  Judgment after death, by God or a being ("reinterprets" covers "you judge yourself"); a
+  final judgment at the end of time; hell exists; purgatory. Grows during trial coding; frozen
+  before the holdout.
+- **Hell is split into three things, kept apart:** what the experience contained (distressing
+  content, on the episode, below), what the experiencer calls it (below), and the doctrine
+  here, for stated propositions only. When a statement says what hell is like, it records the
+  qualities stated, as many as apply, because they aren't exclusive: eternal; temporary or
+  remedial; ends in annihilation; self-chosen; imposed or sentenced; torment; separation or
+  absence of God or love; a state of mind. Describing a hellish place is not a doctrinal
+  statement; interpreting it ("it was hell") is.
 - **Encounters keep only content that belongs to the encounter:** Christ-specific content
   (wounds or the cross, forgiveness of sins, worship, reference to the Father, judgment) and
   revelation. Pluralist, exclusivist, and reincarnation claims live in the doctrine list.
 
+### Distressing content and what the experiencer calls it
+
+- **Each episode gets an overall tone:** pleasant, distressing, mixed (turned from one to the
+  other), or neutral or unclear.
+- **Distressing content is described, never labeled "hell" by the coder,** using the three
+  types of Greyson and Bush (1992), under neutral names, more than one allowed: frightening
+  versions of the usual features (their "inverse" type: a tunnel or light experienced as
+  terrifying); void or nothingness; torment or hostile beings (their "hellish" type). Hostile
+  beings are also encounters; this covers distressing episodes with no beings at all.
+- **The experiencer's own label for the experience or a place in it,** with the words kept:
+  hell or hellish, purgatory, the void, other, or none; and when it was applied (during,
+  afterward, or not stated). Torment content with no "hell" label is then countable: the
+  cases a reader would call hellish where the experiencer declined the word.
+
 ## Open
 
-- Area 3: everything above is settled except how hell and judgment are split in the doctrine
-  list. Still to design: every mention of Jesus (including how "the Lord" alone is counted),
-  and provenance (how the memory came to be told, disclaimers about the telling, others
-  dismissing the experience as a hallucination, and the experiencer's own natural
-  explanations). Then the schema, tests, and trial coding on practice round 1.
+- Area 3: everything above is settled. Still to design: every mention of Jesus (including how
+  "the Lord" alone is counted), and provenance (how the memory came to be told, disclaimers
+  about the telling, others dismissing the experience as a hallucination, and the
+  experiencer's own natural explanations). Then the schema, tests, and trial coding on
+  practice round 1.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
