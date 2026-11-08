@@ -377,10 +377,16 @@ export interface HeritageStatement {
 export interface ResolvedAccount {
   accountId: string;
   ruleVersion: string;
-  /** PROVISIONAL precedence: origin > unspecified > residence > experience_location >
-   *  presumed_us (no country from any source) > unknown. Within a role, the experiencer's own
-   *  statement > NDERF tag > search-app quick facts > NDERF's AI-inferred country. */
-  country: { code: CountryCode | null; basis: CountryRole | 'presumed_us' | 'unknown' };
+  /** Role precedence: origin > unspecified > residence. Experience location is recorded but
+   *  never used as the person's country. Within a role, the experiencer's own statement > NDERF
+   *  tag > search-app quick facts > NDERF's AI-inferred country. With no country from any of
+   *  these: presumed US, unless the account was translated from another language (unknown). */
+  country: {
+    code: CountryCode | null;
+    role: Exclude<CountryRole, 'experience_location'> | null;
+    /** Keeps a US the person or NDERF's tag states apart from an AI-inferred or presumed one. */
+    source: 'self_report' | 'nderf_tag' | 'nderf_quick_facts' | 'nderf_country_ai' | 'presumed_us' | 'unknown';
+  };
   countryGroups: string[]; // ids of CountryGroup definitions it falls in
   language: { original: LanguageCode; basis: 'stated' | 'presumed_english'; translated: boolean | null };
   /** Person level: a being counts if it appears in ANY qualifying episode. Experiences that
@@ -438,7 +444,8 @@ export interface ResolvedEpisode {
   episodeId: string;
   ruleVersion: string;
   gapYears: number | null; // first posting year minus experience year
-  /** PROVISIONAL: firsthand = experiencer or experiencer_assisted. */
+  /** firsthand = experiencer or experiencer_assisted (interviewed, transcribed, typed by
+   *  someone else). Reports by relatives or clinicians are not firsthand. */
   firsthand: boolean;
   analysisSet: 'primary' | 'comparison' | 'excluded';
   exclusionReasons: Array<

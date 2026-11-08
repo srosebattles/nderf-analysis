@@ -24,6 +24,8 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   at four words, and a check before each commit confirms that no five-word sequence from any
   narrative or free-text answer appears in committed files. NDERF's question wording and menu
   labels are form text, not account text, and may be quoted.
+- **Coded data is published here, including the sensitive flags** (suicide attempt, overdose,
+  recreational drugs). It describes accounts that are already public, in our words, not theirs.
 
 ## Area 1: eligibility and provenance
 
@@ -75,12 +77,21 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   analysis. A repeated identical experience is one episode, flagged recurrent.
 - **Child** means twelve or younger at the experience; teens are not children for this
   purpose. A stated age is recorded when given.
+- **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
+  someone else). Reports by relatives or clinicians are not firsthand and are excluded from the
+  primary analysis. Reporter is recorded per experience, since one page can mix both.
 - **Gender** is copied from NDERF's structured field (no LLM needed).
 - **Country** is recorded as claims with a role (origin, residence, experience location,
-  unspecified) and a source. Untagged accounts are "presumed US," kept distinct from
-  confirmed US: where tags and the search site's AI country overlap, eighty-eight percent of
-  untagged accounts are US. Culture is analyzed through country-level groupings defined in the
-  pre-registration.
+  unspecified) and a source. One country per person is resolved for the culture analysis:
+  origin > unspecified (a plain "From X" tag) > residence. Experience location is recorded but
+  never used, since where it happened says little about how someone was raised. Within a role,
+  the experiencer's own statement > NDERF's tag > search-app quick facts > the search site's
+  AI-inferred country. With no country from any of these, the person is "presumed US" (where
+  tags and the AI country overlap, eighty-eight percent of untagged accounts are US), unless
+  the account was translated from another language, in which case it's unknown. The resolved
+  country keeps its source, so stated, AI-inferred, and presumed US stay separate; stated US
+  will be small, since Americans rarely say they're American. Culture is analyzed through
+  country-level groupings defined in the pre-registration.
 - **Ethnicity** isn't asked anywhere by NDERF. Explicit heritage statements are coded in
   area 2; they are selective and can be prompted by the experience itself, so they supplement
   country and language rather than define groups.
@@ -129,12 +140,6 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 
 ## Open
 
-- Whether "experiencer with help" (interviewed, transcribed, typed by someone else) counts as
-  firsthand.
-- Precedence among country roles (currently origin > unspecified > residence > experience
-  location > presumed US).
-- Whether sensitive flags (suicide attempt, overdose, recreational drugs) are published here
-  or kept private.
 - Whether zod becomes the source of truth for these types, so LLM output is validated at
   runtime.
 - Area 3 (encounters), not started.
