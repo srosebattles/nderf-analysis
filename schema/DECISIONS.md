@@ -416,13 +416,37 @@ has an item on the age of the deceased, so all of this comes from the text.
   description or pronouns; never from a name, and never from the pronouns conventionally used
   for God. Needed for Mary's first level (an unnamed radiant woman) and for unidentified beings.
 
+### Mary, hostile beings, and animals
+
+- **Mary's three levels, mostly computed.** Any encounter with a Mary claim is at least level
+  two. Level three is a Mary encounter with confessional content, recorded as a list on any
+  encounter where it appears: rosary, scapular, purgatory, novena, intercession, an apparition
+  title, or other devotion, with the words kept. Visible rosaries and scapulars also count
+  through the visual features. Which content is Catholic-specific is decided per item in an
+  analysis-time table, never by the coder. Titles need this most: "Mother of God" is not
+  Catholic-specific (the Orthodox Theotokos; the Formula of Concord, Solid Declaration VIII),
+  while apparition titles (Guadalupe, Fatima, Lourdes) are. Level one is computed from
+  unidentified female beings, plus one coded flag for maternal language ("motherly," "like a
+  mother"), with the words kept, so the pre-registration can define it broadly (any
+  unidentified female being) or narrowly (one described in maternal terms).
+- **Hostile iconography types are coded directly for hostile beings,** more than one allowed:
+  folkloric; scriptural (serpent, dragon, roaring lion, or a deceptive "angel of light," only
+  when the text says a being of light deceived or turned hostile); shadow beings; mocking or
+  grotesque human-like spirits; amorphous creatures; an unseen terrifying presence. The visual
+  features hold the specifics. Coding the type directly also catches a comparison with no
+  features listed (looking like a cartoon devil).
+- **Animals:** role, one or more (own pet, someone else's pet, working or farm animal,
+  scenery, animal-form guide, or hostile beast); species (dog, cat, horse, bird, small pet,
+  reptile or amphibian, or other, with the words kept); and the pet's name if given. Whether
+  the experiencer knew it had died is vital status; whether it communicated comes from the
+  communication fields, which apply to every being.
+
 ## Open
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
-  relationships, the rest of people in detail, and most of representation and place are
-  settled (above). Still to design, in this order: Mary's three levels, hostile iconography,
-  and animals' role and species; disposition, roles and actions, communication, response, and
-  names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
+  relationships, the rest of people in detail, representation and place, and Mary, hostile
+  beings, and animals are settled (above). Still to design, in this order: disposition, roles
+  and actions, communication, response, and names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
   is counted); and provenance (how the memory came to be told, and disclaimers about the
   telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
