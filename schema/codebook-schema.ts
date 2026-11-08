@@ -347,6 +347,35 @@ export const ProvenanceItemAnswers = obj({
 });
 export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
 
+/** Pre-registered keywords for a naive search, the loosest rungs of the Jesus ladder. Narrow:
+ *  what King (2024) searched. Broad: adds spellings and titles. Kept separate, never merged,
+ *  so analysis can combine them as it likes. */
+export const JESUS_KEYWORDS_NARROW = ['jesus', 'christ'] as const;
+export const JESUS_KEYWORDS_BROAD = [
+  ...JESUS_KEYWORDS_NARROW, 'jesús', 'cristo', 'isa', 'yeshua', 'savior', 'saviour', 'messiah',
+] as const;
+export type JesusKeyword = (typeof JESUS_KEYWORDS_BROAD)[number];
+
+/** The pre-registered matching rule: whole words, case-insensitive, accents kept distinct
+ *  ("Jesús" is not "Jesus"). A letter or digit on either side blocks a match, so "Christ"
+ *  doesn't match "Christian"; an apostrophe doesn't, so "Christ's" counts. Mechanical on
+ *  purpose: it reproduces a naive search, names and idioms included. */
+export const countKeyword = (text: string, keyword: string): number =>
+  text.normalize('NFC').match(new RegExp(`(?<![\\p{L}\\p{N}])${keyword.normalize('NFC')}(?![\\p{L}\\p{N}])`, 'giu'))?.length ?? 0;
+
+/** Keyword hits on one part, counted by rule. Narrative is the raw narrative, including any
+ *  editor's note inside it; answers are the experiencer's free text in the questionnaire (the
+ *  comment, or the whole response when it has no menu answer); question wording is NDERF's.
+ *  A search of the website's pages sees all three; on every form D–F page the named-figures
+ *  item's own wording contains "Jesus". */
+export const KeywordHits = obj({
+  keyword: z.enum(JESUS_KEYWORDS_BROAD),
+  narrative: Index,
+  answers: Index,
+  questionWording: Index,
+});
+export type KeywordHits = z.infer<typeof KeywordHits>;
+
 export const DerivedPart = obj({
   index: Index,
   questionnaire: obj({ form: QuestionnaireForm, itemsAsked: ItemsAsked }),
@@ -355,6 +384,11 @@ export const DerivedPart = obj({
   lifeThreat: finding(LifeThreatAnswer),
   beingItems: BeingItemAnswers,
   provenanceItems: ProvenanceItemAnswers,
+  /** One entry per keyword in JESUS_KEYWORDS_BROAD, zeros included. */
+  jesusKeywordHits: z.array(KeywordHits).refine(
+    (hits) => hits.length === JESUS_KEYWORDS_BROAD.length && JESUS_KEYWORDS_BROAD.every((k) => hits.some((h) => h.keyword === k)),
+    { message: 'one entry per keyword in JESUS_KEYWORDS_BROAD' },
+  ),
   backgroundDate: ParsedDate,
   gender: z.string().nullable(), // Background field as written ('Female', 'Male')
   religionField: DerivedReligionFields,
@@ -1164,15 +1198,17 @@ export const placeOf = (s: SourceRef) =>
  *
  *  Context, not the word, decides. Jesús and Salvador are common given names, Isa is a common
  *  Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El Salvador
- *  is a country: used for a person or a place, the word is no mention, and the person is coded
- *  as who they are (an uncle named Jesús is family). Yet "Jesús" in untranslated Spanish, or
- *  "Isa" in a Muslim's account, can mean Jesus himself. When context can't tell: 'ambiguous'. */
+ *  is a country. Used for a person or a place, the word is recorded as name_of_person_or_place,
+ *  refersTo 'not_jesus' (excluded from every rung of the ladder, like idioms and church names,
+ *  but countable against the keyword hits), and the person is coded as who they are: an uncle
+ *  named Jesús is family. Yet "Jesús" in untranslated Spanish, or "Isa" in a Muslim's account,
+ *  can mean Jesus himself. When context can't tell: 'ambiguous'. */
 export const JesusMention = obj({
   words: CopiedText,
-  refersTo: z.enum(['jesus', 'ambiguous']),
+  refersTo: z.enum(['jesus', 'ambiguous', 'not_jesus']), // not_jesus: name_of_person_or_place only
   kind: z.enum([
     'encounter', 'talk_with_another_being', 'prayer_or_invocation', 'own_faith_or_belief',
-    'doctrinal_statement', 'someone_elses', 'idiom_or_exclamation', 'church_name', 'other',
+    'doctrinal_statement', 'someone_elses', 'idiom_or_exclamation', 'church_name', 'name_of_person_or_place', 'other',
   ]),
   encounterId: z.string().nullable(), // for 'encounter' and 'talk_with_another_being'
   doctrineId: z.string().nullable(), // for 'doctrinal_statement'
@@ -1184,6 +1220,9 @@ export const JesusMention = obj({
   const linksEncounter = m.kind === 'encounter' || m.kind === 'talk_with_another_being';
   if (linksEncounter !== (m.encounterId !== null)) issue('encounterId is given exactly for encounter and talk_with_another_being');
   if ((m.kind === 'doctrinal_statement') !== (m.doctrineId !== null)) issue('doctrineId is given exactly for doctrinal_statement');
+  if ((m.kind === 'name_of_person_or_place') !== (m.refersTo === 'not_jesus')) {
+    issue("refersTo 'not_jesus' is exactly for name_of_person_or_place");
+  }
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
   if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or in one questionnaire item');
 });

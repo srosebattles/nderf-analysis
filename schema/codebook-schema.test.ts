@@ -2,7 +2,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CodedRecord, DerivedRecord, HALLUCINATION_FLAG_CONDITIONS, ResolvedAccount, ResolvedEpisode, ReligionFieldValue,
+  CodedRecord, DerivedRecord, HALLUCINATION_FLAG_CONDITIONS, JESUS_KEYWORDS_BROAD, ResolvedAccount, ResolvedEpisode,
+  ReligionFieldValue, countKeyword,
   type CodedRecord as CodedRecordType, type DerivedRecord as DerivedRecordType, type Evidence,
 } from './codebook-schema.ts';
 
@@ -86,6 +87,9 @@ const derived: DerivedRecordType = {
         realityNow: { status: 'present', value: 'definitely_real', evidence: [qa(47)] },
         memoryAccuracy: { status: 'not_asked' },
       },
+      jesusKeywordHits: JESUS_KEYWORDS_BROAD.map((keyword) => ({
+        keyword, narrative: 0, answers: 0, questionWording: keyword === 'jesus' ? 1 : 0,
+      })),
     },
   ],
   tagClaims: {
@@ -529,4 +533,25 @@ test('provenance: triggers, venues, and dismissals go with their kinds; episodes
     c.provenance.priorDevotion.push({ episodeIds: [EP], category: 'named_figure', name: null, words: 'a saint on my shelf', evidence: [narrative(1, 5)] });
   }), false);
   assert.equal(parses((c) => { c.provenance.exposures[0].episodeIds = ['1example_x_nde#2']; }), false);
+});
+
+test('keyword matching: whole words, any case, accents distinct, possessives count', () => {
+  const text = "Christ's light. CHRIST! A Christian hymn. Jesús, my uncle, and Jesus. Isabel and Isa.";
+  assert.equal(countKeyword(text, 'christ'), 2); // not Christian
+  assert.equal(countKeyword(text, 'jesus'), 1); // not Jesús
+  assert.equal(countKeyword(text, 'jesús'), 1);
+  assert.equal(countKeyword(text, 'isa'), 1); // not Isabel
+});
+
+test('keyword hits list every broad keyword exactly once', () => {
+  const dropOne = withChange(derived, (d) => { d.parts[0].jesusKeywordHits.pop(); });
+  assert.equal(DerivedRecord.safeParse(dropOne).success, false);
+});
+
+test('a name such as Jesús is recorded as a name, never as Jesus', () => {
+  const name = { words: 'my uncle Jesús', kind: 'name_of_person_or_place', encounterId: null, doctrineId: null,
+    when: 'before', polarity: 'affirmative', evidence: [narrative(700, 714)] };
+  assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'not_jesus' }); }), true);
+  assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'jesus' }); }), false);
+  assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), false);
 });

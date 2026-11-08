@@ -573,11 +573,11 @@ has an item on the age of the deceased, so all of this comes from the text.
   definitions can run from "any mention" down to "explicitly identified during the
   experience." Each entry records:
   - the words;
-  - what it refers to: Jesus, or ambiguous;
+  - what it refers to: Jesus, ambiguous, or not Jesus (names only);
   - the kind: an encounter with Jesus (linked); talk about Jesus with another being (linked);
     prayer or invocation; the experiencer's own faith or belief; a doctrinal statement
     (linked); someone else's faith, words, or experience; an idiom or exclamation; the name of
-    a church; or other;
+    a church; the name of a person or place; or other;
   - when: before the experience, during, after, or not stated;
   - polarity: affirmative, negated, or a question;
   - evidence.
@@ -597,13 +597,28 @@ has an item on the age of the deceased, so all of this comes from the text.
   ambiguous mention.
 - **Context, not the word, decides.** Jesús and Salvador are common given names, Isa is a
   common Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El
-  Salvador is a country. Used for a person or a place, the word is not a mention, and the
-  person is coded as who they are: an uncle named Jesús is family, never Jesus. Yet "Jesús" in
+  Salvador is a country. Used for a person or a place, the word is recorded as the name of a
+  person or place, referring to someone other than Jesus, and excluded from every rung of the
+  ladder, like idioms and church names; and the person is coded as who they are: an uncle
+  named Jesús is family, never Jesus. Recording names lets them be counted against the
+  keyword hits, which can't tell a name from a reference. Yet "Jesús" in
   Spanish a translator left untranslated, or "Isa" in a Muslim's account, can mean Jesus
   himself. When context can't tell, the mention is ambiguous. No practice page has such a
   name, so the coding prompt needs an example.
-- **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: any
-  affirmative mention (not idioms or church names), with and without the ambiguous titles; a
+- **Keyword hits, counted by rule** in the derived file, reproduce a naive search exactly.
+  For each part and each pre-registered keyword: whole-word matches in the narrative (raw,
+  including any editor's note inside it), in the experiencer's answers, and in NDERF's question
+  wording. Two lists: narrow (Jesus, Christ, as King searched) and broad (adding Jesús, Cristo,
+  Isa, Yeshua, Savior, Saviour, Messiah). Matching is whole words, case-insensitive, with
+  accents kept distinct and possessives counted ("Christ" doesn't match "Christian"); the
+  matcher is defined once, in the schema, and tested. Question wording matters: on every form
+  D–F page the named-figures item says "for example: Jesus," so a search of the website's
+  pages hits all of them. Like the rest of the derived file, this runs with the pipeline,
+  not before the codebook is frozen.
+- **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: a
+  website-style keyword search, question wording included (rule); a keyword search of the
+  experiencer's own words (rule); every coded entry, names, idioms, and church names included;
+  any affirmative mention of Jesus himself, with and without the ambiguous titles; a
   mention about the experience itself, in a qualifying episode; an encounter with a Jesus
   claim; the same, excluding resemblance only; the claim stated in the narrative; identified
   during the experience; announced or recognized during, and asserted. Miller's own frame,
