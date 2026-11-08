@@ -555,12 +555,47 @@ has an item on the age of the deceased, so all of this comes from the text.
   afterward, or not stated). Torment content with no "hell" label is then countable: the
   cases a reader would call hellish where the experiencer declined the word.
 
+### Every mention of Jesus
+
+- **One list for the whole account, separate from encounters but linked to them,** so nested
+  definitions can run from "any mention" down to "explicitly identified during the
+  experience." Each entry records:
+  - the words;
+  - what it refers to: Jesus, or ambiguous;
+  - the kind: an encounter with Jesus (linked); talk about Jesus with another being (linked);
+    prayer or invocation; the experiencer's own faith or belief; a doctrinal statement
+    (linked); someone else's faith, words, or experience; an idiom or exclamation; the name of
+    a church; or other;
+  - when: before the experience, during, after, or not stated;
+  - polarity: affirmative, negated, or a question;
+  - evidence.
+
+  One entry per kind, time, and place (the narrative or a given item), with every passage as
+  evidence, so a long encounter isn't dozens of rows. Only the experiencer's text, never
+  question wording: the named-figures item itself names Jesus, so a raw search of the pages
+  would match every form D–F page.
+- **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
+  capitalized "Savior" mean Jesus unless the text indicates otherwise. "Lord" and "Messiah"
+  alone, and a lowercase "savior" (which can mean a human rescuer), are ambiguous unless the
+  text ties them to Jesus ("the Lord Jesus"); "Messiah" in a Jewish account needn't mean Jesus.
+  Where capitalization can't tell (the start of a sentence, all capitals), context decides,
+  or the mention is ambiguous. Capitalization may be NDERF's or a translator's; the words are
+  kept, so analysis can test the rule. Derived words (Christian, Christmas) don't count. In
+  encounters, "the Lord" alone stays God with its words kept, and it also appears here as an
+  ambiguous mention.
+- **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: any
+  affirmative mention (not idioms or church names), with and without the ambiguous titles; a
+  mention about the experience itself, in a qualifying episode; an encounter with a Jesus
+  claim; the same, excluding resemblance only; the claim stated in the narrative; identified
+  during the experience; announced or recognized during, and asserted. Miller's own frame,
+  his first 141 cases, can probably be identified from NDERF's running numbers in the index
+  metadata, and is read only after the codebook is frozen.
+
 ## Open
 
-- Area 3: everything above is settled. Still to design: every mention of Jesus (including how
-  "the Lord" alone is counted), and provenance (how the memory came to be told, disclaimers
-  about the telling, others dismissing the experience as a hallucination, and the
-  experiencer's own natural explanations). Then the schema, tests, and trial coding on
+- Area 3: everything above is settled. Still to design: provenance (how the memory came to be
+  told, disclaimers about the telling, others dismissing the experience as a hallucination,
+  and the experiencer's own natural explanations). Then the schema, tests, and trial coding on
   practice round 1.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
