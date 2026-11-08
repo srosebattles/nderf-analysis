@@ -12,7 +12,8 @@
 //
 // No account text in this repository. Strings copied from accounts are capped at
 // MAX_COPIED_WORDS (enforced below), and `npm run check:overlap` confirms before each commit
-// that no five-word sequence from any narrative or free-text answer appears in committed files.
+// that no five-word sequence from any narrative or free-text answer appears in our prose and
+// code, and no sequence one word longer than the cap appears in data files.
 // (NDERF's question wording and menu labels are form text, not account text.)
 //
 // Objects are strict: an unexpected key fails validation, which catches an LLM inventing fields.
@@ -22,7 +23,9 @@
 import { z } from 'zod';
 
 export const SCHEMA_VERSION = 'v3-draft';
-export const MAX_COPIED_WORDS = 4;
+/** A limit, not a target: copy the term, name, or title as written, not the sentence around it.
+ *  Raised from four to six in November 2026 (DECISIONS.md, Conventions). */
+export const MAX_COPIED_WORDS = 6;
 
 const obj = z.strictObject;
 const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
