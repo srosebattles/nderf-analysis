@@ -1,0 +1,20 @@
+{
+  "name": "nderf-analysis",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test schema/*.test.ts",
+    "check:overlap": "node tools/check-overlap.ts"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "6.0.2"
+  }
+}

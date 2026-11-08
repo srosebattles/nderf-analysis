@@ -1,6 +1,6 @@
 # Codebook decisions
 
-Decisions behind [codebook-schema.ts](codebook-schema.ts), schema v1 draft (November 2026).
+Decisions behind [codebook-schema.ts](codebook-schema.ts), schema v3 draft (November 2026).
 Everything here was decided from the data's structure and metadata (field coverage,
 questionnaire wording, menu values, editor tags) before any account text was read.
 
@@ -14,6 +14,11 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   "not stated," and "stated none."
 - **Every coded value records its source** (narrative, a specific questionnaire item, a tag)
   and whether it was explicit or inferred, as character offsets into the private text.
+- **The schema is written in zod,** the single source for both the TypeScript types and the
+  runtime check. Every record, rule-based or LLM-coded, must pass it before it is written:
+  objects are strict (an invented field fails), cross-field rules are refinements, and copied
+  text is capped. A response that fails is retried once with the error fed back, then logged
+  for review; nothing invalid is written.
 - **Rule-based and LLM-coded values live in separate files,** so either can be redone without
   the other. Pre-registered rules (country, religion, eligibility) run on top of both and
   aren't stored.
@@ -140,6 +145,7 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 
 ## Open
 
-- Whether zod becomes the source of truth for these types, so LLM output is validated at
-  runtime.
 - Area 3 (encounters), not started.
+- Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
+  example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
+  ones.
