@@ -154,8 +154,9 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 
 ## Area 3: encounters (in progress)
 
-Designed one cluster at a time, after reading practice round 1; written into the schema and
-trial-coded once every cluster is settled.
+What to capture is set out in [area3-requirements.md](area3-requirements.md); how it is modeled
+is decided here. Designed one cluster at a time, after reading practice round 1; written into
+the schema and trial-coded once every cluster is settled.
 
 ### Identity: how and when a being was identified
 
