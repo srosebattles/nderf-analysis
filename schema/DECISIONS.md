@@ -253,7 +253,21 @@ below is in the schema (v4 draft); trial coding comes next.
   being categories). A being only credited with something in the experience and never
   perceived (a pull later put down to a deity's love; being sent back with nothing seen or
   heard) also gets an entry, marked "credited only," so it can be counted or dropped. Who sends
-  people back is one of the roles.
+  people back is one of the roles. So does a being the experiencer only infers from something
+  else (a crack of sound taken to be a demon's whip): a hedged claim, credited only.
+- **A force isn't treated as a being unless the text gives it a will or a voice,** or calls it a being or
+  presence. "A presence urging me to return" is an encounter; "I was pulled back" is
+  not. The same goes for a hostile phenomenon with no agent (hail of light striking from every
+  side): distressing content (torment), not orbs, unless the text gives it intent (it chases,
+  mocks, speaks) or calls it a being. "Orb" then means orbs presented as beings.
+- **Similes are not encounters.** "Music like a choir of angels" describes a sound; "I heard
+  angels singing" claims angels (heard). A checkbox saying "beings" on a page with only a
+  simile is a disagreement, computed like any other.
+- **People inside a scene the experiencer watches are not encounters:** a life review, a past
+  life, a preview of the future. They're memories or visions, not beings met. Two exceptions:
+  a figure in the scene who turns to the experiencer and interacts with them, and a being
+  beside the experiencer who shows them the scene. A future child who greets the experiencer
+  directly is met, and is an encounter.
 - **Physical presence is coded, because some cases are ambiguous.** People in the physical
   setting are not of interest, but whether a person was really there or met within the
   experience isn't always clear. Each encounter is coded: physically present (perceived during
@@ -261,7 +275,11 @@ below is in the schema (v4 draft); trial coding comes next.
   person can be either: a living friend glimpsed at work elsewhere in the building is
   physically present; a living spouse seen among figures beyond the light is part of the
   experience. A stranger met just after returning to the body and presented as more than
-  ordinary is unclear. Ordinary perception before the experience starts or after it ends is
+  ordinary is unclear. Another dying person's spirit seen leaving their body is part of the
+  experience: the body is there, but what is seen can only be seen within the experience. A
+  voice calling the experiencer's name just as they return is unclear unless the text says
+  whose it was (a doctor's is physically present; one from the light is part of the
+  experience). Ordinary perception before the experience starts or after it ends is
   not an encounter. This is separate from where an experiential being appears (a deceased
   relative standing by the bed versus an otherworldly place), which comes with descriptions.
 - **One entry per individual given an identity or a description of its own;** the rest stay in
