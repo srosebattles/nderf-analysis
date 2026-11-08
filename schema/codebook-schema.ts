@@ -1079,11 +1079,17 @@ export const Encounter = obj({
     kind: z.enum(['wounds_or_cross', 'forgiveness_of_sins', 'worship', 'reference_to_the_father', 'judgment']),
     evidence: z.array(Evidence).min(1),
   })),
+  /** A voice placed in the head or mind ("as if inside my head", "in my mind", "telepathic",
+   *  "without words") is mind_to_mind, even when the text says "heard"; that's the ordinary
+   *  verb. spoken is for a voice with no such marker. Both only when the text gives both modes. */
   communication: z.array(z.enum(['spoken', 'mind_to_mind', 'instant_knowing', 'showing', 'none', 'not_stated'])).min(1),
   response: z.array(z.enum([
     'awe', 'fear', 'awareness_of_sin', 'worship', 'love_or_joy', 'peace', 'arguing_or_resisting',
   ])), // empty: none stated
   invocation: Invocation.nullable(),
+  /** The experiencer says it wasn't a being (or wasn't a person), though they describe an
+   *  exchange with it ("I met no being, only the Presence"). Kept, not acted on. */
+  deniedAsBeing: obj({ words: CopiedText, evidence: z.array(Evidence).min(1) }).nullable(),
   evidence: z.array(Evidence).min(1), // where the encounter is reported
 }).superRefine((e, ctx) => {
   const issue = (message: string, path: (string | number)[] = []) => ctx.addIssue({ code: 'custom', message, path });
@@ -1262,14 +1268,19 @@ export const Provenance = obj({
 export type Provenance = z.infer<typeof Provenance>;
 
 /** The narrative of a part, or one questionnaire item: the "place" of a Jesus mention. */
+/** For Jesus mentions: the narrative, or the questionnaire as a whole (not item by item). */
 export const placeOf = (s: SourceRef) =>
-  s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `qa:${s.part}:${s.qaIndex}` : `${s.kind}:${JSON.stringify(s)}`;
+  s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `questionnaire:${s.part}` : `${s.kind}:${JSON.stringify(s)}`;
 
 /** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a capitalized "Savior" refer to
  *  Jesus unless the text indicates otherwise. "Lord" and "Messiah" alone, and a lowercase
- *  "savior," are ambiguous unless the text ties them to Jesus. Derived words (Christian) don't
- *  count. Only the experiencer's text, never question wording. One entry per kind, time, and
- *  place (the narrative, or one questionnaire item), with every passage there as evidence.
+ *  "savior," are ambiguous unless the text ties them to Jesus, or to someone else: "the Lord"
+ *  tied to a named non-Christian figure ("Lord Krishna") or an impersonal Absolute ("Supreme
+ *  Consciousness") is not_jesus; tied only to "God" it stays ambiguous. New Age terms built on
+ *  Christ ("Christ consciousness") are kind other, ambiguous. Derived words (Christian) don't
+ *  count. Only the experiencer's text, never question wording or the person's background. One
+ *  entry per kind, time, and place (the narrative, or the questionnaire), with every passage
+ *  there as evidence.
  *
  *  Context, not the word, decides. Jesús and Salvador are common given names, Isa is a common
  *  Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El Salvador
@@ -1303,7 +1314,7 @@ export const JesusMention = obj({
   }
   if (m.when === 'during' && m.episodeId === null) issue('a mention made during an experience needs its episodeId');
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
-  if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or in one questionnaire item');
+  if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or all in the questionnaire');
 });
 export type JesusMention = z.infer<typeof JesusMention>;
 

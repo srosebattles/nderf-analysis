@@ -212,6 +212,7 @@ const coded: CodedRecordType = {
       communication: ['spoken'],
       response: ['love_or_joy'],
       invocation: null,
+      deniedAsBeing: null,
       evidence: [narrative(300, 390)],
     },
     {
@@ -253,6 +254,7 @@ const coded: CodedRecordType = {
       communication: ['mind_to_mind'],
       response: ['awe', 'awareness_of_sin'],
       invocation: null,
+      deniedAsBeing: null,
       evidence: [narrative(400, 470)],
     },
   ],
@@ -709,4 +711,14 @@ test('animate surroundings: the flag needs words and evidence when true; things 
 test('hedged elsewhere: never on a resemblance', () => {
   assert.equal(parses((c) => { c.encounters[0].identity[0].hedgedElsewhere = true; }), true);
   assert.equal(parses((c) => { Object.assign(c.encounters[0].identity[0], { certainty: 'resemblance', hedgedElsewhere: true }); }), false);
+});
+
+test('mentions: one place is the narrative or the whole questionnaire; denials are kept on the encounter', () => {
+  assert.equal(parses((c) => { c.jesusMentions[0].evidence.push(qa(31, [0, 5])); }), true); // two items, one place
+  assert.equal(parses((c) => { c.jesusMentions[0].evidence.push(narrative(1, 5)); }), false); // two places
+  assert.equal(parses((c) => {
+    c.jesusMentions.push({ ...c.jesusMentions[0], evidence: [qa(32, [0, 5])] });
+  }), false); // a second entry for the same kind, time, and place
+  assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [qa(39, [0, 15])] }; }), true);
+  assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [] }; }), false);
 });

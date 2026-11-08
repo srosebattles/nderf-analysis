@@ -593,7 +593,13 @@ has an item on the age of the deceased, so all of this comes from the text.
   Mary's requests can be compared with Jesus's or a deceased relative's.
 - **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
   showing (images or scenes), no communication, or not stated, kept consistent with the ways
-  the being was perceived.
+  the being was perceived. A voice placed in the head or mind ("as if inside my head," "in
+  my mind," "telepathic," "without words") is mind to mind, even when the text says "heard,"
+  which is just the ordinary verb; spoken words are a voice with no such marker. Both are
+  recorded only when the text gives both modes.
+- **The experiencer's denial that it was a being** is kept when they still describe an
+  exchange with it ("I met no being, only the Presence," "it wasn't a person, more like…"),
+  with the words. The encounter is coded as usual; non-dual accounts are likely to do this.
 - **The experiencer's response, one or more:** awe, fear, awareness of sin, worship, love or
   joy, peace, or arguing or resisting (pleading to stay is common).
 - **Names invoked against hostile beings:** whether the experiencer invoked a name or prayed;
@@ -680,8 +686,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   - polarity: affirmative, negated, or a question;
   - evidence.
 
-  One entry per kind, time, and place (the narrative or a given item), with every passage as
-  evidence, so a long encounter isn't dozens of rows. A mention made during an experience
+  One entry per kind, time, and place (the narrative or the questionnaire), with every passage
+  as evidence, so a long encounter isn't dozens of rows; which items it appears in is still
+  computed from the evidence. A mention made during an experience
   names its episode (a prayer said during it has no encounter to link to), and a linked
   encounter or doctrinal statement must be in the same episode. Every encounter with a Jesus
   claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
@@ -696,6 +703,15 @@ has an item on the age of the deceased, so all of this comes from the text.
   kept, so analysis can test the rule. Derived words (Christian, Christmas) don't count. In
   encounters, "the Lord" alone stays God with its words kept, and it also appears here as an
   ambiguous mention.
+- **The text can also tie a title to someone else.** "The Lord" tied to a named non-Christian
+  figure ("Lord Krishna") or to an impersonal Absolute ("Supreme Consciousness," "the
+  Universe") refers to someone other than Jesus. Tied only to "God," it stays ambiguous,
+  since a Christian's "God" can mean Christ. The experiencer's background never decides it.
+- **New Age terms built on "Christ"** ("Christ consciousness," a "Christ self") are mentions
+  of kind other, ambiguous: outside the Jesus-only rungs, counted in the ones with ambiguous
+  titles. A being such a term names (a higher "Presence" that acts) is a self-double only if
+  the text calls it the experiencer's self or higher self; otherwise it's "other," with the
+  words, since recognizing the teaching behind the term takes outside knowledge.
 - **Context, not the word, decides.** Jesús and Salvador are common given names, Isa is a
   common Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El
   Salvador is a country. Used for a person or a place, the word is recorded as the name of a
