@@ -99,5 +99,6 @@ export function resolveJesus(
     claimInNarrative: inNarrative.length > 0,
     identifiedDuring: during.length > 0,
     announcedOrRecognizedDuringAsserted: strictest.length > 0,
+    announcedOrRecognizedDuringAssertedThroughout: strictest.some((c) => !c.hedgedElsewhere),
   });
 }

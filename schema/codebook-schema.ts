@@ -810,10 +810,14 @@ export const IdentityClaim = obj({
   tie: PersonTie.nullable(),
   when: IdentityTiming,
   how: z.array(IdentityBasis).min(1),
+  /** The strongest certainty any passage states; hedged passages stay in evidence. */
   certainty: Certainty,
+  /** Some passage states this claim less certainly (hedged, or only a resemblance). */
+  hedgedElsewhere: z.boolean(),
   evidence: z.array(Evidence).min(1),
 }).superRefine((c, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
+  if (c.hedgedElsewhere && c.certainty === 'resemblance') issue('nothing is weaker than a resemblance');
   if (c.how.includes('announced') && c.when !== 'during') issue("'announced' is during only");
   if ((c.how.includes('told_by_person') || c.how.includes('reading_or_media')) && c.when !== 'after') {
     issue("'told_by_person' and 'reading_or_media' are after only");
@@ -1575,6 +1579,8 @@ export const ResolvedJesus = obj({
   claimInNarrative: z.boolean(),
   identifiedDuring: z.boolean(),
   announcedOrRecognizedDuringAsserted: z.boolean(),
+  /** The strictest rung, with no passage hedging the claim anywhere. */
+  announcedOrRecognizedDuringAssertedThroughout: z.boolean(),
 }).superRefine((j, ctx) => {
   const implies = (a: boolean, b: boolean, message: string) => {
     if (a && !b) ctx.addIssue({ code: 'custom', message });
@@ -1589,5 +1595,6 @@ export const ResolvedJesus = obj({
   implies(j.claimInNarrative, j.excludingResemblance, 'nested: in the narrative');
   implies(j.identifiedDuring, j.claimInNarrative, 'nested: identified during');
   implies(j.announcedOrRecognizedDuringAsserted, j.identifiedDuring, 'nested: announced or recognized');
+  implies(j.announcedOrRecognizedDuringAssertedThroughout, j.announcedOrRecognizedDuringAsserted, 'nested: asserted throughout');
 });
 export type ResolvedJesus = z.infer<typeof ResolvedJesus>;

@@ -181,7 +181,7 @@ const coded: CodedRecordType = {
           },
           when: 'during',
           how: ['recognized'],
-          certainty: 'asserted',
+          certainty: 'asserted', hedgedElsewhere: false,
           evidence: [narrative(300, 318)],
         },
       ],
@@ -225,11 +225,11 @@ const coded: CodedRecordType = {
       identity: [
         {
           words: ['a being of light'], category: 'being_of_light', name: null, suggestedSubcategory: null, tie: null,
-          when: 'not_stated', how: ['not_stated'], certainty: 'asserted', evidence: [narrative(400, 416)],
+          when: 'not_stated', how: ['not_stated'], certainty: 'asserted', hedgedElsewhere: false, evidence: [narrative(400, 416)],
         },
         {
           words: ['Jesus'], category: 'jesus', name: null, suggestedSubcategory: null, tie: null,
-          when: 'after', how: ['appearance'], certainty: 'hedged', evidence: [qa(24, [9, 14])],
+          when: 'after', how: ['appearance'], certainty: 'hedged', hedgedElsewhere: false, evidence: [qa(24, [9, 14])],
         },
       ],
       familiarity: { value: 'not_stated', words: null, evidence: [] },
@@ -633,7 +633,11 @@ test('resolveJesus: the ladder, rung by rung', () => {
   const recognizedDuring = withChange(coded, (c) => {
     Object.assign(c.encounters[1].identity[1], { when: 'during', how: ['recognized'], certainty: 'asserted', evidence: [narrative(417, 422)] });
   }) as CodedRecordType;
-  assert.equal(resolveJesus(derived, recognizedDuring, [EP]).announcedOrRecognizedDuringAsserted, true);
+  const strict = resolveJesus(derived, recognizedDuring, [EP]);
+  assert.deepEqual([strict.announcedOrRecognizedDuringAsserted, strict.announcedOrRecognizedDuringAssertedThroughout], [true, true]);
+  const hedgedSomewhere = withChange(recognizedDuring, (c) => { c.encounters[1].identity[1].hedgedElsewhere = true; }) as CodedRecordType;
+  const both = resolveJesus(derived, hedgedSomewhere, [EP]);
+  assert.deepEqual([both.announcedOrRecognizedDuringAsserted, both.announcedOrRecognizedDuringAssertedThroughout], [true, false]);
 
   const questionWordingOnly = withChange(derived, (d) => {
     for (const h of d.parts[0].jesusKeywordHits) { h.narrative = 0; h.answers = 0; }
@@ -700,4 +704,9 @@ test('animate surroundings: the flag needs words and evidence when true; things 
     Object.assign(c.encounters[0].identity[0], { category: 'animate_object_or_landscape', tie: null });
     c.encounters[0].vital = null;
   }), true);
+});
+
+test('hedged elsewhere: never on a resemblance', () => {
+  assert.equal(parses((c) => { c.encounters[0].identity[0].hedgedElsewhere = true; }), true);
+  assert.equal(parses((c) => { Object.assign(c.encounters[0].identity[0], { certainty: 'resemblance', hedgedElsewhere: true }); }), false);
 });

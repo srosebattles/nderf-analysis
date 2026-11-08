@@ -240,6 +240,13 @@ below is in the schema (v4 draft); trial coding comes next.
   can be counted or dropped. "Felt it was" is how (knowing), not a hedge. A remark about the
   referent rather than the being met (that a figure from one tradition can look like one from
   another) is not a claim.
+  - "I would describe it as" is a hedge: choosing a word, not saying who it was.
+  - An identity offered as a question ("Was it my angel?") is a hedged claim.
+  - A label marked as the experiencer's own word ("lights, which I called angels"; "angels,
+    or whatever you'd call them") is hedged, with the words kept.
+  - When passages differ, the claim takes the strongest certainty any of them states, and the
+    hedged passages stay in evidence. A yes-or-no "hedged elsewhere" records that some passage
+    was weaker, so the strictest Jesus rung can be reported both ways.
 - **Kept out of identity:** priming before the experience (a devotional object addressed daily
   beforehand) and memories recovered after exposure (an encounter remembered only after a TV
   program). They describe how the expectation or memory came about, not how the being was
@@ -299,8 +306,12 @@ below is in the schema (v4 draft); trial coding comes next.
   a group entry with a count: an exact number, several, many, unspecified, or one or more (a
   voice written as "he/they"). A crowd with one known person singled out is two entries.
   Physically present people of one kind (medical staff) are one group entry.
-- **One entry per episode,** since episodes qualify separately, with an optional link when the
-  text says the same being was met in another episode.
+- **Beings the text doesn't equate are separate entries,** even when they might be the same
+  (a figure on a throne, a guide, and an ancestor who leads the way). Merging would be a
+  judgment the text doesn't make; analysis can still read them together.
+- **One entry per episode,** since episodes qualify separately, with an optional link only when
+  the text says it was the same individual ("the same being," "him again"). "A being of light"
+  in both episodes is the same kind of being, not necessarily the same one: no link.
 
 ### Checkbox answers, and where each encounter is reported
 
