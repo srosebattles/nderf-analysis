@@ -142,7 +142,8 @@ questions.
   - Theological or prophetic revelation.
 
   These should cover King's (2024) six themes for Jesus encounters, plus the Christ-specific
-  content his themes didn't foreground.
+  content his themes didn't foreground. (Dropped November 2026: no separate check against
+  King's themes; the recorded actions allow that analysis anyway. See DECISIONS.md.)
 - Communication mode, if stated: spoken words, telepathic or mind-to-mind, or instantaneous
   knowing.
 - The experiencer's response: awe, fear, awareness of sin, worship.

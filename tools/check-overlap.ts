@@ -2,8 +2,9 @@
 //
 //   npm run check:overlap -- <path to nderf-raw-data> [files…]
 //
-// Lists every word sequence from the given files (default: all tracked .ts, .md, and .jsonl
-// files) that also appears in some account's narrative or free-text answer. Two windows:
+// Lists every word sequence from the given files (default: every .ts, .md, and .jsonl file git
+// tracks or would track, so new files are checked before their first commit) that also
+// appears in some account's narrative or free-text answer. Two windows:
 //
 // - Prose and code (.ts, .md, anything not .jsonl): five words. None of these should ever hold
 //   copied text, and examples in comments and fixtures are invented.
@@ -41,7 +42,11 @@ if (!dataDir) {
 }
 const files = given.length
   ? given
-  : execFileSync('git', ['ls-files', '--', '*.ts', '*.md', '*.jsonl'], { encoding: 'utf8' }).split('\n').filter(Boolean);
+  : // Tracked files plus new, untracked ones (ignored files excluded), so a file is checked
+    // before its first commit, not only after it.
+    execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '--', '*.ts', '*.md', '*.jsonl'], {
+      encoding: 'utf8',
+    }).split('\n').filter(Boolean);
 
 /** window -> sequence -> the file it came from */
 const ours = new Map<number, Map<string, string>>();

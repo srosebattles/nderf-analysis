@@ -90,6 +90,8 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   - when it applied: before the experience, at the time, present at the time but recognized
     later, began after, or not stated;
   - who said so: the experiencer, a clinician as reported, or family;
+  - the basis: diagnosed, self-identified, or not stated ("I was diagnosed with" and "I'm
+    pretty sure I have" are different claims);
   - the words.
 
   Recorded only when stated: never inferred from the experience's content, from a medication,
@@ -97,8 +99,18 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   neurological rather than psychiatric but are the same confound; delirium is the standard
   skeptical explanation for experiences in intensive care. The flag is resolved per episode at
   analysis time from every type except "other mental health condition," present before or at
-  the experience. A sensitivity analysis drops flagged episodes. (Whether neurodevelopmental
-  conditions such as autism get a value of their own is pending.)
+  the experience. A sensitivity analysis drops flagged episodes.
+- **Neurodevelopmental conditions are recorded by the label used,** outside the flag: autism
+  (including Asperger's, PDD-NOS, "on the spectrum"); ADHD (including ADD); intellectual
+  disability or developmental delay (often a provisional childhood label); specific learning
+  disability (dyslexia, dyscalculia); or other neurodevelopmental, with the words kept. They
+  are not mental illnesses, so they don't go under "other mental health condition." Not
+  lumped, because diagnostic boundaries have shifted (Asperger's folded into autism in DSM-5,
+  2013; autism and ADHD couldn't be diagnosed together under DSM-IV; girls once diagnosed with
+  ADHD are now often diagnosed autistic): the label as stated keeps that history, and analysis
+  can group them, alongside the experiencer's age and the year, if it wants to. Co-occurring
+  conditions are separate statements. Recording them changes nothing about eligibility or how
+  the rest of an account is coded.
 - **Psychiatric medication being taken at the time** is recorded (antipsychotic, mood
   stabilizer, antidepressant, sedative, or other, with the words), separately from a
   psychoactive medication given as the experience began. Explicit only.
@@ -465,6 +477,12 @@ has an item on the age of the deceased, so all of this comes from the text.
   reptile or amphibian, or other, with the words kept); and the pet's name if given. Whether
   the experiencer knew it had died is vital status; whether it communicated comes from the
   communication fields, which apply to every being.
+
+### Roles and King (2024)
+
+- **No separate check against King's (2024) six themes for Jesus encounters.** The roles and
+  actions record what each being did (sending the experiencer back, comforting, teaching,
+  and so on), so King's themes can be analyzed from them if wanted.
 
 ### Doctrinal statements
 
