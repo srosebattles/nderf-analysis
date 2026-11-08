@@ -143,9 +143,91 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   beliefs" item is where people most naturally describe what they believed before. This
   matters most for forms A–C, where text is the only source of affiliation.
 
+## Area 3: encounters (in progress)
+
+Designed one cluster at a time, after reading practice round 1; written into the schema and
+trial-coded once every cluster is settled.
+
+### Identity: how and when a being was identified
+
+- **Identity is a list of claims on each encounter,** not one field. One being can carry
+  several identities (a figure called God throughout, whom a questionnaire answer then
+  reasons was Jesus; a Theosophical master named together with the saint he is said to have
+  been), and a single field would have to drop all but one. An empty list means the being was
+  never identified.
+- **Each claim records** the words used (copied, at most four words), the referent we code
+  them as (vocabulary: next cluster), when, how, certainty, and evidence. Evidence already says
+  whether the claim is in the narrative or in which questionnaire item, so "named only in the
+  named-figures item" is computed, not coded.
+- **One claim per referent per timing.** A name used throughout, plus one answer saying the
+  being was recognized at once, is one claim, timed during. Recognized during and confirmed
+  afterward from a photo is two claims.
+- **When: during, after, or not stated, coded strictly.** During only when the text tells the
+  act of identifying as part of the experience (knowing, recognizing, being told). After only
+  when it places it later (didn't know at the time; a later article or photo). Otherwise not
+  stated, including for relatives and for names simply used in telling the story ("then
+  Jesus said"). Narratives are written in hindsight, and forcing a choice would push guesses
+  toward during. A present-tense conviction ("I'm sure it was") doesn't say when it formed.
+  Presuming that people known in life were recognized on sight is an analysis-time rule, not
+  coding. Not stated is expected to be the largest group.
+- **How,** one or more, and only when the text gives it as the way the person knew (describing
+  a beard and a robe isn't saying the being was known by them):
+
+  | How | Meaning | Timing |
+  |---|---|---|
+  | announced | the being, or another being, said or conveyed who it was | during only |
+  | recognized | recognized as someone already familiar: known in life, or felt known | either |
+  | appearance | by how it looked: features, wounds, likeness to a picture or statue; afterward, a photo seen later | either |
+  | knowing | knew or felt who it was with no means given ("just knew," "felt it was") | either |
+  | reasoned | worked out from doctrine, from what the being did, or from what happened | either |
+  | told by a person | someone in ordinary life identified it (a relative, clergy, a psychic) | after only |
+  | reading or media | from reading, TV, or film | after only |
+  | not stated | no means given | either |
+
+- **Certainty:** asserted; hedged ("I think," "might have been," "of some sort," either-or
+  lists that offer two or three identities, or an "Uncertain" menu answer on the item whose comment
+  gives the name); or resemblance only ("looked like," "reminded me of"), unless the person
+  goes on to say it was that being. Resemblances are kept as claims, so hedged recognitions
+  can be counted or dropped. "Felt it was" is how (knowing), not a hedge. A remark about the
+  referent rather than the being met (that a figure from one tradition can look like one from
+  another) is not a claim.
+- **Kept out of identity:** priming before the experience (a devotional object addressed daily
+  beforehand) and memories recovered after exposure (an encounter remembered only after a TV
+  program). They describe how the expectation or memory came about, not how the being was
+  identified, and belong to a provenance field (still open).
+
+### What counts as an encounter, and what one entry is
+
+- **An encounter is any being the person perceives during an episode, by any means,** with
+  one or more ways it was perceived: seen, heard, sensed as a presence, touched, or mind to
+  mind. The person's own body never counts (a separate double of oneself is a question for the
+  being categories). A being only credited with something in the experience and never
+  perceived (a pull later put down to a deity's love; being sent back with nothing seen or
+  heard) also gets an entry, marked "credited only," so it can be counted or dropped. Who sends
+  people back is one of the roles.
+- **Physical presence is coded, because some cases are ambiguous.** People in the physical
+  setting are not of interest, but whether a person was really there or met within the
+  experience isn't always clear. Each encounter is coded: physically present (perceived during
+  the experience, usually from out of the body), part of the experience, or unclear. A living
+  person can be either: a living friend glimpsed at work elsewhere in the building is
+  physically present; a living spouse seen among figures beyond the light is part of the
+  experience. A stranger met just after returning to the body and presented as more than
+  ordinary is unclear. Ordinary perception before the experience starts or after it ends is
+  not an encounter. This is separate from where an experiential being appears (a deceased
+  relative standing by the bed versus an otherworldly place), which comes with descriptions.
+- **One entry per individual given an identity or a description of its own;** the rest stay in
+  a group entry with a count: an exact number, several, many, unspecified, or one or more (a
+  voice written as "he/they"). A crowd with one known person singled out is two entries.
+  Physically present people of one kind (medical staff) are one group entry.
+- **One entry per episode,** since episodes qualify separately, with an optional link when the
+  text says the same being was met in another episode.
+
 ## Open
 
-- Area 3 (encounters), not started.
+- Area 3: identity and what counts as an encounter are settled (above). Still to design: being
+  categories and the words used for them, relatives' kinship vocabulary, descriptions and
+  setting, roles, where each encounter is reported and the questionnaire's checkbox answers,
+  every mention of Jesus, and a provenance field for how the memory came to be told.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
