@@ -373,6 +373,16 @@ has an item on the age of the deceased, so all of this comes from the text.
   figure, tradition, or role: wounds, a crown of thorns, a halo, wings, many arms, an animal
   head, a trident, a monastic habit, horns and a pitchfork). A bearded figure in a robe is
   generic.
+- **Visual details: the words, plus a coded feature.** One entry per feature per encounter,
+  with the words (up to six), a color when stated, and evidence for every place it is
+  mentioned. Features come from a starter list grouped by the figures they point to (Christ,
+  angels, saints and clergy, South Asian traditions, hostile beings, general), plus "other"
+  with the words kept. The list grows during trial coding and is frozen before the holdout.
+  Two consistency rules: "not described" has no details, and "iconographically specific" needs
+  at least one feature outside the general group (or "other"). What a feature points to is
+  decided at analysis time by a fixed map, never by the coder, so the hostile group can be
+  split into folkloric and scriptural imagery there. Expressions (smiling) belong to
+  disposition; beings around a figure are encounters of their own.
 - **Comparisons to images and media, for every encounter:** the kind (painting or picture,
   statue or icon, film or TV, book or illustration, or other), and the specific work if named
   (words kept) or "general" if not. This gives area 4 a direct measure of media influence.
@@ -387,11 +397,11 @@ has an item on the age of the deceased, so all of this comes from the text.
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
   relationships, the rest of people in detail, and most of representation and place are
-  settled (above). Still to design, in this order: visual details (pending); Mary's three
-  levels, hostile iconography, and animals' role and species; disposition, roles and actions,
-  communication, response, and names invoked against hostile beings; every mention of Jesus
-  (including how "the Lord" alone is counted); and provenance (how the memory came to be told,
-  and disclaimers about the telling).
+  settled (above). Still to design, in this order: additions to the visual-feature list;
+  Mary's three levels, hostile iconography, and animals' role and species; disposition, roles
+  and actions, communication, response, and names invoked against hostile beings; every
+  mention of Jesus (including how "the Lord" alone is counted); and provenance (how the memory
+  came to be told, and disclaimers about the telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
