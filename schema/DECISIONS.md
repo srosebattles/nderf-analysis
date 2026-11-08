@@ -130,7 +130,9 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   purpose. A stated age is recorded when given.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
   someone else). Reports by relatives or clinicians are not firsthand and are excluded from the
-  primary analysis. Reporter is recorded per experience, since one page can mix both.
+  primary analysis. Reporter is recorded per experience, since one page can mix both. A
+  relative's relationship to the experiencer uses area 3's kinship parts (role, sex, side,
+  link).
 - **Gender** is copied from NDERF's structured field (no LLM needed).
 - **Country** is recorded as claims with a role (origin, residence, experience location,
   unspecified) and a source. One country per person is resolved for the culture analysis:
@@ -192,8 +194,8 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 ## Area 3: encounters (in progress)
 
 What to capture is set out in [area3-requirements.md](area3-requirements.md); how it is modeled
-is decided here. Designed one cluster at a time, after reading practice round 1; written into
-the schema and trial-coded once every cluster is settled.
+is decided here. Designed one cluster at a time, after reading practice round 1. Everything
+below is in the schema (v4 draft); trial coding comes next.
 
 ### Identity: how and when a being was identified
 
@@ -241,7 +243,7 @@ the schema and trial-coded once every cluster is settled.
 - **Kept out of identity:** priming before the experience (a devotional object addressed daily
   beforehand) and memories recovered after exposure (an encounter remembered only after a TV
   program). They describe how the expectation or memory came about, not how the being was
-  identified, and belong to a provenance field (still open).
+  identified, and belong to provenance (below).
 
 ### What counts as an encounter, and what one entry is
 
@@ -310,13 +312,25 @@ the schema and trial-coded once every cluster is settled.
 - **Named figures get their subcategory from a pre-registered table, not from the model.** The
   model gives each named figure a canonical name (our spelling, not copied text, so variant
   spellings and titles of one figure group together). The table maps each name to a
-  subcategory (Catholic or Orthodox saint, Protestant saint or luminary, early church father,
-  biblical figure, a tradition's figures, non-religious historical figure) and to its
-  traditions, which can be several (Jesus is also Isa; Mary, Maryam; Moses, Musa). Whether a
-  figure is religious or secular is decided once per name: known mainly for faith
-  (theologian, martyr, missionary) or commemorated on a church calendar counts as religious.
-  A name not in the table gets the model's suggested subcategory, is flagged for review, and
-  is added. The table's traditions feed the cross-tradition analysis.
+  subcategory (early or medieval saint, Orthodox saint, post-Reformation Catholic saint,
+  Protestant saint or luminary, biblical figure, a tradition's figures, non-religious
+  historical figure) and to its traditions, which can be several (Jesus is also Isa; Mary,
+  Maryam; Moses, Musa).
+- **Saints are grouped by when they lived and which split divides them, not by who canonized
+  them.** An early or medieval saint is shared heritage: anyone who died before the East-West
+  schism (1054), church fathers included, and Western saints who died between 1054 and the
+  Reformation (about 1517), such as St. Francis, whom Protestants claim as fully as Catholics.
+  Eastern saints who died after 1054 (Gregory Palamas, Seraphim of Sarov), or for the Oriental
+  Orthodox after Chalcedon (451), are Orthodox saints; Western saints after about 1517 (Padre
+  Pio) are post-Reformation Catholic saints; Protestant figures after about 1517 are Protestant
+  saints or luminaries. Dating is by death, not canonization (Joan of Arc died in 1431 and was
+  canonized in 1920). Figures near a line, and pre-Reformation figures only Protestants claim
+  (Hus, Wycliffe), are decided once per name in the table. Which traditions claim a figure is
+  the table's, not the subcategory's.
+- **Whether a figure is religious or secular is decided once per name:** known mainly for
+  faith (theologian, martyr, missionary) or commemorated on a church calendar counts as
+  religious. A name not in the table gets the model's suggested subcategory, is flagged for
+  review, and is added. The table's traditions feed the cross-tradition analysis.
 - **The referent comes only from the text, never from the experiencer's background.** The term
   is always recorded. Coding a Christian's "God" as Christ because they are Christian would put
   prior religion into the encounter coding, and the cross-tradition comparison would partly
@@ -490,7 +504,11 @@ has an item on the age of the deceased, so all of this comes from the text.
   torments; rescues or protects; shows knowledge of earthly events since their death (a
   deceased relative mentioning a birth or a wedding that came after); or other.
   "Sends back" records the reason given: not your time, unfinished purpose, others need you,
-  a mistake (the "wrong person" motif), offered a choice, or none given.
+  a mistake (the "wrong person" motif), offered a choice, or none given. "Gives instructions or
+  requests" records what was asked, one or more, with the words kept: pray; a specific devotion
+  (the rosary, a novena); join, return to, or leave a church or religion; how to live; pass a
+  message on to others; care for a particular person; or other. It applies to any being, so
+  Mary's requests can be compared with Jesus's or a deceased relative's.
 - **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
   showing (images or scenes), no communication, or not stated, kept consistent with the ways
   the being was perceived.
@@ -561,17 +579,20 @@ has an item on the age of the deceased, so all of this comes from the text.
   definitions can run from "any mention" down to "explicitly identified during the
   experience." Each entry records:
   - the words;
-  - what it refers to: Jesus, or ambiguous;
+  - what it refers to: Jesus, ambiguous, or not Jesus (names only);
   - the kind: an encounter with Jesus (linked); talk about Jesus with another being (linked);
     prayer or invocation; the experiencer's own faith or belief; a doctrinal statement
     (linked); someone else's faith, words, or experience; an idiom or exclamation; the name of
-    a church; or other;
+    a church; the name of a person or place; or other;
   - when: before the experience, during, after, or not stated;
   - polarity: affirmative, negated, or a question;
   - evidence.
 
   One entry per kind, time, and place (the narrative or a given item), with every passage as
-  evidence, so a long encounter isn't dozens of rows. Only the experiencer's text, never
+  evidence, so a long encounter isn't dozens of rows. A mention made during an experience
+  names its episode (a prayer said during it has no encounter to link to), and a linked
+  encounter or doctrinal statement must be in the same episode. Every encounter with a Jesus
+  claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
   question wording: the named-figures item itself names Jesus, so a raw search of the pages
   would match every form D–F page.
 - **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
@@ -583,20 +604,144 @@ has an item on the age of the deceased, so all of this comes from the text.
   kept, so analysis can test the rule. Derived words (Christian, Christmas) don't count. In
   encounters, "the Lord" alone stays God with its words kept, and it also appears here as an
   ambiguous mention.
-- **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: any
-  affirmative mention (not idioms or church names), with and without the ambiguous titles; a
+- **Context, not the word, decides.** Jesús and Salvador are common given names, Isa is a
+  common Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El
+  Salvador is a country. Used for a person or a place, the word is recorded as the name of a
+  person or place, referring to someone other than Jesus, and excluded from every rung of the
+  ladder, like idioms and church names; and the person is coded as who they are: an uncle
+  named Jesús is family, never Jesus. Recording names lets them be counted against the
+  keyword hits, which can't tell a name from a reference. Yet "Jesús" in
+  Spanish a translator left untranslated, or "Isa" in a Muslim's account, can mean Jesus
+  himself. When context can't tell, the mention is ambiguous. No practice page has such a
+  name, so the coding prompt needs an example.
+- **Keyword hits, counted by rule** in the derived file, reproduce a naive search exactly.
+  For each part and each pre-registered keyword: whole-word matches in the narrative (raw,
+  including any editor's note inside it), in the experiencer's answers, and in NDERF's question
+  wording. Two lists: narrow (Jesus, Christ, as King searched) and broad (adding Jesús, Cristo,
+  Isa, Yeshua, Savior, Saviour, Messiah). Matching is whole words, case-insensitive, with
+  accents kept distinct and possessives counted ("Christ" doesn't match "Christian"); the
+  matcher is defined once, in the schema, and tested. Question wording matters: on every form
+  D–F page the named-figures item says "for example: Jesus," so a search of the website's
+  pages hits all of them. Like the rest of the derived file, this runs with the pipeline,
+  not before the codebook is frozen.
+- **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: a
+  website-style keyword search, question wording included (rule); a keyword search of the
+  experiencer's own words (rule); every coded entry, names, idioms, and church names included;
+  any affirmative mention of Jesus himself, with and without the ambiguous titles; a
   mention about the experience itself, in a qualifying episode; an encounter with a Jesus
   claim; the same, excluding resemblance only; the claim stated in the narrative; identified
   during the experience; announced or recognized during, and asserted. Miller's own frame,
   his first 141 cases, can probably be identified from NDERF's running numbers in the index
   metadata, and is read only after the codebook is frozen.
 
+### Computed views (resolve-area3.ts)
+
+Computed by pre-registered rules from the coded and derived records, never coded; defined in
+code and tested, as the other areas' resolved views are.
+
+- **Per encounter:** whether the being was never identified (no claim outside the
+  unidentified group); where it was reported (narrative only, questionnaire only, or both, and
+  which items), from the encounter's evidence and its claims'; and Mary's level: one (broad:
+  an unidentified female being; narrow: also described in maternal terms), two (a Mary
+  claim), or three (a Mary claim with confessional content, from the list or a rosary or
+  scapular among the visual details), with the strongest certainty among the Mary claims so
+  resemblance-only can be dropped. Whether level-three content is Catholic-specific is a
+  further step, using the pre-registered table.
+- **Per account, the Jesus ladder:** which rungs it reaches. Keyword hits on the page and in
+  the experiencer's own words (each for the narrow and broad lists); any coded entry; an
+  affirmative mention of Jesus himself, and one about the experience in a qualifying episode
+  (each with and without the ambiguous titles); then an encounter in a qualifying episode with
+  a Jesus claim, narrowed step by step for the same claim (not resemblance only; stated in the
+  narrative; identified during; announced or recognized, and asserted). The view checks that
+  each rung implies the looser ones. The keyword rungs are mechanical and can disagree with
+  the coded ones either way (a person's name; "the Lamb," which no keyword matches).
+
+### For the coding prompt: mistakes an unguided model is likely to make
+
+Each of these has a rule above; the coding prompt must state them explicitly, with examples,
+and trial coding should check them.
+
+- Treating "saint" as Roman Catholic: filing St. Francis or Augustine as Catholic, or a
+  Protestant luminary (Bonhoeffer, Wilberforce) as a secular historical figure. Saints are
+  grouped by when they lived; the table decides.
+- Filing an archangel under a tradition (Michael as Catholic). Angels are their own category.
+- Inferring the referent from the experiencer's religion (a Christian's "God" coded as Jesus).
+  The referent comes only from the text.
+- Timing identity as "during" because the story is told in sequence ("then Jesus said"). Only
+  the act of identifying, told as part of the experience, makes it "during."
+- Taking "felt it was" for a hedge. It is how the person knew (knowing), not uncertainty.
+- Labeling distressing content "hell." The coder describes; only the experiencer's own label
+  is recorded as one.
+- Inferring a condition from strange content, a medication, or someone else calling the
+  experience a hallucination.
+- Counting question wording ("for example: Jesus, Muhammad, Buddha") as a mention of Jesus.
+- Taking a person named Jesús, Isa, or Salvador (or a surname such as Christ) for Jesus, in a
+  mention or an encounter; or, the other way, dismissing "Jesús" in untranslated Spanish, or
+  "Isa" in a Muslim's account, as only a name.
+
+### Choices made while writing the schema (for review)
+
+These weren't settled in the clusters above; they were needed to write the schema.
+
+- **Canonical names are never given to people known in ordinary life** (family, relatives
+  never met, friends, clergy known personally, unrecognized humans), for privacy: their
+  relationship identifies them. Named figures and living religious leaders need one.
+- **Vital status is required for people known in life and animals,** and optional for anyone
+  else (a celebrity who had just died, say).
+- **A relationship's link can be "not stated"** (a plain "a relative").
+- **Menu answers that match no known option are "unrecognized,"** as with the religion menu.
+- **Revelation is the action "reveals knowledge" with a kind** (theological, cosmic, or about
+  the future), not a separate content marker, so it isn't coded twice.
+- **Disposition needs at least one value; the experiencer's response may be empty** (nothing
+  stated), since many encounters, such as bystanders, have no stated response.
+- **Consistency rules:** "credited only" stands alone and allows no communication; "spoken"
+  needs "heard" among the ways perceived, and "mind to mind" needs "mind to mind"; "none,"
+  "not stated," and an "unclear" place stand alone; one visual detail per feature; a pleasant
+  episode has no distressing content.
+- **Names invoked are recorded exactly when the disposition includes hostile.**
+- **In a Peak in Darien case, when the death happened** is around the same time, earlier, or
+  not stated.
+- **Condition statements name the episodes their timing is relative to.**
+
+### Provenance: how the memory came to be told
+
+- **Four questionnaire items are recorded by rule** in the derived file, per part: prior
+  knowledge of NDEs ("Did you have any knowledge of near death experience (NDE) prior to your
+  experience?"), whether it was shared ("Have you ever shared this experience with others?"),
+  belief in its reality shortly after and now (definitely real, probably real, probably not
+  real, definitely not real), and memory accuracy compared with other events of the time
+  (more, as, or less accurately). Comments after the answers are read by the coder like any
+  other text.
+- **Exposure** is a coded statement linked to its episodes: the medium (book, film or TV,
+  article, talk or conference, another person's account, online, or other); the title if
+  named, with the words kept, which gives area 4 a direct measure; when (before the
+  experience, between the experience and this telling, or not stated); and whether the person
+  says it changed how they understood or remembered the experience.
+- **Devotion to a specific figure before the experience,** with the figure's category and
+  canonical name (a statuette of a saint addressed daily beforehand), so prior devotion to a
+  figure can be tested as a predictor of meeting it, more finely than affiliation.
+- **Memory history,** each with a trigger where one applies (media, therapy or hypnosis,
+  other people, spontaneous, or not stated): remembered all along; recovered later; or only
+  later understood to have been an NDE. More than one can apply (part recovered and the whole
+  recognized after the same TV program). Nothing stated: no entries.
+- **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
+  other, with the words kept), private only, or this is the first telling. Plus a flag when
+  the person says their telling varies or their memory is uncertain.
+- **Reception:** others' reactions (dismissed as a hallucination, dream, imagination, or
+  other; ridiculed; believed or supported; or kept quiet for fear of a reaction), each with
+  who (a clinician, family, a friend, clergy, other, or not stated); disclaimers about the
+  telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
+  explanations, with the words and a stance (considers, endorses, or rejects).
+
 ## Open
 
-- Area 3: everything above is settled. Still to design: provenance (how the memory came to be
-  told, disclaimers about the telling, others dismissing the experience as a hallucination,
-  and the experiencer's own natural explanations). Then the schema, tests, and trial coding on
-  practice round 1.
+- Area 3: designed and in the schema (v4 draft). Next: trial coding on practice round 1.
+  The full schema exports to about 80 KB of JSON Schema, so the coding prompt may need to
+  code in passes.
+- Pre-registered tables to build before the codebook is frozen: named figures (canonical
+  name, subcategory, traditions); visual features, keyed on figure category and feature;
+  which confessional content and Marian titles are Catholic-specific and which are shared.
+- Review of the choices made while writing the schema (above).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.

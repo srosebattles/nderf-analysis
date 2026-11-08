@@ -34,6 +34,11 @@ questions.
     Wilberforce, Dietrich Bonhoeffer, Charles Spurgeon). Without explicit instruction, an LLM
     will treat "saint" as Roman-canonized or file these people as secular historical figures.
   - Early church fathers (Augustine, Athanasius, Chrysostom, Polycarp).
+
+  (Revised November 2026: saints are grouped by when they lived. Those who died before the
+  Reformation, church fathers included, are early or medieval saints, shared heritage, so
+  St. Francis is not filed as Catholic; Catholic and Orthodox saints are post-Reformation.
+  See DECISIONS.md.)
   - Biblical figures (Moses, Elijah, Abraham, Paul, the apostles).
 
 ### 3. Figures from other traditions
