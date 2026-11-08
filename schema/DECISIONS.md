@@ -359,7 +359,13 @@ below is in the schema (v4 draft); trial coding comes next.
   status.
 - **Friends and acquaintances get one or more types:** childhood friend, school friend or
   classmate, close friend, coworker, military comrade, neighbor, mentor or teacher,
-  acquaintance, unspecified (just "my friend"), or other, with the words kept.
+  acquaintance, unspecified (just "my friend"), or other, with the words kept. Clinical or
+  paid care is split by direction: their patient (the experiencer was their clinician or paid
+  carer, as in many shared-death accounts) or their clinician or carer (the experiencer's own
+  doctor, nurse, therapist, or paid carer). Anyone else known through work who isn't a
+  coworker or mentor (a client, a customer, an employer) is "other professional." Unpaid care
+  within a family stays with family, where closeness covers it; a chaplain is clergy. Medical
+  staff seen at the scene are usually strangers: a group of unrecognized people, no tie.
 - **People known in life whose relationship isn't stated** ("people I knew") have their own
   category, since they could be family or friends. Like family and friends, they need vital
   status and never get a canonical name.
@@ -538,25 +544,35 @@ has an item on the age of the deceased, so all of this comes from the text.
   - the doctrine, from a pre-registered list, or "other" with the words kept;
   - the stance: affirms, denies, or reinterprets (neither a clean yes nor a clean no: "the
     resurrection is spiritual, not bodily");
+  - certainty: asserted or hedged ("I think," "or something like it"), as for identity claims;
   - the source: conveyed by a being during the experience (linked to that encounter), shown
     during the experience (a scene, no being speaking), understood during the experience with
-    no being, the experiencer's own view afterward, or not stated;
+    no being, the experiencer's own view before the experience, their own view afterward, or
+    not stated. A before-and-after pair on one doctrine shows a changed belief directly;
   - evidence.
 
   "During" follows the strict rule for identity timing. Questionnaire items that begin "During
   your experience, did you gain information about…" don't decide it: answers often drift into
   present belief, so the text decides, and the evidence records the item for analysis.
-- **Starter list:** virgin birth of Jesus; resurrection of Jesus; a general resurrection at
+- **Starter list:** life after death (only when stated as a claim, never inferred from the
+  experience itself; denials and reinterpretations are the informative cases); virgin birth of Jesus; resurrection of Jesus; a general resurrection at
   the end of time (taught in classical forms of all three Abrahamic faiths, read non-literally
   by Reform Judaism and the Bahá'í Faith, hence "reinterprets"); exclusivism (Christ, or one
   faith, is the only way); religious pluralism (all religions lead to God or hold truth);
   religion as human-made or unnecessary (not the same as pluralism); reincarnation or past
-  lives; universal salvation; divinity of Jesus; atonement; the self as divine; the departed
+  lives; pre-existence of souls (rejected by Christian orthodoxy, affirmed in LDS teaching and
+  some New Age writing; it bears on children met before conception); universal salvation; the
+  Trinity (statements about the Godhead itself; "Jesus was only a teacher" is the divinity of
+  Jesus); divinity of Jesus; atonement; the self as divine; the departed
   are aware of people and events on earth (soul sleep, taught by Seventh-day Adventists and
   Jehovah's Witnesses, denies it outright); the departed pray or intercede for the living.
   Judgment after death, by God or a being ("reinterprets" covers "you judge yourself"); a
   final judgment at the end of time; hell exists; purgatory. Grows during trial coding; frozen
   before the holdout.
+- **"Other" is only for claims about God, salvation, or the afterlife** that the list misses
+  (an invented example: "only the gentle can stay here"). Moral and practical teachings stay
+  in the encounter's actions (teaches; instructions on how to live), with their content
+  uncoded.
 - **Hell is split into three things, kept apart:** what the experience contained (distressing
   content, on the episode, below), what the experiencer calls it (below), and the doctrine
   here, for stated propositions only. When a statement says what hell is like, it records the

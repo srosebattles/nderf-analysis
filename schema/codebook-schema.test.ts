@@ -258,12 +258,12 @@ const coded: CodedRecordType = {
   doctrinalStatements: [
     {
       doctrineId: '1example_x_nde/d1', doctrine: 'judgment_after_death', words: 'we judge ourselves',
-      stance: 'reinterprets', source: 'conveyed_by_being', episodeId: EP, encounterId: `${EP}/e2`,
+      stance: 'reinterprets', certainty: 'asserted', source: 'conveyed_by_being', episodeId: EP, encounterId: `${EP}/e2`,
       hellQualities: [], evidence: [narrative(450, 470)],
     },
     {
       doctrineId: '1example_x_nde/d2', doctrine: 'hell_exists', words: 'hell is a choice',
-      stance: 'reinterprets', source: 'experiencer_view_after', episodeId: null, encounterId: null,
+      stance: 'reinterprets', certainty: 'hedged', source: 'experiencer_view_after', episodeId: null, encounterId: null,
       hellQualities: ['self_chosen'], evidence: [qa(30, [0, 16])],
     },
   ],
@@ -674,4 +674,19 @@ test('practice-round additions: send-back reasons, repeated "other" details, rea
     Object.assign(c.encounters[0].identity[0], { category: 'known_person_relationship_not_stated', tie: null });
     c.encounters[0].vital = null;
   }), false); // vital status is required
+});
+
+test('doctrine: certainty without resemblance; the view before; new doctrines; professional ties', () => {
+  assert.equal(parses((c) => { (c.doctrinalStatements[0] as { certainty: string }).certainty = 'resemblance'; }), false);
+  assert.equal(parses((c) => {
+    Object.assign(c.doctrinalStatements[1], { doctrine: 'life_after_death', stance: 'affirms', source: 'experiencer_view_before', hellQualities: [] });
+  }), true);
+  assert.equal(parses((c) => { Object.assign(c.doctrinalStatements[1], { doctrine: 'trinity', hellQualities: [] }); }), true);
+  assert.equal(parses((c) => { Object.assign(c.doctrinalStatements[1], { doctrine: 'preexistence_of_souls', hellQualities: [] }); }), true);
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], {
+      category: 'friend_or_acquaintance',
+      tie: { relationship: null, friendTypes: ['patient_of_experiencer'], religiousRole: null, closeness: null },
+    });
+  }), true);
 });

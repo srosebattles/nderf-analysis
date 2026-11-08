@@ -757,7 +757,12 @@ export const CanonicalName = z.string().min(1).max(80);
 
 export const FriendType = z.enum([
   'childhood_friend', 'school_friend_or_classmate', 'close_friend', 'coworker', 'military_comrade',
-  'neighbor', 'mentor_or_teacher', 'acquaintance', 'unspecified', 'other',
+  'neighbor', 'mentor_or_teacher', 'acquaintance', 'unspecified',
+  // Clinical or paid care, by direction. Unpaid care within a family stays with family.
+  'patient_of_experiencer', // the experiencer was their clinician or paid carer
+  'clinician_or_carer_of_experiencer', // their own doctor, nurse, therapist, or paid carer
+  'other_professional', // a client, customer, employer: known through work, not a coworker or mentor
+  'other',
 ]);
 
 export const ReligiousRole = z.enum([
@@ -1107,10 +1112,16 @@ export type Encounter = z.infer<typeof Encounter>;
 
 /** Starter list; grows during trial coding and is frozen before the holdout. */
 export const Doctrine = z.enum([
+  'life_after_death', // stated as a claim, never inferred from the experience itself
   'virgin_birth', 'resurrection_of_jesus', 'general_resurrection', 'exclusivism', 'religious_pluralism',
-  'religion_human_made_or_unnecessary', 'reincarnation', 'universal_salvation', 'divinity_of_jesus', 'atonement',
+  'religion_human_made_or_unnecessary', 'reincarnation', 'preexistence_of_souls', 'universal_salvation',
+  'trinity', // the Godhead itself; "Jesus was only a teacher" is divinity_of_jesus
+  'divinity_of_jesus', 'atonement',
   'self_as_divine', 'departed_aware_of_earthly_events', 'departed_intercede', 'judgment_after_death',
-  'final_judgment', 'hell_exists', 'purgatory', 'other',
+  'final_judgment', 'hell_exists', 'purgatory',
+  /** Only for claims about God, salvation, or the afterlife the list misses. Moral and
+   *  practical teachings stay in the encounter's actions, with their content uncoded. */
+  'other',
 ]);
 export type Doctrine = z.infer<typeof Doctrine>;
 
@@ -1123,9 +1134,11 @@ export const DoctrinalStatement = obj({
   words: CopiedText,
   /** 'reinterprets': neither a clean yes nor a clean no ("the resurrection is spiritual"). */
   stance: z.enum(['affirms', 'denies', 'reinterprets']),
+  /** As for identity claims, without "resemblance": "I think", "or something like it". */
+  certainty: Certainty.exclude(['resemblance']),
   /** "During" follows the strict rule for identity timing; a questionnaire item's framing
    *  ("During your experience, did you gain information…") doesn't decide it. */
-  source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_after', 'not_stated']),
+  source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_before', 'experiencer_view_after', 'not_stated']),
   episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in
   encounterId: z.string().nullable(), // the being that conveyed it
   /** For hell_exists, as many as are stated. */
