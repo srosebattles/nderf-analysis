@@ -348,7 +348,15 @@ below is in the schema (v4 draft); trial coding comes next.
   - Children who died before birth (miscarried, stillborn, or aborted) and children not yet
     born are family, by role.
   - The experiencer's own double or higher self, appearing as a separate being, is a
-    category. One's own body never counts.
+    category. One's own body never counts. The category is for a being the experiencer
+    identifies as themselves in some form, hedged when they waver ("it wasn't me, but I call
+    it my higher self"); a being that only looks like them gets the representation
+    "personal likeness," with whatever claim fits.
+  - A person's "ghost" or "spirit" is an unrecognized human with vital status dead,
+    since the word says so; one not described as human-shaped is an unidentified being.
+  - Someone else's child met before conception (a friend's son) is a friend or acquaintance,
+    type other, with the words; vital status and the later birth are recorded as for the
+    experiencer's own future children.
   - An ordinary animal behaving with hostility is an animal (role: hostile beast); a monstrous
     or demonic beast is a hostile being.
   - Something normally inanimate that communicates or acts (sand, water, a tree) is an
@@ -453,6 +461,15 @@ has an item on the age of the deceased, so all of this comes from the text.
   pictures, or teaching); claims no prior knowledge ("never heard of," "knew nothing about"),
   with the words kept; or not stated. Only from the text, never from the person's background:
   a Christian meeting Jesus is "not stated" unless the text says how they knew of him.
+  Familiarity is about ordinary life. Meeting the being before in an earlier experience (a
+  childhood vision, a meditation) is the link between episodes: the earlier experience is an
+  episode of its own, with an encounter linked as the same being, and the episodes' dates or
+  ages give the order. So "I knew the light from meditation" needs a small episode and a
+  linked encounter.
+- **A relative never met can be implied by kinship:** from three greats up
+  (great-great-great-grandparent and beyond), "never met" is implied unless the text says
+  they met. With fewer, the text decides; if it's silent, the relative is family with
+  familiarity "not stated."
 - **Closeness, for every relative and friend, only when stated:** whether they were a
   formative presence (raised the experiencer or shared their childhood household), and
   attachment language (closer than the role suggests, close, distant, or estranged or in
@@ -463,7 +480,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   a number of years or a range, stated or computed from dates in the text (marked as which),
   or else: shortly before (days or weeks), within a year, some years with no number, before
   the experiencer was born, or not stated. Apparent age: as when they died, younger, older (a
-  child appearing grown), ageless, or not stated, with a stated age recorded when given.
+  child appearing grown), ageless, or not stated, with a stated age recorded when given. A
+  child who died before birth and appears as an infant is "as when they died"; a toddler or
+  older is "older." The question is whether they grew up in the afterlife.
 - **Living people met as part of the experience:** how the experiencer explains it (higher
   self, bilocation, a dream element, the person was also near death or ill at the time, other,
   or no explanation offered), with the words kept.
@@ -474,8 +493,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   described (named or mentioned with no visual description, including voices and formless
   presences; the ways it was perceived say whether it was seen); light or formless (a light,
   glow, orb, mist, or energy with no figure); generic figure (no features specific to anyone:
-  robes, a beard, a hood, a body of light); personal likeness (a person or animal described as
-  looking like themselves); or iconographically specific (features tied to a particular
+  robes, a beard, a hood, a body of light); personal likeness (looking like a particular
+  person or animal: a relative as they looked in life, or a being that looks like the
+  experiencer); or iconographically specific (features tied to a particular
   figure, tradition, or role: wounds, a crown of thorns, a halo, wings, many arms, an animal
   head, a trident, a monastic habit, horns and a pitchfork). A bearded figure in a robe is
   generic.
@@ -534,9 +554,11 @@ has an item on the age of the deceased, so all of this comes from the text.
   analysis-time table, never by the coder. Titles need this most: "Mother of God" is not
   Catholic-specific (the Orthodox Theotokos; the Formula of Concord, Solid Declaration VIII),
   while apparition titles (Guadalupe, Fatima, Lourdes) are. Level one is computed from
-  unidentified female beings, plus one coded flag for maternal language ("motherly," "like a
-  mother"), with the words kept, so the pre-registration can define it broadly (any
-  unidentified female being) or narrowly (one described in maternal terms).
+  unidentified female beings, plus one coded flag for maternal language, with the words
+  kept: the text describes her as motherly ("motherly," "like a mother"), or she addresses
+  the experiencer as her child ("my son," "my child"). Tenderness alone (a caress) doesn't
+  count. The flag lets the pre-registration define level one broadly (any unidentified
+  female being) or narrowly (one with maternal language).
 - **Hostile iconography types are coded directly for hostile beings,** more than one allowed:
   folkloric; scriptural (serpent, dragon, roaring lion, or a deceptive "angel of light," only
   when the text says a being of light deceived or turned hostile); shadow beings; mocking or

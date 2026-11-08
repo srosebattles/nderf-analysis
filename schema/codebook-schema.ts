@@ -695,6 +695,8 @@ export type Certainty = z.infer<typeof Certainty>;
 
 export const BeingCategory = z.enum([
   // People. Vital status is an attribute, so living and deceased people share these.
+  // relative_never_met is implied from three greats up (great-great-great-grandparent) unless
+  // the text says they met; with fewer, the text decides.
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
   /** Known in life, relationship not stated ("people I knew"): could be family or friends. */
   'known_person_relationship_not_stated',
@@ -715,7 +717,10 @@ export const BeingCategory = z.enum([
   /** Something normally inanimate (sand, water, a tree) that communicates with the experiencer
    *  or acts toward them, reported literally. Merely alive surroundings: the episode's flag. */
   'animate_object_or_landscape',
-  'self_double', // a double or higher self appearing as a separate being; one's own body never counts
+  /** A being the experiencer identifies as themselves in some form (a double, a higher self),
+   *  appearing as a separate being; one's own body never counts. Merely looking like the
+   *  experiencer is representation personal_likeness. */
+  'self_double',
   'other',
 ]);
 export type BeingCategory = z.infer<typeof BeingCategory>;
@@ -883,6 +888,7 @@ export const Vital = obj({
   }).nullable(),
   timeSinceDeath: TimeSinceDeath.nullable(),
   apparentAge: obj({
+    /** A child who died before birth appearing as an infant is as_when_died; a toddler or older is older. */
     relative: z.enum(['as_when_died', 'younger', 'older', 'ageless', 'not_stated']),
     statedYears: z.number().min(0).max(150).nullable(),
   }).nullable(),
@@ -1027,7 +1033,8 @@ export const Encounter = obj({
   }).refine((c) => (c.kind === 'exact') === (c.n !== null), { message: 'n is given exactly for an exact count' }),
   /** At least one. A being with no claim outside UNIDENTIFIED_CATEGORIES was never identified. */
   identity: z.array(IdentityClaim).min(1),
-  /** Only from the text, never from the person's background. */
+  /** Only from the text, never from the person's background; about ordinary life. Meeting the
+   *  being in an earlier experience is sameBeingAs, linking an encounter in that episode. */
   familiarity: obj({
     value: z.enum(['knew_personally', 'knew_of', 'claims_no_prior_knowledge', 'not_stated']),
     words: CopiedText.nullable(),
@@ -1042,8 +1049,11 @@ export const Encounter = obj({
   }).nullable(),
   /** From the description or pronouns; never from a name or the pronouns conventionally used for God. */
   apparentSex: z.enum(['female', 'male', 'neither_or_both', 'not_stated']),
+  /** Described as motherly, or addressing the experiencer as her child ("my son"); tenderness
+   *  alone doesn't count. */
   maternalLanguage: obj({ words: CopiedText, evidence: z.array(Evidence).min(1) }).nullable(),
-  /** The most specific that applies. A bearded figure in a robe is a generic figure. */
+  /** The most specific that applies. A bearded figure in a robe is a generic figure.
+   *  personal_likeness: looks like a particular person or animal, the experiencer included. */
   representation: z.enum(['not_described', 'light_or_formless', 'generic_figure', 'personal_likeness', 'iconographic']),
   visualDetails: z.array(VisualDetail),
   /** work: the named work, or null for a general comparison. */
