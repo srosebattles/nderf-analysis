@@ -192,8 +192,9 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 ## Area 3: encounters (in progress)
 
 What to capture is set out in [area3-requirements.md](area3-requirements.md); how it is modeled
-is decided here. Designed one cluster at a time, after reading practice round 1; written into
-the schema and trial-coded once every cluster is settled.
+is decided here. Designed one cluster at a time, after reading practice round 1. Everything
+below is in the schema (v4 draft) except provenance, which is still open; trial coding comes
+after.
 
 ### Identity: how and when a being was identified
 
@@ -591,12 +592,37 @@ has an item on the age of the deceased, so all of this comes from the text.
   his first 141 cases, can probably be identified from NDERF's running numbers in the index
   metadata, and is read only after the codebook is frozen.
 
+### Choices made while writing the schema (for review)
+
+These weren't settled in the clusters above; they were needed to write the schema.
+
+- **Canonical names are never given to people known in ordinary life** (family, relatives
+  never met, friends, clergy known personally, unrecognized humans), for privacy: their
+  relationship identifies them. Named figures and living religious leaders need one.
+- **Vital status is required for people known in life and animals,** and optional for anyone
+  else (a celebrity who had just died, say).
+- **A relationship's link can be "not stated"** (a plain "a relative").
+- **Menu answers that match no known option are "unrecognized,"** as with the religion menu.
+- **Revelation is the action "reveals knowledge" with a kind** (theological, cosmic, or about
+  the future), not a separate content marker, so it isn't coded twice.
+- **Disposition needs at least one value; the experiencer's response may be empty** (nothing
+  stated), since many encounters, such as bystanders, have no stated response.
+- **Consistency rules:** "credited only" stands alone and allows no communication; "spoken"
+  needs "heard" among the ways perceived, and "mind to mind" needs "mind to mind"; "none,"
+  "not stated," and an "unclear" place stand alone; one visual detail per feature; a pleasant
+  episode has no distressing content.
+- **Names invoked are recorded exactly when the disposition includes hostile.**
+- **In a Peak in Darien case, when the death happened** is around the same time, earlier, or
+  not stated.
+- **Condition statements name the episodes their timing is relative to.**
+
 ## Open
 
-- Area 3: everything above is settled. Still to design: provenance (how the memory came to be
-  told, disclaimers about the telling, others dismissing the experience as a hallucination,
-  and the experiencer's own natural explanations). Then the schema, tests, and trial coding on
-  practice round 1.
+- Area 3: everything above is settled and in the schema (v4 draft). Still to design:
+  provenance (how the memory came to be told, disclaimers about the telling, others dismissing
+  the experience as a hallucination, and the experiencer's own natural explanations). Then
+  trial coding on practice round 1. The full schema exports to about 80 KB of JSON Schema, so
+  the coding prompt may need to code in passes.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.

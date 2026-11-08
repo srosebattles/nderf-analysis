@@ -12,7 +12,7 @@ Analysis of near-death experience accounts from [NDERF](https://www.nderf.org), 
    [decisions](schema/DECISIONS.md) behind it: the output format for coding accounts, designed
    from the data's structure and metadata before reading any account text, then revised after
    trial-coding the first practice round. Covers eligibility, provenance, and religious
-   background; encounters come next.
+   background, and now encounters (designed, not yet trial-coded).
 3. [Practice set and holdout](samples/), drawn with a fixed seed before any coding: practice
    rounds are read freely while the codebook is built; the holdout stays unread until it is
    frozen.
