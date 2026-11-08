@@ -287,12 +287,42 @@ the schema and trial-coded once every cluster is settled.
   Christ (the person equates them, the figure bears wounds, it is called the Son), that is a
   second claim, Jesus, with how it was established.
 
+### People in detail: relationships
+
+- **A relationship is built from parts, not one long list,** so counts can be as granular as
+  needed (grandmothers versus grandfathers) without well over a hundred entries:
+  - base role: parent, child, sibling, grandparent, grandchild, aunt or uncle, niece or nephew,
+    cousin, spouse, partner, godparent, godchild, ancestor (unspecified), or relative
+    (unspecified);
+  - sex: female, male, or not stated, from a gendered word or pronouns in the text, never from
+    a name;
+  - greats: how many ("fifth great-grandfather" is five);
+  - side: maternal, paternal, or not stated;
+  - link: blood, half, step, in-law, adoptive, foster, by marriage, or former (an ex-spouse or
+    ex-partner);
+  - the words as written.
+
+  Finer detail (a second cousin once removed) stays only in the words. Children never born or
+  not yet born are children or siblings by role; whether they were born is vital status.
+- **Friends and acquaintances get one or more types:** childhood friend, school friend or
+  classmate, close friend, coworker, military comrade, neighbor, mentor or teacher,
+  acquaintance, or other, with the words kept.
+- **Clergy known personally get a religious role:** priest, pastor or minister, deacon, nun or
+  religious sister, monk or religious brother, rabbi, imam, or other. A relative or friend who
+  was also clergy stays family or friend, with the religious role recorded alongside. "Clergy
+  known personally" means people known through that role: one's own pastor, a school chaplain,
+  a sister who taught one.
+- **Kinship words for beings never known in life don't make them family or friends.** Figures
+  called friends known forever though never seen before, or a "soul family," are unidentified
+  beings (robed figures, a council, or other), with the words kept. A specific relative never
+  met, such as an ancestor, is still family.
+
 ## Open
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, and the categories are
-  settled (above). Still to design, in this order: people in detail (kinship roles, friend
-  types, vital status against what the experiencer knew, prior familiarity, closeness, time
-  since death and apparent age, living people in an otherworldly setting); representation and
+  settled (above), and so are relationships. Still to design, in this order: the rest of people
+  in detail (vital status against what the experiencer knew, prior familiarity, closeness,
+  time since death and apparent age, living people in an otherworldly setting); representation and
   place (including Mary's three levels, hostile iconography, and animals' role and species);
   disposition, roles and actions, communication, response, and names invoked against hostile
   beings; every mention of Jesus (including how "the Lord" alone is counted); and provenance
