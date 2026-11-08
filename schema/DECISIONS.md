@@ -478,11 +478,29 @@ has an item on the age of the deceased, so all of this comes from the text.
   the experiencer knew it had died is vital status; whether it communicated comes from the
   communication fields, which apply to every being.
 
-### Roles and King (2024)
+### Disposition, actions, communication, and response
 
-- **No separate check against King's (2024) six themes for Jesus encounters.** The roles and
-  actions record what each being did (sending the experiencer back, comforting, teaching,
-  and so on), so King's themes can be analyzed from them if wanted.
+- **Disposition, for every encounter, one or more:** loving, neutral or instructive, hostile,
+  or ambiguous and unsettling. More than one, because a being can change (stern, then loving).
+- **Actions, one or more, each with evidence:** welcomes or greets; comforts or shows
+  affection; guides or escorts; blocks the way; sends back or discusses returning; conveys a
+  purpose or mission; reviews or judges the experiencer's life (a book, a ledger, weighing);
+  forgives; teaches; reveals knowledge (theological, cosmic, or about the future); answers
+  questions; heals; warns; gives instructions or requests (including Mary's); attacks or
+  torments; rescues or protects; shows knowledge of earthly events since their death (a
+  deceased relative mentioning a birth or a wedding that came after); or other.
+  "Sends back" records the reason given: not your time, unfinished purpose, others need you,
+  a mistake (the "wrong person" motif), offered a choice, or none given.
+- **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
+  showing (images or scenes), no communication, or not stated, kept consistent with the ways
+  the being was perceived.
+- **The experiencer's response, one or more:** awe, fear, awareness of sin, worship, love or
+  joy, peace, or arguing or resisting (pleading to stay is common).
+- **Names invoked against hostile beings:** whether the experiencer invoked a name or prayed;
+  which name (the words and the referent: Jesus, God, Mary, or other); and the effect
+  (dispelled, no effect, or not stated). An invocation of Jesus also counts as a Jesus mention.
+- **No separate check against King's (2024) six themes for Jesus encounters.** The actions
+  record what each being did, so King's themes can be analyzed from them if wanted.
 
 ### Doctrinal statements
 
@@ -506,22 +524,22 @@ has an item on the age of the deceased, so all of this comes from the text.
   by Reform Judaism and the Bahá'í Faith, hence "reinterprets"); exclusivism (Christ, or one
   faith, is the only way); religious pluralism (all religions lead to God or hold truth);
   religion as human-made or unnecessary (not the same as pluralism); reincarnation or past
-  lives; universal salvation; divinity of Jesus; atonement; the self as divine. Hell and
-  judgment: to be split (pending). Grows during trial coding; frozen before the holdout.
+  lives; universal salvation; divinity of Jesus; atonement; the self as divine; the departed
+  are aware of people and events on earth (soul sleep, taught by Seventh-day Adventists and
+  Jehovah's Witnesses, denies it outright); the departed pray or intercede for the living.
+  Hell and judgment: to be split (pending). Grows during trial coding; frozen before the
+  holdout.
 - **Encounters keep only content that belongs to the encounter:** Christ-specific content
   (wounds or the cross, forgiveness of sins, worship, reference to the Father, judgment) and
   revelation. Pluralist, exclusivist, and reincarnation claims live in the doctrine list.
 
 ## Open
 
-- Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
-  relationships, the rest of people in detail, representation and place, and Mary, hostile
-  beings, and animals, and doctrinal statements are settled (above). Still to design, in this
-  order: how hell and judgment are split in the doctrine list; disposition, roles and actions,
-  communication, response, and names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
-  is counted); and provenance (how the memory came to be told, disclaimers about the telling,
-  others dismissing the experience as a hallucination, and the experiencer's own natural
-  explanations).
+- Area 3: everything above is settled except how hell and judgment are split in the doctrine
+  list. Still to design: every mention of Jesus (including how "the Lord" alone is counted),
+  and provenance (how the memory came to be told, disclaimers about the telling, others
+  dismissing the experience as a hallucination, and the experiencer's own natural
+  explanations). Then the schema, tests, and trial coding on practice round 1.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
