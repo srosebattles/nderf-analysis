@@ -383,6 +383,29 @@ has an item on the age of the deceased, so all of this comes from the text.
   decided at analysis time by a fixed map, never by the coder, so the hostile group can be
   split into folkloric and scriptural imagery there. Expressions (smiling) belong to
   disposition; beings around a figure are encounters of their own.
+- **The feature list so far.** Grouped for reading only; the analysis map is keyed on the pair
+  of figure category and feature, because a feature can mean different things on different
+  figures (a serpent under Mary's feet versus a serpent as the being; Michael's sword versus a
+  sword piercing Mary's heart).
+  - Christ: wounds, crown of thorns, cross, sacred heart, lamb.
+  - Mary: mantle or veil, crown of stars, crescent moon, rosary, scapular, immaculate heart,
+    holding an infant.
+  - Christ and Mary: rays (from the heart, the hands, or around the figure).
+  - Angels: wings, sword, trumpet, armor, scales.
+  - Saints and clergy: halo, monastic habit, clerical dress.
+  - South Asian traditions: many arms, animal head, blue skin, trident, rope or noose, ledger.
+  - Buddhist: vase.
+  - Hostile beings: horns, red skin, pitchfork, hooves, tail (folkloric); serpent, dragon,
+    lion (scriptural); claws.
+  - General: robe, beard, hood, throne, book, staff, crown, body of light; flowers, with a kind
+    (rose, lily, lotus, other, or not stated) so one feature serves any figure; hair color, eye
+    color, and skin tone (only as stated); face not visible; head covering; hands in prayer;
+    blessing gesture; modern clothing; period clothing.
+  - Other, with the words kept.
+
+  Colors: white, black or dark, gold, blue, red, purple, brown, grey, green, pale, tan or
+  olive, blond, other. Whether clothing is unusual for a figure (modern dress on Jesus or Mary,
+  but not on a deceased grandmother) is decided at analysis time, not by the coder.
 - **Comparisons to images and media, for every encounter:** the kind (painting or picture,
   statue or icon, film or TV, book or illustration, or other), and the specific work if named
   (words kept) or "general" if not. This gives area 4 a direct measure of media influence.
@@ -397,11 +420,11 @@ has an item on the age of the deceased, so all of this comes from the text.
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
   relationships, the rest of people in detail, and most of representation and place are
-  settled (above). Still to design, in this order: additions to the visual-feature list;
-  Mary's three levels, hostile iconography, and animals' role and species; disposition, roles
-  and actions, communication, response, and names invoked against hostile beings; every
-  mention of Jesus (including how "the Lord" alone is counted); and provenance (how the memory
-  came to be told, and disclaimers about the telling).
+  settled (above). Still to design, in this order: Mary's three levels, hostile iconography,
+  and animals' role and species; disposition, roles and actions, communication, response, and
+  names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
+  is counted); and provenance (how the memory came to be told, and disclaimers about the
+  telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
