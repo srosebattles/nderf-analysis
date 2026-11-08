@@ -193,8 +193,7 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 
 What to capture is set out in [area3-requirements.md](area3-requirements.md); how it is modeled
 is decided here. Designed one cluster at a time, after reading practice round 1. Everything
-below is in the schema (v4 draft) except provenance, which is still open; trial coding comes
-after.
+below is in the schema (v4 draft); trial coding comes next.
 
 ### Identity: how and when a being was identified
 
@@ -242,7 +241,7 @@ after.
 - **Kept out of identity:** priming before the experience (a devotional object addressed daily
   beforehand) and memories recovered after exposure (an encounter remembered only after a TV
   program). They describe how the expectation or memory came about, not how the being was
-  identified, and belong to a provenance field (still open).
+  identified, and belong to provenance (below).
 
 ### What counts as an encounter, and what one entry is
 
@@ -648,13 +647,41 @@ These weren't settled in the clusters above; they were needed to write the schem
   not stated.
 - **Condition statements name the episodes their timing is relative to.**
 
+### Provenance: how the memory came to be told
+
+- **Four questionnaire items are recorded by rule** in the derived file, per part: prior
+  knowledge of NDEs ("Did you have any knowledge of near death experience (NDE) prior to your
+  experience?"), whether it was shared ("Have you ever shared this experience with others?"),
+  belief in its reality shortly after and now (definitely real, probably real, probably not
+  real, definitely not real), and memory accuracy compared with other events of the time
+  (more, as, or less accurately). Comments after the answers are read by the coder like any
+  other text.
+- **Exposure** is a coded statement linked to its episodes: the medium (book, film or TV,
+  article, talk or conference, another person's account, online, or other); the title if
+  named, with the words kept, which gives area 4 a direct measure; when (before the
+  experience, between the experience and this telling, or not stated); and whether the person
+  says it changed how they understood or remembered the experience.
+- **Devotion to a specific figure before the experience,** with the figure's category and
+  canonical name (a statuette of a saint addressed daily beforehand), so prior devotion to a
+  figure can be tested as a predictor of meeting it, more finely than affiliation.
+- **Memory history,** each with a trigger where one applies (media, therapy or hypnosis,
+  other people, spontaneous, or not stated): remembered all along; recovered later; or only
+  later understood to have been an NDE. More than one can apply (part recovered and the whole
+  recognized after the same TV program). Nothing stated: no entries.
+- **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
+  other, with the words kept), private only, or this is the first telling. Plus a flag when
+  the person says their telling varies or their memory is uncertain.
+- **Reception:** others' reactions (dismissed as a hallucination, dream, imagination, or
+  other; ridiculed; believed or supported; or kept quiet for fear of a reaction), each with
+  who (a clinician, family, a friend, clergy, other, or not stated); disclaimers about the
+  telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
+  explanations, with the words and a stance (considers, endorses, or rejects).
+
 ## Open
 
-- Area 3: everything above is settled and in the schema (v4 draft). Still to design:
-  provenance (how the memory came to be told, disclaimers about the telling, others dismissing
-  the experience as a hallucination, and the experiencer's own natural explanations). Then
-  trial coding on practice round 1. The full schema exports to about 80 KB of JSON Schema, so
-  the coding prompt may need to code in passes.
+- Area 3: designed and in the schema (v4 draft). Next: trial coding on practice round 1.
+  The full schema exports to about 80 KB of JSON Schema, so the coding prompt may need to
+  code in passes.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.

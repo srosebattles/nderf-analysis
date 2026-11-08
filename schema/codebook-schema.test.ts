@@ -79,6 +79,13 @@ const derived: DerivedRecordType = {
         checklistUnearthlyBeings: { status: 'present', value: true, evidence: [qa(25)] },
         checklistDeceasedPersons: { status: 'present', value: false, evidence: [qa(25)] },
       },
+      provenanceItems: {
+        priorNdeKnowledge: { status: 'present', value: 'no', evidence: [qa(44)] },
+        sharedWithOthers: { status: 'present', value: 'yes', evidence: [qa(45)] },
+        realityShortlyAfter: { status: 'present', value: 'probably_real', evidence: [qa(46)] },
+        realityNow: { status: 'present', value: 'definitely_real', evidence: [qa(47)] },
+        memoryAccuracy: { status: 'not_asked' },
+      },
     },
   ],
   tagClaims: {
@@ -264,6 +271,29 @@ const coded: CodedRecordType = {
       when: 'before', polarity: 'affirmative', evidence: [narrative(120, 135)],
     },
   ],
+  provenance: {
+    exposures: [
+      {
+        episodeIds: [EP], medium: 'film_or_tv', title: null, when: 'between_experience_and_telling',
+        changedUnderstanding: true, evidence: [qa(45, [4, 30])],
+      },
+    ],
+    priorDevotion: [],
+    memory: [
+      { episodeIds: [EP], kind: 'recognized_as_nde_later', trigger: 'media', evidence: [qa(45, [4, 30])] },
+    ],
+    priorTellings: [
+      { episodeIds: [EP], kind: 'private_only', venues: [], words: null, evidence: [qa(45, [31, 60])] },
+    ],
+    tellingVaries: [],
+    reactions: [
+      { episodeIds: [EP], reaction: 'dismissed', dismissedAs: 'dream', who: 'family', evidence: [qa(45, [61, 90])] },
+    ],
+    disclaimers: [],
+    naturalExplanations: [
+      { episodeIds: [EP], words: 'maybe just low oxygen', stance: 'considers', evidence: [qa(47, [5, 26])] },
+    ],
+  },
 };
 
 /** A deep copy with one change applied. */
@@ -487,4 +517,16 @@ test('the hallucination flag excludes other mental health conditions and neurode
     assert.equal(HALLUCINATION_FLAG_CONDITIONS.includes(outside), false);
   }
   assert.equal(HALLUCINATION_FLAG_CONDITIONS.includes('delirium'), true);
+});
+
+test('provenance: triggers, venues, and dismissals go with their kinds; episodes must exist', () => {
+  assert.equal(parses((c) => { c.provenance.memory[0].trigger = null; }), false);
+  assert.equal(parses((c) => { c.provenance.memory[0] = { ...c.provenance.memory[0], kind: 'remembered_all_along', trigger: null }; }), true);
+  assert.equal(parses((c) => { c.provenance.priorTellings[0].kind = 'public'; }), false); // venues required
+  assert.equal(parses((c) => { Object.assign(c.provenance.priorTellings[0], { kind: 'public', venues: ['podcasts'] }); }), true);
+  assert.equal(parses((c) => { c.provenance.reactions[0].dismissedAs = null; }), false);
+  assert.equal(parses((c) => {
+    c.provenance.priorDevotion.push({ episodeIds: [EP], category: 'named_figure', name: null, words: 'a saint on my shelf', evidence: [narrative(1, 5)] });
+  }), false);
+  assert.equal(parses((c) => { c.provenance.exposures[0].episodeIds = ['1example_x_nde#2']; }), false);
 });

@@ -2,8 +2,8 @@
 // types (z.infer) and the runtime check every record must pass before it is written.
 // v4 DRAFT: areas 1 (eligibility and provenance) and 2 (religious background) are designed and
 // were revised after trial-coding the first fifty practice accounts. Area 3 (encounters,
-// doctrinal statements, and mentions of Jesus) is designed but not yet trial-coded, and its
-// provenance cluster is still open. Decisions, their reasons, and open questions: DECISIONS.md.
+// doctrinal statements, mentions of Jesus, and how the memory came to be told) is designed but
+// not yet trial-coded. Decisions, their reasons, and open questions: DECISIONS.md.
 //
 // Files, joined on accountId:
 //   derived/accounts.jsonl                  rules only; regenerated whenever the parser changes
@@ -332,6 +332,21 @@ export const BeingItemAnswers = obj({
 });
 export type BeingItemAnswers = z.infer<typeof BeingItemAnswers>;
 
+const Reality = z.enum(['definitely_real', 'probably_real', 'probably_not_real', 'definitely_not_real', 'unrecognized']);
+
+/** Provenance items with fixed answers, parsed by rule. Comments after the answers are read by
+ *  the coder like any other text. */
+export const ProvenanceItemAnswers = obj({
+  /** "Did you have any knowledge of near death experience (NDE) prior to your experience?" */
+  priorNdeKnowledge: finding(YesNoUncertain),
+  sharedWithOthers: finding(YesNoUncertain), // "Have you ever shared this experience with others?"
+  realityShortlyAfter: finding(Reality), // "…shortly (days to weeks) after it happened?"
+  realityNow: finding(Reality),
+  /** Compared with other life events around the time of the experience. */
+  memoryAccuracy: finding(z.enum(['more', 'as', 'less', 'unrecognized'])),
+});
+export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
+
 export const DerivedPart = obj({
   index: Index,
   questionnaire: obj({ form: QuestionnaireForm, itemsAsked: ItemsAsked }),
@@ -339,6 +354,7 @@ export const DerivedPart = obj({
    *  severity most forms add. Sometimes the only place the cause appears. */
   lifeThreat: finding(LifeThreatAnswer),
   beingItems: BeingItemAnswers,
+  provenanceItems: ProvenanceItemAnswers,
   backgroundDate: ParsedDate,
   gender: z.string().nullable(), // Background field as written ('Female', 'Male')
   religionField: DerivedReligionFields,
@@ -1064,6 +1080,78 @@ export type DoctrinalStatement = z.infer<typeof DoctrinalStatement>;
 
 // ─── Area 3: every mention of Jesus ─────────────────────────────────────────────────────
 
+// ─── Area 3: provenance (how the memory came to be told) ───────────────────────────────
+
+const EpisodeIds = z.array(z.string()).min(1);
+const Trigger = z.enum(['media', 'therapy_or_hypnosis', 'other_people', 'spontaneous', 'not_stated']);
+
+export const Exposure = obj({
+  episodeIds: EpisodeIds,
+  medium: z.enum(['book', 'film_or_tv', 'article', 'talk_or_conference', 'another_persons_account', 'online', 'other']),
+  title: CopiedText.nullable(), // if named: area 4's direct measure
+  when: z.enum(['before_experience', 'between_experience_and_telling', 'not_stated']),
+  /** The person says it changed how they understood or remembered the experience. */
+  changedUnderstanding: z.boolean(),
+  evidence: z.array(Evidence).min(1),
+});
+export type Exposure = z.infer<typeof Exposure>;
+
+/** Devotion to a specific figure before the experience (a statuette of a saint addressed
+ *  daily), so prior devotion can be tested as a predictor of meeting that figure. */
+export const PriorDevotion = obj({
+  episodeIds: EpisodeIds,
+  category: BeingCategory,
+  name: CanonicalName.nullable(),
+  words: CopiedText,
+  evidence: z.array(Evidence).min(1),
+}).refine((d) => d.category !== 'named_figure' || d.name !== null, { message: 'a named figure needs a canonical name' });
+
+/** More than one can apply; nothing stated means no entries. */
+export const MemoryEvent = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['remembered_all_along', 'recovered_later', 'recognized_as_nde_later']),
+  trigger: Trigger.nullable(),
+  evidence: z.array(Evidence).min(1),
+}).refine((m) => (m.kind === 'remembered_all_along') === (m.trigger === null), {
+  message: 'a trigger is given exactly for recovered_later and recognized_as_nde_later',
+});
+
+export const PriorTelling = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['public', 'private_only', 'first_telling']),
+  venues: z.array(z.enum(['talks', 'podcasts', 'books', 'support_groups', 'media', 'other'])),
+  words: CopiedText.nullable(),
+  evidence: z.array(Evidence).min(1),
+}).refine((t) => (t.kind === 'public') === (t.venues.length > 0), { message: 'venues are given exactly for public tellings' });
+
+export const Reaction = obj({
+  episodeIds: EpisodeIds,
+  reaction: z.enum(['dismissed', 'ridiculed', 'believed_or_supported', 'kept_quiet_for_fear']),
+  dismissedAs: z.enum(['hallucination', 'dream', 'imagination', 'other']).nullable(),
+  who: z.enum(['clinician', 'family', 'friend', 'clergy', 'other', 'not_stated']),
+  evidence: z.array(Evidence).min(1),
+}).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' });
+
+export const NaturalExplanation = obj({
+  episodeIds: EpisodeIds,
+  words: CopiedText,
+  stance: z.enum(['considers', 'endorses', 'rejects']),
+  evidence: z.array(Evidence).min(1),
+});
+
+export const Provenance = obj({
+  exposures: z.array(Exposure),
+  priorDevotion: z.array(PriorDevotion),
+  memory: z.array(MemoryEvent),
+  priorTellings: z.array(PriorTelling),
+  /** The person says their telling varies or their memory is uncertain. */
+  tellingVaries: z.array(obj({ episodeIds: EpisodeIds, evidence: z.array(Evidence).min(1) })),
+  reactions: z.array(Reaction),
+  disclaimers: z.array(obj({ words: CopiedText, evidence: z.array(Evidence).min(1) })), // "I know how this sounds"
+  naturalExplanations: z.array(NaturalExplanation),
+});
+export type Provenance = z.infer<typeof Provenance>;
+
 /** The narrative of a part, or one questionnaire item: the "place" of a Jesus mention. */
 export const placeOf = (s: SourceRef) =>
   s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `qa:${s.part}:${s.qaIndex}` : `${s.kind}:${JSON.stringify(s)}`;
@@ -1119,6 +1207,7 @@ export const CodedRecord = obj({
   encounters: z.array(Encounter),
   doctrinalStatements: z.array(DoctrinalStatement),
   jesusMentions: z.array(JesusMention),
+  provenance: Provenance,
 }).superRefine((r, ctx) => {
   const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
   const ids = r.episodes.map((e) => e.episodeId);
@@ -1136,6 +1225,13 @@ export const CodedRecord = obj({
       if (!ids.includes(id)) issue(`condition refers to unknown episode ${id}`, ['conditions', i, 'episodeIds', j]);
     }),
   );
+  for (const list of ['exposures', 'priorDevotion', 'memory', 'priorTellings', 'tellingVaries', 'reactions', 'naturalExplanations'] as const) {
+    r.provenance[list].forEach((entry, i) =>
+      entry.episodeIds.forEach((id, j) => {
+        if (!ids.includes(id)) issue(`provenance refers to unknown episode ${id}`, ['provenance', list, i, 'episodeIds', j]);
+      }),
+    );
+  }
 
   // Encounters belong to an episode; their ids carry it.
   const encounterEpisode = new Map(r.encounters.map((e) => [e.encounterId, e.episodeId]));
