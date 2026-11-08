@@ -288,8 +288,9 @@ below is in the schema (v4 draft); trial coding comes next.
 ### Who is encountered: categories
 
 - **Every encounter gets at least one category, including unidentified beings.** Beings of
-  light, a voice or felt presence with no form, guides, councils or robed figures, orbs, and
-  unrecognized humans are identity claims in an "unidentified" group. A being of light later
+  light, a voice or felt presence with no form, guides, councils or robed figures, orbs,
+  unrecognized humans, and other unidentified beings (an "entity" none of these describes)
+  are identity claims in an "unidentified" group. A being of light later
   named Jesus is one encounter with two claims. "Never identified" means no claim outside the
   unidentified group. (This replaced a proposal to type unidentified beings only from their
   descriptions, which would have dropped categories the requirements ask for.)
@@ -358,7 +359,10 @@ below is in the schema (v4 draft); trial coding comes next.
   status.
 - **Friends and acquaintances get one or more types:** childhood friend, school friend or
   classmate, close friend, coworker, military comrade, neighbor, mentor or teacher,
-  acquaintance, or other, with the words kept.
+  acquaintance, unspecified (just "my friend"), or other, with the words kept.
+- **People known in life whose relationship isn't stated** ("people I knew") have their own
+  category, since they could be family or friends. Like family and friends, they need vital
+  status and never get a canonical name.
 - **Clergy known personally get a religious role:** priest, pastor or minister, deacon, nun or
   religious sister, monk or religious brother, rabbi, imam, or other. A relative or friend who
   was also clergy stays family or friend, with the religious role recorded alongside. "Clergy
@@ -425,7 +429,8 @@ has an item on the age of the deceased, so all of this comes from the text.
   head, a trident, a monastic habit, horns and a pitchfork). A bearded figure in a robe is
   generic.
 - **Visual details: the words, plus a coded feature.** One entry per feature per encounter,
-  with the words (up to six), a color when stated, and evidence for every place it is
+  with the words (up to six), the colors when stated (in the order described, so eyes that
+  turn from grey to green keep both), and evidence for every place it is
   mentioned. Features come from a starter list grouped by the figures they point to (Christ,
   angels, saints and clergy, South Asian traditions, hostile beings, general), plus "other"
   with the words kept. The list grows during trial coding and is frozen before the holdout.
@@ -454,8 +459,9 @@ has an item on the age of the deceased, so all of this comes from the text.
     blessing gesture; modern clothing; period clothing.
   - Other, with the words kept.
 
-  Colors: white, black or dark, gold, blue, red, purple, brown, grey, green, pale, tan or
-  olive, blond, other. Whether clothing is unusual for a figure (modern dress on Jesus or Mary,
+  Colors: white, black or dark, gold, silver, blue, red, purple, brown, grey, green, pale, tan
+  or olive, blond, other. "Other" features are exempt from one-per-feature, since two can be
+  unrelated (a lantern, and a ribbon tied to it). Whether clothing is unusual for a figure (modern dress on Jesus or Mary,
   but not on a deceased grandmother) is decided at analysis time, not by the coder.
 - **Comparisons to images and media, for every encounter:** the kind (painting or picture,
   statue or icon, film or TV, book or illustration, or other), and the specific work if named
@@ -487,7 +493,8 @@ has an item on the age of the deceased, so all of this comes from the text.
   features hold the specifics. Coding the type directly also catches a comparison with no
   features listed (looking like a cartoon devil).
 - **Animals:** role, one or more (own pet, someone else's pet, working or farm animal,
-  scenery, animal-form guide, or hostile beast); species (dog, cat, horse, bird, small pet,
+  scenery, animal-form guide, companion (stays with or comforts the experiencer, as a deer walking
+  beside them), or hostile beast); species (dog, cat, horse, bird, small pet,
   reptile or amphibian, or other, with the words kept); and the pet's name if given. Whether
   the experiencer knew it had died is vital status; whether it communicated comes from the
   communication fields, which apply to every being.
@@ -503,11 +510,13 @@ has an item on the age of the deceased, so all of this comes from the text.
   questions; heals; warns; gives instructions or requests (including Mary's); attacks or
   torments; rescues or protects; shows knowledge of earthly events since their death (a
   deceased relative mentioning a birth or a wedding that came after); or other.
-  "Sends back" records the reason given: not your time, unfinished purpose, others need you,
-  a mistake (the "wrong person" motif), offered a choice, or none given. "Gives instructions or
+  "Sends back" records every reason given: not your time, unfinished purpose, others need
+  you, a mistake (the "wrong person" motif), offered a choice, or none given (alone). A being
+  can give two (a choice, and a spouse who needs them). "Gives instructions or
   requests" records what was asked, one or more, with the words kept: pray; a specific devotion
   (the rosary, a novena); join, return to, or leave a church or religion; how to live; pass a
-  message on to others; care for a particular person; or other. It applies to any being, so
+  message on to others; care for a particular person; a practical action, what to do now to
+  survive or reach safety ("breathe," "go left"); or other. It applies to any being, so
   Mary's requests can be compared with Jesus's or a deceased relative's.
 - **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
   showing (images or scenes), no communication, or not stated, kept consistent with the ways
@@ -569,7 +578,7 @@ has an item on the age of the deceased, so all of this comes from the text.
   terrifying); void or nothingness; torment or hostile beings (their "hellish" type). Hostile
   beings are also encounters; this covers distressing episodes with no beings at all.
 - **The experiencer's own label for the experience or a place in it,** with the words kept:
-  hell or hellish, purgatory, the void, other, or none; and when it was applied (during,
+  heaven or paradise, hell or hellish, purgatory, the void, other, or none; and when it was applied (during,
   afterward, or not stated). Torment content with no "hell" label is then countable: the
   cases a reader would call hellish where the experiencer declined the word.
 
@@ -618,7 +627,8 @@ has an item on the age of the deceased, so all of this comes from the text.
   For each part and each pre-registered keyword: whole-word matches in the narrative (raw,
   including any editor's note inside it), in the experiencer's answers, and in NDERF's question
   wording. Two lists: narrow (Jesus, Christ, as King searched) and broad (adding Jesús, Cristo,
-  Isa, Yeshua, Savior, Saviour, Messiah). Matching is whole words, case-insensitive, with
+  Christos, Isa, Yeshua, Savior, Saviour, Messiah). Christos, like Jesús and Isa, is also a
+  given name; the broad rung accepts such collisions and the coded rungs sort them out. Matching is whole words, case-insensitive, with
   accents kept distinct and possessives counted ("Christ" doesn't match "Christian"); the
   matcher is defined once, in the schema, and tested. Question wording matters: on every form
   D–F page the named-figures item says "for example: Jesus," so a search of the website's
@@ -714,7 +724,9 @@ These weren't settled in the clusters above; they were needed to write the schem
   other text.
 - **Exposure** is a coded statement linked to its episodes: the medium (book, film or TV,
   article, talk or conference, another person's account, online, or other); the title if
-  named, with the words kept, which gives area 4 a direct measure; when (before the
+  named, with the words kept, which gives area 4 a direct measure; the author, speaker, or
+  presenter if named (public figures only: a friend who told their own experience is never
+  named; a study group on an author's work names that author); when (before the
   experience, between the experience and this telling, or not stated); and whether the person
   says it changed how they understood or remembered the experience.
 - **Devotion to a specific figure before the experience,** with the figure's category and
@@ -727,9 +739,10 @@ These weren't settled in the clusters above; they were needed to write the schem
 - **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
   other, with the words kept), private only, or this is the first telling. Plus a flag when
   the person says their telling varies or their memory is uncertain.
-- **Reception:** others' reactions (dismissed as a hallucination, dream, imagination, or
-  other; ridiculed; believed or supported; or kept quiet for fear of a reaction), each with
-  who (a clinician, family, a friend, clergy, other, or not stated); disclaimers about the
+- **Reception:** others' reactions (dismissed as a hallucination, a dream, imagination, drugs
+  or medication, demonic, or other; ridiculed; believed or supported; kept quiet for fear of a
+  reaction; shock or disbelief; or other), each with who (a clinician, family, a friend,
+  clergy, other, or not stated) and the listener's words as reported (required for "other"); disclaimers about the
   telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
   explanations, with the words and a stance (considers, endorses, or rejects).
 

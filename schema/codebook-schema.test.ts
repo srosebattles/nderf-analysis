@@ -195,7 +195,7 @@ const coded: CodedRecordType = {
       maternalLanguage: null,
       representation: 'personal_likeness',
       visualDetails: [
-        { feature: 'flowers', words: 'holding white lilies', color: 'white', flowerKind: 'lily', evidence: [narrative(320, 340)] },
+        { feature: 'flowers', words: 'holding white lilies', colors: ['white'], flowerKind: 'lily', evidence: [narrative(320, 340)] },
       ],
       imageComparisons: [],
       places: ['otherworldly'],
@@ -204,8 +204,8 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'welcomes', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(341, 360)] },
-        { action: 'sends_back', sendBackReason: 'not_your_time', revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(361, 390)] },
+        { action: 'welcomes', sendBackReasons: [], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(341, 360)] },
+        { action: 'sends_back', sendBackReasons: ['not_your_time'], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(361, 390)] },
       ],
       christSpecificContent: [],
       communication: ['spoken'],
@@ -245,8 +245,8 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'forgives', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(430, 450)] },
-        { action: 'reveals_knowledge', sendBackReason: null, revelationKind: 'theological', instructionKinds: [], instructionWords: null, evidence: [narrative(450, 470)] },
+        { action: 'forgives', sendBackReasons: [], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(430, 450)] },
+        { action: 'reveals_knowledge', sendBackReasons: [], revelationKind: 'theological', instructionKinds: [], instructionWords: null, evidence: [narrative(450, 470)] },
       ],
       christSpecificContent: [{ kind: 'forgiveness_of_sins', evidence: [narrative(430, 450)] }],
       communication: ['mind_to_mind'],
@@ -280,7 +280,7 @@ const coded: CodedRecordType = {
   provenance: {
     exposures: [
       {
-        episodeIds: [EP], medium: 'film_or_tv', title: null, when: 'between_experience_and_telling',
+        episodeIds: [EP], medium: 'film_or_tv', title: null, person: null, when: 'between_experience_and_telling',
         changedUnderstanding: true, evidence: [qa(45, [4, 30])],
       },
     ],
@@ -293,7 +293,7 @@ const coded: CodedRecordType = {
     ],
     tellingVaries: [],
     reactions: [
-      { episodeIds: [EP], reaction: 'dismissed', dismissedAs: 'dream', who: 'family', evidence: [qa(45, [61, 90])] },
+      { episodeIds: [EP], reaction: 'dismissed', dismissedAs: 'dream', words: null, who: 'family', evidence: [qa(45, [61, 90])] },
     ],
     disclaimers: [],
     naturalExplanations: [
@@ -437,7 +437,7 @@ test('visual details agree with the representation level', () => {
   assert.equal(parses((c) => { c.encounters[0].representation = 'iconographic'; }), false); // flowers are general
   assert.equal(parses((c) => {
     c.encounters[0].representation = 'iconographic';
-    c.encounters[0].visualDetails.push({ feature: 'wounds', words: 'marks on his hands', color: null, flowerKind: null, evidence: [narrative(1, 9)] });
+    c.encounters[0].visualDetails.push({ feature: 'wounds', words: 'marks on his hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] });
   }), true);
   assert.equal(parses((c) => { c.encounters[0].visualDetails[0].flowerKind = null; }), false);
   assert.equal(parses((c) => { c.encounters[0].visualDetails.push(structuredClone(c.encounters[0].visualDetails[0])); }), false);
@@ -483,7 +483,7 @@ test('a living person met as part of the experience needs an explanation, and on
 });
 
 test('actions, hostile beings, and animals carry their own details', () => {
-  assert.equal(parses((c) => { c.encounters[0].actions[1].sendBackReason = null; }), false);
+  assert.equal(parses((c) => { c.encounters[0].actions[1].sendBackReasons = []; }), false);
   assert.equal(parses((c) => { c.encounters[1].actions[1].revelationKind = null; }), false);
   assert.equal(parses((c) => { c.encounters[0].disposition = ['hostile']; }), false); // invocation required
   assert.equal(parses((c) => {
@@ -566,7 +566,7 @@ test("a relative's report uses the kinship parts, and only a relative's", () => 
 });
 
 test('instructions record what was asked, and only on gives_instructions_or_requests', () => {
-  const ask = { action: 'gives_instructions_or_requests', sendBackReason: null, revelationKind: null,
+  const ask = { action: 'gives_instructions_or_requests', sendBackReasons: [], revelationKind: null,
     instructionKinds: ['pray', 'pass_on_message'], instructionWords: 'tell them to pray', evidence: [narrative(380, 399)] };
   assert.equal(parses((c) => { c.encounters[0].actions.push(ask); }), true);
   assert.equal(parses((c) => { c.encounters[0].actions.push({ ...ask, instructionKinds: [] }); }), false);
@@ -608,7 +608,7 @@ test("resolveEncounter: Mary's levels", () => {
   assert.deepEqual([named.marianLevel, named.maryClaimCertainty], ['two', 'hedged']);
   assert.equal(resolveEncounter(encounter(1, (e) => {
     mary(e);
-    e.visualDetails.push({ feature: 'rosary', words: 'holding a rosary', color: null, flowerKind: null, evidence: [narrative(417, 433)] });
+    e.visualDetails.push({ feature: 'rosary', words: 'holding a rosary', colors: [], flowerKind: null, evidence: [narrative(417, 433)] });
   })).marianLevel, 'three');
   assert.equal(resolveEncounter(encounter(0)).marianLevel, 'none');
 });
@@ -645,4 +645,33 @@ test('the resolved Jesus ladder must be nested', () => {
   const j = resolveJesus(derived, coded, [EP]);
   assert.equal(ResolvedJesusSchema.safeParse({ ...j, identifiedDuring: true }).success, false); // not in the narrative
   assert.equal(ResolvedJesusSchema.safeParse({ ...j, keywordWebsite: { narrow: true, broad: false } }).success, false);
+});
+
+test('practice-round additions: send-back reasons, repeated "other" details, reactions, known people', () => {
+  const sendBack = (reasons: string[]) => parses((c) => { (c.encounters[0].actions[1] as { sendBackReasons: string[] }).sendBackReasons = reasons; });
+  assert.equal(sendBack(['offered_a_choice', 'others_need_you']), true);
+  assert.equal(sendBack(['none_given', 'mistake']), false);
+
+  const other = (words: string) => ({ feature: 'other' as const, words, colors: [], flowerKind: null, evidence: [narrative(320, 340)] });
+  assert.equal(parses((c) => { c.encounters[0].visualDetails.push(other('a lantern'), other('a ribbon')); }), true);
+  assert.equal(parses((c) => {
+    const lilies = c.encounters[0].visualDetails[0];
+    c.encounters[0].visualDetails.push({ ...lilies, words: 'more lilies' });
+  }), false);
+  assert.equal(parses((c) => { c.encounters[0].visualDetails[0].colors = ['white', 'silver']; }), true);
+
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { reaction: 'other', dismissedAs: null }); }), false);
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { reaction: 'other', dismissedAs: null, words: 'said nothing at all' }); }), true);
+  assert.equal(parses((c) => { c.provenance.reactions[0].dismissedAs = 'other'; }), false);
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { dismissedAs: 'drugs_or_medication' }); }), true);
+
+  const known = (o: object) => parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'known_person_relationship_not_stated', tie: null }, o);
+  });
+  assert.equal(known({}), true);
+  assert.equal(known({ name: 'Someone Known' }), false); // a private person never gets a canonical name
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'known_person_relationship_not_stated', tie: null });
+    c.encounters[0].vital = null;
+  }), false); // vital status is required
 });

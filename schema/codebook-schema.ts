@@ -352,7 +352,7 @@ export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
  *  so analysis can combine them as it likes. */
 export const JESUS_KEYWORDS_NARROW = ['jesus', 'christ'] as const;
 export const JESUS_KEYWORDS_BROAD = [
-  ...JESUS_KEYWORDS_NARROW, 'jesús', 'cristo', 'isa', 'yeshua', 'savior', 'saviour', 'messiah',
+  ...JESUS_KEYWORDS_NARROW, 'jesús', 'cristo', 'christos', 'isa', 'yeshua', 'savior', 'saviour', 'messiah',
 ] as const;
 export type JesusKeyword = (typeof JESUS_KEYWORDS_BROAD)[number];
 
@@ -531,7 +531,7 @@ export type DistressingContent = z.infer<typeof DistressingContent>;
 
 /** What the experiencer calls the experience or a place in it. None stated: an empty list. */
 export const ExperiencerLabel = obj({
-  label: z.enum(['hell_or_hellish', 'purgatory', 'void', 'other']),
+  label: z.enum(['heaven_or_paradise', 'hell_or_hellish', 'purgatory', 'void', 'other']),
   words: CopiedText,
   when: z.enum(['during', 'after', 'not_stated']),
   evidence: z.array(Evidence).min(1),
@@ -689,6 +689,8 @@ export type Certainty = z.infer<typeof Certainty>;
 export const BeingCategory = z.enum([
   // People. Vital status is an attribute, so living and deceased people share these.
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  /** Known in life, relationship not stated ("people I knew"): could be family or friends. */
+  'known_person_relationship_not_stated',
   // God and Christian figures. "God" stays God, with its words kept.
   'god', 'jesus', 'holy_spirit', 'mary', 'angel',
   /** Saints, Protestant luminaries, church fathers, biblical figures, other traditions' figures,
@@ -698,6 +700,7 @@ export const BeingCategory = z.enum([
   'living_religious_leader', // not known personally, any tradition
   // Unidentified (a being with no claim outside this group was never identified).
   'being_of_light', 'voice_or_presence', 'guide', 'council_or_robed_figures', 'orb', 'unrecognized_human',
+  'unidentified_being', // a being or entity none of the others describes
   'hostile_being', // the devil, demons, other hostile beings; a monstrous or demonic beast
   'animal', // an ordinary animal, hostile or not
   // Controls
@@ -709,14 +712,17 @@ export type BeingCategory = z.infer<typeof BeingCategory>;
 
 export const UNIDENTIFIED_CATEGORIES: readonly BeingCategory[] = [
   'being_of_light', 'voice_or_presence', 'guide', 'council_or_robed_figures', 'orb', 'unrecognized_human',
+  'unidentified_being',
 ];
 /** People known through ordinary life. They never get a canonical name, for privacy. */
 const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
-  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally', 'unrecognized_human',
+  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  'known_person_relationship_not_stated', 'unrecognized_human',
 ];
 /** Vital status is required for these. */
 const VITAL_CATEGORIES: readonly BeingCategory[] = [
-  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally', 'animal',
+  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  'known_person_relationship_not_stated', 'animal',
 ];
 
 /** The coder's suggestion only; the pre-registered table decides. Religious versus secular is
@@ -751,7 +757,7 @@ export const CanonicalName = z.string().min(1).max(80);
 
 export const FriendType = z.enum([
   'childhood_friend', 'school_friend_or_classmate', 'close_friend', 'coworker', 'military_comrade',
-  'neighbor', 'mentor_or_teacher', 'acquaintance', 'other',
+  'neighbor', 'mentor_or_teacher', 'acquaintance', 'unspecified', 'other',
 ]);
 
 export const ReligiousRole = z.enum([
@@ -905,15 +911,15 @@ export const GENERAL_VISUAL_FEATURES: readonly VisualFeature[] = [
 ];
 
 export const Color = z.enum([
-  'white', 'black_or_dark', 'gold', 'blue', 'red', 'purple', 'brown', 'grey', 'green', 'pale', 'tan_or_olive', 'blond', 'other',
+  'white', 'black_or_dark', 'gold', 'silver', 'blue', 'red', 'purple', 'brown', 'grey', 'green', 'pale', 'tan_or_olive', 'blond', 'other',
 ]);
 
-/** One per feature per encounter; every place it is mentioned goes in evidence. Expressions
+/** One per feature per encounter ("other" excepted); every place it is mentioned goes in evidence. Expressions
  *  ("smiling") belong to disposition; beings around a figure are encounters of their own. */
 export const VisualDetail = obj({
   feature: VisualFeature,
   words: CopiedText,
-  color: Color.nullable(), // only when stated
+  colors: z.array(Color), // only when stated, in the order described (eyes grey, then green); none: empty
   flowerKind: z.enum(['rose', 'lily', 'lotus', 'other', 'not_stated']).nullable(),
   evidence: z.array(Evidence).min(1),
 }).refine((d) => (d.feature === 'flowers') === (d.flowerKind !== null), {
@@ -928,22 +934,27 @@ export const EncounterAction = obj({
     'warns', 'gives_instructions_or_requests', 'attacks_or_torments', 'rescues_or_protects',
     'shows_knowledge_of_earthly_events_since_death', 'other',
   ]),
-  /** For sends_back (which includes discussing returning): the reason given. */
-  sendBackReason: z.enum([
+  /** For sends_back (which includes discussing returning): every reason given; none given: ['none_given']. */
+  sendBackReasons: z.array(z.enum([
     'not_your_time', 'unfinished_purpose', 'others_need_you', 'mistake', 'offered_a_choice', 'none_given',
-  ]).nullable(),
+  ])),
   /** For reveals_knowledge. */
   revelationKind: z.enum(['theological', 'cosmic', 'future']).nullable(),
   /** For gives_instructions_or_requests: what the being asked, one or more, from any being. */
   instructionKinds: z.array(z.enum([
     'pray', 'specific_devotion', 'join_return_to_or_leave_religion', 'how_to_live', 'pass_on_message',
-    'care_for_person', 'other',
+    'care_for_person',
+    'practical_action', // what to do now to survive or get to safety ("breathe", "go left")
+    'other',
   ])),
   instructionWords: CopiedText.nullable(),
   evidence: z.array(Evidence).min(1),
 })
-  .refine((a) => (a.action === 'sends_back') === (a.sendBackReason !== null), {
-    message: 'sendBackReason is given exactly for sends_back',
+  .refine((a) => (a.action === 'sends_back') === (a.sendBackReasons.length > 0), {
+    message: 'sendBackReasons are given exactly for sends_back',
+  })
+  .refine((a) => !a.sendBackReasons.includes('none_given') || a.sendBackReasons.length === 1, {
+    message: "'none_given' can't be combined with a reason",
   })
   .refine((a) => (a.action === 'gives_instructions_or_requests') === (a.instructionKinds.length > 0), {
     message: 'instructionKinds are given exactly for gives_instructions_or_requests',
@@ -958,7 +969,9 @@ export type EncounterAction = z.infer<typeof EncounterAction>;
 
 export const AnimalDetails = obj({
   roles: z.array(z.enum([
-    'own_pet', 'others_pet', 'working_or_farm', 'scenery', 'animal_form_guide', 'hostile_beast',
+    'own_pet', 'others_pet', 'working_or_farm', 'scenery', 'animal_form_guide',
+    'companion', // stays with or comforts the experiencer, not a pet or guide
+    'hostile_beast',
   ])).min(1),
   species: z.enum(['dog', 'cat', 'horse', 'bird', 'small_pet', 'reptile_or_amphibian', 'other']),
   words: CopiedText,
@@ -1066,8 +1079,8 @@ export const Encounter = obj({
   if (e.representation === 'iconographic' && !e.visualDetails.some((d) => !GENERAL_VISUAL_FEATURES.includes(d.feature))) {
     issue("'iconographic' needs a feature outside the general group (or 'other')", ['representation']);
   }
-  const features = e.visualDetails.map((d) => d.feature);
-  if (new Set(features).size !== features.length) issue('one visual detail per feature', ['visualDetails']);
+  const features = e.visualDetails.map((d) => d.feature).filter((f) => f !== 'other');
+  if (new Set(features).size !== features.length) issue('one visual detail per feature, except other', ['visualDetails']);
   if (e.places.includes('unclear') && e.places.length > 1) issue("'unclear' stands alone", ['places']);
 
   if (e.hostileIconography.length > 0 && !categories.includes('hostile_being')) {
@@ -1142,6 +1155,9 @@ export const Exposure = obj({
   episodeIds: EpisodeIds,
   medium: z.enum(['book', 'film_or_tv', 'article', 'talk_or_conference', 'another_persons_account', 'online', 'other']),
   title: CopiedText.nullable(), // if named: area 4's direct measure
+  /** An author, speaker, or presenter, if named. Public figures only; never a private person
+   *  (a friend who told their own experience stays null). */
+  person: CopiedText.nullable(),
   when: z.enum(['before_experience', 'between_experience_and_telling', 'not_stated']),
   /** The person says it changed how they understood or remembered the experience. */
   changedUnderstanding: z.boolean(),
@@ -1179,11 +1195,14 @@ export const PriorTelling = obj({
 
 export const Reaction = obj({
   episodeIds: EpisodeIds,
-  reaction: z.enum(['dismissed', 'ridiculed', 'believed_or_supported', 'kept_quiet_for_fear']),
-  dismissedAs: z.enum(['hallucination', 'dream', 'imagination', 'other']).nullable(),
+  reaction: z.enum(['dismissed', 'ridiculed', 'believed_or_supported', 'kept_quiet_for_fear', 'shock_or_disbelief', 'other']),
+  dismissedAs: z.enum(['hallucination', 'dream', 'imagination', 'drugs_or_medication', 'demonic', 'other']).nullable(),
+  /** The listener's words or explanation as reported; required when either value is "other". */
+  words: CopiedText.nullable(),
   who: z.enum(['clinician', 'family', 'friend', 'clergy', 'other', 'not_stated']),
   evidence: z.array(Evidence).min(1),
-}).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' });
+}).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' })
+  .refine((r) => (r.reaction !== 'other' && r.dismissedAs !== 'other') || r.words !== null, { message: 'words are required for other' });
 
 export const NaturalExplanation = obj({
   episodeIds: EpisodeIds,
