@@ -26,9 +26,18 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   summary, so agreement with NDERF's labels can be measured.
 - **No account text in this repository.** The LLM's quotes are converted to offsets and dropped;
   raw responses stay in the private data repository. Strings copied from accounts are capped
-  at four words, and a check before each commit confirms that no five-word sequence from any
-  narrative or free-text answer appears in committed files. NDERF's question wording and menu
-  labels are form text, not account text, and may be quoted.
+  at six words. The cap is a limit, not a target: copy the term, name, or title as written,
+  not the sentence around it. A check before each commit confirms that no five-word sequence
+  from any narrative or free-text answer appears in our prose and code (which never hold
+  copied text; examples are invented), and no seven-word sequence, one longer than the cap,
+  appears in data files, which catches a passage split across several copied strings. NDERF's
+  question wording and menu labels are form text, not account text, and may be quoted.
+- **The cap was raised from four words to six** (November 2026). Four-word sequences are
+  already mostly unique to one account (sixty-nine percent in the practice pages, against
+  ninety-five percent for six), and the account ID is published with the coded data, so the
+  cap was never what made the data hard to trace; what it guarantees is that we publish
+  labels, not passages. Exact wording stays recoverable privately from evidence positions.
+  Six words fits multi-word titles, chains of relatives, and church names that four cut off.
 - **Coded data is published here, including the sensitive flags** (suicide attempt, overdose,
   recreational drugs). It describes accounts that are already public, in our words, not theirs.
 
@@ -155,7 +164,7 @@ trial-coded once every cluster is settled.
   reasons was Jesus; a Theosophical master named together with the saint he is said to have
   been), and a single field would have to drop all but one. An empty list means the being was
   never identified.
-- **Each claim records** the words used (copied, at most four words), the referent we code
+- **Each claim records** the words used (copied, within the cap), the referent we code
   them as (vocabulary: next cluster), when, how, certainty, and evidence. Evidence already says
   whether the claim is in the narrative or in which questionnaire item, so "named only in the
   named-figures item" is computed, not coded.

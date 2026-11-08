@@ -156,9 +156,10 @@ test('rejects a cardiac arrest reported without a basis', () => {
   assert.equal(CodedRecord.safeParse(bad).success, false);
 });
 
-test('rejects copied text longer than four words', () => {
-  const bad = withChange(coded, (c) => { c.background.religionStatements[0].term = 'one two three four five'; });
-  assert.equal(CodedRecord.safeParse(bad).success, false);
+test('accepts copied text of six words and rejects seven', () => {
+  const term = (t: string) => withChange(coded, (c) => { c.background.religionStatements[0].term = t; });
+  assert.equal(CodedRecord.safeParse(term('one two three four five six')).success, true);
+  assert.equal(CodedRecord.safeParse(term('one two three four five six seven')).success, false);
 });
 
 test('rejects an episode id from another account, and a part pointing at a missing episode', () => {
