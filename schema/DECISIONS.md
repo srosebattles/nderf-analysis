@@ -246,12 +246,57 @@ the schema and trial-coded once every cluster is settled.
 - **Where an encounter is reported** (narrative only, questionnaire only and in which items, or
   both) is computed from its evidence, not coded.
 
+### Who is encountered: categories
+
+- **Every encounter gets at least one category, including unidentified beings.** Beings of
+  light, a voice or felt presence with no form, guides, councils or robed figures, orbs, and
+  unrecognized humans are identity claims in an "unidentified" group. A being of light later
+  named Jesus is one encounter with two claims. "Never identified" means no claim outside the
+  unidentified group. (This replaced a proposal to type unidentified beings only from their
+  descriptions, which would have dropped categories the requirements ask for.)
+- **The category list** is the one in [area3-requirements.md](area3-requirements.md), placed
+  as follows:
+  - Vital status and what the experiencer knew are attributes, not categories, so living and
+    deceased people share categories.
+  - Angels are their own category regardless of tradition (Michael is never filed as
+    Catholic). Biblical figures are a shared category.
+  - Clergy or religious the experiencer knew personally are a category under people, apart
+    from saints and luminaries.
+  - Living religious leaders not known personally are one category, regardless of tradition.
+  - Children never born (miscarried, stillborn, or aborted) and children not yet born are
+    family, by role.
+  - The experiencer's own double or higher self, appearing as a separate being, is a
+    category. One's own body never counts.
+  - An ordinary animal behaving with hostility is an animal (role: hostile beast); a monstrous
+    or demonic beast is a hostile being.
+  - Anything else is "other," with the words kept.
+- **Named figures get their subcategory from a pre-registered table, not from the model.** The
+  model gives each named figure a canonical name (our spelling, not copied text, so variant
+  spellings and titles of one figure group together). The table maps each name to a
+  subcategory (Catholic or Orthodox saint, Protestant saint or luminary, early church father,
+  biblical figure, a tradition's figures, non-religious historical figure) and to its
+  traditions, which can be several (Jesus is also Isa; Mary, Maryam; Moses, Musa). Whether a
+  figure is religious or secular is decided once per name: known mainly for faith
+  (theologian, martyr, missionary) or commemorated on a church calendar counts as religious.
+  A name not in the table gets the model's suggested subcategory, is flagged for review, and
+  is added. The table's traditions feed the cross-tradition analysis.
+- **The referent comes only from the text, never from the experiencer's background.** The term
+  is always recorded. Coding a Christian's "God" as Christ because they are Christian would put
+  prior religion into the encounter coding, and the cross-tradition comparison would partly
+  measure our own assumption. "God" stays God. When the text gives grounds that the figure is
+  Christ (the person equates them, the figure bears wounds, it is called the Son), that is a
+  second claim, Jesus, with how it was established.
+
 ## Open
 
-- Area 3: identity, what counts as an encounter, and the checkbox answers are settled (above).
-  Still to design: being categories and the words used for them, relatives' kinship
-  vocabulary, descriptions and setting, roles, every mention of Jesus, and a provenance field
-  for how the memory came to be told.
+- Area 3: identity, what counts as an encounter, the checkbox answers, and the categories are
+  settled (above). Still to design, in this order: people in detail (kinship roles, friend
+  types, vital status against what the experiencer knew, prior familiarity, closeness, time
+  since death and apparent age, living people in an otherworldly setting); representation and
+  place (including Mary's three levels, hostile iconography, and animals' role and species);
+  disposition, roles and actions, communication, response, and names invoked against hostile
+  beings; every mention of Jesus (including how "the Lord" alone is counted); and provenance
+  (how the memory came to be told, and disclaimers about the telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
