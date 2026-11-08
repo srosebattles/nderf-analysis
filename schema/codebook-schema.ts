@@ -565,8 +565,15 @@ export const Episode = obj({
   tone: z.enum(['pleasant', 'distressing', 'mixed', 'neutral_or_unclear']),
   distressingContent: z.array(DistressingContent),
   experiencerLabels: z.array(ExperiencerLabel),
+  /** The setting itself (land, water, plants, the light filling the place) reported literally
+   *  as alive, aware, or conscious, with nothing interacting with the experiencer. Anything that
+   *  communicates with them or acts toward them is an encounter (animate_object_or_landscape).
+   *  Similes ("as if the trees were breathing") don't count. */
+  surroundingsAlive: obj({ value: z.boolean(), words: CopiedText.nullable(), evidence: z.array(Evidence) }),
 }).refine((e) => e.tone !== 'pleasant' || e.distressingContent.length === 0, {
   message: 'a pleasant episode has no distressing content',
+}).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
+  message: 'surroundingsAlive has words and evidence exactly when true',
 });
 export type Episode = z.infer<typeof Episode>;
 
@@ -705,6 +712,9 @@ export const BeingCategory = z.enum([
   'animal', // an ordinary animal, hostile or not
   // Controls
   'extraterrestrial', 'folkloric_being', 'fictional_character', 'mechanical_being',
+  /** Something normally inanimate (sand, water, a tree) that communicates with the experiencer
+   *  or acts toward them, reported literally. Merely alive surroundings: the episode's flag. */
+  'animate_object_or_landscape',
   'self_double', // a double or higher self appearing as a separate being; one's own body never counts
   'other',
 ]);

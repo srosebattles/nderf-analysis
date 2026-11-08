@@ -260,9 +260,22 @@ below is in the schema (v4 draft); trial coding comes next.
   not. The same goes for a hostile phenomenon with no agent (hail of light striking from every
   side): distressing content (torment), not orbs, unless the text gives it intent (it chases,
   mocks, speaks) or calls it a being. "Orb" then means orbs presented as beings.
-- **Similes are not encounters.** "Music like a choir of angels" describes a sound; "I heard
-  angels singing" claims angels (heard). A checkbox saying "beings" on a page with only a
-  simile is a disagreement, computed like any other.
+- **Only literal reports are coded; similes are not encounters.** Figurative: "like," "as
+  if," "as though," "seemed to," or "felt like" with nothing more, and stock metaphors ("the
+  sea was calling me"). Literal: a plain statement that it happened, reported speech with
+  content, or a described exchange. A literal report with a qualifier ("I think the trees
+  were speaking") is a hedged claim. When it's truly unclear, nothing is coded, and the two
+  models' disagreement shows the case. So "music like a choir of angels" describes a sound,
+  while "I heard angels singing" claims angels (heard). A checkbox saying "beings" on a page
+  with only a simile is a disagreement, computed like any other.
+- **Something normally inanimate that communicates with the experiencer or acts toward
+  them,** reported literally (an invented example: a stream that speaks and asks them to
+  follow), is an encounter in its own category, among the controls. One passage can hold
+  both kinds of report: "the river spoke to me" is coded, "the river seemed to wash me
+  clean" is not (no "heals").
+- **Surroundings described as alive or aware,** with nothing interacting with the experiencer
+  ("everything there was alive"), are a yes-or-no flag on the episode, with the words and
+  evidence, under the same literal-report test. They're a known motif, but not encounters.
 - **People inside a scene the experiencer watches are not encounters:** a life review, a past
   life, a preview of the future. They're memories or visions, not beings met. Two exceptions:
   a figure in the scene who turns to the experiencer and interacts with them, and a being
@@ -327,6 +340,9 @@ below is in the schema (v4 draft); trial coding comes next.
     category. One's own body never counts.
   - An ordinary animal behaving with hostility is an animal (role: hostile beast); a monstrous
     or demonic beast is a hostile being.
+  - Something normally inanimate that communicates or acts (sand, water, a tree) is an
+    animate object or landscape, among the controls (extraterrestrials, folkloric beings,
+    fictional characters, mechanical beings).
   - Anything else is "other," with the words kept.
 - **Named figures get their subcategory from a pre-registered table, not from the model.** The
   model gives each named figure a canonical name (our spelling, not copied text, so variant

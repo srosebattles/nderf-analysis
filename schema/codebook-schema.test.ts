@@ -132,6 +132,7 @@ const coded: CodedRecordType = {
       tone: 'mixed',
       distressingContent: [{ type: 'void', evidence: [narrative(220, 260)] }],
       experiencerLabels: [],
+      surroundingsAlive: { value: false, words: null, evidence: [] },
     },
   ],
   nonExperiencerText: [],
@@ -688,5 +689,15 @@ test('doctrine: certainty without resemblance; the view before; new doctrines; p
       category: 'friend_or_acquaintance',
       tie: { relationship: null, friendTypes: ['patient_of_experiencer'], religiousRole: null, closeness: null },
     });
+  }), true);
+});
+
+test('animate surroundings: the flag needs words and evidence when true; things that interact are encounters', () => {
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: true, words: null, evidence: [] }; }), false);
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: false, words: 'the meadow was aware', evidence: [narrative(1, 9)] }; }), false);
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: true, words: 'the meadow was aware', evidence: [narrative(1, 9)] }; }), true);
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'animate_object_or_landscape', tie: null });
+    c.encounters[0].vital = null;
   }), true);
 });
