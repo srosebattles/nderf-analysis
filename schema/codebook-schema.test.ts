@@ -391,8 +391,8 @@ test('named figures need a canonical name and a suggested subcategory', () => {
   const figure = (name: string | null, sub: string | null) => (c: any) => {
     Object.assign(c.encounters[1].identity[1], { category: 'named_figure', name, suggestedSubcategory: sub });
   };
-  assert.equal(parses(figure('Francis of Assisi', 'catholic_or_orthodox_saint')), true);
-  assert.equal(parses(figure(null, 'catholic_or_orthodox_saint')), false);
+  assert.equal(parses(figure('Francis of Assisi', 'early_or_medieval_saint')), true);
+  assert.equal(parses(figure(null, 'early_or_medieval_saint')), false);
   assert.equal(parses(figure('Francis of Assisi', null)), false);
 });
 

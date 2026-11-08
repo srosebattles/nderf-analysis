@@ -311,9 +311,16 @@ after.
 - **Named figures get their subcategory from a pre-registered table, not from the model.** The
   model gives each named figure a canonical name (our spelling, not copied text, so variant
   spellings and titles of one figure group together). The table maps each name to a
-  subcategory (Catholic or Orthodox saint, Protestant saint or luminary, early church father,
-  biblical figure, a tradition's figures, non-religious historical figure) and to its
-  traditions, which can be several (Jesus is also Isa; Mary, Maryam; Moses, Musa). Whether a
+  subcategory (early or medieval saint, post-Reformation Catholic or Orthodox saint,
+  Protestant saint or luminary, biblical figure, a tradition's figures, non-religious
+  historical figure) and to its traditions, which can be several (Jesus is also Isa; Mary,
+  Maryam; Moses, Musa). Saints are grouped by when they lived, not by who canonized them: one
+  who died before the Reformation (about 1517), church fathers included, is an early or
+  medieval saint, shared heritage that Protestants claim as fully as Catholics (St. Francis).
+  Dating is by death, not canonization (Joan of Arc died in 1431 and was canonized in 1920).
+  Figures near the line, and pre-Reformation figures only Protestants claim (Hus, Wycliffe),
+  are decided once per name in the table. Which traditions claim a figure is the table's,
+  not the subcategory's. Whether a
   figure is religious or secular is decided once per name: known mainly for faith
   (theologian, martyr, missionary) or commemorated on a church calendar counts as religious.
   A name not in the table gets the model's suggested subcategory, is flagged for review, and

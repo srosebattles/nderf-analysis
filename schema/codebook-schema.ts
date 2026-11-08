@@ -649,9 +649,15 @@ const VITAL_CATEGORIES: readonly BeingCategory[] = [
 ];
 
 /** The coder's suggestion only; the pre-registered table decides. Religious versus secular is
- *  decided once per name: known mainly for faith, or on a church calendar, counts as religious. */
+ *  decided once per name: known mainly for faith, or on a church calendar, counts as religious.
+ *  Saints are grouped by when they lived (died before or after the Reformation, about 1517),
+ *  never by canonization date: St. Francis is shared heritage, not a Catholic saint. Which
+ *  traditions claim a figure (several, often) is the table's, not the subcategory's. */
 export const NamedFigureSubcategory = z.enum([
-  'catholic_or_orthodox_saint', 'protestant_saint_or_luminary', 'early_church_father', 'biblical_figure',
+  'early_or_medieval_saint', // died before the Reformation, church fathers included
+  'post_reformation_catholic_or_orthodox_saint',
+  'protestant_saint_or_luminary', // post-Reformation
+  'biblical_figure',
   'muhammad', 'shia_imam', 'buddha_or_bodhisattva', 'hindu_deity', 'yama_or_messengers', 'sikh_figure',
   'latter_day_saint_figure', 'bahai_figure', 'modern_guru_or_teacher', 'other_religious_figure',
   'non_religious_historical_figure',
