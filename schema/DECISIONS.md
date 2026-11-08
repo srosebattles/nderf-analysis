@@ -317,12 +317,36 @@ the schema and trial-coded once every cluster is settled.
   beings (robed figures, a council, or other), with the words kept. A specific relative never
   met, such as an ancestor, is still family.
 
+### People in detail: familiarity, closeness, age, and living people
+
+No questionnaire form asks about relatives, friends, or pets, and only one page in the archive
+has an item on the age of the deceased, so all of this comes from the text.
+
+- **Prior familiarity, for every encounter:** knew personally; knew of (from stories, photos,
+  pictures, or teaching); claims no prior knowledge ("never heard of," "knew nothing about"),
+  with the words kept; or not stated. Only from the text, never from the person's background:
+  a Christian meeting Jesus is "not stated" unless the text says how they knew of him.
+- **Closeness, for every relative and friend, only when stated:** whether they were a
+  formative presence (raised the experiencer or shared their childhood household), and
+  attachment language (closer than the role suggests, close, distant, or estranged or in
+  conflict), with the words kept. Not limited to step-relations and in-laws: a grandparent who
+  raised the experiencer is the same information. Estrangement is included because
+  reconciliation is likely a theme of its own.
+- **Time since death and apparent age, for deceased people and animals.** Time since death is
+  a number of years or a range, stated or computed from dates in the text (marked as which),
+  or else: shortly before (days or weeks), within a year, some years with no number, before
+  the experiencer was born, or not stated. Apparent age: as when they died, younger, older (a
+  child appearing grown), ageless, or not stated, with a stated age recorded when given.
+- **Living people met as part of the experience:** how the experiencer explains it (higher
+  self, bilocation, a dream element, the person was also near death or ill at the time, other,
+  or no explanation offered), with the words kept.
+
 ## Open
 
-- Area 3: identity, what counts as an encounter, the checkbox answers, and the categories are
-  settled (above), and so are relationships. Still to design, in this order: the rest of people
-  in detail (vital status against what the experiencer knew, prior familiarity, closeness,
-  time since death and apparent age, living people in an otherworldly setting); representation and
+- Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
+  relationships, and familiarity, closeness, age, and living people are settled (above).
+  Still to design, in this order: vital status against what the experiencer knew (labels for
+  children who died before birth or were not yet born pending); representation and
   place (including Mary's three levels, hostile iconography, and animals' role and species);
   disposition, roles and actions, communication, response, and names invoked against hostile
   beings; every mention of Jesus (including how "the Lord" alone is counted); and provenance
