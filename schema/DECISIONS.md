@@ -441,12 +441,41 @@ has an item on the age of the deceased, so all of this comes from the text.
   the experiencer knew it had died is vital status; whether it communicated comes from the
   communication fields, which apply to every being.
 
+### Doctrinal statements
+
+- **Doctrine is its own list, linked to encounters,** not nested inside them, so statements
+  with no being and the experiencer's later commentary are kept apart rather than lost. The
+  same proposition can appear twice: conveyed by a being during the experience, and again as
+  the experiencer's own view in a later answer. Each statement records:
+  - the doctrine, from a pre-registered list, or "other" with the words kept;
+  - the stance: affirms, denies, or reinterprets (neither a clean yes nor a clean no: "the
+    resurrection is spiritual, not bodily");
+  - the source: conveyed by a being during the experience (linked to that encounter), shown
+    during the experience (a scene, no being speaking), understood during the experience with
+    no being, the experiencer's own view afterward, or not stated;
+  - evidence.
+
+  "During" follows the strict rule for identity timing. Questionnaire items that begin "During
+  your experience, did you gain information about…" don't decide it: answers often drift into
+  present belief, so the text decides, and the evidence records the item for analysis.
+- **Starter list:** virgin birth of Jesus; resurrection of Jesus; a general resurrection at
+  the end of time (taught in classical forms of all three Abrahamic faiths, read non-literally
+  by Reform Judaism and the Bahá'í Faith, hence "reinterprets"); exclusivism (Christ, or one
+  faith, is the only way); religious pluralism (all religions lead to God or hold truth);
+  religion as human-made or unnecessary (not the same as pluralism); reincarnation or past
+  lives; universal salvation; divinity of Jesus; atonement; the self as divine. Hell and
+  judgment: to be split (pending). Grows during trial coding; frozen before the holdout.
+- **Encounters keep only content that belongs to the encounter:** Christ-specific content
+  (wounds or the cross, forgiveness of sins, worship, reference to the Father, judgment) and
+  revelation. Pluralist, exclusivist, and reincarnation claims live in the doctrine list.
+
 ## Open
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
   relationships, the rest of people in detail, representation and place, and Mary, hostile
-  beings, and animals are settled (above). Still to design, in this order: disposition, roles
-  and actions, communication, response, and names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
+  beings, and animals, and doctrinal statements are settled (above). Still to design, in this
+  order: how hell and judgment are split in the doctrine list; disposition, roles and actions,
+  communication, response, and names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
   is counted); and provenance (how the memory came to be told, and disclaimers about the
   telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
