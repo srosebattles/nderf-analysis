@@ -263,8 +263,8 @@ the schema and trial-coded once every cluster is settled.
   - Clergy or religious the experiencer knew personally are a category under people, apart
     from saints and luminaries.
   - Living religious leaders not known personally are one category, regardless of tradition.
-  - Children never born (miscarried, stillborn, or aborted) and children not yet born are
-    family, by role.
+  - Children who died before birth (miscarried, stillborn, or aborted) and children not yet
+    born are family, by role.
   - The experiencer's own double or higher self, appearing as a separate being, is a
     category. One's own body never counts.
   - An ordinary animal behaving with hostility is an animal (role: hostile beast); a monstrous
@@ -302,8 +302,9 @@ the schema and trial-coded once every cluster is settled.
     ex-partner);
   - the words as written.
 
-  Finer detail (a second cousin once removed) stays only in the words. Children never born or
-  not yet born are children or siblings by role; whether they were born is vital status.
+  Finer detail (a second cousin once removed) stays only in the words. Children who died
+  before birth or were not yet born are children or siblings by role; the rest is vital
+  status.
 - **Friends and acquaintances get one or more types:** childhood friend, school friend or
   classmate, close friend, coworker, military comrade, neighbor, mentor or teacher,
   acquaintance, or other, with the words kept.
@@ -316,6 +317,26 @@ the schema and trial-coded once every cluster is settled.
   called friends known forever though never seen before, or a "soul family," are unidentified
   beings (robed figures, a council, or other), with the words kept. A specific relative never
   met, such as an ancestor, is still family.
+
+### People in detail: vital status and what the experiencer knew
+
+- **Vital status,** for people and animals, at the time of the experience, as the experiencer
+  reports it (including what they learned afterward): alive; dead; died before birth
+  (miscarriage, stillbirth, or abortion, which one if stated); in the womb at the time; not
+  yet conceived; not yet born, timing unclear; or not stated. "Died before birth" rather than
+  "never born," and "not yet conceived" rather than a label such as "pre-existing soul":
+  vital status records a timing the text reports, not a belief about what the being is, and a
+  child already in the womb is kept apart from one conceived later. The experiencer's own
+  framing (a soul waiting to come) stays in the words.
+- **What the experiencer knew at the time:** "knew" when the text says so, or when the death
+  plainly comes earlier in their own story; "didn't know" only when the text says so (they
+  learned afterward, or were surprised because they believed the person alive); otherwise "not
+  stated." Dead and not known to be dead is the Peak in Darien case. For it, how the death was
+  learned (told by family, news or an obituary, records or genealogy, or other) and when it
+  happened relative to the experience, as reported. A flag marks a person alive at the time
+  who, as reported, died soon after.
+- **Future children:** whether the text reports that the child was later born, and whether
+  anything foretold matched (a name, the sex).
 
 ### People in detail: familiarity, closeness, age, and living people
 
@@ -344,13 +365,12 @@ has an item on the age of the deceased, so all of this comes from the text.
 ## Open
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
-  relationships, and familiarity, closeness, age, and living people are settled (above).
-  Still to design, in this order: vital status against what the experiencer knew (labels for
-  children who died before birth or were not yet born pending); representation and
-  place (including Mary's three levels, hostile iconography, and animals' role and species);
-  disposition, roles and actions, communication, response, and names invoked against hostile
-  beings; every mention of Jesus (including how "the Lord" alone is counted); and provenance
-  (how the memory came to be told, and disclaimers about the telling).
+  relationships, and the rest of people in detail are settled (above). Still to design, in
+  this order: representation and place (including Mary's three levels, hostile iconography,
+  and animals' role and species); disposition, roles and actions, communication, response, and
+  names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
+  is counted); and provenance (how the memory came to be told, and disclaimers about the
+  telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
