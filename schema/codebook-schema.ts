@@ -1160,7 +1160,13 @@ export const placeOf = (s: SourceRef) =>
  *  Jesus unless the text indicates otherwise. "Lord" and "Messiah" alone, and a lowercase
  *  "savior," are ambiguous unless the text ties them to Jesus. Derived words (Christian) don't
  *  count. Only the experiencer's text, never question wording. One entry per kind, time, and
- *  place (the narrative, or one questionnaire item), with every passage there as evidence. */
+ *  place (the narrative, or one questionnaire item), with every passage there as evidence.
+ *
+ *  Context, not the word, decides. Jesús and Salvador are common given names, Isa is a common
+ *  Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El Salvador
+ *  is a country: used for a person or a place, the word is no mention, and the person is coded
+ *  as who they are (an uncle named Jesús is family). Yet "Jesús" in untranslated Spanish, or
+ *  "Isa" in a Muslim's account, can mean Jesus himself. When context can't tell: 'ambiguous'. */
 export const JesusMention = obj({
   words: CopiedText,
   refersTo: z.enum(['jesus', 'ambiguous']),

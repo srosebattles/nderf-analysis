@@ -595,6 +595,13 @@ has an item on the age of the deceased, so all of this comes from the text.
   kept, so analysis can test the rule. Derived words (Christian, Christmas) don't count. In
   encounters, "the Lord" alone stays God with its words kept, and it also appears here as an
   ambiguous mention.
+- **Context, not the word, decides.** Jesús and Salvador are common given names, Isa is a
+  common Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El
+  Salvador is a country. Used for a person or a place, the word is not a mention, and the
+  person is coded as who they are: an uncle named Jesús is family, never Jesus. Yet "Jesús" in
+  Spanish a translator left untranslated, or "Isa" in a Muslim's account, can mean Jesus
+  himself. When context can't tell, the mention is ambiguous. No practice page has such a
+  name, so the coding prompt needs an example.
 - **Nested definitions, computed at analysis and pre-registered,** loosest to strictest: any
   affirmative mention (not idioms or church names), with and without the ambiguous titles; a
   mention about the experience itself, in a qualifying episode; an encounter with a Jesus
@@ -622,6 +629,9 @@ and trial coding should check them.
 - Inferring a condition from strange content, a medication, or someone else calling the
   experience a hallucination.
 - Counting question wording ("for example: Jesus, Muhammad, Buddha") as a mention of Jesus.
+- Taking a person named Jesús, Isa, or Salvador (or a surname such as Christ) for Jesus, in a
+  mention or an encounter; or, the other way, dismissing "Jesús" in untranslated Spanish, or
+  "Isa" in a Muslim's account, as only a name.
 
 ### Choices made while writing the schema (for review)
 
