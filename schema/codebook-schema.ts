@@ -1,5 +1,6 @@
-// Output schema for coding NDERF accounts. v1 DRAFT: areas 1 (eligibility and provenance) and
-// 2 (religious background) are designed; area 3 (encounters) is not started.
+// Output schema for coding NDERF accounts. v2 DRAFT: areas 1 (eligibility and provenance) and
+// 2 (religious background) are designed, and area 1 was revised after trial-coding the first
+// fifty practice accounts; area 3 (encounters) is not started.
 // Written before any account text was read. Decisions and open questions: DECISIONS.md.
 // "PROVISIONAL" marks a choice not yet made; those are listed under "Open" in DECISIONS.md.
 //
@@ -14,7 +15,7 @@
 // narrative or free-text answer appears in committed files. (NDERF's question wording and menu
 // labels are form text, not account text.)
 
-export const SCHEMA_VERSION = 'v1-draft';
+export const SCHEMA_VERSION = 'v2-draft';
 export const MAX_COPIED_WORDS = 4;
 
 // ─── Shared building blocks ─────────────────────────────────────────────────────────────
@@ -54,7 +55,11 @@ export interface ParsedDate {
   month: number | null;
   day: number | null;
   precision: 'day' | 'month' | 'season' | 'year' | 'approximate' | 'none';
-  flags: Array<'two_digit_year' | 'day_month_ambiguous' | 'after_posting' | 'unparsed' | 'raw_omitted'>;
+  /** 'multiple_dates' usually means several episodes on one page. */
+  flags: Array<
+    | 'two_digit_year' | 'day_month_ambiguous' | 'after_posting' | 'unparsed' | 'raw_omitted'
+    | 'range' | 'multiple_dates' | 'no_year' | 'conflicts_with_text'
+  >;
 }
 
 export interface Lengths {
@@ -130,12 +135,19 @@ export interface Posting {
 export interface DerivedPart {
   index: number;
   questionnaire: { form: QuestionnaireForm; itemsAsked: ItemsAsked };
-  /** The experiencer's own checkbox. 'other' covers cause answers like 'Accident'. */
-  lifeThreatCheckbox: Finding<'yes' | 'no' | 'uncertain' | 'other'>;
+  /** The experiencer's own answer, parsed by rule, including the sub-menu of causes and
+   *  severity most forms add. Sometimes the only place the cause appears. */
+  lifeThreat: Finding<LifeThreatAnswer>;
   backgroundDate: ParsedDate;
   gender: string | null; // Background field as written ('Female', 'Male')
   religionField: DerivedReligionFields;
   lengths: Lengths;
+}
+
+export interface LifeThreatAnswer {
+  answer: 'yes' | 'no' | 'uncertain' | null;
+  causes: string[]; // sub-menu labels as written: 'Accident', 'Drug or medication overdose', …
+  severity: 'clinical_death' | 'life_threatening_not_clinical_death' | 'not_life_threatening' | null;
 }
 
 /** Assigned from the items present on the page, never from dates: forms overlap in time
@@ -162,9 +174,15 @@ export interface CodedRecord {
   accountId: string;
   sourceSha256: string; // must match the derived record, or the join fails loudly
   run: CodingRun;
-  reporter: Reporter;
   parts: CodedPart[];
   episodes: Episode[];
+  /** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
+   *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
+  nonExperiencerText: Array<{
+    source: SourceRef;
+    span: [number, number];
+    kind: 'editor_note' | 'reader_comment' | 'transcription_credit' | 'boilerplate';
+  }>;
   textClaims: { countries: CountryClaim[]; language: LanguageClaim | null }; // source: 'self_report'
   background: Background;
   // encounters: Encounter[];        area 3
@@ -192,52 +210,63 @@ export interface CodedPart {
   episodeIds: string[];
 }
 
+/** Every experience of the experiencer's own on the page is an episode, including later OBEs,
+ *  dreams, and visions mentioned in passing; whether it counts is decided by rule at analysis
+ *  time (ResolvedEpisode). Other people's experiences described on the page are never episodes. */
 export interface Episode {
   episodeId: string; // `${accountId}#1`
-  /** PROVISIONAL: which episode counts when a page describes several. */
-  isIndexEpisode: boolean;
+  /** Per episode: one page can mix firsthand experiences with a relative's, told secondhand. */
+  reporter: Reporter;
   /** On multi-episode pages, which episode the questionnaire answers describe. */
   questionnaireRefersTo: 'this_episode' | 'several_episodes' | 'unclear';
+  /** The same experience repeated with the same trigger (e.g. at every therapy session). */
+  recurrent: boolean;
   /** Only when the text dates this episode and Background can't (no date, or several episodes). */
   textDate: Finding<ParsedDate>;
-  /** Twelve or younger at the experience; teens are 'no'. Religion is coded the same way at
-   *  every age. Without a number: "little", elementary school or younger, or a plain "as a
-   *  child" -> 'yes'; teenager or high school -> 'no'; middle school or junior high -> 'unclear'. */
-  child: 'yes' | 'no' | 'unclear';
-  statedAge: Finding<number>; // only when a number is given
-  proximity: Proximity;
-  sharedDeath: boolean; // the crisis was someone else's
+  /** Twelve or younger at the experience; teens are 'no'. A number decides, stated or computed
+   *  from dates (a birth year, or "a month before I turned nine"). Without one: "little", elementary school
+   *  or younger, or a plain "as a child" -> 'yes'; teenager or high school -> 'no'; middle
+   *  school or junior high -> 'unclear'. Religion is coded the same way at every age. */
+  child: { value: 'yes' | 'no' | 'unclear'; evidence: Evidence[] };
+  /** A range when the person gives one: "six or seven" -> [6, 7]. */
+  age: Finding<{ years: number | [number, number]; basis: 'stated' | 'computed' }>;
+  circumstance: Circumstance;
   describesExperience: 'yes' | 'partial' | 'no';
   experienceToldIn: { narrative: boolean; questionnaire: boolean };
 }
 
-/** Exists only to decide whether the experience counts. Circumstance, never content:
- *  evidence must point at described bodily events (arrest, bleeding, injury, resuscitation,
- *  what clinicians said), not at the experience (a sense of dying, being sent back). A bare
- *  "I died" with no physical event described is 'unclear'. */
-export interface Proximity {
-  /** 'grey_zone' cases are mapped by the grey-zone rulings at analysis time, so a ruling can
-   *  change without recoding. */
-  crisisLevel: 'bodily_crisis' | 'near_miss' | 'no_threat' | 'grey_zone' | 'unclear';
-  greyZone: GreyZone | null; // set iff crisisLevel is 'grey_zone'
-  nonCrisisKind: NonCrisisKind | null; // set iff crisisLevel is 'no_threat'
-  timing: 'during_crisis' | 'after_crisis' | 'unrelated' | 'unclear';
-  overdose: 'accidental' | 'intentional' | 'unclear' | null;
+/** Exists to rule out experiences produced by something other than a near-death situation.
+ *  How close the person came to death is a covariate, not a gate. Classifies the reported
+ *  event, not its credibility: a complication the experiencer reports counts as reported. */
+export interface Circumstance {
+  /** What was happening to the experiencer's own body or safety. A fear-death experience
+   *  (a threat with no illness or injury) is 'threat_without_injury' and counts. */
+  context: 'illness_or_injury' | 'threat_without_injury' | 'someone_elses_death' | 'none' | 'unclear';
+  /** Something other than a near-death situation that produced the experience. A known
+   *  inducer moves the episode to the comparison group. An overdose is not an inducer: it is
+   *  an illness_or_injury context with the overdose flag. */
+  inducer: 'none' | 'recreational_drugs' | 'meditation_or_practice' | 'sleep_or_dream'
+         | 'anesthesia_without_complication' | 'unclear';
+  // Flags. None of them excludes.
+  overdose: 'accidental' | 'intentional' | 'unclear' | null; // alcohol counts as a drug
   suicideAttempt: boolean;
-  medicalDrugsDuringCrisis: boolean;
+  /** A psychoactive medication given as the experience began, during a real illness or
+   *  injury (e.g. ketamine for a procedure). */
+  psychoactiveMedicationAtOnset: boolean;
+  /** Covariate; 'unclear' is a fine answer. Evidence for 'bodily_crisis' must point at
+   *  described bodily events (arrest, bleeding, injury, resuscitation, what clinicians said),
+   *  not at the experience (a sense of dying, being sent back). A bare "I died" with no
+   *  physical event described is 'unclear'. 'minor': e.g. fainting, a knock with brief
+   *  unconsciousness, a near-drowning with self-rescue. */
+  closeness: 'bodily_crisis' | 'minor' | 'threat_only' | 'unclear';
   /** For a strictest-definition sensitivity analysis. */
-  cardiacArrestReported: boolean;
+  cardiacArrest: {
+    reported: boolean;
+    basis: 'clinician_or_witness' | 'checkbox' | 'self_report' | 'hedged' | 'medically_induced' | null;
+  };
+  timing: 'during' | 'after' | 'unrelated' | 'unclear';
   evidence: Evidence[];
 }
-
-/** PROVISIONAL: rulings pending. */
-export type GreyZone =
-  | 'syncope' | 'seizure' | 'high_fever' | 'serious_illness_no_acute_event'
-  | 'coma_unstated_cause' | 'childbirth_uncomplicated';
-
-export type NonCrisisKind =
-  | 'sleep_or_dream' | 'meditation_or_prayer' | 'recreational_drugs' | 'routine_anesthesia'
-  | 'spontaneous' | 'other';
 
 // ─── Area 2: religious background ───────────────────────────────────────────────────────
 
@@ -248,19 +277,23 @@ export interface Background {
 }
 
 /** One explicit statement about the experiencer's own religion. Statements about other
- *  people ("my grandmother was Catholic") are not coded; "we were Lutheran" is. Never
- *  inferred from what was seen, country, heritage, vocabulary ("Allah"), or practices
- *  ("Mass", "the rosary"). Attending a named church counts. */
+ *  individuals ("my grandmother was Catholic") are not coded. Statements about the household
+ *  the person was raised in are upbringing: "we were Lutheran", "my family practiced
+ *  Catholicism". Never inferred from what was seen, country, heritage, vocabulary ("Allah"),
+ *  or practices ("Mass", "the rosary", speaking in tongues, "spirit-filled"). Attending a
+ *  named church or group counts. */
 export interface ReligionStatement {
-  traditions: Tradition[]; // several for "several faiths" or dual belonging
+  traditions: Tradition[]; // several for "several faiths", dual belonging, or a group attended alongside
   kind: 'identification' | 'upbringing' | 'attendance' | 'left';
   when: 'childhood' | 'before_experience' | 'at_experience' | 'after_experience' | 'now' | 'unspecified';
   practice: 'devout' | 'nominal' | 'lapsed' | 'non_practicing' | null; // doesn't change affiliation
   term: string; // as written, capped at MAX_COPIED_WORDS: 'Pentecostal church'
   source: 'religion_field_text' | 'narrative' | 'other_item';
+  /** 'explaining_experience' marks a statement offered to explain something in the experience,
+   *  wherever it appears; the sensitivity analysis drops these from backfill. Which
+   *  questionnaire item a statement sits in doesn't matter: the "consistent with your earthly
+   *  beliefs" item is where people most naturally describe what they believed before. */
   context: 'background' | 'explaining_experience' | 'other';
-  /** Set by rule: the statement sits inside an encounter-related questionnaire item. */
-  encounterAdjacentItem: boolean;
   evidence: Evidence[];
 }
 
@@ -270,13 +303,22 @@ export type Tradition =
   | { family: 'catholic'; rite: 'latin' | 'eastern' | null }
   | { family: 'orthodox'; branch: 'eastern' | 'oriental' | null }
   | { family: 'protestant'; protestantFamily: ProtestantFamily; body: string | null } // 'LCMS', 'PCA'; never guessed
-  | { family: 'christian_unspecified' } // bare "Christian", or menu "Other Christian" with no text
+  /** Bare "Christian"; menu "Other Christian" with no text about the same time; self-labels
+   *  with no church named ("born again, spirit-filled", term kept). A bare "nondenominational"
+   *  is protestant / nondenominational instead. */
+  | { family: 'christian_unspecified' }
   | { family: 'latter_day_saints' }
   | { family: 'jehovahs_witnesses' }
   | { family: 'other_nontrinitarian'; group: string | null } // one bucket: Christian Science, Oneness Pentecostal, …
   | { family: 'jewish'; movement: string | null }
   | { family: 'muslim'; branch: 'sunni' | 'shia' | 'other' | null; detail: string | null }
+  /** A movement that grows out of one tradition goes under it, with the movement as detail
+   *  (a Sai Baba devotee -> hindu, 'Sai Baba'). Syncretic esoteric movements (Theosophy,
+   *  Edgar Cayce, the Urantia Book) -> new_age, with detail. */
   | { family: OtherTraditionFamily; detail: string | null }
+  /** Pluralist answers that name no tradition (e.g. that every faith holds part of the
+   *  truth). When traditions are named, each is coded instead. */
+  | { family: 'several_unspecified' }
   | { family: 'unaffiliated'; kind: 'atheist' | 'agnostic' | 'nothing_religious' | 'nothing_secular' | null };
   // "spiritual but not religious" -> unaffiliated / nothing_religious
 
@@ -305,7 +347,9 @@ export interface DerivedReligionFields {
 export type ReligionFieldValue =
   | { format: 'orientation'; orientation: 'liberal' | 'moderate' | 'conservative_fundamentalist'; hasFreeText: boolean }
   | { format: 'menu'; option: NderfReligionOption; tradition: Tradition | null; hasFreeText: boolean };
-  // tradition is null for do_not_know, no_comment, select, other_or_several, unrecognized
+  // tradition is null for do_not_know, no_comment, select, other_or_several, unrecognized;
+  // for other_or_several the free text decides (named traditions, several_unspecified, or
+  // spiritual-but-not-religious -> nothing_religious)
 
 /** NDERF's menu, named after NDERF's labels; mapped to our Tradition by rule
  *  (christian_mormon -> latter_day_saints, christian_jehovahs_witness -> jehovahs_witnesses). */
@@ -334,10 +378,18 @@ export interface ResolvedAccount {
   accountId: string;
   ruleVersion: string;
   /** PROVISIONAL precedence: origin > unspecified > residence > experience_location >
-   *  presumed_us (no country from any source) > unknown. */
+   *  presumed_us (no country from any source) > unknown. Within a role, the experiencer's own
+   *  statement > NDERF tag > search-app quick facts > NDERF's AI-inferred country. */
   country: { code: CountryCode | null; basis: CountryRole | 'presumed_us' | 'unknown' };
   countryGroups: string[]; // ids of CountryGroup definitions it falls in
   language: { original: LanguageCode; basis: 'stated' | 'presumed_english'; translated: boolean | null };
+  /** Person level: a being counts if it appears in ANY qualifying episode. Experiences that
+   *  don't qualify are recorded but never counted. */
+  qualifyingEpisodeIds: string[];
+  /** Prior religion is resolved as of this episode. */
+  firstQualifyingEpisodeId: string | null;
+  /** Flagged for a sensitivity analysis that drops these pages. */
+  multipleQualifyingEpisodes: boolean;
 }
 
 /** Defined in the pre-registration, e.g. a Marian-devotional-culture group. */
@@ -348,12 +400,18 @@ export interface CountryGroup {
   rationale: string;
 }
 
-/** Prior: menu if informative > explicit statement about before or at the experience
- *  (including the religion field's free text) > upbringing. Upbringing counts as the person's
- *  religion unless the menu or a statement places a different affiliation, or none, at the
- *  time of the experience. Lapsed or nominal doesn't override. "Left the church" with nothing
- *  else resolves to unknown, not unaffiliated.
- *  Now: menu > 'now' statements. */
+/** Prior, as of the first qualifying episode: menu if informative > explicit statement about
+ *  before or at that experience (including the religion field's free text) > upbringing.
+ *  - Upbringing counts as the person's religion unless the menu or a statement places a
+ *    different affiliation, or none, at the time of the experience. Lapsed or nominal doesn't
+ *    override. "Left the church" with nothing else resolves to unknown, not unaffiliated.
+ *  - "Do not know", "No comment", and an untouched "Select" are not informative: statements
+ *    and upbringing fill in (basis says so). Status do_not_know / no_comment only when nothing does.
+ *  - "Other Christian" is informative (christian_unspecified) and outranks upbringing; free
+ *    text about the same time can make it more specific.
+ *  - An affiliation or attendance stated for the same time as the menu answer is added to it,
+ *    not a conflict (Catholic + attending Edgar Cayce meetings).
+ *  Now: menu > 'now' statements, same rules. */
 export interface ResolvedReligion {
   accountId: string;
   ruleVersion: string;
@@ -373,17 +431,22 @@ export interface ResolvedAffiliation {
   usesEncounterPromptedStatement: boolean;
 }
 
+/** primary: firsthand, context illness_or_injury or threat_without_injury, inducer 'none',
+ *  not unrelated in time, and an experience described. comparison: the same, but with a known
+ *  inducer. excluded: everything else (no threat, someone else's death, not firsthand, …). */
 export interface ResolvedEpisode {
   episodeId: string;
   ruleVersion: string;
   gapYears: number | null; // first posting year minus experience year
   /** PROVISIONAL: firsthand = experiencer or experiencer_assisted. */
   firsthand: boolean;
-  /** PROVISIONAL: near-miss episodes as their own set rather than excluded. */
-  analysisSet: 'primary' | 'near_miss' | 'comparison_non_crisis' | 'excluded';
+  analysisSet: 'primary' | 'comparison' | 'excluded';
   exclusionReasons: Array<
-    | 'not_firsthand' | 'grey_zone_ruled_out' | 'crisis_unrelated_in_time' | 'shared_death'
-    | 'no_experience_described' | 'not_index_episode' | 'unclear'
+    | 'not_firsthand' | 'no_threat' | 'someone_elses_death' | 'unrelated_in_time'
+    | 'no_experience_described' | 'unclear'
   >;
-  flags: Array<'overdose' | 'suicide_attempt' | 'multi_episode_page' | 'translated'>;
+  /** Flags never exclude; sensitivity analyses drop flagged episodes. */
+  flags: Array<
+    | 'overdose' | 'suicide_attempt' | 'psychoactive_medication_at_onset' | 'recurrent' | 'translated'
+  >;
 }

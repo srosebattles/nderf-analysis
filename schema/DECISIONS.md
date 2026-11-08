@@ -50,12 +50,29 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   gating on it (or on NDERF's labels, if they depend on it) would favor accounts with
   encounters. Neither is used as a filter. The other Greyson items also co-occur with
   encounters, so a reduced scale doesn't fix this either.
-- **Proximity to death** classifies the reported event: bodily crisis, near-miss with no
-  bodily crisis, no threat, grey zone, or unclear. Evidence must be a described bodily event,
-  not experiential content. A bare "I died" with no physical event described is unclear.
-  Cardiac arrest is flagged for a strictest-definition sensitivity analysis. Overdoses and
-  suicide attempts are kept and flagged; recreational drug experiences, dreams, meditation,
-  and routine anesthesia form the comparison group.
+- **What counts is decided by circumstance, and the goal is ruling out induced experiences.**
+  (Revised after trial-coding the first fifty practice accounts.) An experience counts if it
+  happened during an illness, injury, or medical emergency, or under a threat to life with no
+  injury (fear-death experiences count), and nothing else produced it. Recreational drugs,
+  meditation or spiritual practice, sleep or dreams, and anesthesia with no reported
+  complication are inducers: those experiences form the comparison group. Experiences with
+  no threat and no inducer (premonitions, someone else's death) are excluded. We classify the
+  reported event, not its credibility: a complication the experiencer reports counts.
+- **Flagged, not excluded:** overdoses (alcohol counts as a drug), suicide attempts, and a
+  psychoactive medication given as the experience began during a real illness or injury
+  (e.g. ketamine for a procedure). Sensitivity analyses drop flagged episodes.
+- **Closeness to death is a covariate, not a gate:** bodily crisis, minor (fainting, a knock
+  with brief unconsciousness, a near-drowning with self-rescue), threat only, or unclear.
+  Evidence for a bodily crisis must be a described bodily event, not experiential content;
+  a bare "I died" with no physical event described is unclear. Cardiac arrest is flagged,
+  with its basis (clinician or witness, checkbox, self-report, hedged, medically induced),
+  for a strictest-definition sensitivity analysis.
+- **Pages with several experiences:** every experience of the experiencer's own is recorded,
+  including later OBEs and dreams; other people's experiences described on the page are not.
+  Only qualifying experiences count. A being counts for the person if it appears in any
+  qualifying experience. Prior religion is resolved as of the first qualifying experience.
+  Pages with more than one qualifying experience are flagged and dropped in a sensitivity
+  analysis. A repeated identical experience is one episode, flagged recurrent.
 - **Child** means twelve or younger at the experience; teens are not children for this
   purpose. A stated age is recorded when given.
 - **Gender** is copied from NDERF's structured field (no LLM needed).
@@ -74,38 +91,48 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   recorded with its tradition, kind (identification, upbringing, attendance, left), time,
   practice level, source, and context. Prior and current affiliation are resolved by rule.
 - **Explicit only.** Never inferred from what was seen, country, heritage, vocabulary
-  ("Allah"), or practices ("Mass," "the rosary"), which risks misclassifying liturgical
-  Protestants and eclectic private devotion. Attending a named church counts. Statements about
-  other people aren't coded; "we were Lutheran" is.
+  ("Allah"), or practices ("Mass," "the rosary," speaking in tongues), which risks
+  misclassifying liturgical Protestants and eclectic private devotion. Attending a named
+  church or group counts. Statements about other individuals aren't coded; statements about
+  the household the person was raised in count as upbringing ("we were Lutheran," "my family
+  practiced Catholicism").
 - **Religion is coded the same way at every age.** Children can have religious faith.
 - **Upbringing counts as the person's religion** unless the menu or a statement places a
   different affiliation, or none, at the time of the experience. Lapsed, nominal, or
   non-practicing doesn't override it. "Left the church" with nothing else resolves to unknown.
   Precedence: menu (if informative) > explicit statements about before or at the experience >
-  upbringing. Conflicts are flagged, not silently resolved.
+  upbringing, resolved as of the first qualifying experience. "Do not know," "No comment,"
+  and an untouched "Select" aren't informative, so statements and upbringing fill in (marked
+  as such). "Other Christian" is informative and outranks upbringing. An affiliation or
+  attendance stated for the same time as the menu answer is added to it (Catholic plus Edgar
+  Cayce meetings). Conflicts are flagged, not silently resolved.
 - **Categories.** Christian means Trinitarian: Catholic, Orthodox, Protestant, and
   Christian-unspecified. Latter-day Saints and Jehovah's Witnesses are separate categories;
   other non-Trinitarian groups share one. Protestants are coded by family (Lutheran, Baptist,
   Pentecostal, …) and by body only when named (LCMS, PCA); there is no evangelical/mainline
-  split, since denominations don't map cleanly onto it. "Spiritual but not religious" goes with
-  "nothing in particular (religious)."
+  split, since denominations don't map cleanly onto it. A bare "nondenominational" is the
+  nondenominational Protestant family; self-labels with no church named ("born again,
+  spirit-filled") are Christian-unspecified, with the wording kept. "Spiritual but not
+  religious" goes with "nothing in particular (religious)." Pluralist answers that name no
+  tradition ("truth in all traditions") are "several, unspecified"; named traditions are coded
+  individually. A movement that grows out of one tradition goes under it (a Sai Baba devotee
+  under Hindu); syncretic esoteric movements (Theosophy, Edgar Cayce, the Urantia Book) go
+  under New Age.
 - **Orientation is not affiliation.** Forms A–C's Liberal/Moderate/Conservative answer is kept
   as theological orientation. Form D's items on importance of religious life and belief in God
   before the experience are kept as their own variables.
-- **Statements prompted by the encounter** (inside encounter-related items, or offered to
-  explain the experience) are flagged, and a sensitivity analysis drops them from backfill.
-  This matters most for forms A–C, where text is the only source of affiliation.
+- **Statements prompted by the encounter** (offered to explain something in the experience,
+  wherever they appear) are flagged, and a sensitivity analysis drops them from backfill.
+  Flagging is by context, not by questionnaire item: the "consistent with your earthly
+  beliefs" item is where people most naturally describe what they believed before. This
+  matters most for forms A–C, where text is the only source of affiliation.
 
 ## Open
 
-- Which episode counts when a page describes several.
 - Whether "experiencer with help" (interviewed, transcribed, typed by someone else) counts as
   firsthand.
 - Precedence among country roles (currently origin > unspecified > residence > experience
   location > presumed US).
-- Grey-zone rulings: fainting, seizures, high fever, serious illness with no acute event, coma
-  of unstated cause, childbirth with no stated complication.
-- Whether near-miss episodes form their own analysis set.
 - Whether sensitive flags (suicide attempt, overdose, recreational drugs) are published here
   or kept private.
 - Whether zod becomes the source of truth for these types, so LLM output is validated at
