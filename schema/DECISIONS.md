@@ -362,15 +362,36 @@ has an item on the age of the deceased, so all of this comes from the text.
   self, bilocation, a dream element, the person was also near death or ill at the time, other,
   or no explanation offered), with the words kept.
 
+### Representation and place
+
+- **Representation level, for every encounter, the most specific that applies:** not
+  described (named or mentioned with no visual description, including voices and formless
+  presences; the ways it was perceived say whether it was seen); light or formless (a light,
+  glow, orb, mist, or energy with no figure); generic figure (no features specific to anyone:
+  robes, a beard, a hood, a body of light); personal likeness (a person or animal described as
+  looking like themselves); or iconographically specific (features tied to a particular
+  figure, tradition, or role: wounds, a crown of thorns, a halo, wings, many arms, an animal
+  head, a trident, a monastic habit, horns and a pitchfork). A bearded figure in a robe is
+  generic.
+- **Comparisons to images and media, for every encounter:** the kind (painting or picture,
+  statue or icon, film or TV, book or illustration, or other), and the specific work if named
+  (words kept) or "general" if not. This gives area 4 a direct measure of media influence.
+- **Where the being appeared, more than one place allowed:** earthly surroundings (by the body
+  or elsewhere on earth), transitional (a tunnel, darkness, a void), otherworldly, or unclear.
+  Transitional can be folded into otherworldly at analysis for a two-way split.
+- **Apparent sex, for every being:** female, male, neither or both, or not stated, from the
+  description or pronouns; never from a name, and never from the pronouns conventionally used
+  for God. Needed for Mary's first level (an unnamed radiant woman) and for unidentified beings.
+
 ## Open
 
 - Area 3: identity, what counts as an encounter, the checkbox answers, the categories,
-  relationships, and the rest of people in detail are settled (above). Still to design, in
-  this order: representation and place (including Mary's three levels, hostile iconography,
-  and animals' role and species); disposition, roles and actions, communication, response, and
-  names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
-  is counted); and provenance (how the memory came to be told, and disclaimers about the
-  telling).
+  relationships, the rest of people in detail, and most of representation and place are
+  settled (above). Still to design, in this order: visual details (pending); Mary's three
+  levels, hostile iconography, and animals' role and species; disposition, roles and actions,
+  communication, response, and names invoked against hostile beings; every mention of Jesus
+  (including how "the Lord" alone is counted); and provenance (how the memory came to be told,
+  and disclaimers about the telling).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
