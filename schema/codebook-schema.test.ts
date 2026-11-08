@@ -196,7 +196,7 @@ const coded: CodedRecordType = {
       maternalLanguage: null,
       representation: 'personal_likeness',
       visualDetails: [
-        { feature: 'flowers', words: 'holding white lilies', colors: ['white'], flowerKind: 'lily', evidence: [narrative(320, 340)] },
+        { feature: 'flowers', senses: ['seen'], words: 'holding white lilies', colors: ['white'], flowerKind: 'lily', evidence: [narrative(320, 340)] },
       ],
       imageComparisons: [],
       places: ['otherworldly'],
@@ -440,7 +440,7 @@ test('visual details agree with the representation level', () => {
   assert.equal(parses((c) => { c.encounters[0].representation = 'iconographic'; }), false); // flowers are general
   assert.equal(parses((c) => {
     c.encounters[0].representation = 'iconographic';
-    c.encounters[0].visualDetails.push({ feature: 'wounds', words: 'marks on his hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] });
+    c.encounters[0].visualDetails.push({ feature: 'wounds', senses: ['seen'], words: 'marks on his hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] });
   }), true);
   assert.equal(parses((c) => { c.encounters[0].visualDetails[0].flowerKind = null; }), false);
   assert.equal(parses((c) => { c.encounters[0].visualDetails.push(structuredClone(c.encounters[0].visualDetails[0])); }), false);
@@ -611,9 +611,14 @@ test("resolveEncounter: Mary's levels", () => {
   assert.deepEqual([named.marianLevel, named.maryClaimCertainty], ['two', 'hedged']);
   assert.equal(resolveEncounter(encounter(1, (e) => {
     mary(e);
-    e.visualDetails.push({ feature: 'rosary', words: 'holding a rosary', colors: [], flowerKind: null, evidence: [narrative(417, 433)] });
+    e.visualDetails.push({ feature: 'rosary', senses: ['seen'], words: 'holding a rosary', colors: [], flowerKind: null, evidence: [narrative(417, 433)] });
   })).marianLevel, 'three');
   assert.equal(resolveEncounter(encounter(0)).marianLevel, 'none');
+  // Level one needs her to be part of the experience and to interact with the experiencer.
+  const passerBy = resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.actions = []; e.communication = ['none']; }));
+  assert.equal(passerBy.marianLevel, 'none');
+  assert.equal(resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.presence = 'unclear'; })).marianLevel, 'none');
+  assert.equal(resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.actions = []; })).marianLevel, 'one'); // she communicates
 });
 
 test('resolveJesus: the ladder, rung by rung', () => {
@@ -659,7 +664,7 @@ test('practice-round additions: send-back reasons, repeated "other" details, rea
   assert.equal(sendBack(['offered_a_choice', 'others_need_you']), true);
   assert.equal(sendBack(['none_given', 'mistake']), false);
 
-  const other = (words: string) => ({ feature: 'other' as const, words, colors: [], flowerKind: null, evidence: [narrative(320, 340)] });
+  const other = (words: string) => ({ feature: 'other' as const, senses: ['seen' as const], words, colors: [], flowerKind: null, evidence: [narrative(320, 340)] });
   assert.equal(parses((c) => { c.encounters[0].visualDetails.push(other('a lantern'), other('a ribbon')); }), true);
   assert.equal(parses((c) => {
     const lilies = c.encounters[0].visualDetails[0];
@@ -721,4 +726,26 @@ test('mentions: one place is the narrative or the whole questionnaire; denials a
   }), false); // a second entry for the same kind, time, and place
   assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [qa(39, [0, 15])] }; }), true);
   assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [] }; }), false);
+});
+
+test('dispositions not stated, details felt in the dark, and invocations only beyond the physical setting', () => {
+  assert.equal(parses((c) => { c.encounters[1].disposition = ['not_stated']; }), true);
+  assert.equal(parses((c) => { c.encounters[1].disposition = ['not_stated', 'loving']; }), false);
+
+  const claws = (senses: ('seen' | 'felt' | 'heard')[]) => parses((c) => {
+    const e = c.encounters[1];
+    e.representation = 'not_described';
+    e.visualDetails = [{ feature: 'claws', senses, words: 'sharp claws', colors: [], flowerKind: null, evidence: [narrative(1, 9)] }];
+  });
+  assert.equal(claws(['felt']), true);
+  assert.equal(claws(['felt', 'seen']), false); // seen details need a representation
+  assert.equal(parses((c) => {
+    const e = c.encounters[1];
+    e.representation = 'iconographic';
+    e.visualDetails = [{ feature: 'wounds', senses: ['felt'], words: 'wounded hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] }];
+  }), false); // iconographic needs a seen feature
+
+  const attacker = (o: object) => parses((c) => { Object.assign(c.encounters[1], { presence: 'physically_present', disposition: ['hostile'] }, o); });
+  assert.equal(attacker({}), true);
+  assert.equal(attacker({ invocation: { invoked: 'no', names: [], effect: 'not_stated', evidence: [] } }), false);
 });

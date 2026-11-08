@@ -561,7 +561,8 @@ export const Episode = obj({
   psychiatricMedication: z.array(PsychiatricMedication), // empty: none stated
   describesExperience: z.enum(['yes', 'partial', 'no']),
   experienceToldIn: obj({ narrative: z.boolean(), questionnaire: z.boolean() }),
-  /** 'mixed': turned from one to the other. */
+  /** 'mixed': turned from one to the other, with a distressing phase described (a stretch of
+   *  the experience, not a moment's fear). Distress after returning to the body doesn't count. */
   tone: z.enum(['pleasant', 'distressing', 'mixed', 'neutral_or_unclear']),
   distressingContent: z.array(DistressingContent),
   experiencerLabels: z.array(ExperiencerLabel),
@@ -943,6 +944,8 @@ export const Color = z.enum([
  *  ("smiling") belong to disposition; beings around a figure are encounters of their own. */
 export const VisualDetail = obj({
   feature: VisualFeature,
+  /** How it was perceived; features felt or heard in the dark count too. */
+  senses: z.array(z.enum(['seen', 'felt', 'heard'])).min(1),
   words: CopiedText,
   colors: z.array(Color), // only when stated, in the order described (eyes grey, then green); none: empty
   flowerKind: z.enum(['rose', 'lily', 'lotus', 'other', 'not_stated']).nullable(),
@@ -1073,7 +1076,9 @@ export const Encounter = obj({
     'folkloric', 'scriptural', 'shadow_being', 'mocking_or_grotesque', 'amorphous_creature', 'unseen_presence',
   ])),
   animal: AnimalDetails.nullable(),
-  disposition: z.array(z.enum(['loving', 'neutral_or_instructive', 'hostile', 'ambiguous_or_unsettling'])).min(1),
+  /** Toward the experiencer. 'not_stated' (alone): none shown or stated (a bystander, a figure
+   *  who never notices them). */
+  disposition: z.array(z.enum(['loving', 'neutral_or_instructive', 'hostile', 'ambiguous_or_unsettling', 'not_stated'])).min(1),
   actions: z.array(EncounterAction),
   christSpecificContent: z.array(obj({
     kind: z.enum(['wounds_or_cross', 'forgiveness_of_sins', 'worship', 'reference_to_the_father', 'judgment']),
@@ -1108,11 +1113,13 @@ export const Encounter = obj({
     issue('livingPersonExplanation is given exactly for a living person met as part of the experience', ['livingPersonExplanation']);
   }
 
-  if (e.representation === 'not_described' && e.visualDetails.length > 0) {
-    issue("'not_described' can't have visual details", ['visualDetails']);
+  // Representation is a visual judgment: only seen details bear on it.
+  const seen = e.visualDetails.filter((d) => d.senses.includes('seen'));
+  if (e.representation === 'not_described' && seen.length > 0) {
+    issue("'not_described' can't have seen details", ['visualDetails']);
   }
-  if (e.representation === 'iconographic' && !e.visualDetails.some((d) => !GENERAL_VISUAL_FEATURES.includes(d.feature))) {
-    issue("'iconographic' needs a feature outside the general group (or 'other')", ['representation']);
+  if (e.representation === 'iconographic' && !seen.some((d) => !GENERAL_VISUAL_FEATURES.includes(d.feature))) {
+    issue("'iconographic' needs a seen feature outside the general group (or 'other')", ['representation']);
   }
   const features = e.visualDetails.map((d) => d.feature).filter((f) => f !== 'other');
   if (new Set(features).size !== features.length) issue('one visual detail per feature, except other', ['visualDetails']);
@@ -1122,9 +1129,11 @@ export const Encounter = obj({
     issue('hostile iconography is for hostile beings', ['hostileIconography']);
   }
   if (categories.includes('animal') !== (e.animal !== null)) issue('animal details are given exactly for animals', ['animal']);
-  if (e.disposition.includes('hostile') !== (e.invocation !== null)) {
-    issue('invocation is recorded exactly for hostile encounters', ['invocation']);
+  const invocable = e.disposition.includes('hostile') && e.presence !== 'physically_present';
+  if (invocable !== (e.invocation !== null)) {
+    issue('invocation is recorded exactly for hostile encounters not physically present', ['invocation']);
   }
+  if (e.disposition.includes('not_stated') && e.disposition.length > 1) issue("'not_stated' stands alone", ['disposition']);
 
   const c = e.communication;
   if ((c.includes('none') || c.includes('not_stated')) && c.length > 1) issue("'none' and 'not_stated' stand alone", ['communication']);
@@ -1554,11 +1563,12 @@ export const ResolvedEncounter = obj({
   /** From the encounter's evidence and its claims' evidence. */
   reportedIn: z.enum(['narrative_only', 'questionnaire_only', 'both']),
   questionnaireItems: z.array(obj({ part: Index, qaIndex: Index })),
-  /** Mary's level. One (broad): an unidentified female being. Two: a Mary claim. Three: a Mary
+  /** Mary's level. One (broad): an unidentified female being, part of the experience, who
+   *  interacts with the experiencer (an action, or some communication). Two: a Mary claim. Three: a Mary
    *  claim with confessional content (the list, or a rosary or scapular among the visual
    *  details). Which content is Catholic-specific is a further, table-based step. */
   marianLevel: z.enum(['none', 'one', 'two', 'three']),
-  /** Level one, narrow: also described in maternal terms. */
+  /** Level one, narrow: also with maternal language. */
   marianLevelOneNarrow: z.boolean(),
   /** The strongest certainty among Mary claims (null with none), so resemblance-only can be dropped. */
   maryClaimCertainty: Certainty.nullable(),

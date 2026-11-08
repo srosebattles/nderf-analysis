@@ -501,8 +501,10 @@ has an item on the age of the deceased, so all of this comes from the text.
   generic.
 - **Visual details: the words, plus a coded feature.** One entry per feature per encounter,
   with the words (up to six), the colors when stated (in the order described, so eyes that
-  turn from grey to green keep both), and evidence for every place it is
-  mentioned. Features come from a starter list grouped by the figures they point to (Christ,
+  turn from grey to green keep both), how it was perceived (seen, felt, or heard: claws felt
+  in the dark count), and evidence for every place it is mentioned. Representation is a
+  visual judgment, so only seen details bear on it: a being with only felt details is still
+  "not described. Features come from a starter list grouped by the figures they point to (Christ,
   angels, saints and clergy, South Asian traditions, hostile beings, general), plus "other"
   with the words kept. The list grows during trial coding and is frozen before the holdout.
   Two consistency rules: "not described" has no details, and "iconographically specific" needs
@@ -554,11 +556,14 @@ has an item on the age of the deceased, so all of this comes from the text.
   analysis-time table, never by the coder. Titles need this most: "Mother of God" is not
   Catholic-specific (the Orthodox Theotokos; the Formula of Concord, Solid Declaration VIII),
   while apparition titles (Guadalupe, Fatima, Lourdes) are. Level one is computed from
-  unidentified female beings, plus one coded flag for maternal language, with the words
+  unidentified female beings who are part of the experience and interact with the
+  experiencer (an action toward them, or some communication), so a passer-by in the scenery
+  doesn't count. Unrecognized humans stay in: "a woman in white who comforted me" is the
+  central case. Plus one coded flag for maternal language, with the words
   kept: the text describes her as motherly ("motherly," "like a mother"), or she addresses
   the experiencer as her child ("my son," "my child"). Tenderness alone (a caress) doesn't
-  count. The flag lets the pre-registration define level one broadly (any unidentified
-  female being) or narrowly (one with maternal language).
+  count. The flag lets the pre-registration define level one broadly (any such being) or
+  narrowly (one with maternal language).
 - **Hostile iconography types are coded directly for hostile beings,** more than one allowed:
   folkloric; scriptural (serpent, dragon, roaring lion, or a deceptive "angel of light," only
   when the text says a being of light deceived or turned hostile); shadow beings; mocking or
@@ -574,8 +579,9 @@ has an item on the age of the deceased, so all of this comes from the text.
 
 ### Disposition, actions, communication, and response
 
-- **Disposition, for every encounter, one or more:** loving, neutral or instructive, hostile,
-  or ambiguous and unsettling. More than one, because a being can change (stern, then loving).
+- **Disposition toward the experiencer, for every encounter, one or more:** loving, neutral or
+  instructive, hostile, ambiguous and unsettling, or not stated (alone: a bystander, a figure
+  who never notices them). More than one, because a being can change (stern, then loving).
 - **Actions, one or more, each with evidence:** welcomes or greets; comforts or shows
   affection; guides or escorts; blocks the way; sends back or discusses returning; conveys a
   purpose or mission; reviews or judges the experiencer's life (a book, a ledger, weighing);
@@ -602,7 +608,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   with the words. The encounter is coded as usual; non-dual accounts are likely to do this.
 - **The experiencer's response, one or more:** awe, fear, awareness of sin, worship, love or
   joy, peace, or arguing or resisting (pleading to stay is common).
-- **Names invoked against hostile beings:** whether the experiencer invoked a name or prayed;
+- **Names invoked against hostile beings,** for hostile encounters that are part of the
+  experience or unclear, never physically present people (a human attacker at the scene):
+  whether the experiencer invoked a name or prayed;
   which name (the words and the referent: Jesus, God, Mary, or other); and the effect
   (dispelled, no effect, or not stated). An invocation of Jesus also counts as a Jesus mention.
 - **No separate check against King's (2024) six themes for Jesus encounters.** The actions
@@ -660,7 +668,9 @@ has an item on the age of the deceased, so all of this comes from the text.
 ### Distressing content and what the experiencer calls it
 
 - **Each episode gets an overall tone:** pleasant, distressing, mixed (turned from one to the
-  other), or neutral or unclear.
+  other), or neutral or unclear. "Mixed" needs a distressing phase that's described, a
+  stretch of the experience; a moment's alarm (at seeing one's own body) inside a pleasant
+  experience stays pleasant. Distress after returning to the body doesn't count.
 - **Distressing content is described, never labeled "hell" by the coder,** using the three
   types of Greyson and Bush (1992), under neutral names, more than one allowed: frightening
   versions of the usual features (their "inverse" type: a tunnel or light experienced as
@@ -751,7 +761,8 @@ code and tested, as the other areas' resolved views are.
 - **Per encounter:** whether the being was never identified (no claim outside the
   unidentified group); where it was reported (narrative only, questionnaire only, or both, and
   which items), from the encounter's evidence and its claims'; and Mary's level: one (broad:
-  an unidentified female being; narrow: also described in maternal terms), two (a Mary
+  an unidentified female being, part of the experience, who interacts with the experiencer;
+  narrow: also with maternal language), two (a Mary
   claim), or three (a Mary claim with confessional content, from the list or a rosary or
   scapular among the visual details), with the strongest certainty among the Mary claims so
   resemblance-only can be dropped. Whether level-three content is Catholic-specific is a
