@@ -311,20 +311,25 @@ after.
 - **Named figures get their subcategory from a pre-registered table, not from the model.** The
   model gives each named figure a canonical name (our spelling, not copied text, so variant
   spellings and titles of one figure group together). The table maps each name to a
-  subcategory (early or medieval saint, post-Reformation Catholic or Orthodox saint,
+  subcategory (early or medieval saint, Orthodox saint, post-Reformation Catholic saint,
   Protestant saint or luminary, biblical figure, a tradition's figures, non-religious
   historical figure) and to its traditions, which can be several (Jesus is also Isa; Mary,
-  Maryam; Moses, Musa). Saints are grouped by when they lived, not by who canonized them: one
-  who died before the Reformation (about 1517), church fathers included, is an early or
-  medieval saint, shared heritage that Protestants claim as fully as Catholics (St. Francis).
-  Dating is by death, not canonization (Joan of Arc died in 1431 and was canonized in 1920).
-  Figures near the line, and pre-Reformation figures only Protestants claim (Hus, Wycliffe),
-  are decided once per name in the table. Which traditions claim a figure is the table's,
-  not the subcategory's. Whether a
-  figure is religious or secular is decided once per name: known mainly for faith
-  (theologian, martyr, missionary) or commemorated on a church calendar counts as religious.
-  A name not in the table gets the model's suggested subcategory, is flagged for review, and
-  is added. The table's traditions feed the cross-tradition analysis.
+  Maryam; Moses, Musa).
+- **Saints are grouped by when they lived and which split divides them, not by who canonized
+  them.** An early or medieval saint is shared heritage: anyone who died before the East-West
+  schism (1054), church fathers included, and Western saints who died between 1054 and the
+  Reformation (about 1517), such as St. Francis, whom Protestants claim as fully as Catholics.
+  Eastern saints who died after 1054 (Gregory Palamas, Seraphim of Sarov), or for the Oriental
+  Orthodox after Chalcedon (451), are Orthodox saints; Western saints after about 1517 (Padre
+  Pio) are post-Reformation Catholic saints; Protestant figures after about 1517 are Protestant
+  saints or luminaries. Dating is by death, not canonization (Joan of Arc died in 1431 and was
+  canonized in 1920). Figures near a line, and pre-Reformation figures only Protestants claim
+  (Hus, Wycliffe), are decided once per name in the table. Which traditions claim a figure is
+  the table's, not the subcategory's.
+- **Whether a figure is religious or secular is decided once per name:** known mainly for
+  faith (theologian, martyr, missionary) or commemorated on a church calendar counts as
+  religious. A name not in the table gets the model's suggested subcategory, is flagged for
+  review, and is added. The table's traditions feed the cross-tradition analysis.
 - **The referent comes only from the text, never from the experiencer's background.** The term
   is always recorded. Coding a Christian's "God" as Christ because they are Christian would put
   prior religion into the encounter coding, and the cross-tradition comparison would partly
@@ -598,6 +603,26 @@ has an item on the age of the deceased, so all of this comes from the text.
   during the experience; announced or recognized during, and asserted. Miller's own frame,
   his first 141 cases, can probably be identified from NDERF's running numbers in the index
   metadata, and is read only after the codebook is frozen.
+
+### For the coding prompt: mistakes an unguided model is likely to make
+
+Each of these has a rule above; the coding prompt must state them explicitly, with examples,
+and trial coding should check them.
+
+- Treating "saint" as Roman Catholic: filing St. Francis or Augustine as Catholic, or a
+  Protestant luminary (Bonhoeffer, Wilberforce) as a secular historical figure. Saints are
+  grouped by when they lived; the table decides.
+- Filing an archangel under a tradition (Michael as Catholic). Angels are their own category.
+- Inferring the referent from the experiencer's religion (a Christian's "God" coded as Jesus).
+  The referent comes only from the text.
+- Timing identity as "during" because the story is told in sequence ("then Jesus said"). Only
+  the act of identifying, told as part of the experience, makes it "during."
+- Taking "felt it was" for a hedge. It is how the person knew (knowing), not uncertainty.
+- Labeling distressing content "hell." The coder describes; only the experiencer's own label
+  is recorded as one.
+- Inferring a condition from strange content, a medication, or someone else calling the
+  experience a hallucination.
+- Counting question wording ("for example: Jesus, Muhammad, Buddha") as a mention of Jesus.
 
 ### Choices made while writing the schema (for review)
 

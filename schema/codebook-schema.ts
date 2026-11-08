@@ -650,13 +650,23 @@ const VITAL_CATEGORIES: readonly BeingCategory[] = [
 
 /** The coder's suggestion only; the pre-registered table decides. Religious versus secular is
  *  decided once per name: known mainly for faith, or on a church calendar, counts as religious.
- *  Saints are grouped by when they lived (died before or after the Reformation, about 1517),
- *  never by canonization date: St. Francis is shared heritage, not a Catholic saint. Which
- *  traditions claim a figure (several, often) is the table's, not the subcategory's. */
+ *
+ *  Saints are grouped by when they lived and which split divides them, never by who canonized
+ *  them or when. An unguided model is likely to get this wrong (treating "saint" as Roman
+ *  Catholic, filing St. Francis as Catholic), so the coding prompt must spell it out:
+ *  - early_or_medieval_saint: shared heritage. Any saint who died before the East-West schism
+ *    (1054), church fathers included, and Western saints who died between 1054 and the
+ *    Reformation (about 1517), such as St. Francis.
+ *  - orthodox_saint: Eastern saints who died after 1054 (Gregory Palamas, Seraphim of Sarov);
+ *    for the Oriental Orthodox, after Chalcedon (451).
+ *  - post_reformation_catholic_saint: Western saints who died after about 1517 (Padre Pio).
+ *  - protestant_saint_or_luminary: Protestant figures after about 1517 (Bonhoeffer, Wesley).
+ *  Dating is by death, not canonization (Joan of Arc died in 1431, canonized in 1920). Figures
+ *  near a line, and pre-Reformation figures only Protestants claim (Hus, Wycliffe), are decided
+ *  per name in the table. Which traditions claim a figure (often several) is the table's, not
+ *  the subcategory's. Angels are their own category, never saints (Michael isn't Catholic). */
 export const NamedFigureSubcategory = z.enum([
-  'early_or_medieval_saint', // died before the Reformation, church fathers included
-  'post_reformation_catholic_or_orthodox_saint',
-  'protestant_saint_or_luminary', // post-Reformation
+  'early_or_medieval_saint', 'orthodox_saint', 'post_reformation_catholic_saint', 'protestant_saint_or_luminary',
   'biblical_figure',
   'muhammad', 'shia_imam', 'buddha_or_bodhisattva', 'hindu_deity', 'yama_or_messengers', 'sikh_figure',
   'latter_day_saint_figure', 'bahai_figure', 'modern_guru_or_teacher', 'other_religious_figure',
