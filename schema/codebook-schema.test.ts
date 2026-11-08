@@ -6,6 +6,8 @@ import {
   ReligionFieldValue, countKeyword,
   type CodedRecord as CodedRecordType, type DerivedRecord as DerivedRecordType, type Evidence,
 } from './codebook-schema.ts';
+import { Encounter, ResolvedJesus as ResolvedJesusSchema } from './codebook-schema.ts';
+import { resolveEncounter, resolveJesus } from './resolve-area3.ts';
 
 const SHA = 'a'.repeat(64);
 const narrative = (start: number, end: number): Evidence => ({
@@ -88,7 +90,7 @@ const derived: DerivedRecordType = {
         memoryAccuracy: { status: 'not_asked' },
       },
       jesusKeywordHits: JESUS_KEYWORDS_BROAD.map((keyword) => ({
-        keyword, narrative: 0, answers: 0, questionWording: keyword === 'jesus' ? 1 : 0,
+        keyword, narrative: keyword === 'jesus' ? 1 : 0, answers: keyword === 'jesus' ? 1 : 0, questionWording: keyword === 'jesus' ? 1 : 0,
       })),
     },
   ],
@@ -202,8 +204,8 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'welcomes', sendBackReason: null, revelationKind: null, evidence: [narrative(341, 360)] },
-        { action: 'sends_back', sendBackReason: 'not_your_time', revelationKind: null, evidence: [narrative(361, 390)] },
+        { action: 'welcomes', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(341, 360)] },
+        { action: 'sends_back', sendBackReason: 'not_your_time', revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(361, 390)] },
       ],
       christSpecificContent: [],
       communication: ['spoken'],
@@ -243,8 +245,8 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'forgives', sendBackReason: null, revelationKind: null, evidence: [narrative(430, 450)] },
-        { action: 'reveals_knowledge', sendBackReason: null, revelationKind: 'theological', evidence: [narrative(450, 470)] },
+        { action: 'forgives', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(430, 450)] },
+        { action: 'reveals_knowledge', sendBackReason: null, revelationKind: 'theological', instructionKinds: [], instructionWords: null, evidence: [narrative(450, 470)] },
       ],
       christSpecificContent: [{ kind: 'forgiveness_of_sins', evidence: [narrative(430, 450)] }],
       communication: ['mind_to_mind'],
@@ -268,11 +270,11 @@ const coded: CodedRecordType = {
   jesusMentions: [
     {
       words: 'Jesus', refersTo: 'jesus', kind: 'encounter', encounterId: `${EP}/e2`, doctrineId: null,
-      when: 'after', polarity: 'affirmative', evidence: [qa(24, [9, 14])],
+      episodeId: EP, when: 'after', polarity: 'affirmative', evidence: [qa(24, [9, 14])],
     },
     {
       words: 'prayed to Jesus', refersTo: 'jesus', kind: 'prayer_or_invocation', encounterId: null, doctrineId: null,
-      when: 'before', polarity: 'affirmative', evidence: [narrative(120, 135)],
+      episodeId: null, when: 'before', polarity: 'affirmative', evidence: [narrative(120, 135)],
     },
   ],
   provenance: {
@@ -550,7 +552,7 @@ test('keyword hits list every broad keyword exactly once', () => {
 
 test('a name such as Jesús is recorded as a name, never as Jesus', () => {
   const name = { words: 'my uncle Jesús', kind: 'name_of_person_or_place', encounterId: null, doctrineId: null,
-    when: 'before', polarity: 'affirmative', evidence: [narrative(700, 714)] };
+    episodeId: null, when: 'before', polarity: 'affirmative', evidence: [narrative(700, 714)] };
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'not_jesus' }); }), true);
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'jesus' }); }), false);
   assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), false);
@@ -561,4 +563,86 @@ test("a relative's report uses the kinship parts, and only a relative's", () => 
   assert.equal(parses((c) => { c.episodes[0].reporter.role = 'relative'; }), false);
   assert.equal(parses((c) => { Object.assign(c.episodes[0].reporter, { role: 'relative', relationship: mother }); }), true);
   assert.equal(parses((c) => { c.episodes[0].reporter.relationship = mother; }), false); // the experiencer
+});
+
+test('instructions record what was asked, and only on gives_instructions_or_requests', () => {
+  const ask = { action: 'gives_instructions_or_requests', sendBackReason: null, revelationKind: null,
+    instructionKinds: ['pray', 'pass_on_message'], instructionWords: 'tell them to pray', evidence: [narrative(380, 399)] };
+  assert.equal(parses((c) => { c.encounters[0].actions.push(ask); }), true);
+  assert.equal(parses((c) => { c.encounters[0].actions.push({ ...ask, instructionKinds: [] }); }), false);
+  assert.equal(parses((c) => { c.encounters[0].actions[0].instructionKinds = ['pray']; }), false);
+});
+
+test('mentions made during an experience name their episode; Jesus claims need a linked mention', () => {
+  assert.equal(parses((c) => { c.jesusMentions[1].when = 'during'; }), false);
+  assert.equal(parses((c) => { Object.assign(c.jesusMentions[1], { when: 'during', episodeId: EP }); }), true);
+  assert.equal(parses((c) => { c.jesusMentions[0].episodeId = '1example_x_nde#2'; }), false);
+  assert.equal(parses((c) => { c.jesusMentions.shift(); }), false); // the Jesus claim in e2 loses its mention
+});
+
+// ─── Area 3 resolved views ──────────────────────────────────────────────────────────────
+
+const encounter = (i: number, change: (e: any) => void = () => {}) => Encounter.parse(withChange(coded.encounters[i], change));
+
+test('resolveEncounter: never identified, and where the encounter is reported', () => {
+  const grandmother = resolveEncounter(encounter(0));
+  assert.equal(grandmother.neverIdentified, false);
+  assert.equal(grandmother.reportedIn, 'narrative_only');
+  const light = resolveEncounter(encounter(1));
+  assert.equal(light.reportedIn, 'both'); // the Jesus claim is in an answer
+  assert.deepEqual(light.questionnaireItems, [{ part: 0, qaIndex: 24 }]);
+  assert.equal(resolveEncounter(encounter(1, (e) => { e.identity.pop(); })).neverIdentified, true);
+});
+
+test("resolveEncounter: Mary's levels", () => {
+  const unnamedWoman = (e: any) => { e.identity.pop(); e.apparentSex = 'female'; };
+  assert.equal(resolveEncounter(encounter(1, unnamedWoman)).marianLevel, 'one');
+  assert.equal(resolveEncounter(encounter(1, unnamedWoman)).marianLevelOneNarrow, false);
+  const motherly = resolveEncounter(encounter(1, (e) => {
+    unnamedWoman(e);
+    e.maternalLanguage = { words: 'like a mother', evidence: [narrative(417, 429)] };
+  }));
+  assert.equal(motherly.marianLevelOneNarrow, true);
+  const mary = (e: any) => Object.assign(e.identity[1], { category: 'mary', words: ['the Virgin Mary'] });
+  const named = resolveEncounter(encounter(1, mary));
+  assert.deepEqual([named.marianLevel, named.maryClaimCertainty], ['two', 'hedged']);
+  assert.equal(resolveEncounter(encounter(1, (e) => {
+    mary(e);
+    e.visualDetails.push({ feature: 'rosary', words: 'holding a rosary', color: null, flowerKind: null, evidence: [narrative(417, 433)] });
+  })).marianLevel, 'three');
+  assert.equal(resolveEncounter(encounter(0)).marianLevel, 'none');
+});
+
+test('resolveJesus: the ladder, rung by rung', () => {
+  const j = resolveJesus(derived, coded, [EP]);
+  assert.deepEqual(j.keywordWebsite, { narrow: true, broad: true });
+  assert.deepEqual(j.keywordOwnWords, { narrow: true, broad: true });
+  assert.equal(j.anyCodedEntry, true);
+  assert.deepEqual(j.mentionAboutExperience, { jesusOnly: true, withAmbiguous: true });
+  assert.equal(j.encounterClaim, true);
+  assert.equal(j.excludingResemblance, true); // hedged, not resemblance
+  assert.equal(j.claimInNarrative, false); // the claim is only in an answer
+  assert.equal(j.announcedOrRecognizedDuringAsserted, false);
+
+  const notQualifying = resolveJesus(derived, coded, []);
+  assert.equal(notQualifying.affirmativeMention.jesusOnly, true); // any mention, anywhere
+  assert.equal(notQualifying.mentionAboutExperience.jesusOnly, false);
+  assert.equal(notQualifying.encounterClaim, false);
+
+  const recognizedDuring = withChange(coded, (c) => {
+    Object.assign(c.encounters[1].identity[1], { when: 'during', how: ['recognized'], certainty: 'asserted', evidence: [narrative(417, 422)] });
+  }) as CodedRecordType;
+  assert.equal(resolveJesus(derived, recognizedDuring, [EP]).announcedOrRecognizedDuringAsserted, true);
+
+  const questionWordingOnly = withChange(derived, (d) => {
+    for (const h of d.parts[0].jesusKeywordHits) { h.narrative = 0; h.answers = 0; }
+  }) as DerivedRecordType;
+  const naive = resolveJesus(questionWordingOnly, coded, [EP]);
+  assert.deepEqual([naive.keywordWebsite.narrow, naive.keywordOwnWords.narrow], [true, false]);
+});
+
+test('the resolved Jesus ladder must be nested', () => {
+  const j = resolveJesus(derived, coded, [EP]);
+  assert.equal(ResolvedJesusSchema.safeParse({ ...j, identifiedDuring: true }).success, false); // not in the narrative
+  assert.equal(ResolvedJesusSchema.safeParse({ ...j, keywordWebsite: { narrow: true, broad: false } }).success, false);
 });

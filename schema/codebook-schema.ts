@@ -666,6 +666,7 @@ const has = <T>(list: readonly T[], value: T) => list.includes(value);
  *  only when it places it later; otherwise not stated, including for relatives and for names
  *  simply used in telling the story. */
 export const IdentityTiming = z.enum(['during', 'after', 'not_stated']);
+export type IdentityTiming = z.infer<typeof IdentityTiming>;
 
 /** How identity was established, only when the text gives it as the way the person knew
  *  (describing a beard isn't saying the being was known by it). */
@@ -683,6 +684,7 @@ export const IdentityBasis = z.enum([
 /** 'hedged' includes either-or lists and an "Uncertain" menu answer on the item whose comment
  *  gives the name; 'resemblance' is "looked like" or "reminded me of" with no claim that it was. */
 export const Certainty = z.enum(['asserted', 'hedged', 'resemblance']);
+export type Certainty = z.infer<typeof Certainty>;
 
 export const BeingCategory = z.enum([
   // People. Vital status is an attribute, so living and deceased people share these.
@@ -932,10 +934,22 @@ export const EncounterAction = obj({
   ]).nullable(),
   /** For reveals_knowledge. */
   revelationKind: z.enum(['theological', 'cosmic', 'future']).nullable(),
+  /** For gives_instructions_or_requests: what the being asked, one or more, from any being. */
+  instructionKinds: z.array(z.enum([
+    'pray', 'specific_devotion', 'join_return_to_or_leave_religion', 'how_to_live', 'pass_on_message',
+    'care_for_person', 'other',
+  ])),
+  instructionWords: CopiedText.nullable(),
   evidence: z.array(Evidence).min(1),
 })
   .refine((a) => (a.action === 'sends_back') === (a.sendBackReason !== null), {
     message: 'sendBackReason is given exactly for sends_back',
+  })
+  .refine((a) => (a.action === 'gives_instructions_or_requests') === (a.instructionKinds.length > 0), {
+    message: 'instructionKinds are given exactly for gives_instructions_or_requests',
+  })
+  .refine((a) => a.action === 'gives_instructions_or_requests' || a.instructionWords === null, {
+    message: 'instructionWords are for gives_instructions_or_requests only',
   })
   .refine((a) => (a.action === 'reveals_knowledge') === (a.revelationKind !== null), {
     message: 'revelationKind is given exactly for reveals_knowledge',
@@ -1217,6 +1231,9 @@ export const JesusMention = obj({
   ]),
   encounterId: z.string().nullable(), // for 'encounter' and 'talk_with_another_being'
   doctrineId: z.string().nullable(), // for 'doctrinal_statement'
+  /** The experience a mention made during it belongs to (required for 'during'). A linked
+   *  encounter or doctrinal statement must be in the same episode. */
+  episodeId: z.string().nullable(),
   when: z.enum(['before', 'during', 'after', 'not_stated']),
   polarity: z.enum(['affirmative', 'negated', 'question']),
   evidence: z.array(Evidence).min(1),
@@ -1228,6 +1245,7 @@ export const JesusMention = obj({
   if ((m.kind === 'name_of_person_or_place') !== (m.refersTo === 'not_jesus')) {
     issue("refersTo 'not_jesus' is exactly for name_of_person_or_place");
   }
+  if (m.when === 'during' && m.episodeId === null) issue('a mention made during an experience needs its episodeId');
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
   if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or in one questionnaire item');
 });
@@ -1311,6 +1329,7 @@ export const CodedRecord = obj({
   });
 
   const mentionKeys = new Set<string>();
+  const doctrineEpisode = new Map(r.doctrinalStatements.map((d) => [d.doctrineId, d.episodeId]));
   r.jesusMentions.forEach((m, i) => {
     if (m.encounterId !== null && !encounterEpisode.has(m.encounterId)) {
       issue(`mention refers to unknown encounter ${m.encounterId}`, ['jesusMentions', i, 'encounterId']);
@@ -1318,9 +1337,25 @@ export const CodedRecord = obj({
     if (m.doctrineId !== null && !doctrineIds.includes(m.doctrineId)) {
       issue(`mention refers to unknown doctrinal statement ${m.doctrineId}`, ['jesusMentions', i, 'doctrineId']);
     }
+    if (m.episodeId !== null && !ids.includes(m.episodeId)) {
+      issue(`mention refers to unknown episode ${m.episodeId}`, ['jesusMentions', i, 'episodeId']);
+    }
+    const linkedEpisode = m.encounterId !== null ? encounterEpisode.get(m.encounterId) : m.doctrineId !== null ? doctrineEpisode.get(m.doctrineId) : undefined;
+    if (m.episodeId !== null && linkedEpisode !== undefined && linkedEpisode !== null && linkedEpisode !== m.episodeId) {
+      issue("a mention's episode must match its linked encounter or doctrinal statement", ['jesusMentions', i, 'episodeId']);
+    }
     const key = [m.kind, m.when, m.refersTo, m.polarity, m.encounterId, m.doctrineId, placeOf(m.evidence[0].source)].join('|');
     if (mentionKeys.has(key)) issue('one entry per kind, time, and place: merge the evidence', ['jesusMentions', i]);
     mentionKeys.add(key);
+  });
+  // Every encounter with a Jesus claim has an affirmative mention linked to it, so the nested
+  // definitions stay nested.
+  r.encounters.forEach((e, i) => {
+    if (!e.identity.some((c) => c.category === 'jesus')) return;
+    const linked = r.jesusMentions.some(
+      (m) => m.kind === 'encounter' && m.encounterId === e.encounterId && m.refersTo === 'jesus' && m.polarity === 'affirmative',
+    );
+    if (!linked) issue('an encounter with a Jesus claim needs an affirmative mention of kind encounter linked to it', ['encounters', i]);
   });
 });
 export type CodedRecord = z.infer<typeof CodedRecord>;
@@ -1440,3 +1475,77 @@ export const ResolvedEpisode = obj({
   message: 'exclusionReasons are given exactly when the episode is excluded',
 });
 export type ResolvedEpisode = z.infer<typeof ResolvedEpisode>;
+
+// ─── Area 3 analysis-time views (computed in resolve-area3.ts; never coded) ─────────────
+
+/** One per encounter. */
+export const ResolvedEncounter = obj({
+  encounterId: z.string(),
+  ruleVersion: z.string(),
+  /** No claim outside UNIDENTIFIED_CATEGORIES. */
+  neverIdentified: z.boolean(),
+  /** From the encounter's evidence and its claims' evidence. */
+  reportedIn: z.enum(['narrative_only', 'questionnaire_only', 'both']),
+  questionnaireItems: z.array(obj({ part: Index, qaIndex: Index })),
+  /** Mary's level. One (broad): an unidentified female being. Two: a Mary claim. Three: a Mary
+   *  claim with confessional content (the list, or a rosary or scapular among the visual
+   *  details). Which content is Catholic-specific is a further, table-based step. */
+  marianLevel: z.enum(['none', 'one', 'two', 'three']),
+  /** Level one, narrow: also described in maternal terms. */
+  marianLevelOneNarrow: z.boolean(),
+  /** The strongest certainty among Mary claims (null with none), so resemblance-only can be dropped. */
+  maryClaimCertainty: Certainty.nullable(),
+})
+  .refine((r) => !r.marianLevelOneNarrow || r.marianLevel === 'one', { message: 'the narrow level one needs level one' })
+  .refine((r) => (r.marianLevel === 'two' || r.marianLevel === 'three') === (r.maryClaimCertainty !== null), {
+    message: 'maryClaimCertainty is given exactly for levels two and three',
+  })
+  .refine((r) => (r.reportedIn === 'narrative_only') === (r.questionnaireItems.length === 0), {
+    message: 'questionnaireItems are listed exactly when the questionnaire reports the encounter',
+  });
+export type ResolvedEncounter = z.infer<typeof ResolvedEncounter>;
+
+const KeywordRung = obj({ narrow: z.boolean(), broad: z.boolean() })
+  .refine((k) => !k.narrow || k.broad, { message: 'the broad list contains the narrow one' });
+const MentionRung = obj({ jesusOnly: z.boolean(), withAmbiguous: z.boolean() })
+  .refine((m) => !m.jesusOnly || m.withAmbiguous, { message: 'counting ambiguous titles can only add' });
+
+/** One per account: which rungs of the Jesus ladder it reaches, loosest first. Each rung
+ *  implies every looser one in its group; the keyword rungs are mechanical and can disagree with
+ *  the coded ones either way (a keyword name; "the Lamb," which no keyword matches). */
+export const ResolvedJesus = obj({
+  accountId: z.string().min(1),
+  ruleVersion: z.string(),
+  /** Whole-word keyword hits anywhere on the page, NDERF's question wording included. */
+  keywordWebsite: KeywordRung,
+  /** Keyword hits in the experiencer's own words: narrative and answers. */
+  keywordOwnWords: KeywordRung,
+  /** Any coded entry, names, idioms, and church names included. */
+  anyCodedEntry: z.boolean(),
+  /** An affirmative mention of Jesus himself (not an idiom, church name, or person's name). */
+  affirmativeMention: MentionRung,
+  /** …about the experience itself, in a qualifying episode: an encounter or talk with a being,
+   *  a doctrinal statement from the experience, or a mention made during it. */
+  mentionAboutExperience: MentionRung,
+  /** An encounter in a qualifying episode with a Jesus claim; each later rung narrows the same claim. */
+  encounterClaim: z.boolean(),
+  excludingResemblance: z.boolean(),
+  claimInNarrative: z.boolean(),
+  identifiedDuring: z.boolean(),
+  announcedOrRecognizedDuringAsserted: z.boolean(),
+}).superRefine((j, ctx) => {
+  const implies = (a: boolean, b: boolean, message: string) => {
+    if (a && !b) ctx.addIssue({ code: 'custom', message });
+  };
+  implies(j.keywordOwnWords.narrow, j.keywordWebsite.narrow, 'own words are part of the page (narrow)');
+  implies(j.keywordOwnWords.broad, j.keywordWebsite.broad, 'own words are part of the page (broad)');
+  implies(j.affirmativeMention.withAmbiguous, j.anyCodedEntry, 'a mention is a coded entry');
+  implies(j.mentionAboutExperience.jesusOnly, j.affirmativeMention.jesusOnly, 'nested: about the experience');
+  implies(j.mentionAboutExperience.withAmbiguous, j.affirmativeMention.withAmbiguous, 'nested: about the experience');
+  implies(j.encounterClaim, j.mentionAboutExperience.jesusOnly, 'every Jesus claim has a linked mention');
+  implies(j.excludingResemblance, j.encounterClaim, 'nested: excluding resemblance');
+  implies(j.claimInNarrative, j.excludingResemblance, 'nested: in the narrative');
+  implies(j.identifiedDuring, j.claimInNarrative, 'nested: identified during');
+  implies(j.announcedOrRecognizedDuringAsserted, j.identifiedDuring, 'nested: announced or recognized');
+});
+export type ResolvedJesus = z.infer<typeof ResolvedJesus>;

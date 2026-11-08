@@ -504,7 +504,11 @@ has an item on the age of the deceased, so all of this comes from the text.
   torments; rescues or protects; shows knowledge of earthly events since their death (a
   deceased relative mentioning a birth or a wedding that came after); or other.
   "Sends back" records the reason given: not your time, unfinished purpose, others need you,
-  a mistake (the "wrong person" motif), offered a choice, or none given.
+  a mistake (the "wrong person" motif), offered a choice, or none given. "Gives instructions or
+  requests" records what was asked, one or more, with the words kept: pray; a specific devotion
+  (the rosary, a novena); join, return to, or leave a church or religion; how to live; pass a
+  message on to others; care for a particular person; or other. It applies to any being, so
+  Mary's requests can be compared with Jesus's or a deceased relative's.
 - **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
   showing (images or scenes), no communication, or not stated, kept consistent with the ways
   the being was perceived.
@@ -585,7 +589,10 @@ has an item on the age of the deceased, so all of this comes from the text.
   - evidence.
 
   One entry per kind, time, and place (the narrative or a given item), with every passage as
-  evidence, so a long encounter isn't dozens of rows. Only the experiencer's text, never
+  evidence, so a long encounter isn't dozens of rows. A mention made during an experience
+  names its episode (a prayer said during it has no encounter to link to), and a linked
+  encounter or doctrinal statement must be in the same episode. Every encounter with a Jesus
+  claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
   question wording: the named-figures item itself names Jesus, so a raw search of the pages
   would match every form D–F page.
 - **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
@@ -626,6 +633,28 @@ has an item on the age of the deceased, so all of this comes from the text.
   during the experience; announced or recognized during, and asserted. Miller's own frame,
   his first 141 cases, can probably be identified from NDERF's running numbers in the index
   metadata, and is read only after the codebook is frozen.
+
+### Computed views (resolve-area3.ts)
+
+Computed by pre-registered rules from the coded and derived records, never coded; defined in
+code and tested, as the other areas' resolved views are.
+
+- **Per encounter:** whether the being was never identified (no claim outside the
+  unidentified group); where it was reported (narrative only, questionnaire only, or both, and
+  which items), from the encounter's evidence and its claims'; and Mary's level: one (broad:
+  an unidentified female being; narrow: also described in maternal terms), two (a Mary
+  claim), or three (a Mary claim with confessional content, from the list or a rosary or
+  scapular among the visual details), with the strongest certainty among the Mary claims so
+  resemblance-only can be dropped. Whether level-three content is Catholic-specific is a
+  further step, using the pre-registered table.
+- **Per account, the Jesus ladder:** which rungs it reaches. Keyword hits on the page and in
+  the experiencer's own words (each for the narrow and broad lists); any coded entry; an
+  affirmative mention of Jesus himself, and one about the experience in a qualifying episode
+  (each with and without the ambiguous titles); then an encounter in a qualifying episode with
+  a Jesus claim, narrowed step by step for the same claim (not resemblance only; stated in the
+  narrative; identified during; announced or recognized, and asserted). The view checks that
+  each rung implies the looser ones. The keyword rungs are mechanical and can disagree with
+  the coded ones either way (a person's name; "the Lamb," which no keyword matches).
 
 ### For the coding prompt: mistakes an unguided model is likely to make
 
