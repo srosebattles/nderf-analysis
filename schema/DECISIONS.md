@@ -222,12 +222,26 @@ trial-coded once every cluster is settled.
 - **One entry per episode,** since episodes qualify separately, with an optional link when the
   text says the same being was met in another episode.
 
+### Checkbox answers, and where each encounter is reported
+
+- **Menu answers to the being items are recorded by rule** in the derived file, per part: the
+  option picked for "Did you see any beings in your experience?", "Did you see deceased or
+  religious spirits?", the deceased (or alive) beings item, the mystical-being item, and the
+  named-figures item, and whether the checklist's "Presence of unearthly beings" and "Presence
+  of deceased persons" were ticked. These are fixed options, so no LLM is needed.
+- **Encounters hold only what is described,** in the narrative or in an answer's comment. A box
+  ticked with nothing described creates no encounter. Keeping the two independent lets their
+  disagreement (King 2022, and Greyson's reply) be computed by comparing them: beings ticked
+  but none described, or beings described where the item was answered "No."
+- **Where an encounter is reported** (narrative only, questionnaire only and in which items, or
+  both) is computed from its evidence, not coded.
+
 ## Open
 
-- Area 3: identity and what counts as an encounter are settled (above). Still to design: being
-  categories and the words used for them, relatives' kinship vocabulary, descriptions and
-  setting, roles, where each encounter is reported and the questionnaire's checkbox answers,
-  every mention of Jesus, and a provenance field for how the memory came to be told.
+- Area 3: identity, what counts as an encounter, and the checkbox answers are settled (above).
+  Still to design: being categories and the words used for them, relatives' kinship
+  vocabulary, descriptions and setting, roles, every mention of Jesus, and a provenance field
+  for how the memory came to be told.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
