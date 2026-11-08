@@ -39,7 +39,9 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   labels, not passages. Exact wording stays recoverable privately from evidence positions.
   Six words fits multi-word titles, chains of relatives, and church names that four cut off.
 - **Coded data is published here, including the sensitive flags** (suicide attempt, overdose,
-  recreational drugs). It describes accounts that are already public, in our words, not theirs.
+  recreational drugs, conditions that can produce hallucinations, other mental health
+  conditions, and psychiatric medication). It describes accounts that are already public, in
+  our words, not theirs.
 
 ## Area 1: eligibility and provenance
 
@@ -77,6 +79,29 @@ questionnaire wording, menu values, editor tags) before any account text was rea
 - **Flagged, not excluded:** overdoses (alcohol counts as a drug), suicide attempts, and a
   psychoactive medication given as the experience began during a real illness or injury
   (e.g. ketamine for a procedure). Sensitivity analyses drop flagged episodes.
+- **Conditions that can produce hallucinations or delusions are recorded, and flagged, not
+  excluded** (added while designing area 3). Each stated condition is a statement with:
+  - its type: psychotic disorder (schizophrenia, schizoaffective, delusional disorder, brief
+    psychosis); bipolar disorder; depression with psychotic features; delirium, including
+    "ICU psychosis"; dementia; seizure disorder; sleep disorder with hallucinations
+    (narcolepsy, sleep paralysis); substance-induced psychosis; other, where the text links
+    a condition to hallucinations; or other mental health condition (depression, anxiety,
+    PTSD, and the like);
+  - when it applied: before the experience, at the time, present at the time but recognized
+    later, began after, or not stated;
+  - who said so: the experiencer, a clinician as reported, or family;
+  - the words.
+
+  Recorded only when stated: never inferred from the experience's content, from a medication,
+  or from someone calling the experience a hallucination. Delirium and seizure disorders are
+  neurological rather than psychiatric but are the same confound; delirium is the standard
+  skeptical explanation for experiences in intensive care. The flag is resolved per episode at
+  analysis time from every type except "other mental health condition," present before or at
+  the experience. A sensitivity analysis drops flagged episodes. (Whether neurodevelopmental
+  conditions such as autism get a value of their own is pending.)
+- **Psychiatric medication being taken at the time** is recorded (antipsychotic, mood
+  stabilizer, antidepressant, sedative, or other, with the words), separately from a
+  psychoactive medication given as the experience began. Explicit only.
 - **Closeness to death is a covariate, not a gate:** bodily crisis, minor (fainting, a knock
   with brief unconsciousness, a near-drowning with self-rescue), threat only, or unclear.
   Evidence for a bodily crisis must be a described bodily event, not experiential content;
@@ -476,8 +501,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   beings, and animals, and doctrinal statements are settled (above). Still to design, in this
   order: how hell and judgment are split in the doctrine list; disposition, roles and actions,
   communication, response, and names invoked against hostile beings; every mention of Jesus (including how "the Lord" alone
-  is counted); and provenance (how the memory came to be told, and disclaimers about the
-  telling).
+  is counted); and provenance (how the memory came to be told, disclaimers about the telling,
+  others dismissing the experience as a hallucination, and the experiencer's own natural
+  explanations).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones.
