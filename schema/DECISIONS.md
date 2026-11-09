@@ -40,7 +40,8 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   Six words fits multi-word titles, chains of relatives, and church names that four cut off.
 - **Coded data is published here, including the sensitive flags** (suicide attempt, overdose,
   recreational drugs, conditions that can produce hallucinations, other mental health
-  conditions, and psychiatric medication). It describes accounts that are already public, in
+  conditions, psychiatric medication, and a longing to return after the experience, including
+  suicidal thoughts tied to it). It describes accounts that are already public, in
   our words, not theirs.
 
 ## Area 1: eligibility and provenance
@@ -240,6 +241,13 @@ below is in the schema (v4 draft); trial coding comes next.
   can be counted or dropped. "Felt it was" is how (knowing), not a hedge. A remark about the
   referent rather than the being met (that a figure from one tradition can look like one from
   another) is not a claim.
+  - "I would describe it as" is a hedge: choosing a word, not saying who it was.
+  - An identity offered as a question ("Was it my angel?") is a hedged claim.
+  - A label marked as the experiencer's own word ("lights, which I called angels"; "angels,
+    or whatever you'd call them") is hedged, with the words kept.
+  - When passages differ, the claim takes the strongest certainty any of them states, and the
+    hedged passages stay in evidence. A yes-or-no "hedged elsewhere" records that some passage
+    was weaker, so the strictest Jesus rung can be reported both ways.
 - **Kept out of identity:** priming before the experience (a devotional object addressed daily
   beforehand) and memories recovered after exposure (an encounter remembered only after a TV
   program). They describe how the expectation or memory came about, not how the being was
@@ -253,7 +261,34 @@ below is in the schema (v4 draft); trial coding comes next.
   being categories). A being only credited with something in the experience and never
   perceived (a pull later put down to a deity's love; being sent back with nothing seen or
   heard) also gets an entry, marked "credited only," so it can be counted or dropped. Who sends
-  people back is one of the roles.
+  people back is one of the roles. So does a being the experiencer only infers from something
+  else (a crack of sound taken to be a demon's whip): a hedged claim, credited only.
+- **A force isn't treated as a being unless the text gives it a will or a voice,** or calls it a being or
+  presence. "A presence urging me to return" is an encounter; "I was pulled back" is
+  not. The same goes for a hostile phenomenon with no agent (hail of light striking from every
+  side): distressing content (torment), not orbs, unless the text gives it intent (it chases,
+  mocks, speaks) or calls it a being. "Orb" then means orbs presented as beings.
+- **Only literal reports are coded; similes are not encounters.** Figurative: "like," "as
+  if," "as though," "seemed to," or "felt like" with nothing more, and stock metaphors ("the
+  sea was calling me"). Literal: a plain statement that it happened, reported speech with
+  content, or a described exchange. A literal report with a qualifier ("I think the trees
+  were speaking") is a hedged claim. When it's truly unclear, nothing is coded, and the two
+  models' disagreement shows the case. So "music like a choir of angels" describes a sound,
+  while "I heard angels singing" claims angels (heard). A checkbox saying "beings" on a page
+  with only a simile is a disagreement, computed like any other.
+- **Something normally inanimate that communicates with the experiencer or acts toward
+  them,** reported literally (an invented example: a stream that speaks and asks them to
+  follow), is an encounter in its own category, among the controls. One passage can hold
+  both kinds of report: "the river spoke to me" is coded, "the river seemed to wash me
+  clean" is not (no "heals").
+- **Surroundings described as alive or aware,** with nothing interacting with the experiencer
+  ("everything there was alive"), are a yes-or-no flag on the episode, with the words and
+  evidence, under the same literal-report test. They're a known motif, but not encounters.
+- **People inside a scene the experiencer watches are not encounters:** a life review, a past
+  life, a preview of the future. They're memories or visions, not beings met. Two exceptions:
+  a figure in the scene who turns to the experiencer and interacts with them, and a being
+  beside the experiencer who shows them the scene. A future child who greets the experiencer
+  directly is met, and is an encounter.
 - **Physical presence is coded, because some cases are ambiguous.** People in the physical
   setting are not of interest, but whether a person was really there or met within the
   experience isn't always clear. Each encounter is coded: physically present (perceived during
@@ -261,15 +296,23 @@ below is in the schema (v4 draft); trial coding comes next.
   person can be either: a living friend glimpsed at work elsewhere in the building is
   physically present; a living spouse seen among figures beyond the light is part of the
   experience. A stranger met just after returning to the body and presented as more than
-  ordinary is unclear. Ordinary perception before the experience starts or after it ends is
+  ordinary is unclear. Another dying person's spirit seen leaving their body is part of the
+  experience: the body is there, but what is seen can only be seen within the experience. A
+  voice calling the experiencer's name just as they return is unclear unless the text says
+  whose it was (a doctor's is physically present; one from the light is part of the
+  experience). Ordinary perception before the experience starts or after it ends is
   not an encounter. This is separate from where an experiential being appears (a deceased
   relative standing by the bed versus an otherworldly place), which comes with descriptions.
 - **One entry per individual given an identity or a description of its own;** the rest stay in
   a group entry with a count: an exact number, several, many, unspecified, or one or more (a
   voice written as "he/they"). A crowd with one known person singled out is two entries.
   Physically present people of one kind (medical staff) are one group entry.
-- **One entry per episode,** since episodes qualify separately, with an optional link when the
-  text says the same being was met in another episode.
+- **Beings the text doesn't equate are separate entries,** even when they might be the same
+  (a figure on a throne, a guide, and an ancestor who leads the way). Merging would be a
+  judgment the text doesn't make; analysis can still read them together.
+- **One entry per episode,** since episodes qualify separately, with an optional link only when
+  the text says it was the same individual ("the same being," "him again"). "A being of light"
+  in both episodes is the same kind of being, not necessarily the same one: no link.
 
 ### Checkbox answers, and where each encounter is reported
 
@@ -288,8 +331,9 @@ below is in the schema (v4 draft); trial coding comes next.
 ### Who is encountered: categories
 
 - **Every encounter gets at least one category, including unidentified beings.** Beings of
-  light, a voice or felt presence with no form, guides, councils or robed figures, orbs, and
-  unrecognized humans are identity claims in an "unidentified" group. A being of light later
+  light, a voice or felt presence with no form, guides, councils or robed figures, orbs,
+  unrecognized humans, and other unidentified beings (an "entity" none of these describes)
+  are identity claims in an "unidentified" group. A being of light later
   named Jesus is one encounter with two claims. "Never identified" means no claim outside the
   unidentified group. (This replaced a proposal to type unidentified beings only from their
   descriptions, which would have dropped categories the requirements ask for.)
@@ -305,9 +349,20 @@ below is in the schema (v4 draft); trial coding comes next.
   - Children who died before birth (miscarried, stillborn, or aborted) and children not yet
     born are family, by role.
   - The experiencer's own double or higher self, appearing as a separate being, is a
-    category. One's own body never counts.
+    category. One's own body never counts. The category is for a being the experiencer
+    identifies as themselves in some form, hedged when they waver ("it wasn't me, but I call
+    it my higher self"); a being that only looks like them gets the representation
+    "personal likeness," with whatever claim fits.
+  - A person's "ghost" or "spirit" is an unrecognized human with vital status dead,
+    since the word says so; one not described as human-shaped is an unidentified being.
+  - Someone else's child met before conception (a friend's son) is a friend or acquaintance,
+    type other, with the words; vital status and the later birth are recorded as for the
+    experiencer's own future children.
   - An ordinary animal behaving with hostility is an animal (role: hostile beast); a monstrous
     or demonic beast is a hostile being.
+  - Something normally inanimate that communicates or acts (sand, water, a tree) is an
+    animate object or landscape, among the controls (extraterrestrials, folkloric beings,
+    fictional characters, mechanical beings).
   - Anything else is "other," with the words kept.
 - **Named figures get their subcategory from a pre-registered table, not from the model.** The
   model gives each named figure a canonical name (our spelling, not copied text, so variant
@@ -358,7 +413,16 @@ below is in the schema (v4 draft); trial coding comes next.
   status.
 - **Friends and acquaintances get one or more types:** childhood friend, school friend or
   classmate, close friend, coworker, military comrade, neighbor, mentor or teacher,
-  acquaintance, or other, with the words kept.
+  acquaintance, unspecified (just "my friend"), or other, with the words kept. Clinical or
+  paid care is split by direction: their patient (the experiencer was their clinician or paid
+  carer, as in many shared-death accounts) or their clinician or carer (the experiencer's own
+  doctor, nurse, therapist, or paid carer). Anyone else known through work who isn't a
+  coworker or mentor (a client, a customer, an employer) is "other professional." Unpaid care
+  within a family stays with family, where closeness covers it; a chaplain is clergy. Medical
+  staff seen at the scene are usually strangers: a group of unrecognized people, no tie.
+- **People known in life whose relationship isn't stated** ("people I knew") have their own
+  category, since they could be family or friends. Like family and friends, they need vital
+  status and never get a canonical name.
 - **Clergy known personally get a religious role:** priest, pastor or minister, deacon, nun or
   religious sister, monk or religious brother, rabbi, imam, or other. A relative or friend who
   was also clergy stays family or friend, with the religious role recorded alongside. "Clergy
@@ -398,6 +462,15 @@ has an item on the age of the deceased, so all of this comes from the text.
   pictures, or teaching); claims no prior knowledge ("never heard of," "knew nothing about"),
   with the words kept; or not stated. Only from the text, never from the person's background:
   a Christian meeting Jesus is "not stated" unless the text says how they knew of him.
+  Familiarity is about ordinary life. Meeting the being before in an earlier experience (a
+  childhood vision, a meditation) is the link between episodes: the earlier experience is an
+  episode of its own, with an encounter linked as the same being, and the episodes' dates or
+  ages give the order. So "I knew the light from meditation" needs a small episode and a
+  linked encounter.
+- **A relative never met can be implied by kinship:** from three greats up
+  (great-great-great-grandparent and beyond), "never met" is implied unless the text says
+  they met. With fewer, the text decides; if it's silent, the relative is family with
+  familiarity "not stated."
 - **Closeness, for every relative and friend, only when stated:** whether they were a
   formative presence (raised the experiencer or shared their childhood household), and
   attachment language (closer than the role suggests, close, distant, or estranged or in
@@ -408,7 +481,12 @@ has an item on the age of the deceased, so all of this comes from the text.
   a number of years or a range, stated or computed from dates in the text (marked as which),
   or else: shortly before (days or weeks), within a year, some years with no number, before
   the experiencer was born, or not stated. Apparent age: as when they died, younger, older (a
-  child appearing grown), ageless, or not stated, with a stated age recorded when given.
+  child appearing grown), ageless, or not stated, with a stated age recorded when given. A
+  child who died before birth and appears as an infant is "as when they died"; a toddler or
+  older is "older." The question is whether they grew up in the afterlife.
+- **Apparent condition, for the deceased,** only when the text contrasts it with life or
+  death: healed or whole (walking when paralysed in life, well when they died ill), as at
+  death (injured or ill), or not stated. A common motif that apparent age doesn't capture.
 - **Living people met as part of the experience:** how the experiencer explains it (higher
   self, bilocation, a dream element, the person was also near death or ill at the time, other,
   or no explanation offered), with the words kept.
@@ -419,14 +497,18 @@ has an item on the age of the deceased, so all of this comes from the text.
   described (named or mentioned with no visual description, including voices and formless
   presences; the ways it was perceived say whether it was seen); light or formless (a light,
   glow, orb, mist, or energy with no figure); generic figure (no features specific to anyone:
-  robes, a beard, a hood, a body of light); personal likeness (a person or animal described as
-  looking like themselves); or iconographically specific (features tied to a particular
+  robes, a beard, a hood, a body of light); personal likeness (looking like a particular
+  person or animal: a relative as they looked in life, or a being that looks like the
+  experiencer); or iconographically specific (features tied to a particular
   figure, tradition, or role: wounds, a crown of thorns, a halo, wings, many arms, an animal
   head, a trident, a monastic habit, horns and a pitchfork). A bearded figure in a robe is
   generic.
 - **Visual details: the words, plus a coded feature.** One entry per feature per encounter,
-  with the words (up to six), a color when stated, and evidence for every place it is
-  mentioned. Features come from a starter list grouped by the figures they point to (Christ,
+  with the words (up to six), the colors when stated (in the order described, so eyes that
+  turn from grey to green keep both), how it was perceived (seen, felt, or heard: claws felt
+  in the dark count), and evidence for every place it is mentioned. Representation is a
+  visual judgment, so only seen details bear on it: a being with only felt details is still
+  "not described. Features come from a starter list grouped by the figures they point to (Christ,
   angels, saints and clergy, South Asian traditions, hostile beings, general), plus "other"
   with the words kept. The list grows during trial coding and is frozen before the holdout.
   Two consistency rules: "not described" has no details, and "iconographically specific" needs
@@ -454,8 +536,9 @@ has an item on the age of the deceased, so all of this comes from the text.
     blessing gesture; modern clothing; period clothing.
   - Other, with the words kept.
 
-  Colors: white, black or dark, gold, blue, red, purple, brown, grey, green, pale, tan or
-  olive, blond, other. Whether clothing is unusual for a figure (modern dress on Jesus or Mary,
+  Colors: white, black or dark, gold, silver, blue, red, purple, brown, grey, green, pale, tan
+  or olive, blond, other. "Other" features are exempt from one-per-feature, since two can be
+  unrelated (a lantern, and a ribbon tied to it). Whether clothing is unusual for a figure (modern dress on Jesus or Mary,
   but not on a deceased grandmother) is decided at analysis time, not by the coder.
 - **Comparisons to images and media, for every encounter:** the kind (painting or picture,
   statue or icon, film or TV, book or illustration, or other), and the specific work if named
@@ -471,15 +554,22 @@ has an item on the age of the deceased, so all of this comes from the text.
 
 - **Mary's three levels, mostly computed.** Any encounter with a Mary claim is at least level
   two. Level three is a Mary encounter with confessional content, recorded as a list on any
-  encounter where it appears: rosary, scapular, purgatory, novena, intercession, an apparition
-  title, or other devotion, with the words kept. Visible rosaries and scapulars also count
-  through the visual features. Which content is Catholic-specific is decided per item in an
-  analysis-time table, never by the coder. Titles need this most: "Mother of God" is not
+  encounter where it appears: rosary, scapular, purgatory, novena, intercession (she prays
+  for someone) or invocation (someone prays to her or asks her prayers), an apparition title,
+  or other devotion, with the words kept. The traditions draw their line between intercession
+  and invocation, so they're coded apart. Visible rosaries and scapulars also count through the
+  visual features. Which traditions each item fits is decided in a pre-registered table (below),
+  never by the coder. Titles need this most: "Mother of God" is not
   Catholic-specific (the Orthodox Theotokos; the Formula of Concord, Solid Declaration VIII),
   while apparition titles (Guadalupe, Fatima, Lourdes) are. Level one is computed from
-  unidentified female beings, plus one coded flag for maternal language ("motherly," "like a
-  mother"), with the words kept, so the pre-registration can define it broadly (any
-  unidentified female being) or narrowly (one described in maternal terms).
+  unidentified female beings who are part of the experience and interact with the
+  experiencer (an action toward them, or some communication), so a passer-by in the scenery
+  doesn't count. Unrecognized humans stay in: "a woman in white who comforted me" is the
+  central case. Plus one coded flag for maternal language, with the words
+  kept: the text describes her as motherly ("motherly," "like a mother"), or she addresses
+  the experiencer as her child ("my son," "my child"). Tenderness alone (a caress) doesn't
+  count. The flag lets the pre-registration define level one broadly (any such being) or
+  narrowly (one with maternal language).
 - **Hostile iconography types are coded directly for hostile beings,** more than one allowed:
   folkloric; scriptural (serpent, dragon, roaring lion, or a deceptive "angel of light," only
   when the text says a being of light deceived or turned hostile); shadow beings; mocking or
@@ -487,15 +577,17 @@ has an item on the age of the deceased, so all of this comes from the text.
   features hold the specifics. Coding the type directly also catches a comparison with no
   features listed (looking like a cartoon devil).
 - **Animals:** role, one or more (own pet, someone else's pet, working or farm animal,
-  scenery, animal-form guide, or hostile beast); species (dog, cat, horse, bird, small pet,
+  scenery, animal-form guide, companion (stays with or comforts the experiencer, as a deer walking
+  beside them), or hostile beast); species (dog, cat, horse, bird, small pet,
   reptile or amphibian, or other, with the words kept); and the pet's name if given. Whether
   the experiencer knew it had died is vital status; whether it communicated comes from the
   communication fields, which apply to every being.
 
 ### Disposition, actions, communication, and response
 
-- **Disposition, for every encounter, one or more:** loving, neutral or instructive, hostile,
-  or ambiguous and unsettling. More than one, because a being can change (stern, then loving).
+- **Disposition toward the experiencer, for every encounter, one or more:** loving, neutral or
+  instructive, hostile, ambiguous and unsettling, or not stated (alone: a bystander, a figure
+  who never notices them). More than one, because a being can change (stern, then loving).
 - **Actions, one or more, each with evidence:** welcomes or greets; comforts or shows
   affection; guides or escorts; blocks the way; sends back or discusses returning; conveys a
   purpose or mission; reviews or judges the experiencer's life (a book, a ledger, weighing);
@@ -503,18 +595,32 @@ has an item on the age of the deceased, so all of this comes from the text.
   questions; heals; warns; gives instructions or requests (including Mary's); attacks or
   torments; rescues or protects; shows knowledge of earthly events since their death (a
   deceased relative mentioning a birth or a wedding that came after); or other.
-  "Sends back" records the reason given: not your time, unfinished purpose, others need you,
-  a mistake (the "wrong person" motif), offered a choice, or none given. "Gives instructions or
+  "Sends back" records every reason given: not your time, unfinished purpose, others need
+  you, a mistake (the "wrong person" motif), offered a choice, or none given (alone). A being
+  can give two (a choice, and a spouse who needs them). "Gives instructions or
   requests" records what was asked, one or more, with the words kept: pray; a specific devotion
   (the rosary, a novena); join, return to, or leave a church or religion; how to live; pass a
-  message on to others; care for a particular person; or other. It applies to any being, so
+  message on to others; care for a particular person; a practical action, what to do now to
+  survive or reach safety ("breathe," "go left"); or other. It applies to any being, so
   Mary's requests can be compared with Jesus's or a deceased relative's.
 - **Communication mode, for every being:** spoken words, mind to mind, instant knowing,
   showing (images or scenes), no communication, or not stated, kept consistent with the ways
-  the being was perceived.
+  the being was perceived. A voice placed in the head or mind ("as if inside my head," "in
+  my mind," "telepathic," "without words") is mind to mind, even when the text says "heard,"
+  which is just the ordinary verb; spoken words are a voice with no such marker. Both are
+  recorded only when the text gives both modes.
+- **The experiencer's denial that it was a being** is kept when they still describe an
+  exchange with it ("I met no being, only the Presence," "it wasn't a person, more like…"),
+  with the words. The encounter is coded as usual; non-dual accounts are likely to do this.
+- **Denied identities** are kept on the encounter: "Are you God?" "No." Each records the
+  category (and canonical name for a named figure), who denied it (the being or the
+  experiencer), and the words. Claims stay positive; a Jesus denial is also a negated Jesus
+  mention.
 - **The experiencer's response, one or more:** awe, fear, awareness of sin, worship, love or
   joy, peace, or arguing or resisting (pleading to stay is common).
-- **Names invoked against hostile beings:** whether the experiencer invoked a name or prayed;
+- **Names invoked against hostile beings,** for hostile encounters that are part of the
+  experience or unclear, never physically present people (a human attacker at the scene):
+  whether the experiencer invoked a name or prayed;
   which name (the words and the referent: Jesus, God, Mary, or other); and the effect
   (dispelled, no effect, or not stated). An invocation of Jesus also counts as a Jesus mention.
 - **No separate check against King's (2024) six themes for Jesus encounters.** The actions
@@ -529,25 +635,35 @@ has an item on the age of the deceased, so all of this comes from the text.
   - the doctrine, from a pre-registered list, or "other" with the words kept;
   - the stance: affirms, denies, or reinterprets (neither a clean yes nor a clean no: "the
     resurrection is spiritual, not bodily");
+  - certainty: asserted or hedged ("I think," "or something like it"), as for identity claims;
   - the source: conveyed by a being during the experience (linked to that encounter), shown
     during the experience (a scene, no being speaking), understood during the experience with
-    no being, the experiencer's own view afterward, or not stated;
+    no being, the experiencer's own view before the experience, their own view afterward, or
+    not stated. A before-and-after pair on one doctrine shows a changed belief directly;
   - evidence.
 
   "During" follows the strict rule for identity timing. Questionnaire items that begin "During
   your experience, did you gain information about…" don't decide it: answers often drift into
   present belief, so the text decides, and the evidence records the item for analysis.
-- **Starter list:** virgin birth of Jesus; resurrection of Jesus; a general resurrection at
+- **Starter list:** life after death (only when stated as a claim, never inferred from the
+  experience itself; denials and reinterpretations are the informative cases); virgin birth of Jesus; resurrection of Jesus; a general resurrection at
   the end of time (taught in classical forms of all three Abrahamic faiths, read non-literally
   by Reform Judaism and the Bahá'í Faith, hence "reinterprets"); exclusivism (Christ, or one
   faith, is the only way); religious pluralism (all religions lead to God or hold truth);
   religion as human-made or unnecessary (not the same as pluralism); reincarnation or past
-  lives; universal salvation; divinity of Jesus; atonement; the self as divine; the departed
+  lives; pre-existence of souls (rejected by Christian orthodoxy, affirmed in LDS teaching and
+  some New Age writing; it bears on children met before conception); universal salvation; the
+  Trinity (statements about the Godhead itself; "Jesus was only a teacher" is the divinity of
+  Jesus); divinity of Jesus; atonement; the self as divine; the departed
   are aware of people and events on earth (soul sleep, taught by Seventh-day Adventists and
   Jehovah's Witnesses, denies it outright); the departed pray or intercede for the living.
   Judgment after death, by God or a being ("reinterprets" covers "you judge yourself"); a
   final judgment at the end of time; hell exists; purgatory. Grows during trial coding; frozen
   before the holdout.
+- **"Other" is only for claims about God, salvation, or the afterlife** that the list misses
+  (an invented example: "only the gentle can stay here"). Moral and practical teachings stay
+  in the encounter's actions (teaches; instructions on how to live), with their content
+  uncoded.
 - **Hell is split into three things, kept apart:** what the experience contained (distressing
   content, on the episode, below), what the experiencer calls it (below), and the doctrine
   here, for stated propositions only. When a statement says what hell is like, it records the
@@ -562,14 +678,16 @@ has an item on the age of the deceased, so all of this comes from the text.
 ### Distressing content and what the experiencer calls it
 
 - **Each episode gets an overall tone:** pleasant, distressing, mixed (turned from one to the
-  other), or neutral or unclear.
+  other), or neutral or unclear. "Mixed" needs a distressing phase that's described, a
+  stretch of the experience; a moment's alarm (at seeing one's own body) inside a pleasant
+  experience stays pleasant. Distress after returning to the body doesn't count.
 - **Distressing content is described, never labeled "hell" by the coder,** using the three
   types of Greyson and Bush (1992), under neutral names, more than one allowed: frightening
   versions of the usual features (their "inverse" type: a tunnel or light experienced as
   terrifying); void or nothingness; torment or hostile beings (their "hellish" type). Hostile
   beings are also encounters; this covers distressing episodes with no beings at all.
 - **The experiencer's own label for the experience or a place in it,** with the words kept:
-  hell or hellish, purgatory, the void, other, or none; and when it was applied (during,
+  heaven or paradise, hell or hellish, purgatory, the void, other, or none; and when it was applied (during,
   afterward, or not stated). Torment content with no "hell" label is then countable: the
   cases a reader would call hellish where the experiencer declined the word.
 
@@ -588,8 +706,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   - polarity: affirmative, negated, or a question;
   - evidence.
 
-  One entry per kind, time, and place (the narrative or a given item), with every passage as
-  evidence, so a long encounter isn't dozens of rows. A mention made during an experience
+  One entry per kind, time, and place (the narrative or the questionnaire), with every passage
+  as evidence, so a long encounter isn't dozens of rows; which items it appears in is still
+  computed from the evidence. A mention made during an experience
   names its episode (a prayer said during it has no encounter to link to), and a linked
   encounter or doctrinal statement must be in the same episode. Every encounter with a Jesus
   claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
@@ -604,6 +723,15 @@ has an item on the age of the deceased, so all of this comes from the text.
   kept, so analysis can test the rule. Derived words (Christian, Christmas) don't count. In
   encounters, "the Lord" alone stays God with its words kept, and it also appears here as an
   ambiguous mention.
+- **The text can also tie a title to someone else.** "The Lord" tied to a named non-Christian
+  figure ("Lord Krishna") or to an impersonal Absolute ("Supreme Consciousness," "the
+  Universe") refers to someone other than Jesus. Tied only to "God," it stays ambiguous,
+  since a Christian's "God" can mean Christ. The experiencer's background never decides it.
+- **New Age terms built on "Christ"** ("Christ consciousness," a "Christ self") are mentions
+  of kind other, ambiguous: outside the Jesus-only rungs, counted in the ones with ambiguous
+  titles. A being such a term names (a higher "Presence" that acts) is a self-double only if
+  the text calls it the experiencer's self or higher self; otherwise it's "other," with the
+  words, since recognizing the teaching behind the term takes outside knowledge.
 - **Context, not the word, decides.** Jesús and Salvador are common given names, Isa is a
   common Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El
   Salvador is a country. Used for a person or a place, the word is recorded as the name of a
@@ -618,7 +746,8 @@ has an item on the age of the deceased, so all of this comes from the text.
   For each part and each pre-registered keyword: whole-word matches in the narrative (raw,
   including any editor's note inside it), in the experiencer's answers, and in NDERF's question
   wording. Two lists: narrow (Jesus, Christ, as King searched) and broad (adding Jesús, Cristo,
-  Isa, Yeshua, Savior, Saviour, Messiah). Matching is whole words, case-insensitive, with
+  Christos, Isa, Yeshua, Savior, Saviour, Messiah). Christos, like Jesús and Isa, is also a
+  given name; the broad rung accepts such collisions and the coded rungs sort them out. Matching is whole words, case-insensitive, with
   accents kept distinct and possessives counted ("Christ" doesn't match "Christian"); the
   matcher is defined once, in the schema, and tested. Question wording matters: on every form
   D–F page the named-figures item says "for example: Jesus," so a search of the website's
@@ -642,7 +771,8 @@ code and tested, as the other areas' resolved views are.
 - **Per encounter:** whether the being was never identified (no claim outside the
   unidentified group); where it was reported (narrative only, questionnaire only, or both, and
   which items), from the encounter's evidence and its claims'; and Mary's level: one (broad:
-  an unidentified female being; narrow: also described in maternal terms), two (a Mary
+  an unidentified female being, part of the experience, who interacts with the experiencer;
+  narrow: also with maternal language), two (a Mary
   claim), or three (a Mary claim with confessional content, from the list or a rosary or
   scapular among the visual details), with the strongest certainty among the Mary claims so
   resemblance-only can be dropped. Whether level-three content is Catholic-specific is a
@@ -679,9 +809,10 @@ and trial coding should check them.
   mention or an encounter; or, the other way, dismissing "Jesús" in untranslated Spanish, or
   "Isa" in a Muslim's account, as only a name.
 
-### Choices made while writing the schema (for review)
+### Choices made while writing the schema
 
-These weren't settled in the clusters above; they were needed to write the schema.
+These weren't settled in the clusters above; they were needed to write the schema. All ten
+were reviewed and approved in November 2026, after trial coding.
 
 - **Canonical names are never given to people known in ordinary life** (family, relatives
   never met, friends, clergy known personally, unrecognized humans), for privacy: their
@@ -692,15 +823,17 @@ These weren't settled in the clusters above; they were needed to write the schem
 - **Menu answers that match no known option are "unrecognized,"** as with the religion menu.
 - **Revelation is the action "reveals knowledge" with a kind** (theological, cosmic, or about
   the future), not a separate content marker, so it isn't coded twice.
-- **Disposition needs at least one value; the experiencer's response may be empty** (nothing
-  stated), since many encounters, such as bystanders, have no stated response.
+- **Disposition needs at least one value ("not stated" included, since trial coding); the
+  experiencer's response may be empty** (nothing stated), since many encounters, such as
+  bystanders, have no stated response.
 - **Consistency rules:** "credited only" stands alone and allows no communication; "spoken"
   needs "heard" among the ways perceived, and "mind to mind" needs "mind to mind"; "none,"
-  "not stated," and an "unclear" place stand alone; one visual detail per feature; a pleasant
-  episode has no distressing content.
-- **Names invoked are recorded exactly when the disposition includes hostile.**
-- **In a Peak in Darien case, when the death happened** is around the same time, earlier, or
-  not stated.
+  "not stated," and an "unclear" place stand alone; one visual detail per feature ("other"
+  excepted); a pleasant episode has no distressing content.
+- **Names invoked are recorded exactly when the disposition includes hostile** and the
+  encounter isn't physically present (narrowed after trial coding).
+- **In a Peak in Darien case, when the death happened** is around the same time (hours or
+  days from the experience), earlier, or not stated.
 - **Condition statements name the episodes their timing is relative to.**
 
 ### Provenance: how the memory came to be told
@@ -712,9 +845,14 @@ These weren't settled in the clusters above; they were needed to write the schem
   real, definitely not real), and memory accuracy compared with other events of the time
   (more, as, or less accurately). Comments after the answers are read by the coder like any
   other text.
-- **Exposure** is a coded statement linked to its episodes: the medium (book, film or TV,
+- **Exposure** is a coded statement linked to its episodes, limited to books, films, talks,
+  accounts, and other media about NDEs, the afterlife, or spiritual beings (a religious
+  upbringing is background; unrelated content, such as a survival tip from TV, isn't
+  exposure): the medium (book, film or TV,
   article, talk or conference, another person's account, online, or other); the title if
-  named, with the words kept, which gives area 4 a direct measure; when (before the
+  named, with the words kept, which gives area 4 a direct measure; the author, speaker, or
+  presenter if named (public figures only: a friend who told their own experience is never
+  named; a study group on an author's work names that author); when (before the
   experience, between the experience and this telling, or not stated); and whether the person
   says it changed how they understood or remembered the experience.
 - **Devotion to a specific figure before the experience,** with the figure's category and
@@ -723,25 +861,157 @@ These weren't settled in the clusters above; they were needed to write the schem
 - **Memory history,** each with a trigger where one applies (media, therapy or hypnosis,
   other people, spontaneous, or not stated): remembered all along; recovered later; or only
   later understood to have been an NDE. More than one can apply (part recovered and the whole
-  recognized after the same TV program). Nothing stated: no entries.
+  recognized after the same TV program). Nothing stated: no entries. "Recovered later" needs
+  explicit remembering ("then I remembered the rest"); understanding that grows over time
+  isn't a memory event, and an ambiguous "the picture keeps filling in" isn't coded.
 - **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
   other, with the words kept), private only, or this is the first telling. Plus a flag when
   the person says their telling varies or their memory is uncertain.
-- **Reception:** others' reactions (dismissed as a hallucination, dream, imagination, or
-  other; ridiculed; believed or supported; or kept quiet for fear of a reaction), each with
-  who (a clinician, family, a friend, clergy, other, or not stated); disclaimers about the
+- **Reception:** others' reactions (dismissed as a hallucination, a dream, imagination, drugs
+  or medication, demonic, or other; ridiculed; believed or supported; kept quiet for fear of a
+  reaction; shock or disbelief; or other), each with who (a clinician, family, a friend,
+  clergy, other, or not stated) and the listener's words as reported (required for "other"); disclaimers about the
   telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
-  explanations, with the words and a stance (considers, endorses, or rejects).
+  explanations, with the words and a stance (considers, endorses, or rejects), plus an earlier
+  stance when the text says it changed (accepted a hallucination explanation for years,
+  rejects it now).
+- **Whether prior knowledge shaped it, in the experiencer's view:** denies influence ("I'd
+  read about NDEs, but it had no influence"), grants influence, or unsure, with the words.
+  Likely common in answers to the prior-knowledge item, and distinct from a natural
+  explanation.
+- **Predispositions, explicit only:** meditation or contemplative practice; visionary or
+  psychic experiences through life; or other; before the experience, after, both, or not
+  stated, with the words. Lifelong experiences aren't discrete episodes, so the episode link
+  can't hold them; a discrete earlier experience is still an episode.
+- **A longing to return, after the experience (sensitive):** a longing to return; suicidal
+  thoughts tied to returning; or an explicit denial of suicidal thoughts, with the words.
+  Explicit only, never inferred, and published like the other sensitive flags. It's an
+  aftereffect rather than part of the encounter question, kept because it's cheap and
+  rarely recorded elsewhere.
+
+## Pre-registered tables
+
+Built before the holdout is read and frozen with the codebook. The coder never classifies;
+these tables do, at analysis time. Each lives in `schema/tables/`, validated and tested.
+
+### Marian titles and confessional content (`tables/marian.ts`)
+
+- **Each item lists how well it fits each tradition,** not a yes/no "Catholic-specific," and a
+  mismatch is computed against the experiencer's own tradition from area 2. "Catholic-specific"
+  is just the items that fit Catholics alone. This handles cases a yes/no can't: an Orthodox
+  experiencer meeting Mary as intercessor isn't a mismatch, but meeting the Immaculate
+  Conception is; a Muslim meeting the Virgin Mary isn't one at all.
+- **Columns,** aligned with area 2: Catholic, Eastern Orthodox, Oriental Orthodox, Lutheran,
+  Anglican, Reformed, Methodist, other Protestant, Muslim. Reformed and Methodist are their own
+  columns because their classical teaching differs from other Protestants' (Ever-Virgin).
+- **Each cell is one of three values:**
+  - yes: the tradition's teaching holds or allows it, and its clergy and best-educated laity
+    normally hold it ("Mother of God" for Lutherans and Anglicans);
+  - official only: its confessions, formularies, or classical divines hold or allow it, but
+    it's disputed even among clergy and educated laity today (Ever-Virgin for Lutherans,
+    Anglicans, Reformed, and Methodists: the Smalcald Articles and the Formula of Concord;
+    Pearson's *Exposition of the Creed*; the Second Helvetic Confession; Wesley's *Letter to a
+    Roman Catholic*);
+  - no: rejected, or foreign to the tradition's teaching and practice.
+
+  Minority movements (Anglo-Catholic use of the rosary) don't change a cell. "Holds or allows"
+  because a mismatch is about what a tradition excludes, not what it requires: Mary praying for
+  a particular person fits Lutheran and Anglican teaching, while invoking her doesn't.
+- **The mismatch is pre-registered both ways:** official only counted as compatible (the
+  confessional view) and as a mismatch (the lived-religion view).
+- **Matching:** content kinds come from the encounter's coded content (a rosary seen counts);
+  titles are matched, whole words and case-insensitive, in the words of Mary claims and of
+  apparition titles. Every matching entry counts, so "Our Lady of Guadalupe" is both "Our
+  Lady" and Guadalupe. An encounter is a mismatch if any item it matches is rejected by the
+  experiencer's tradition.
+- **Area 2 traditions map to columns;** where area 2 leaves it open (Orthodox with no branch,
+  Protestant with no family, a bare "Christian"), every candidate column is tried and an item
+  is a mismatch only if all of them reject it. For traditions with no column (Hindu,
+  Latter-day Saints, unaffiliated), the table doesn't apply: Mary in those accounts is a
+  cross-tradition question.
+- **Titles and devotions the table doesn't cover** are added before the freeze. After it, they
+  are reported as unclassified and never counted as a mismatch, with a sensitivity check that
+  counts them.
+- **Judgment calls recorded in the table's notes:** a bare "immaculate" is left out (Orthodox
+  hymnody and some Anglican divines use it of her); Co-Redemptrix stays Catholic despite *Mater
+  Populi Fidelis* (2025) calling it always inappropriate, since it's Catholic devotional
+  language either way and nearly every account predates the note; Zeitoun fits Oriental
+  Orthodox (approved by the Coptic Church) and isn't foreign to Catholics; "Our Lady" fits
+  Muslims too (Sayyidatuna Maryam); Ever-Virgin is "no" for Muslims (the Qur'an affirms the
+  virginal conception and her chastity but says nothing of afterward).
+
+### Named figures (`tables/named-figures.ts`)
+
+- **Maps each canonical name to a subcategory and home traditions;** the coder writes the name
+  and only suggests a subcategory. It covers named figures, living religious leaders, named
+  angels, and named hostile beings (angels and hostile beings keep their own categories and
+  take only a name and homes from it). A readable view, generated from the table and checked
+  by a test, is in [tables/NAMED_FIGURES.md](tables/NAMED_FIGURES.md).
+- **Columns:** canonical name; aliases; kind; subcategory; year of death (or alive, unknown,
+  or not applicable); homes; note.
+- **Homes** are the traditions in whose mainstream teaching or devotion the figure is revered,
+  using the same columns as the Marian table plus the non-Trinitarian families, Jewish, Sunni,
+  Shia, Hindu, Buddhist, Sikh, Baha'i, Chinese folk or Taoist, New Age, and secular. A figure is
+  outside the experiencer's tradition when none of the area 2 candidate columns is among its
+  homes; unaffiliated experiencers are reported separately.
+- **Shared-heritage saints get their homes from the two splits:** died before Chalcedon (451),
+  every Christian column; 451 to 1054, Catholic, Eastern Orthodox, and Protestants (not
+  Oriental Orthodox: Leo the Great); Western saints from 1054 to about 1517, Catholic and
+  Protestants (not Orthodox: Francis of Assisi).
+- **Living religious leader or named figure is decided by the year of death** against the
+  experience's date, not by the coder (Padre Pio is a living religious leader for experiences
+  before 1968, a saint after).
+- **Religious or secular, decided once per name:** known mainly for faith, or on a church
+  calendar, is religious (Bach, C. S. Lewis, Wilberforce, Martin Luther King Jr.); otherwise
+  secular (Gandhi).
+- **Ambiguous names** ("Saint Teresa," "Sai Baba," a bare "Francis" or "Joseph") resolve to no
+  one: the coder writes the full name, and context decides.
+- **The coder sees the canonical names,** not subcategories or homes, and uses one when it's the
+  same person; otherwise writes the name as the text gives it, in standard form.
+- **Names not in the table:** before the freeze, they're added. After it, they're classified by
+  these written rules without looking at the experiencer's background, in a logged addendum,
+  and every analysis is reported with and without them. Living status is checked again at the
+  freeze.
+
+### Visual features (`tables/visual-features.ts`)
+
+- **What each coded feature points to, keyed on the figure and the feature together,** so a
+  serpent under Mary's feet is Marian imagery, a lamb that is an animal is just a lamb, and a
+  dragon beside St. George is his. A descriptive variable for three uses: iconography from
+  another tradition, whether iconography matches the claim, and what an unidentified being's
+  iconography suggests. It never touches the Jesus ladder. A review view is in
+  [tables/VISUAL_FEATURES.md](tables/VISUAL_FEATURES.md).
+- **It points to:** Christ; Mary; angel; Christian saint or clergy; monastic (Christian or
+  Buddhist); Hindu; Yama; Buddhist (the vase); Buddhist or Hindu (the lotus); folkloric devil;
+  scriptural devil; holy in general (the halo, and rays on anyone but Jesus and Mary);
+  judgment (scales, a ledger); unclear; or nothing (the general features). The finer set is
+  kept; a roll-up to traditions can be computed from it.
+- **The figure is its most specific claim:** Mary, Jesus, God, angel, named figures (by the
+  named-figures table: Hindu deity, Yama, Buddhist figure, Christian saint, other), hostile
+  being, animal, a person known in life, unidentified. Resemblance-only claims don't count,
+  since a resemblance usually comes from the iconography itself ("looked like an angel"
+  because of the wings), which would make the comparison circular.
+- **A known person's own clothes and objects point to nothing** (a deceased aunt's habit, a
+  grandfather's cross, a relative holding a baby), and **an animal's own parts point to
+  nothing** (a deer's horns, a dog's tail, a bird's wings).
+- **Ambiguous combinations are "unclear,"** never a guess: a veil, a crescent moon, or an
+  infant on an unidentified being; a serpent, dragon, or lion beside one; many arms, an animal
+  head, or blue skin on a hostile being; and any feature coded "other," which only its words
+  describe.
+- **Flowers follow their kind:** a lotus is Buddhist or Hindu on any figure, roses on Mary are
+  Marian, anything else points to nothing.
 
 ## Open
 
-- Area 3: designed and in the schema (v4 draft). Next: trial coding on practice round 1.
-  The full schema exports to about 80 KB of JSON Schema, so the coding prompt may need to
-  code in passes.
-- Pre-registered tables to build before the codebook is frozen: named figures (canonical
-  name, subcategory, traditions); visual features, keyed on figure category and feature;
-  which confessional content and Marian titles are Catholic-specific and which are shared.
-- Review of the choices made while writing the schema (above).
+- Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
+  pages in notes, five as full JSON records in the private repository). The snags were
+  settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
+  so the coding prompt may need to code in passes.
+- Pre-registered tables: all three (Marian, named figures, visual features) are built and
+  approved. At the freeze: check living status in the named-figures table, and log any names
+  added after it in an addendum.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
-  ones.
+  ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
+  to area 4's pre-registered details, never guessed at by the coder. Candidate source noted
+  from trial coding: the *Urantia Book*.

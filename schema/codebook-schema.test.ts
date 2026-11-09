@@ -132,6 +132,7 @@ const coded: CodedRecordType = {
       tone: 'mixed',
       distressingContent: [{ type: 'void', evidence: [narrative(220, 260)] }],
       experiencerLabels: [],
+      surroundingsAlive: { value: false, words: null, evidence: [] },
     },
   ],
   nonExperiencerText: [],
@@ -180,7 +181,7 @@ const coded: CodedRecordType = {
           },
           when: 'during',
           how: ['recognized'],
-          certainty: 'asserted',
+          certainty: 'asserted', hedgedElsewhere: false,
           evidence: [narrative(300, 318)],
         },
       ],
@@ -188,14 +189,14 @@ const coded: CodedRecordType = {
       vital: {
         status: 'dead', diedBeforeBirth: null, experiencerKnew: 'knew', deathLearned: null, diedSoonAfter: false,
         futureChild: null, timeSinceDeath: { kind: 'years', years: 12, basis: 'computed' },
-        apparentAge: { relative: 'younger', statedYears: null }, evidence: [narrative(10, 23)],
+        apparentAge: { relative: 'younger', statedYears: null }, apparentCondition: 'not_stated', evidence: [narrative(10, 23)],
       },
       livingPersonExplanation: null,
       apparentSex: 'female',
       maternalLanguage: null,
       representation: 'personal_likeness',
       visualDetails: [
-        { feature: 'flowers', words: 'holding white lilies', color: 'white', flowerKind: 'lily', evidence: [narrative(320, 340)] },
+        { feature: 'flowers', senses: ['seen'], words: 'holding white lilies', colors: ['white'], flowerKind: 'lily', evidence: [narrative(320, 340)] },
       ],
       imageComparisons: [],
       places: ['otherworldly'],
@@ -204,13 +205,15 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'welcomes', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(341, 360)] },
-        { action: 'sends_back', sendBackReason: 'not_your_time', revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(361, 390)] },
+        { action: 'welcomes', sendBackReasons: [], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(341, 360)] },
+        { action: 'sends_back', sendBackReasons: ['not_your_time'], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(361, 390)] },
       ],
       christSpecificContent: [],
       communication: ['spoken'],
       response: ['love_or_joy'],
       invocation: null,
+      deniedAsBeing: null,
+      deniedIdentities: [],
       evidence: [narrative(300, 390)],
     },
     {
@@ -224,11 +227,11 @@ const coded: CodedRecordType = {
       identity: [
         {
           words: ['a being of light'], category: 'being_of_light', name: null, suggestedSubcategory: null, tie: null,
-          when: 'not_stated', how: ['not_stated'], certainty: 'asserted', evidence: [narrative(400, 416)],
+          when: 'not_stated', how: ['not_stated'], certainty: 'asserted', hedgedElsewhere: false, evidence: [narrative(400, 416)],
         },
         {
           words: ['Jesus'], category: 'jesus', name: null, suggestedSubcategory: null, tie: null,
-          when: 'after', how: ['appearance'], certainty: 'hedged', evidence: [qa(24, [9, 14])],
+          when: 'after', how: ['appearance'], certainty: 'hedged', hedgedElsewhere: false, evidence: [qa(24, [9, 14])],
         },
       ],
       familiarity: { value: 'not_stated', words: null, evidence: [] },
@@ -245,25 +248,27 @@ const coded: CodedRecordType = {
       animal: null,
       disposition: ['loving'],
       actions: [
-        { action: 'forgives', sendBackReason: null, revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(430, 450)] },
-        { action: 'reveals_knowledge', sendBackReason: null, revelationKind: 'theological', instructionKinds: [], instructionWords: null, evidence: [narrative(450, 470)] },
+        { action: 'forgives', sendBackReasons: [], revelationKind: null, instructionKinds: [], instructionWords: null, evidence: [narrative(430, 450)] },
+        { action: 'reveals_knowledge', sendBackReasons: [], revelationKind: 'theological', instructionKinds: [], instructionWords: null, evidence: [narrative(450, 470)] },
       ],
       christSpecificContent: [{ kind: 'forgiveness_of_sins', evidence: [narrative(430, 450)] }],
       communication: ['mind_to_mind'],
       response: ['awe', 'awareness_of_sin'],
       invocation: null,
+      deniedAsBeing: null,
+      deniedIdentities: [],
       evidence: [narrative(400, 470)],
     },
   ],
   doctrinalStatements: [
     {
       doctrineId: '1example_x_nde/d1', doctrine: 'judgment_after_death', words: 'we judge ourselves',
-      stance: 'reinterprets', source: 'conveyed_by_being', episodeId: EP, encounterId: `${EP}/e2`,
+      stance: 'reinterprets', certainty: 'asserted', source: 'conveyed_by_being', episodeId: EP, encounterId: `${EP}/e2`,
       hellQualities: [], evidence: [narrative(450, 470)],
     },
     {
       doctrineId: '1example_x_nde/d2', doctrine: 'hell_exists', words: 'hell is a choice',
-      stance: 'reinterprets', source: 'experiencer_view_after', episodeId: null, encounterId: null,
+      stance: 'reinterprets', certainty: 'hedged', source: 'experiencer_view_after', episodeId: null, encounterId: null,
       hellQualities: ['self_chosen'], evidence: [qa(30, [0, 16])],
     },
   ],
@@ -280,7 +285,7 @@ const coded: CodedRecordType = {
   provenance: {
     exposures: [
       {
-        episodeIds: [EP], medium: 'film_or_tv', title: null, when: 'between_experience_and_telling',
+        episodeIds: [EP], medium: 'film_or_tv', title: null, person: null, when: 'between_experience_and_telling',
         changedUnderstanding: true, evidence: [qa(45, [4, 30])],
       },
     ],
@@ -293,13 +298,16 @@ const coded: CodedRecordType = {
     ],
     tellingVaries: [],
     reactions: [
-      { episodeIds: [EP], reaction: 'dismissed', dismissedAs: 'dream', who: 'family', evidence: [qa(45, [61, 90])] },
+      { episodeIds: [EP], reaction: 'dismissed', dismissedAs: 'dream', words: null, who: 'family', evidence: [qa(45, [61, 90])] },
     ],
     disclaimers: [],
     naturalExplanations: [
-      { episodeIds: [EP], words: 'maybe just low oxygen', stance: 'considers', evidence: [qa(47, [5, 26])] },
+      { episodeIds: [EP], words: 'maybe just low oxygen', stance: 'considers', earlierStance: null, evidence: [qa(47, [5, 26])] },
     ],
+    predispositions: [],
+    influenceStatements: [],
   },
+  longingToReturn: [],
 };
 
 /** A deep copy with one change applied. */
@@ -437,7 +445,7 @@ test('visual details agree with the representation level', () => {
   assert.equal(parses((c) => { c.encounters[0].representation = 'iconographic'; }), false); // flowers are general
   assert.equal(parses((c) => {
     c.encounters[0].representation = 'iconographic';
-    c.encounters[0].visualDetails.push({ feature: 'wounds', words: 'marks on his hands', color: null, flowerKind: null, evidence: [narrative(1, 9)] });
+    c.encounters[0].visualDetails.push({ feature: 'wounds', senses: ['seen'], words: 'marks on his hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] });
   }), true);
   assert.equal(parses((c) => { c.encounters[0].visualDetails[0].flowerKind = null; }), false);
   assert.equal(parses((c) => { c.encounters[0].visualDetails.push(structuredClone(c.encounters[0].visualDetails[0])); }), false);
@@ -461,15 +469,15 @@ test('vital status: what each status requires', () => {
   assert.equal(parses(vital({ experiencerKnew: 'did_not_know', deathLearned: { how: 'told_by_family', deathTiming: 'around_the_same_time' } })), true);
   assert.equal(parses(vital({ status: 'died_before_birth', timeSinceDeath: null })), false); // which kind, if stated
   assert.equal(parses(vital({ status: 'died_before_birth', diedBeforeBirth: 'miscarriage', timeSinceDeath: null })), true);
-  assert.equal(parses(vital({ status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null })), false); // futureChild
+  assert.equal(parses(vital({ status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null, apparentCondition: null })), false); // futureChild
   assert.equal(parses(vital({
-    status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null,
+    status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null, apparentCondition: null,
     futureChild: { laterBorn: 'yes', foretoldMatched: ['name'] },
   })), true);
 });
 
 test('a living person met as part of the experience needs an explanation, and only then', () => {
-  const living = (c: any) => Object.assign(c.encounters[0].vital, { status: 'alive', timeSinceDeath: null, apparentAge: null });
+  const living = (c: any) => Object.assign(c.encounters[0].vital, { status: 'alive', timeSinceDeath: null, apparentAge: null, apparentCondition: null });
   assert.equal(parses(living), false);
   assert.equal(parses((c) => {
     living(c);
@@ -483,7 +491,7 @@ test('a living person met as part of the experience needs an explanation, and on
 });
 
 test('actions, hostile beings, and animals carry their own details', () => {
-  assert.equal(parses((c) => { c.encounters[0].actions[1].sendBackReason = null; }), false);
+  assert.equal(parses((c) => { c.encounters[0].actions[1].sendBackReasons = []; }), false);
   assert.equal(parses((c) => { c.encounters[1].actions[1].revelationKind = null; }), false);
   assert.equal(parses((c) => { c.encounters[0].disposition = ['hostile']; }), false); // invocation required
   assert.equal(parses((c) => {
@@ -566,7 +574,7 @@ test("a relative's report uses the kinship parts, and only a relative's", () => 
 });
 
 test('instructions record what was asked, and only on gives_instructions_or_requests', () => {
-  const ask = { action: 'gives_instructions_or_requests', sendBackReason: null, revelationKind: null,
+  const ask = { action: 'gives_instructions_or_requests', sendBackReasons: [], revelationKind: null,
     instructionKinds: ['pray', 'pass_on_message'], instructionWords: 'tell them to pray', evidence: [narrative(380, 399)] };
   assert.equal(parses((c) => { c.encounters[0].actions.push(ask); }), true);
   assert.equal(parses((c) => { c.encounters[0].actions.push({ ...ask, instructionKinds: [] }); }), false);
@@ -608,9 +616,14 @@ test("resolveEncounter: Mary's levels", () => {
   assert.deepEqual([named.marianLevel, named.maryClaimCertainty], ['two', 'hedged']);
   assert.equal(resolveEncounter(encounter(1, (e) => {
     mary(e);
-    e.visualDetails.push({ feature: 'rosary', words: 'holding a rosary', color: null, flowerKind: null, evidence: [narrative(417, 433)] });
+    e.visualDetails.push({ feature: 'rosary', senses: ['seen'], words: 'holding a rosary', colors: [], flowerKind: null, evidence: [narrative(417, 433)] });
   })).marianLevel, 'three');
   assert.equal(resolveEncounter(encounter(0)).marianLevel, 'none');
+  // Level one needs her to be part of the experience and to interact with the experiencer.
+  const passerBy = resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.actions = []; e.communication = ['none']; }));
+  assert.equal(passerBy.marianLevel, 'none');
+  assert.equal(resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.presence = 'unclear'; })).marianLevel, 'none');
+  assert.equal(resolveEncounter(encounter(1, (e) => { unnamedWoman(e); e.actions = []; })).marianLevel, 'one'); // she communicates
 });
 
 test('resolveJesus: the ladder, rung by rung', () => {
@@ -632,7 +645,11 @@ test('resolveJesus: the ladder, rung by rung', () => {
   const recognizedDuring = withChange(coded, (c) => {
     Object.assign(c.encounters[1].identity[1], { when: 'during', how: ['recognized'], certainty: 'asserted', evidence: [narrative(417, 422)] });
   }) as CodedRecordType;
-  assert.equal(resolveJesus(derived, recognizedDuring, [EP]).announcedOrRecognizedDuringAsserted, true);
+  const strict = resolveJesus(derived, recognizedDuring, [EP]);
+  assert.deepEqual([strict.announcedOrRecognizedDuringAsserted, strict.announcedOrRecognizedDuringAssertedThroughout], [true, true]);
+  const hedgedSomewhere = withChange(recognizedDuring, (c) => { c.encounters[1].identity[1].hedgedElsewhere = true; }) as CodedRecordType;
+  const both = resolveJesus(derived, hedgedSomewhere, [EP]);
+  assert.deepEqual([both.announcedOrRecognizedDuringAsserted, both.announcedOrRecognizedDuringAssertedThroughout], [true, false]);
 
   const questionWordingOnly = withChange(derived, (d) => {
     for (const h of d.parts[0].jesusKeywordHits) { h.narrative = 0; h.answers = 0; }
@@ -645,4 +662,117 @@ test('the resolved Jesus ladder must be nested', () => {
   const j = resolveJesus(derived, coded, [EP]);
   assert.equal(ResolvedJesusSchema.safeParse({ ...j, identifiedDuring: true }).success, false); // not in the narrative
   assert.equal(ResolvedJesusSchema.safeParse({ ...j, keywordWebsite: { narrow: true, broad: false } }).success, false);
+});
+
+test('practice-round additions: send-back reasons, repeated "other" details, reactions, known people', () => {
+  const sendBack = (reasons: string[]) => parses((c) => { (c.encounters[0].actions[1] as { sendBackReasons: string[] }).sendBackReasons = reasons; });
+  assert.equal(sendBack(['offered_a_choice', 'others_need_you']), true);
+  assert.equal(sendBack(['none_given', 'mistake']), false);
+
+  const other = (words: string) => ({ feature: 'other' as const, senses: ['seen' as const], words, colors: [], flowerKind: null, evidence: [narrative(320, 340)] });
+  assert.equal(parses((c) => { c.encounters[0].visualDetails.push(other('a lantern'), other('a ribbon')); }), true);
+  assert.equal(parses((c) => {
+    const lilies = c.encounters[0].visualDetails[0];
+    c.encounters[0].visualDetails.push({ ...lilies, words: 'more lilies' });
+  }), false);
+  assert.equal(parses((c) => { c.encounters[0].visualDetails[0].colors = ['white', 'silver']; }), true);
+
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { reaction: 'other', dismissedAs: null }); }), false);
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { reaction: 'other', dismissedAs: null, words: 'said nothing at all' }); }), true);
+  assert.equal(parses((c) => { c.provenance.reactions[0].dismissedAs = 'other'; }), false);
+  assert.equal(parses((c) => { Object.assign(c.provenance.reactions[0], { dismissedAs: 'drugs_or_medication' }); }), true);
+
+  const known = (o: object) => parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'known_person_relationship_not_stated', tie: null }, o);
+  });
+  assert.equal(known({}), true);
+  assert.equal(known({ name: 'Someone Known' }), false); // a private person never gets a canonical name
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'known_person_relationship_not_stated', tie: null });
+    c.encounters[0].vital = null;
+  }), false); // vital status is required
+});
+
+test('doctrine: certainty without resemblance; the view before; new doctrines; professional ties', () => {
+  assert.equal(parses((c) => { (c.doctrinalStatements[0] as { certainty: string }).certainty = 'resemblance'; }), false);
+  assert.equal(parses((c) => {
+    Object.assign(c.doctrinalStatements[1], { doctrine: 'life_after_death', stance: 'affirms', source: 'experiencer_view_before', hellQualities: [] });
+  }), true);
+  assert.equal(parses((c) => { Object.assign(c.doctrinalStatements[1], { doctrine: 'trinity', hellQualities: [] }); }), true);
+  assert.equal(parses((c) => { Object.assign(c.doctrinalStatements[1], { doctrine: 'preexistence_of_souls', hellQualities: [] }); }), true);
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], {
+      category: 'friend_or_acquaintance',
+      tie: { relationship: null, friendTypes: ['patient_of_experiencer'], religiousRole: null, closeness: null },
+    });
+  }), true);
+});
+
+test('animate surroundings: the flag needs words and evidence when true; things that interact are encounters', () => {
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: true, words: null, evidence: [] }; }), false);
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: false, words: 'the meadow was aware', evidence: [narrative(1, 9)] }; }), false);
+  assert.equal(parses((c) => { c.episodes[0].surroundingsAlive = { value: true, words: 'the meadow was aware', evidence: [narrative(1, 9)] }; }), true);
+  assert.equal(parses((c) => {
+    Object.assign(c.encounters[0].identity[0], { category: 'animate_object_or_landscape', tie: null });
+    c.encounters[0].vital = null;
+  }), true);
+});
+
+test('hedged elsewhere: never on a resemblance', () => {
+  assert.equal(parses((c) => { c.encounters[0].identity[0].hedgedElsewhere = true; }), true);
+  assert.equal(parses((c) => { Object.assign(c.encounters[0].identity[0], { certainty: 'resemblance', hedgedElsewhere: true }); }), false);
+});
+
+test('mentions: one place is the narrative or the whole questionnaire; denials are kept on the encounter', () => {
+  assert.equal(parses((c) => { c.jesusMentions[0].evidence.push(qa(31, [0, 5])); }), true); // two items, one place
+  assert.equal(parses((c) => { c.jesusMentions[0].evidence.push(narrative(1, 5)); }), false); // two places
+  assert.equal(parses((c) => {
+    c.jesusMentions.push({ ...c.jesusMentions[0], evidence: [qa(32, [0, 5])] });
+  }), false); // a second entry for the same kind, time, and place
+  assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [qa(39, [0, 15])] }; }), true);
+  assert.equal(parses((c) => { c.encounters[1].deniedAsBeing = { words: 'it was no being', evidence: [] }; }), false);
+});
+
+test('dispositions not stated, details felt in the dark, and invocations only beyond the physical setting', () => {
+  assert.equal(parses((c) => { c.encounters[1].disposition = ['not_stated']; }), true);
+  assert.equal(parses((c) => { c.encounters[1].disposition = ['not_stated', 'loving']; }), false);
+
+  const claws = (senses: ('seen' | 'felt' | 'heard')[]) => parses((c) => {
+    const e = c.encounters[1];
+    e.representation = 'not_described';
+    e.visualDetails = [{ feature: 'claws', senses, words: 'sharp claws', colors: [], flowerKind: null, evidence: [narrative(1, 9)] }];
+  });
+  assert.equal(claws(['felt']), true);
+  assert.equal(claws(['felt', 'seen']), false); // seen details need a representation
+  assert.equal(parses((c) => {
+    const e = c.encounters[1];
+    e.representation = 'iconographic';
+    e.visualDetails = [{ feature: 'wounds', senses: ['felt'], words: 'wounded hands', colors: [], flowerKind: null, evidence: [narrative(1, 9)] }];
+  }), false); // iconographic needs a seen feature
+
+  const attacker = (o: object) => parses((c) => { Object.assign(c.encounters[1], { presence: 'physically_present', disposition: ['hostile'] }, o); });
+  assert.equal(attacker({}), true);
+  assert.equal(attacker({ invocation: { invoked: 'no', names: [], effect: 'not_stated', evidence: [] } }), false);
+});
+
+test('cluster 8: predispositions, influence, changed explanations, longing to return, denials, and apparent condition', () => {
+  assert.equal(parses((c) => {
+    c.provenance.predispositions.push({ episodeIds: [EP], kind: 'meditation_or_contemplative_practice', when: 'before', words: 'years of daily sitting', evidence: [narrative(1, 9)] });
+    c.provenance.influenceStatements.push({ episodeIds: [EP], stance: 'denies_influence', words: 'reading had no influence', evidence: [qa(47, [5, 26])] });
+    c.provenance.naturalExplanations[0].earlierStance = 'endorses';
+    c.longingToReturn.push({ episodeIds: [EP], kind: 'longing_to_return', words: 'I long to go back', evidence: [narrative(1, 9)] });
+  }), true);
+  assert.equal(parses((c) => { c.provenance.predispositions.push({ episodeIds: ['nope'], kind: 'other', when: 'before', words: 'x', evidence: [narrative(1, 9)] }); }), false);
+  assert.equal(parses((c) => { c.longingToReturn.push({ episodeIds: ['nope'], kind: 'longing_to_return', words: 'x', evidence: [narrative(1, 9)] }); }), false);
+  assert.equal(parses((c) => { c.provenance.naturalExplanations[0].earlierStance = 'considers'; }), false); // no change
+
+  const denied = (d: object) => parses((c) => {
+    c.encounters[1].deniedIdentities.push({ category: 'god', name: null, by: 'being', words: 'no, I am not God', evidence: [narrative(1, 9)], ...d } as never);
+  });
+  assert.equal(denied({}), true);
+  assert.equal(denied({ category: 'named_figure' }), false); // needs a canonical name
+  assert.equal(denied({ category: 'family', name: 'Some Name' }), false); // never named
+
+  assert.equal(parses((c) => { c.encounters[0].vital!.apparentCondition = 'healed_or_whole'; }), true);
+  assert.equal(parses((c) => { c.encounters[0].vital!.apparentCondition = null; }), false);
 });

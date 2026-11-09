@@ -352,7 +352,7 @@ export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
  *  so analysis can combine them as it likes. */
 export const JESUS_KEYWORDS_NARROW = ['jesus', 'christ'] as const;
 export const JESUS_KEYWORDS_BROAD = [
-  ...JESUS_KEYWORDS_NARROW, 'jesús', 'cristo', 'isa', 'yeshua', 'savior', 'saviour', 'messiah',
+  ...JESUS_KEYWORDS_NARROW, 'jesús', 'cristo', 'christos', 'isa', 'yeshua', 'savior', 'saviour', 'messiah',
 ] as const;
 export type JesusKeyword = (typeof JESUS_KEYWORDS_BROAD)[number];
 
@@ -531,7 +531,7 @@ export type DistressingContent = z.infer<typeof DistressingContent>;
 
 /** What the experiencer calls the experience or a place in it. None stated: an empty list. */
 export const ExperiencerLabel = obj({
-  label: z.enum(['hell_or_hellish', 'purgatory', 'void', 'other']),
+  label: z.enum(['heaven_or_paradise', 'hell_or_hellish', 'purgatory', 'void', 'other']),
   words: CopiedText,
   when: z.enum(['during', 'after', 'not_stated']),
   evidence: z.array(Evidence).min(1),
@@ -561,12 +561,20 @@ export const Episode = obj({
   psychiatricMedication: z.array(PsychiatricMedication), // empty: none stated
   describesExperience: z.enum(['yes', 'partial', 'no']),
   experienceToldIn: obj({ narrative: z.boolean(), questionnaire: z.boolean() }),
-  /** 'mixed': turned from one to the other. */
+  /** 'mixed': turned from one to the other, with a distressing phase described (a stretch of
+   *  the experience, not a moment's fear). Distress after returning to the body doesn't count. */
   tone: z.enum(['pleasant', 'distressing', 'mixed', 'neutral_or_unclear']),
   distressingContent: z.array(DistressingContent),
   experiencerLabels: z.array(ExperiencerLabel),
+  /** The setting itself (land, water, plants, the light filling the place) reported literally
+   *  as alive, aware, or conscious, with nothing interacting with the experiencer. Anything that
+   *  communicates with them or acts toward them is an encounter (animate_object_or_landscape).
+   *  Similes ("as if the trees were breathing") don't count. */
+  surroundingsAlive: obj({ value: z.boolean(), words: CopiedText.nullable(), evidence: z.array(Evidence) }),
 }).refine((e) => e.tone !== 'pleasant' || e.distressingContent.length === 0, {
   message: 'a pleasant episode has no distressing content',
+}).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
+  message: 'surroundingsAlive has words and evidence exactly when true',
 });
 export type Episode = z.infer<typeof Episode>;
 
@@ -688,7 +696,11 @@ export type Certainty = z.infer<typeof Certainty>;
 
 export const BeingCategory = z.enum([
   // People. Vital status is an attribute, so living and deceased people share these.
+  // relative_never_met is implied from three greats up (great-great-great-grandparent) unless
+  // the text says they met; with fewer, the text decides.
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  /** Known in life, relationship not stated ("people I knew"): could be family or friends. */
+  'known_person_relationship_not_stated',
   // God and Christian figures. "God" stays God, with its words kept.
   'god', 'jesus', 'holy_spirit', 'mary', 'angel',
   /** Saints, Protestant luminaries, church fathers, biblical figures, other traditions' figures,
@@ -698,25 +710,35 @@ export const BeingCategory = z.enum([
   'living_religious_leader', // not known personally, any tradition
   // Unidentified (a being with no claim outside this group was never identified).
   'being_of_light', 'voice_or_presence', 'guide', 'council_or_robed_figures', 'orb', 'unrecognized_human',
+  'unidentified_being', // a being or entity none of the others describes
   'hostile_being', // the devil, demons, other hostile beings; a monstrous or demonic beast
   'animal', // an ordinary animal, hostile or not
   // Controls
   'extraterrestrial', 'folkloric_being', 'fictional_character', 'mechanical_being',
-  'self_double', // a double or higher self appearing as a separate being; one's own body never counts
+  /** Something normally inanimate (sand, water, a tree) that communicates with the experiencer
+   *  or acts toward them, reported literally. Merely alive surroundings: the episode's flag. */
+  'animate_object_or_landscape',
+  /** A being the experiencer identifies as themselves in some form (a double, a higher self),
+   *  appearing as a separate being; one's own body never counts. Merely looking like the
+   *  experiencer is representation personal_likeness. */
+  'self_double',
   'other',
 ]);
 export type BeingCategory = z.infer<typeof BeingCategory>;
 
 export const UNIDENTIFIED_CATEGORIES: readonly BeingCategory[] = [
   'being_of_light', 'voice_or_presence', 'guide', 'council_or_robed_figures', 'orb', 'unrecognized_human',
+  'unidentified_being',
 ];
 /** People known through ordinary life. They never get a canonical name, for privacy. */
 const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
-  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally', 'unrecognized_human',
+  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  'known_person_relationship_not_stated', 'unrecognized_human',
 ];
 /** Vital status is required for these. */
 const VITAL_CATEGORIES: readonly BeingCategory[] = [
-  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally', 'animal',
+  'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
+  'known_person_relationship_not_stated', 'animal',
 ];
 
 /** The coder's suggestion only; the pre-registered table decides. Religious versus secular is
@@ -751,7 +773,12 @@ export const CanonicalName = z.string().min(1).max(80);
 
 export const FriendType = z.enum([
   'childhood_friend', 'school_friend_or_classmate', 'close_friend', 'coworker', 'military_comrade',
-  'neighbor', 'mentor_or_teacher', 'acquaintance', 'other',
+  'neighbor', 'mentor_or_teacher', 'acquaintance', 'unspecified',
+  // Clinical or paid care, by direction. Unpaid care within a family stays with family.
+  'patient_of_experiencer', // the experiencer was their clinician or paid carer
+  'clinician_or_carer_of_experiencer', // their own doctor, nurse, therapist, or paid carer
+  'other_professional', // a client, customer, employer: known through work, not a coworker or mentor
+  'other',
 ]);
 
 export const ReligiousRole = z.enum([
@@ -789,10 +816,14 @@ export const IdentityClaim = obj({
   tie: PersonTie.nullable(),
   when: IdentityTiming,
   how: z.array(IdentityBasis).min(1),
+  /** The strongest certainty any passage states; hedged passages stay in evidence. */
   certainty: Certainty,
+  /** Some passage states this claim less certainly (hedged, or only a resemblance). */
+  hedgedElsewhere: z.boolean(),
   evidence: z.array(Evidence).min(1),
 }).superRefine((c, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
+  if (c.hedgedElsewhere && c.certainty === 'resemblance') issue('nothing is weaker than a resemblance');
   if (c.how.includes('announced') && c.when !== 'during') issue("'announced' is during only");
   if ((c.how.includes('told_by_person') || c.how.includes('reading_or_media')) && c.when !== 'after') {
     issue("'told_by_person' and 'reading_or_media' are after only");
@@ -858,9 +889,13 @@ export const Vital = obj({
   }).nullable(),
   timeSinceDeath: TimeSinceDeath.nullable(),
   apparentAge: obj({
+    /** A child who died before birth appearing as an infant is as_when_died; a toddler or older is older. */
     relative: z.enum(['as_when_died', 'younger', 'older', 'ageless', 'not_stated']),
     statedYears: z.number().min(0).max(150).nullable(),
   }).nullable(),
+  /** Only when the text contrasts it with life or death: whole where they were paralysed, ill,
+   *  or injured; or appearing as they were at death. Given exactly when apparentAge is. */
+  apparentCondition: z.enum(['healed_or_whole', 'as_at_death', 'not_stated']).nullable(),
   evidence: z.array(Evidence),
 }).superRefine((v, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
@@ -875,6 +910,7 @@ export const Vital = obj({
   if ((v.status === 'dead' || v.status === 'died_before_birth') !== (v.apparentAge !== null)) {
     issue('apparentAge is given exactly for the dead and those who died before birth');
   }
+  if ((v.apparentAge !== null) !== (v.apparentCondition !== null)) issue('apparentCondition is given exactly when apparentAge is');
 });
 export type Vital = z.infer<typeof Vital>;
 
@@ -905,15 +941,17 @@ export const GENERAL_VISUAL_FEATURES: readonly VisualFeature[] = [
 ];
 
 export const Color = z.enum([
-  'white', 'black_or_dark', 'gold', 'blue', 'red', 'purple', 'brown', 'grey', 'green', 'pale', 'tan_or_olive', 'blond', 'other',
+  'white', 'black_or_dark', 'gold', 'silver', 'blue', 'red', 'purple', 'brown', 'grey', 'green', 'pale', 'tan_or_olive', 'blond', 'other',
 ]);
 
-/** One per feature per encounter; every place it is mentioned goes in evidence. Expressions
+/** One per feature per encounter ("other" excepted); every place it is mentioned goes in evidence. Expressions
  *  ("smiling") belong to disposition; beings around a figure are encounters of their own. */
 export const VisualDetail = obj({
   feature: VisualFeature,
+  /** How it was perceived; features felt or heard in the dark count too. */
+  senses: z.array(z.enum(['seen', 'felt', 'heard'])).min(1),
   words: CopiedText,
-  color: Color.nullable(), // only when stated
+  colors: z.array(Color), // only when stated, in the order described (eyes grey, then green); none: empty
   flowerKind: z.enum(['rose', 'lily', 'lotus', 'other', 'not_stated']).nullable(),
   evidence: z.array(Evidence).min(1),
 }).refine((d) => (d.feature === 'flowers') === (d.flowerKind !== null), {
@@ -928,22 +966,27 @@ export const EncounterAction = obj({
     'warns', 'gives_instructions_or_requests', 'attacks_or_torments', 'rescues_or_protects',
     'shows_knowledge_of_earthly_events_since_death', 'other',
   ]),
-  /** For sends_back (which includes discussing returning): the reason given. */
-  sendBackReason: z.enum([
+  /** For sends_back (which includes discussing returning): every reason given; none given: ['none_given']. */
+  sendBackReasons: z.array(z.enum([
     'not_your_time', 'unfinished_purpose', 'others_need_you', 'mistake', 'offered_a_choice', 'none_given',
-  ]).nullable(),
+  ])),
   /** For reveals_knowledge. */
   revelationKind: z.enum(['theological', 'cosmic', 'future']).nullable(),
   /** For gives_instructions_or_requests: what the being asked, one or more, from any being. */
   instructionKinds: z.array(z.enum([
     'pray', 'specific_devotion', 'join_return_to_or_leave_religion', 'how_to_live', 'pass_on_message',
-    'care_for_person', 'other',
+    'care_for_person',
+    'practical_action', // what to do now to survive or get to safety ("breathe", "go left")
+    'other',
   ])),
   instructionWords: CopiedText.nullable(),
   evidence: z.array(Evidence).min(1),
 })
-  .refine((a) => (a.action === 'sends_back') === (a.sendBackReason !== null), {
-    message: 'sendBackReason is given exactly for sends_back',
+  .refine((a) => (a.action === 'sends_back') === (a.sendBackReasons.length > 0), {
+    message: 'sendBackReasons are given exactly for sends_back',
+  })
+  .refine((a) => !a.sendBackReasons.includes('none_given') || a.sendBackReasons.length === 1, {
+    message: "'none_given' can't be combined with a reason",
   })
   .refine((a) => (a.action === 'gives_instructions_or_requests') === (a.instructionKinds.length > 0), {
     message: 'instructionKinds are given exactly for gives_instructions_or_requests',
@@ -958,7 +1001,9 @@ export type EncounterAction = z.infer<typeof EncounterAction>;
 
 export const AnimalDetails = obj({
   roles: z.array(z.enum([
-    'own_pet', 'others_pet', 'working_or_farm', 'scenery', 'animal_form_guide', 'hostile_beast',
+    'own_pet', 'others_pet', 'working_or_farm', 'scenery', 'animal_form_guide',
+    'companion', // stays with or comforts the experiencer, not a pet or guide
+    'hostile_beast',
   ])).min(1),
   species: z.enum(['dog', 'cat', 'horse', 'bird', 'small_pet', 'reptile_or_amphibian', 'other']),
   words: CopiedText,
@@ -979,6 +1024,11 @@ export const Invocation = obj({
 
 /** One being, or a group, met in one episode. Holds only what is described in the narrative or
  *  an answer's comment: a box ticked with nothing described creates no encounter. */
+export const ConfessionalKind = z.enum([
+  'rosary', 'scapular', 'purgatory', 'novena', 'intercedes', 'invoked', 'apparition_title', 'other_devotion',
+]);
+export type ConfessionalKind = z.infer<typeof ConfessionalKind>;
+
 export const Encounter = obj({
   encounterId: z.string(), // `${episodeId}/e1`
   episodeId: z.string(),
@@ -995,7 +1045,8 @@ export const Encounter = obj({
   }).refine((c) => (c.kind === 'exact') === (c.n !== null), { message: 'n is given exactly for an exact count' }),
   /** At least one. A being with no claim outside UNIDENTIFIED_CATEGORIES was never identified. */
   identity: z.array(IdentityClaim).min(1),
-  /** Only from the text, never from the person's background. */
+  /** Only from the text, never from the person's background; about ordinary life. Meeting the
+   *  being in an earlier experience is sameBeingAs, linking an encounter in that episode. */
   familiarity: obj({
     value: z.enum(['knew_personally', 'knew_of', 'claims_no_prior_knowledge', 'not_stated']),
     words: CopiedText.nullable(),
@@ -1010,8 +1061,11 @@ export const Encounter = obj({
   }).nullable(),
   /** From the description or pronouns; never from a name or the pronouns conventionally used for God. */
   apparentSex: z.enum(['female', 'male', 'neither_or_both', 'not_stated']),
+  /** Described as motherly, or addressing the experiencer as her child ("my son"); tenderness
+   *  alone doesn't count. */
   maternalLanguage: obj({ words: CopiedText, evidence: z.array(Evidence).min(1) }).nullable(),
-  /** The most specific that applies. A bearded figure in a robe is a generic figure. */
+  /** The most specific that applies. A bearded figure in a robe is a generic figure.
+   *  personal_likeness: looks like a particular person or animal, the experiencer included. */
   representation: z.enum(['not_described', 'light_or_formless', 'generic_figure', 'personal_likeness', 'iconographic']),
   visualDetails: z.array(VisualDetail),
   /** work: the named work, or null for a general comparison. */
@@ -1022,8 +1076,11 @@ export const Encounter = obj({
   })),
   places: z.array(z.enum(['earthly', 'transitional', 'otherworldly', 'unclear'])).min(1),
   /** On any encounter where it appears; which items are Catholic-specific is decided at analysis. */
+  /** Which traditions each item fits is decided by the pre-registered table (tables/marian.ts),
+   *  never by the coder. 'intercedes': she prays for someone; 'invoked': someone prays to her
+   *  or asks her prayers. The traditions draw their line between the two. */
   confessionalContent: z.array(obj({
-    kind: z.enum(['rosary', 'scapular', 'purgatory', 'novena', 'intercession', 'apparition_title', 'other_devotion']),
+    kind: ConfessionalKind,
     words: CopiedText,
     evidence: z.array(Evidence).min(1),
   })),
@@ -1031,17 +1088,34 @@ export const Encounter = obj({
     'folkloric', 'scriptural', 'shadow_being', 'mocking_or_grotesque', 'amorphous_creature', 'unseen_presence',
   ])),
   animal: AnimalDetails.nullable(),
-  disposition: z.array(z.enum(['loving', 'neutral_or_instructive', 'hostile', 'ambiguous_or_unsettling'])).min(1),
+  /** Toward the experiencer. 'not_stated' (alone): none shown or stated (a bystander, a figure
+   *  who never notices them). */
+  disposition: z.array(z.enum(['loving', 'neutral_or_instructive', 'hostile', 'ambiguous_or_unsettling', 'not_stated'])).min(1),
   actions: z.array(EncounterAction),
   christSpecificContent: z.array(obj({
     kind: z.enum(['wounds_or_cross', 'forgiveness_of_sins', 'worship', 'reference_to_the_father', 'judgment']),
     evidence: z.array(Evidence).min(1),
   })),
+  /** A voice placed in the head or mind ("as if inside my head", "in my mind", "telepathic",
+   *  "without words") is mind_to_mind, even when the text says "heard"; that's the ordinary
+   *  verb. spoken is for a voice with no such marker. Both only when the text gives both modes. */
   communication: z.array(z.enum(['spoken', 'mind_to_mind', 'instant_knowing', 'showing', 'none', 'not_stated'])).min(1),
   response: z.array(z.enum([
     'awe', 'fear', 'awareness_of_sin', 'worship', 'love_or_joy', 'peace', 'arguing_or_resisting',
   ])), // empty: none stated
   invocation: Invocation.nullable(),
+  /** The experiencer says it wasn't a being (or wasn't a person), though they describe an
+   *  exchange with it ("I met no being, only the Presence"). Kept, not acted on. */
+  deniedAsBeing: obj({ words: CopiedText, evidence: z.array(Evidence).min(1) }).nullable(),
+  /** Identities denied outright ("Are you God?" "No."), by the being or by the experiencer.
+   *  Jesus denials are also negated Jesus mentions. */
+  deniedIdentities: z.array(obj({
+    category: BeingCategory,
+    name: CanonicalName.nullable(), // as for claims: named figures only
+    by: z.enum(['being', 'experiencer']),
+    words: CopiedText,
+    evidence: z.array(Evidence).min(1),
+  })),
   evidence: z.array(Evidence).min(1), // where the encounter is reported
 }).superRefine((e, ctx) => {
   const issue = (message: string, path: (string | number)[] = []) => ctx.addIssue({ code: 'custom', message, path });
@@ -1060,23 +1134,34 @@ export const Encounter = obj({
     issue('livingPersonExplanation is given exactly for a living person met as part of the experience', ['livingPersonExplanation']);
   }
 
-  if (e.representation === 'not_described' && e.visualDetails.length > 0) {
-    issue("'not_described' can't have visual details", ['visualDetails']);
+  // Representation is a visual judgment: only seen details bear on it.
+  const seen = e.visualDetails.filter((d) => d.senses.includes('seen'));
+  if (e.representation === 'not_described' && seen.length > 0) {
+    issue("'not_described' can't have seen details", ['visualDetails']);
   }
-  if (e.representation === 'iconographic' && !e.visualDetails.some((d) => !GENERAL_VISUAL_FEATURES.includes(d.feature))) {
-    issue("'iconographic' needs a feature outside the general group (or 'other')", ['representation']);
+  if (e.representation === 'iconographic' && !seen.some((d) => !GENERAL_VISUAL_FEATURES.includes(d.feature))) {
+    issue("'iconographic' needs a seen feature outside the general group (or 'other')", ['representation']);
   }
-  const features = e.visualDetails.map((d) => d.feature);
-  if (new Set(features).size !== features.length) issue('one visual detail per feature', ['visualDetails']);
+  const features = e.visualDetails.map((d) => d.feature).filter((f) => f !== 'other');
+  if (new Set(features).size !== features.length) issue('one visual detail per feature, except other', ['visualDetails']);
   if (e.places.includes('unclear') && e.places.length > 1) issue("'unclear' stands alone", ['places']);
 
   if (e.hostileIconography.length > 0 && !categories.includes('hostile_being')) {
     issue('hostile iconography is for hostile beings', ['hostileIconography']);
   }
   if (categories.includes('animal') !== (e.animal !== null)) issue('animal details are given exactly for animals', ['animal']);
-  if (e.disposition.includes('hostile') !== (e.invocation !== null)) {
-    issue('invocation is recorded exactly for hostile encounters', ['invocation']);
+  const invocable = e.disposition.includes('hostile') && e.presence !== 'physically_present';
+  if (invocable !== (e.invocation !== null)) {
+    issue('invocation is recorded exactly for hostile encounters not physically present', ['invocation']);
   }
+  if (e.disposition.includes('not_stated') && e.disposition.length > 1) issue("'not_stated' stands alone", ['disposition']);
+
+  e.deniedIdentities.forEach((d, i) => {
+    if (has(PRIVATE_PERSON_CATEGORIES, d.category) && d.name !== null) issue(`${d.category} never gets a canonical name`, ['deniedIdentities', i]);
+    if ((d.category === 'named_figure' || d.category === 'living_religious_leader') && d.name === null) {
+      issue(`a denied ${d.category} needs a canonical name`, ['deniedIdentities', i]);
+    }
+  });
 
   const c = e.communication;
   if ((c.includes('none') || c.includes('not_stated')) && c.length > 1) issue("'none' and 'not_stated' stand alone", ['communication']);
@@ -1094,10 +1179,16 @@ export type Encounter = z.infer<typeof Encounter>;
 
 /** Starter list; grows during trial coding and is frozen before the holdout. */
 export const Doctrine = z.enum([
+  'life_after_death', // stated as a claim, never inferred from the experience itself
   'virgin_birth', 'resurrection_of_jesus', 'general_resurrection', 'exclusivism', 'religious_pluralism',
-  'religion_human_made_or_unnecessary', 'reincarnation', 'universal_salvation', 'divinity_of_jesus', 'atonement',
+  'religion_human_made_or_unnecessary', 'reincarnation', 'preexistence_of_souls', 'universal_salvation',
+  'trinity', // the Godhead itself; "Jesus was only a teacher" is divinity_of_jesus
+  'divinity_of_jesus', 'atonement',
   'self_as_divine', 'departed_aware_of_earthly_events', 'departed_intercede', 'judgment_after_death',
-  'final_judgment', 'hell_exists', 'purgatory', 'other',
+  'final_judgment', 'hell_exists', 'purgatory',
+  /** Only for claims about God, salvation, or the afterlife the list misses. Moral and
+   *  practical teachings stay in the encounter's actions, with their content uncoded. */
+  'other',
 ]);
 export type Doctrine = z.infer<typeof Doctrine>;
 
@@ -1110,9 +1201,11 @@ export const DoctrinalStatement = obj({
   words: CopiedText,
   /** 'reinterprets': neither a clean yes nor a clean no ("the resurrection is spiritual"). */
   stance: z.enum(['affirms', 'denies', 'reinterprets']),
+  /** As for identity claims, without "resemblance": "I think", "or something like it". */
+  certainty: Certainty.exclude(['resemblance']),
   /** "During" follows the strict rule for identity timing; a questionnaire item's framing
    *  ("During your experience, did you gain information…") doesn't decide it. */
-  source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_after', 'not_stated']),
+  source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_before', 'experiencer_view_after', 'not_stated']),
   episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in
   encounterId: z.string().nullable(), // the being that conveyed it
   /** For hell_exists, as many as are stated. */
@@ -1138,10 +1231,15 @@ export type DoctrinalStatement = z.infer<typeof DoctrinalStatement>;
 const EpisodeIds = z.array(z.string()).min(1);
 const Trigger = z.enum(['media', 'therapy_or_hypnosis', 'other_people', 'spontaneous', 'not_stated']);
 
+/** Media or accounts about NDEs, the afterlife, or spiritual beings only. A religious
+ *  upbringing is background; unrelated content (a survival tip from TV) isn't exposure. */
 export const Exposure = obj({
   episodeIds: EpisodeIds,
   medium: z.enum(['book', 'film_or_tv', 'article', 'talk_or_conference', 'another_persons_account', 'online', 'other']),
   title: CopiedText.nullable(), // if named: area 4's direct measure
+  /** An author, speaker, or presenter, if named. Public figures only; never a private person
+   *  (a friend who told their own experience stays null). */
+  person: CopiedText.nullable(),
   when: z.enum(['before_experience', 'between_experience_and_telling', 'not_stated']),
   /** The person says it changed how they understood or remembered the experience. */
   changedUnderstanding: z.boolean(),
@@ -1160,6 +1258,9 @@ export const PriorDevotion = obj({
 }).refine((d) => d.category !== 'named_figure' || d.name !== null, { message: 'a named figure needs a canonical name' });
 
 /** More than one can apply; nothing stated means no entries. */
+/** recovered_later only for explicit remembering ("then I remembered the rest"); understanding
+ *  that grows over time is not a memory event, and an ambiguous "the picture keeps filling in"
+ *  isn't coded. */
 export const MemoryEvent = obj({
   episodeIds: EpisodeIds,
   kind: z.enum(['remembered_all_along', 'recovered_later', 'recognized_as_nde_later']),
@@ -1179,16 +1280,49 @@ export const PriorTelling = obj({
 
 export const Reaction = obj({
   episodeIds: EpisodeIds,
-  reaction: z.enum(['dismissed', 'ridiculed', 'believed_or_supported', 'kept_quiet_for_fear']),
-  dismissedAs: z.enum(['hallucination', 'dream', 'imagination', 'other']).nullable(),
+  reaction: z.enum(['dismissed', 'ridiculed', 'believed_or_supported', 'kept_quiet_for_fear', 'shock_or_disbelief', 'other']),
+  dismissedAs: z.enum(['hallucination', 'dream', 'imagination', 'drugs_or_medication', 'demonic', 'other']).nullable(),
+  /** The listener's words or explanation as reported; required when either value is "other". */
+  words: CopiedText.nullable(),
   who: z.enum(['clinician', 'family', 'friend', 'clergy', 'other', 'not_stated']),
   evidence: z.array(Evidence).min(1),
-}).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' });
+}).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' })
+  .refine((r) => (r.reaction !== 'other' && r.dismissedAs !== 'other') || r.words !== null, { message: 'words are required for other' });
 
+const ExplanationStance = z.enum(['considers', 'endorses', 'rejects']);
 export const NaturalExplanation = obj({
   episodeIds: EpisodeIds,
   words: CopiedText,
-  stance: z.enum(['considers', 'endorses', 'rejects']),
+  /** Now, or as of the telling. */
+  stance: ExplanationStance,
+  /** An earlier stance, when the text says it changed ("for years I took it for a hallucination"). */
+  earlierStance: ExplanationStance.nullable(),
+  evidence: z.array(Evidence).min(1),
+}).refine((n) => n.earlierStance !== n.stance, { message: 'an earlier stance differs from the current one' });
+
+/** Explicit only. Lifelong experiences aren't episodes, so they're recorded here. */
+export const Predisposition = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['meditation_or_contemplative_practice', 'lifelong_visionary_or_psychic_experiences', 'other']),
+  when: z.enum(['before', 'after', 'before_and_after', 'not_stated']), // relative to the episodes
+  words: CopiedText,
+  evidence: z.array(Evidence).min(1),
+});
+
+/** The person's own view of whether prior knowledge (reading, teaching, media) shaped the
+ *  experience: "I'd read about NDEs, but it had no influence." */
+export const InfluenceStatement = obj({
+  episodeIds: EpisodeIds,
+  stance: z.enum(['denies_influence', 'grants_influence', 'unsure']),
+  words: CopiedText,
+  evidence: z.array(Evidence).min(1),
+});
+
+/** Sensitive, explicit only, never inferred; published like the other sensitive flags. */
+export const LongingToReturn = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['longing_to_return', 'suicidal_thoughts_tied_to_returning', 'denies_suicidal_thoughts']),
+  words: CopiedText,
   evidence: z.array(Evidence).min(1),
 });
 
@@ -1202,18 +1336,25 @@ export const Provenance = obj({
   reactions: z.array(Reaction),
   disclaimers: z.array(obj({ words: CopiedText, evidence: z.array(Evidence).min(1) })), // "I know how this sounds"
   naturalExplanations: z.array(NaturalExplanation),
+  predispositions: z.array(Predisposition),
+  influenceStatements: z.array(InfluenceStatement),
 });
 export type Provenance = z.infer<typeof Provenance>;
 
 /** The narrative of a part, or one questionnaire item: the "place" of a Jesus mention. */
+/** For Jesus mentions: the narrative, or the questionnaire as a whole (not item by item). */
 export const placeOf = (s: SourceRef) =>
-  s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `qa:${s.part}:${s.qaIndex}` : `${s.kind}:${JSON.stringify(s)}`;
+  s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `questionnaire:${s.part}` : `${s.kind}:${JSON.stringify(s)}`;
 
 /** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a capitalized "Savior" refer to
  *  Jesus unless the text indicates otherwise. "Lord" and "Messiah" alone, and a lowercase
- *  "savior," are ambiguous unless the text ties them to Jesus. Derived words (Christian) don't
- *  count. Only the experiencer's text, never question wording. One entry per kind, time, and
- *  place (the narrative, or one questionnaire item), with every passage there as evidence.
+ *  "savior," are ambiguous unless the text ties them to Jesus, or to someone else: "the Lord"
+ *  tied to a named non-Christian figure ("Lord Krishna") or an impersonal Absolute ("Supreme
+ *  Consciousness") is not_jesus; tied only to "God" it stays ambiguous. New Age terms built on
+ *  Christ ("Christ consciousness") are kind other, ambiguous. Derived words (Christian) don't
+ *  count. Only the experiencer's text, never question wording or the person's background. One
+ *  entry per kind, time, and place (the narrative, or the questionnaire), with every passage
+ *  there as evidence.
  *
  *  Context, not the word, decides. Jesús and Salvador are common given names, Isa is a common
  *  Muslim given name (and short for Isabel), Christ and "de Jesús" are surnames, and El Salvador
@@ -1247,7 +1388,7 @@ export const JesusMention = obj({
   }
   if (m.when === 'during' && m.episodeId === null) issue('a mention made during an experience needs its episodeId');
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
-  if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or in one questionnaire item');
+  if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or all in the questionnaire');
 });
 export type JesusMention = z.infer<typeof JesusMention>;
 
@@ -1276,6 +1417,8 @@ export const CodedRecord = obj({
   doctrinalStatements: z.array(DoctrinalStatement),
   jesusMentions: z.array(JesusMention),
   provenance: Provenance,
+  /** After the experience (sensitive). */
+  longingToReturn: z.array(LongingToReturn),
 }).superRefine((r, ctx) => {
   const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
   const ids = r.episodes.map((e) => e.episodeId);
@@ -1293,7 +1436,15 @@ export const CodedRecord = obj({
       if (!ids.includes(id)) issue(`condition refers to unknown episode ${id}`, ['conditions', i, 'episodeIds', j]);
     }),
   );
-  for (const list of ['exposures', 'priorDevotion', 'memory', 'priorTellings', 'tellingVaries', 'reactions', 'naturalExplanations'] as const) {
+  r.longingToReturn.forEach((l, i) =>
+    l.episodeIds.forEach((id, j) => {
+      if (!ids.includes(id)) issue(`longingToReturn refers to unknown episode ${id}`, ['longingToReturn', i, 'episodeIds', j]);
+    }),
+  );
+  for (const list of [
+    'exposures', 'priorDevotion', 'memory', 'priorTellings', 'tellingVaries', 'reactions', 'naturalExplanations',
+    'predispositions', 'influenceStatements',
+  ] as const) {
     r.provenance[list].forEach((entry, i) =>
       entry.episodeIds.forEach((id, j) => {
         if (!ids.includes(id)) issue(`provenance refers to unknown episode ${id}`, ['provenance', list, i, 'episodeIds', j]);
@@ -1487,11 +1638,12 @@ export const ResolvedEncounter = obj({
   /** From the encounter's evidence and its claims' evidence. */
   reportedIn: z.enum(['narrative_only', 'questionnaire_only', 'both']),
   questionnaireItems: z.array(obj({ part: Index, qaIndex: Index })),
-  /** Mary's level. One (broad): an unidentified female being. Two: a Mary claim. Three: a Mary
+  /** Mary's level. One (broad): an unidentified female being, part of the experience, who
+   *  interacts with the experiencer (an action, or some communication). Two: a Mary claim. Three: a Mary
    *  claim with confessional content (the list, or a rosary or scapular among the visual
    *  details). Which content is Catholic-specific is a further, table-based step. */
   marianLevel: z.enum(['none', 'one', 'two', 'three']),
-  /** Level one, narrow: also described in maternal terms. */
+  /** Level one, narrow: also with maternal language. */
   marianLevelOneNarrow: z.boolean(),
   /** The strongest certainty among Mary claims (null with none), so resemblance-only can be dropped. */
   maryClaimCertainty: Certainty.nullable(),
@@ -1533,6 +1685,8 @@ export const ResolvedJesus = obj({
   claimInNarrative: z.boolean(),
   identifiedDuring: z.boolean(),
   announcedOrRecognizedDuringAsserted: z.boolean(),
+  /** The strictest rung, with no passage hedging the claim anywhere. */
+  announcedOrRecognizedDuringAssertedThroughout: z.boolean(),
 }).superRefine((j, ctx) => {
   const implies = (a: boolean, b: boolean, message: string) => {
     if (a && !b) ctx.addIssue({ code: 'custom', message });
@@ -1547,5 +1701,6 @@ export const ResolvedJesus = obj({
   implies(j.claimInNarrative, j.excludingResemblance, 'nested: in the narrative');
   implies(j.identifiedDuring, j.claimInNarrative, 'nested: identified during');
   implies(j.announcedOrRecognizedDuringAsserted, j.identifiedDuring, 'nested: announced or recognized');
+  implies(j.announcedOrRecognizedDuringAssertedThroughout, j.announcedOrRecognizedDuringAsserted, 'nested: asserted throughout');
 });
 export type ResolvedJesus = z.infer<typeof ResolvedJesus>;

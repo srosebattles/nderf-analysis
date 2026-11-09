@@ -6,7 +6,7 @@ import {
   JESUS_KEYWORDS_NARROW, type JesusKeyword, ResolvedEncounter, ResolvedJesus, UNIDENTIFIED_CATEGORIES,
 } from './codebook-schema.ts';
 
-export const AREA3_RULE_VERSION = '0.1';
+export const AREA3_RULE_VERSION = '0.2';
 
 const strongest = (certainties: Certainty[]): Certainty | null =>
   (['asserted', 'hedged', 'resemblance'] as const).find((c) => certainties.includes(c)) ?? null;
@@ -24,8 +24,11 @@ export function resolveEncounter(e: Encounter, ruleVersion = AREA3_RULE_VERSION)
   const maryClaims = e.identity.filter((c) => c.category === 'mary');
   const confessional =
     e.confessionalContent.length > 0 || e.visualDetails.some((d) => d.feature === 'rosary' || d.feature === 'scapular');
-  const marianLevel =
-    maryClaims.length > 0 ? (confessional ? 'three' : 'two') : neverIdentified && e.apparentSex === 'female' ? 'one' : 'none';
+  // Level one: part of the experience, and she interacts (a passer-by in the scenery doesn't count).
+  const interacts =
+    e.actions.length > 0 || e.communication.some((m) => ['spoken', 'mind_to_mind', 'instant_knowing', 'showing'].includes(m));
+  const levelOne = neverIdentified && e.apparentSex === 'female' && e.presence === 'part_of_experience' && interacts;
+  const marianLevel = maryClaims.length > 0 ? (confessional ? 'three' : 'two') : levelOne ? 'one' : 'none';
 
   return ResolvedEncounter.parse({
     encounterId: e.encounterId,
@@ -99,5 +102,6 @@ export function resolveJesus(
     claimInNarrative: inNarrative.length > 0,
     identifiedDuring: during.length > 0,
     announcedOrRecognizedDuringAsserted: strictest.length > 0,
+    announcedOrRecognizedDuringAssertedThroughout: strictest.some((c) => !c.hedgedElsewhere),
   });
 }
