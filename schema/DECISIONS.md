@@ -910,9 +910,10 @@ cluster at a time, like area 3. Decided so far (November 2026):
   features before and after 1975.
 - **Dates.** Each source has a date of first wide availability, confirmed in two independent
   sources, and dates for later boosts (a film, a bestseller-list peak). All of them are
-  pre-registered. A source that first appeared on NDERF itself is dated from that posting, with
-  the book as a boost: Anita Moorjani's account was on NDERF in 2006, six years before *Dying to
-  Be Me* (2012). A source's own page, if it is in the corpus, is left out of its own test.
+  pre-registered. A source that first appeared on NDERF itself would be dated from that posting,
+  with the book as a boost (Anita Moorjani's account was on NDERF in 2006, six years before
+  *Dying to Be Me*, though her account was later dropped; see below). A source's own page, if it
+  is in the corpus, is left out of its own test.
 - **What makes a detail idiosyncratic.** It must pass all five tests:
   - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
     colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
@@ -933,6 +934,15 @@ cluster at a time, like area 3. Decided so far (November 2026):
     detail that turns out to be common shows no effect but weakens the test.
 - **Scope:** any idiosyncratic detail, not only details about beings. Details about beings are
   reported separately, since they bear on the main question.
+- **Sources kept and dropped** (November 2026). Dropped: *Dying to Be Me* (Moorjani) and *90
+  Minutes in Heaven*, whose content is mostly ideas or scriptural images rather than concrete
+  idiosyncratic details; mentions of them still count as other NDE media. Kept despite coming
+  before NDERF's first posting: *Embraced by the Light* (Eadie), whose details include some
+  genuinely idiosyncratic images, tested only by the weaker experienced-before-versus-after
+  comparison. *Saved by the Light* (Brinkley) is kept or dropped on what its confirmed details
+  turn out to be.
+- **The remaining sources are drafted and approved as a batch,** outside the repository, and
+  written in only after approval.
 - **Invented sources give the cleanest test.** When the content was made up, finding it later
   means it was borrowed or it's chance, never a shared real experience. Included:
   - *The Boy Who Came Back from Heaven* (2010), retracted by its subject in January 2015:
