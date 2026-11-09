@@ -950,6 +950,32 @@ cluster at a time, like area 3. Decided so far (November 2026):
 - **Believed versus invented** is pre-registered as a secondary, descriptive comparison: whether
   details from accounts that were believed when read (the Malarkey book included) turn up more
   often than details from fiction. Fiction's rates may be near zero.
+- **Three groups per source:** told before (posted before the source's date, so nobody could
+  have borrowed: the baseline); experienced before but told after (only the telling could
+  borrow); and experienced after (the experience itself, or the telling, could be shaped). The
+  posting date stands in for the telling: recent pages are posted within days of submission,
+  and older pages' lag is unknown (NDERF's running numbers are on only 126 pages and don't
+  follow submission order). The experience date is the page's first qualifying episode's.
+- **Accounts posted in the first six months after a source's date are left out,** since they
+  could belong to either side, and a book takes months to reach its readers.
+- **Sources from before NDERF's first posting (1999)** have no told-before group. They get only
+  a weaker comparison of their own: experienced before versus after, measured against the decoys.
+- **Controls for general trends,** since questionnaire forms, who finds NDERF, and account length
+  all changed over the same years:
+  - wrong dates: each source's details are also tested at every other source's date, and should
+    rise only at their own;
+  - decoys: made-up details found in no source should stay flat;
+  - questionnaire form: details found in the narrative are the main measure, with questionnaire
+    answers secondary, compared within each form and adjusted for account length. Form D's
+    named-figures item ("for example: Jesus, Muhammad, Buddha") arrived in 2011, a year after
+    *Heaven Is for Real*; form C, posted from 2007 to 2011, crosses 2010 and gives a check
+    within a single form.
+- **The main test is pooled:** every source's details, lined up by time since that source's own
+  date, compared with the wrong dates. Each source is also reported on its own, as description.
+  Broad encounter rates (Jesus before and after 2010) are plotted against the source dates as
+  description only: they aren't idiosyncratic, and form D arrived in those years too.
+- **Which accounts:** exactly the main analysis's set (firsthand, qualifying episodes), with the
+  same flags and sensitivity analyses, including the one that drops translated pages.
 
 ## Pre-registered tables
 
@@ -1072,9 +1098,10 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - Pre-registered tables: all three (Marian, named figures, visual features) are built and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
-- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, scope, and the invented
-  sources are decided; still open are the before-and-after comparisons, how details are
-  detected, and how explicit mentions of media join the test. Vocabulary that looks
+- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, scope, the invented
+  sources, and the before-and-after comparisons are decided; still open are how details are
+  detected and how explicit mentions of media join the test. Then the sources-and-details
+  table, the schema module, and trial coding. Vocabulary that looks
   borrowed from a specific text, with no stated exposure, is left to area 4's pre-registered
   details, never guessed at by the coder. Candidate source noted from trial coding: the
   *Urantia Book*.
