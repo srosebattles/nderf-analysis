@@ -1074,6 +1074,67 @@ come (see Open).
   own. The prompt shows the coder neutral item codes, which the pipeline maps back to the
   table's ids, so no id hints at a source. The area 4 pass's JSON Schema is about 7 KB.
 
+## What the first run codes, and what waits
+
+Decided in November 2026, after a review of the whole plan. The schema is everything the
+project wants to know; it is not all coded at once. The field list is in
+[passes.ts](passes.ts), with tests.
+
+- **The first run answers who was met, by whom, and under what circumstances.** It codes:
+  - area 1: episodes, reporter, circumstance and its flags, child and age, dates, tone, whether
+    the surroundings are reported as alive, and the stated conditions that raise the
+    hallucination flag;
+  - area 2: religion and heritage statements, and country and language claims;
+  - encounters as a census: how each being was perceived, physical presence, count, every
+    identity claim in full (with the relationship and any religious role), vital status and
+    whether the experiencer knew, prior familiarity, apparent sex, comparisons to images and
+    media, and links between episodes;
+  - doctrinal statements, as a pass of their own that runs after the encounters. They need
+    every account whenever they are coded, so waiting would save nothing, and the Jesus ladder
+    reads them;
+  - every mention of Jesus;
+  - the provenance that bears on influence: exposures, prior devotion, memory history, and the
+    experiencer's own view of influence;
+  - area 4's pass, which has to be in this run (area 4, above).
+- **Everything else waits for a later pass.** Most of these run only on the accounts the first
+  run flags, and an account is flagged when either coding model's first run flags it.
+
+  | Later pass | Codes | Runs on accounts with |
+  |---|---|---|
+  | Mary in detail | confessional content, maternal language | a Mary claim, or an unidentified female being who is part of the experience |
+  | What beings look like | representation, visual details, places | any encounter |
+  | People in detail | time since death, apparent age and condition, how a death was learned, a death soon after, future children, how a living person's presence is explained, friend types, closeness, animal details | a person known in life, a relative never met, a child not yet born, or an animal |
+  | What beings do | disposition, actions, communication, response, Christ-specific content, denials | any encounter |
+  | Hostile beings and distress | hostile iconography, names invoked, distressing content | a hostile-being claim, or an episode whose tone is distressing or mixed |
+  | Reception and telling | prior tellings, a telling that varies, reactions, disclaimers, natural explanations, predispositions, a longing to return, psychiatric medication, the experiencer's own labels, and conditions outside the flag | every account |
+
+- **Why.** Every pass in the first run needs a prompt, a pilot, and a check against hand coding
+  before the freeze, so each field kept out of it is less to get right before anything can
+  run. On the five full trial records, the fields that wait came to roughly one third of
+  the output, and they carry most of the cross-field rules. Token cost is the smaller saving.
+- **The designs are frozen now; the prompts come later.** The later passes' fields, lists, and
+  tables (the Marian table, the visual-feature map) are frozen with the codebook, so nothing
+  the first run shows can shape them. Each pass's prompt is written and piloted on the
+  practice set when that pass is run.
+- **A later pass adds to the first run's encounters and never adds or removes one.** It is
+  given the first run's episodes and encounters, as area 4's pass is given the episode list. A
+  being it thinks the first run missed is logged, not added, so the census stays the first
+  run's.
+- **A pass also codes what its computed views read.** Mary's levels read whether she interacts
+  (actions, communication) and whether a rosary or scapular is seen (visual details), so the
+  Marian pass codes those for its own encounters. The rule for names invoked reads disposition,
+  so the hostile pass codes it, along with the experiencer's labels, since torment that the
+  experiencer doesn't call hell is that pass's question. The pass that owns such a field, when
+  it runs, leaves those entries as coded.
+- **Mary's level two comes from the first run** (a Mary claim). Levels one and three need the
+  Marian pass.
+- **Models.** A later pass may have to use models released after the first run. Every pass
+  records its own, and the write-up says which coded what.
+- **Area 4's blue-skin detail moves to the checklist.** It was computed from the blue-skin
+  visual feature, which now waits, and area 4 has to be complete in the first run. Its
+  checklist wording is approved before it is written into the table. The detail about a
+  group of 150 angels stays computed: it reads the count.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1244,7 +1305,8 @@ Not built yet:
   counts, and area 4's word-rule counts). The keyword and word-rule counts run only after the
   freeze.
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
-  to about 7 KB), so coding will run in passes; how to split them is undecided.
+  to about 7 KB). The first run codes only part of it (above); how to split that part into
+  passes is undecided.
 - The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
   and area 4's trial coding.
 - The pre-registration.
@@ -1254,6 +1316,8 @@ To settle before the freeze:
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
+- The checklist wording for area 4's blue-skin detail, which the table still lists as
+  computed.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
   must be empty at the freeze).
 - Living status in the named-figures table is rechecked at the freeze, and names added after it
