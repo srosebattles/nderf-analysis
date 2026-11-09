@@ -939,8 +939,8 @@ cluster at a time, like area 3. Decided so far (November 2026):
   idiosyncratic details; mentions of them still count as other NDE media. Kept despite coming
   before NDERF's first posting: *Embraced by the Light* (Eadie), whose details include some
   genuinely idiosyncratic images, tested only by the weaker experienced-before-versus-after
-  comparison. *Saved by the Light* (Brinkley) is kept or dropped on what its confirmed details
-  turn out to be.
+  comparison. Also dropped: *Saved by the Light* (Brinkley), which comes before NDERF's first
+  posting and whose best confirmed detail, a "cathedral of knowledge," isn't specific enough.
 - **The remaining sources are drafted and approved as a batch,** outside the repository, and
   written in only after approval.
 - **Invented sources give the cleanest test.** When the content was made up, finding it later
@@ -948,9 +948,10 @@ cluster at a time, like area 3. Decided so far (November 2026):
   - *The Boy Who Came Back from Heaven* (2010), retracted by its subject in January 2015:
     believed when read, invented in fact. Not a withdrawal control, since copies kept
     circulating after 2015.
-  - Three works of fiction: *The Shack* (2007; film 2017), the "King's Cross" chapter of *Harry
-    Potter and the Deathly Hallows* (2007; film 2011), and *The Five People You Meet in
-    Heaven* (2003). *Five People* has few accounts posted before it (about 200, before 2003).
+  - Three works of fiction: *The Shack* (2007; film 2017), *Harry Potter and the Deathly
+    Hallows* (2007; film 2011), for its "King's Cross" chapter, and *The Five People You Meet
+    in Heaven* (2003). In the code and tables the second is called *Deathly Hallows*, which is
+    easier for a reader to place than the chapter's name. *Five People* has few accounts posted before it (about 200, before 2003).
     Its Blue Man also gives a second reading of blue skin, which the visual-feature map reads
     as Hindu imagery.
 
@@ -1175,7 +1176,9 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   full and partial matches, which for checklist details are the wording the coder sees and so
   never name a source; whether it is about beings; why it passes the traceability test, and
   which parts fail on their own; and two independent citations. A citation is listed only
-  after the page has been read in full.
+  after the page has been read in full. A detail still waiting for its second source can be
+  listed with one, with a note of what remains to check; none may remain at the freeze, which
+  a check enforces.
 - **Dates are a year, a month, or a day;** a cut falls on the stated period's first day. When
   sources disagree, the earlier date is used, so nothing counted as told before could have
   borrowed.
@@ -1190,8 +1193,12 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   before their wording first goes through the check; after that, a match can change only the
   wording, never whether a detail stays; and every such match is logged privately and
   disclosed in the pre-registration.
-- **Approved so far:** *Heaven Is for Real* (six details, all on the checklist) and its related
-  work, Akiane Kramarik's *Prince of Peace*.
+- **Approved:** *Heaven Is for Real* (six details) and its related work, Akiane Kramarik's
+  *Prince of Peace*; then, as a batch, *The Boy Who Came Back from Heaven* (two), *Proof of
+  Heaven* (three), *Embraced by the Light* (three, two of them waiting for a second source,
+  to be checked by hand against the book before the pipeline runs), the *Urantia Book* (one
+  word rule over its coined names), *The Shack* (four), *Deathly Hallows* (two), and *The Five
+  People You Meet in Heaven* (two). Decoys come next.
 
 ## Open
 
