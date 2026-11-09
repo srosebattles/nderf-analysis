@@ -922,6 +922,26 @@ cluster at a time, like area 3. Decided so far (November 2026):
     detail that turns out to be common shows no effect but weakens the test.
 - **Scope:** any idiosyncratic detail, not only details about beings. Details about beings are
   reported separately, since they bear on the main question.
+- **Invented sources give the cleanest test.** When the content was made up, finding it later
+  means it was borrowed or it's chance, never a shared real experience. Included:
+  - *The Boy Who Came Back from Heaven* (2010), retracted by its subject in January 2015:
+    believed when read, invented in fact. Not a withdrawal control, since copies kept
+    circulating after 2015.
+  - Three works of fiction: *The Shack* (2007; film 2017), the "King's Cross" chapter of *Harry
+    Potter and the Deathly Hallows* (2007; film 2011), and *The Five People You Meet in
+    Heaven* (2003). *Five People* has few accounts posted before it (about 200, before 2003).
+    Its Blue Man also gives a second reading of blue skin, which the visual-feature map reads
+    as Hindu imagery.
+
+  Considered and left out: *What Dreams May Come* (film, 1998: released before NDERF's first
+  posting, so nothing was told before it); *Coco* (built from Día de Muertos tradition, so
+  borrowing and shared tradition can't be told apart); *The Good Place* (its core idea, deeds
+  tallied for judgment, is traditional); *Soul* (too few accounts posted since 2020); and older
+  classics such as *The Great Divorce* (nearly every experience comes after them, so there's
+  no comparison group).
+- **Believed versus invented** is pre-registered as a secondary, descriptive comparison: whether
+  details from accounts that were believed when read (the Malarkey book included) turn up more
+  often than details from fiction. Fiction's rates may be near zero.
 
 ## Pre-registered tables
 
@@ -1044,9 +1064,9 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - Pre-registered tables: all three (Marian, named figures, visual features) are built and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
-- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, and scope are decided;
-  still open are which invented sources to include, the before-and-after comparisons, how
-  details are detected, and how explicit mentions of media join the test. Vocabulary that looks
+- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, scope, and the invented
+  sources are decided; still open are the before-and-after comparisons, how details are
+  detected, and how explicit mentions of media join the test. Vocabulary that looks
   borrowed from a specific text, with no stated exposure, is left to area 4's pre-registered
   details, never guessed at by the coder. Candidate source noted from trial coding: the
   *Urantia Book*.
