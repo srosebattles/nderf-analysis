@@ -893,6 +893,9 @@ export const Vital = obj({
     relative: z.enum(['as_when_died', 'younger', 'older', 'ageless', 'not_stated']),
     statedYears: z.number().min(0).max(150).nullable(),
   }).nullable(),
+  /** Only when the text contrasts it with life or death: whole where they were paralysed, ill,
+   *  or injured; or appearing as they were at death. Given exactly when apparentAge is. */
+  apparentCondition: z.enum(['healed_or_whole', 'as_at_death', 'not_stated']).nullable(),
   evidence: z.array(Evidence),
 }).superRefine((v, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
@@ -907,6 +910,7 @@ export const Vital = obj({
   if ((v.status === 'dead' || v.status === 'died_before_birth') !== (v.apparentAge !== null)) {
     issue('apparentAge is given exactly for the dead and those who died before birth');
   }
+  if ((v.apparentAge !== null) !== (v.apparentCondition !== null)) issue('apparentCondition is given exactly when apparentAge is');
 });
 export type Vital = z.infer<typeof Vital>;
 
@@ -1095,6 +1099,15 @@ export const Encounter = obj({
   /** The experiencer says it wasn't a being (or wasn't a person), though they describe an
    *  exchange with it ("I met no being, only the Presence"). Kept, not acted on. */
   deniedAsBeing: obj({ words: CopiedText, evidence: z.array(Evidence).min(1) }).nullable(),
+  /** Identities denied outright ("Are you God?" "No."), by the being or by the experiencer.
+   *  Jesus denials are also negated Jesus mentions. */
+  deniedIdentities: z.array(obj({
+    category: BeingCategory,
+    name: CanonicalName.nullable(), // as for claims: named figures only
+    by: z.enum(['being', 'experiencer']),
+    words: CopiedText,
+    evidence: z.array(Evidence).min(1),
+  })),
   evidence: z.array(Evidence).min(1), // where the encounter is reported
 }).superRefine((e, ctx) => {
   const issue = (message: string, path: (string | number)[] = []) => ctx.addIssue({ code: 'custom', message, path });
@@ -1134,6 +1147,13 @@ export const Encounter = obj({
     issue('invocation is recorded exactly for hostile encounters not physically present', ['invocation']);
   }
   if (e.disposition.includes('not_stated') && e.disposition.length > 1) issue("'not_stated' stands alone", ['disposition']);
+
+  e.deniedIdentities.forEach((d, i) => {
+    if (has(PRIVATE_PERSON_CATEGORIES, d.category) && d.name !== null) issue(`${d.category} never gets a canonical name`, ['deniedIdentities', i]);
+    if ((d.category === 'named_figure' || d.category === 'living_religious_leader') && d.name === null) {
+      issue(`a denied ${d.category} needs a canonical name`, ['deniedIdentities', i]);
+    }
+  });
 
   const c = e.communication;
   if ((c.includes('none') || c.includes('not_stated')) && c.length > 1) issue("'none' and 'not_stated' stand alone", ['communication']);
@@ -1256,10 +1276,40 @@ export const Reaction = obj({
 }).refine((r) => (r.reaction === 'dismissed') === (r.dismissedAs !== null), { message: 'dismissedAs is given exactly for dismissed' })
   .refine((r) => (r.reaction !== 'other' && r.dismissedAs !== 'other') || r.words !== null, { message: 'words are required for other' });
 
+const ExplanationStance = z.enum(['considers', 'endorses', 'rejects']);
 export const NaturalExplanation = obj({
   episodeIds: EpisodeIds,
   words: CopiedText,
-  stance: z.enum(['considers', 'endorses', 'rejects']),
+  /** Now, or as of the telling. */
+  stance: ExplanationStance,
+  /** An earlier stance, when the text says it changed ("for years I took it for a hallucination"). */
+  earlierStance: ExplanationStance.nullable(),
+  evidence: z.array(Evidence).min(1),
+}).refine((n) => n.earlierStance !== n.stance, { message: 'an earlier stance differs from the current one' });
+
+/** Explicit only. Lifelong experiences aren't episodes, so they're recorded here. */
+export const Predisposition = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['meditation_or_contemplative_practice', 'lifelong_visionary_or_psychic_experiences', 'other']),
+  when: z.enum(['before', 'after', 'before_and_after', 'not_stated']), // relative to the episodes
+  words: CopiedText,
+  evidence: z.array(Evidence).min(1),
+});
+
+/** The person's own view of whether prior knowledge (reading, teaching, media) shaped the
+ *  experience: "I'd read about NDEs, but it had no influence." */
+export const InfluenceStatement = obj({
+  episodeIds: EpisodeIds,
+  stance: z.enum(['denies_influence', 'grants_influence', 'unsure']),
+  words: CopiedText,
+  evidence: z.array(Evidence).min(1),
+});
+
+/** Sensitive, explicit only, never inferred; published like the other sensitive flags. */
+export const LongingToReturn = obj({
+  episodeIds: EpisodeIds,
+  kind: z.enum(['longing_to_return', 'suicidal_thoughts_tied_to_returning', 'denies_suicidal_thoughts']),
+  words: CopiedText,
   evidence: z.array(Evidence).min(1),
 });
 
@@ -1273,6 +1323,8 @@ export const Provenance = obj({
   reactions: z.array(Reaction),
   disclaimers: z.array(obj({ words: CopiedText, evidence: z.array(Evidence).min(1) })), // "I know how this sounds"
   naturalExplanations: z.array(NaturalExplanation),
+  predispositions: z.array(Predisposition),
+  influenceStatements: z.array(InfluenceStatement),
 });
 export type Provenance = z.infer<typeof Provenance>;
 
@@ -1352,6 +1404,8 @@ export const CodedRecord = obj({
   doctrinalStatements: z.array(DoctrinalStatement),
   jesusMentions: z.array(JesusMention),
   provenance: Provenance,
+  /** After the experience (sensitive). */
+  longingToReturn: z.array(LongingToReturn),
 }).superRefine((r, ctx) => {
   const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
   const ids = r.episodes.map((e) => e.episodeId);
@@ -1369,7 +1423,15 @@ export const CodedRecord = obj({
       if (!ids.includes(id)) issue(`condition refers to unknown episode ${id}`, ['conditions', i, 'episodeIds', j]);
     }),
   );
-  for (const list of ['exposures', 'priorDevotion', 'memory', 'priorTellings', 'tellingVaries', 'reactions', 'naturalExplanations'] as const) {
+  r.longingToReturn.forEach((l, i) =>
+    l.episodeIds.forEach((id, j) => {
+      if (!ids.includes(id)) issue(`longingToReturn refers to unknown episode ${id}`, ['longingToReturn', i, 'episodeIds', j]);
+    }),
+  );
+  for (const list of [
+    'exposures', 'priorDevotion', 'memory', 'priorTellings', 'tellingVaries', 'reactions', 'naturalExplanations',
+    'predispositions', 'influenceStatements',
+  ] as const) {
     r.provenance[list].forEach((entry, i) =>
       entry.episodeIds.forEach((id, j) => {
         if (!ids.includes(id)) issue(`provenance refers to unknown episode ${id}`, ['provenance', list, i, 'episodeIds', j]);

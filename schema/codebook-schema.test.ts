@@ -189,7 +189,7 @@ const coded: CodedRecordType = {
       vital: {
         status: 'dead', diedBeforeBirth: null, experiencerKnew: 'knew', deathLearned: null, diedSoonAfter: false,
         futureChild: null, timeSinceDeath: { kind: 'years', years: 12, basis: 'computed' },
-        apparentAge: { relative: 'younger', statedYears: null }, evidence: [narrative(10, 23)],
+        apparentAge: { relative: 'younger', statedYears: null }, apparentCondition: 'not_stated', evidence: [narrative(10, 23)],
       },
       livingPersonExplanation: null,
       apparentSex: 'female',
@@ -213,6 +213,7 @@ const coded: CodedRecordType = {
       response: ['love_or_joy'],
       invocation: null,
       deniedAsBeing: null,
+      deniedIdentities: [],
       evidence: [narrative(300, 390)],
     },
     {
@@ -255,6 +256,7 @@ const coded: CodedRecordType = {
       response: ['awe', 'awareness_of_sin'],
       invocation: null,
       deniedAsBeing: null,
+      deniedIdentities: [],
       evidence: [narrative(400, 470)],
     },
   ],
@@ -300,9 +302,12 @@ const coded: CodedRecordType = {
     ],
     disclaimers: [],
     naturalExplanations: [
-      { episodeIds: [EP], words: 'maybe just low oxygen', stance: 'considers', evidence: [qa(47, [5, 26])] },
+      { episodeIds: [EP], words: 'maybe just low oxygen', stance: 'considers', earlierStance: null, evidence: [qa(47, [5, 26])] },
     ],
+    predispositions: [],
+    influenceStatements: [],
   },
+  longingToReturn: [],
 };
 
 /** A deep copy with one change applied. */
@@ -464,15 +469,15 @@ test('vital status: what each status requires', () => {
   assert.equal(parses(vital({ experiencerKnew: 'did_not_know', deathLearned: { how: 'told_by_family', deathTiming: 'around_the_same_time' } })), true);
   assert.equal(parses(vital({ status: 'died_before_birth', timeSinceDeath: null })), false); // which kind, if stated
   assert.equal(parses(vital({ status: 'died_before_birth', diedBeforeBirth: 'miscarriage', timeSinceDeath: null })), true);
-  assert.equal(parses(vital({ status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null })), false); // futureChild
+  assert.equal(parses(vital({ status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null, apparentCondition: null })), false); // futureChild
   assert.equal(parses(vital({
-    status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null,
+    status: 'not_yet_conceived', timeSinceDeath: null, apparentAge: null, apparentCondition: null,
     futureChild: { laterBorn: 'yes', foretoldMatched: ['name'] },
   })), true);
 });
 
 test('a living person met as part of the experience needs an explanation, and only then', () => {
-  const living = (c: any) => Object.assign(c.encounters[0].vital, { status: 'alive', timeSinceDeath: null, apparentAge: null });
+  const living = (c: any) => Object.assign(c.encounters[0].vital, { status: 'alive', timeSinceDeath: null, apparentAge: null, apparentCondition: null });
   assert.equal(parses(living), false);
   assert.equal(parses((c) => {
     living(c);
@@ -748,4 +753,26 @@ test('dispositions not stated, details felt in the dark, and invocations only be
   const attacker = (o: object) => parses((c) => { Object.assign(c.encounters[1], { presence: 'physically_present', disposition: ['hostile'] }, o); });
   assert.equal(attacker({}), true);
   assert.equal(attacker({ invocation: { invoked: 'no', names: [], effect: 'not_stated', evidence: [] } }), false);
+});
+
+test('cluster 8: predispositions, influence, changed explanations, longing to return, denials, and apparent condition', () => {
+  assert.equal(parses((c) => {
+    c.provenance.predispositions.push({ episodeIds: [EP], kind: 'meditation_or_contemplative_practice', when: 'before', words: 'years of daily sitting', evidence: [narrative(1, 9)] });
+    c.provenance.influenceStatements.push({ episodeIds: [EP], stance: 'denies_influence', words: 'reading had no influence', evidence: [qa(47, [5, 26])] });
+    c.provenance.naturalExplanations[0].earlierStance = 'endorses';
+    c.longingToReturn.push({ episodeIds: [EP], kind: 'longing_to_return', words: 'I long to go back', evidence: [narrative(1, 9)] });
+  }), true);
+  assert.equal(parses((c) => { c.provenance.predispositions.push({ episodeIds: ['nope'], kind: 'other', when: 'before', words: 'x', evidence: [narrative(1, 9)] }); }), false);
+  assert.equal(parses((c) => { c.longingToReturn.push({ episodeIds: ['nope'], kind: 'longing_to_return', words: 'x', evidence: [narrative(1, 9)] }); }), false);
+  assert.equal(parses((c) => { c.provenance.naturalExplanations[0].earlierStance = 'considers'; }), false); // no change
+
+  const denied = (d: object) => parses((c) => {
+    c.encounters[1].deniedIdentities.push({ category: 'god', name: null, by: 'being', words: 'no, I am not God', evidence: [narrative(1, 9)], ...d } as never);
+  });
+  assert.equal(denied({}), true);
+  assert.equal(denied({ category: 'named_figure' }), false); // needs a canonical name
+  assert.equal(denied({ category: 'family', name: 'Some Name' }), false); // never named
+
+  assert.equal(parses((c) => { c.encounters[0].vital!.apparentCondition = 'healed_or_whole'; }), true);
+  assert.equal(parses((c) => { c.encounters[0].vital!.apparentCondition = null; }), false);
 });

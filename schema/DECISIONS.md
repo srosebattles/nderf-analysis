@@ -40,7 +40,8 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   Six words fits multi-word titles, chains of relatives, and church names that four cut off.
 - **Coded data is published here, including the sensitive flags** (suicide attempt, overdose,
   recreational drugs, conditions that can produce hallucinations, other mental health
-  conditions, and psychiatric medication). It describes accounts that are already public, in
+  conditions, psychiatric medication, and a longing to return after the experience, including
+  suicidal thoughts tied to it). It describes accounts that are already public, in
   our words, not theirs.
 
 ## Area 1: eligibility and provenance
@@ -483,6 +484,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   child appearing grown), ageless, or not stated, with a stated age recorded when given. A
   child who died before birth and appears as an infant is "as when they died"; a toddler or
   older is "older." The question is whether they grew up in the afterlife.
+- **Apparent condition, for the deceased,** only when the text contrasts it with life or
+  death: healed or whole (walking when paralysed in life, well when they died ill), as at
+  death (injured or ill), or not stated. A common motif that apparent age doesn't capture.
 - **Living people met as part of the experience:** how the experiencer explains it (higher
   self, bilocation, a dream element, the person was also near death or ill at the time, other,
   or no explanation offered), with the words kept.
@@ -606,6 +610,10 @@ has an item on the age of the deceased, so all of this comes from the text.
 - **The experiencer's denial that it was a being** is kept when they still describe an
   exchange with it ("I met no being, only the Presence," "it wasn't a person, more like…"),
   with the words. The encounter is coded as usual; non-dual accounts are likely to do this.
+- **Denied identities** are kept on the encounter: "Are you God?" "No." Each records the
+  category (and canonical name for a named figure), who denied it (the being or the
+  experiencer), and the words. Claims stay positive; a Jesus denial is also a negated Jesus
+  mention.
 - **The experiencer's response, one or more:** awe, fear, awareness of sin, worship, love or
   joy, peace, or arguing or resisting (pleading to stay is common).
 - **Names invoked against hostile beings,** for hostile encounters that are part of the
@@ -854,7 +862,22 @@ These weren't settled in the clusters above; they were needed to write the schem
   reaction; shock or disbelief; or other), each with who (a clinician, family, a friend,
   clergy, other, or not stated) and the listener's words as reported (required for "other"); disclaimers about the
   telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
-  explanations, with the words and a stance (considers, endorses, or rejects).
+  explanations, with the words and a stance (considers, endorses, or rejects), plus an earlier
+  stance when the text says it changed (accepted a hallucination explanation for years,
+  rejects it now).
+- **Whether prior knowledge shaped it, in the experiencer's view:** denies influence ("I'd
+  read about NDEs, but it had no influence"), grants influence, or unsure, with the words.
+  Likely common in answers to the prior-knowledge item, and distinct from a natural
+  explanation.
+- **Predispositions, explicit only:** meditation or contemplative practice; visionary or
+  psychic experiences through life; or other; before the experience, after, both, or not
+  stated, with the words. Lifelong experiences aren't discrete episodes, so the episode link
+  can't hold them; a discrete earlier experience is still an episode.
+- **A longing to return, after the experience (sensitive):** a longing to return; suicidal
+  thoughts tied to returning; or an explicit denial of suicidal thoughts, with the words.
+  Explicit only, never inferred, and published like the other sensitive flags. It's an
+  aftereffect rather than part of the encounter question, kept because it's cheap and
+  rarely recorded elsewhere.
 
 ## Open
 
