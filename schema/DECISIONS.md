@@ -1002,6 +1002,32 @@ cluster at a time, like area 3. Decided so far (November 2026):
   invented word would never turn up.
 - **A hit counts when both coding models find it,** with "either model" as a sensitivity check.
   Hits aren't reviewed by hand as part of the test.
+- **Explicit mentions of media.** The main pass already codes exposures, comparisons to a named
+  work, identities worked out from reading or media, and the person's own view of influence,
+  and the prior-knowledge item is recorded by rule. Exposure's scope (NDEs, the afterlife,
+  spiritual beings) leaves out fiction that isn't about those topics, so the area 4 pass adds:
+  - its own list of every book, film, show, or other work the person names or compares their
+    experience to, in any genre: the name (title or creator), the medium, whether they read or
+    saw it or are comparing to it, the timing, and evidence. It is blind: it records all named
+    media, not only the sources;
+  - on each checklist hit, whether the person ties it to a work nearby.
+- **Names are matched to sources by rule,** against a pre-registered list of each source's
+  titles, authors, subjects, and spelling variants, normalized like the named-figures lookup.
+  The rule runs over the main pass's exposure titles, authors, and named works, and over area
+  4's own list. Titles not on the list count as other media. The most-named titles over time
+  are reported as exploratory only; none is added to the test after the freeze.
+- **What the direct measure is used for:**
+  - a validity check: an account naming a source before that source's date points to a dating
+    or coding error and is flagged;
+  - open versus unacknowledged borrowing: for each detail hit, whether the same account names
+    that source anywhere (descriptive);
+  - detail rates by stated exposure (names the source, names other NDE media, states none) and
+    by the prior-knowledge answer (secondary; "states none" doesn't mean none, since exposure is
+    coded only when explicit);
+  - the cleanest single case, described: experienced before the source's date, told after it,
+    the detail present, and the source named as read between the experience and the telling.
+- **Naming the source doesn't remove a hit from the main test,** which asks whether details
+  spread at all, acknowledged or not. Open and unacknowledged hits are reported side by side.
 
 ## Pre-registered tables
 
@@ -1124,10 +1150,8 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - Pre-registered tables: all three (Marian, named figures, visual features) are built and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
-- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, scope, the invented
-  sources, the before-and-after comparisons, and detection are decided; still open is how
-  explicit mentions of media join the test. Then the sources-and-details
-  table, the schema module, and trial coding. Vocabulary that looks
-  borrowed from a specific text, with no stated exposure, is left to area 4's pre-registered
-  details, never guessed at by the coder. Candidate source noted from trial coding: the
-  *Urantia Book*.
+- Area 4: designed (above). Next: the sources-and-details table (every detail confirmed by two
+  independent sources, approved one source at a time), the schema module and its tests, and
+  trial coding on practice round 1. Vocabulary that looks borrowed from a specific text, with
+  no stated exposure, is left to area 4's pre-registered details, never guessed at by the
+  coder. Candidate source noted from trial coding: the *Urantia Book*.
