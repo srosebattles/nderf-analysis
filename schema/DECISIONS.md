@@ -1174,6 +1174,12 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   for *Proof of Heaven*) resolve to no source. A test checks that no checklist wording names a
   source. A review view, generated from the table and checked by a test, is in
   [tables/MEDIA_SOURCES.md](tables/MEDIA_SOURCES.md).
+- **The overlap check can reveal the corpus.** It reports how many accounts contain each
+  five-word sequence of our wording, so when that wording describes a detail, a match tells us
+  something about accounts that are otherwise unread until the freeze. So details are approved
+  before their wording first goes through the check; after that, a match can change only the
+  wording, never whether a detail stays; and every such match is logged privately and
+  disclosed in the pre-registration.
 - **Approved so far:** *Heaven Is for Real* (six details, all on the checklist) and its related
   work, Akiane Kramarik's *Prince of Peace*.
 
