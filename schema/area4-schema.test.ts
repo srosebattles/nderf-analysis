@@ -15,7 +15,8 @@ test('the checklist covers every checklist detail and every decoy, and only thos
   const ids = CHECKLIST_ITEMS.map((i) => i.id);
   assert.ok(ids.includes('hifr-horse') && ids.includes('decoy-empty-birdcages'));
   assert.ok(!ids.includes('urantia-coined-names')); // a word rule, never on the checklist
-  assert.ok(!ids.includes('five-people-blue-skin')); // computed from area 3
+  assert.ok(ids.includes('five-people-blue-skin')); // on the checklist since the visual details moved to a later pass
+  assert.ok(!ids.includes('malarkey-150-angels')); // computed from area 3
   assert.equal(Area4CodedRecord.safeParse(record).success, true);
   assert.equal(Area4CodedRecord.safeParse({ ...record, checklistShown: shown.slice(1) }).success, false); // one missing
   assert.equal(Area4CodedRecord.safeParse({ ...record, checklistShown: [...shown, shown[0]] }).success, false); // one twice

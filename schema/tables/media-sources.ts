@@ -54,11 +54,6 @@ export type DetailRoute = z.infer<typeof DetailRoute>;
  *  area 3's codes, in the area 4 resolver. */
 export const COMPUTED_RULES: Readonly<Record<string, string>> = {
   angelGroupOf150: 'An encounter that has an angel claim, counted as a group of exactly 150.',
-  personWithBlueSkin:
-    'An encounter with a seen blue-skin visual detail and a claim in a person category (family, a relative never ' +
-    'met, a friend or acquaintance, clergy known personally, a known person, or an unrecognized human), with no ' +
-    'named-figure claim, and not a dead person whose apparent condition is "as at death" (a drowned relative ' +
-    'appearing blue).',
 };
 
 export const Detail = z.strictObject({
@@ -463,12 +458,14 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
       {
         id: 'five-people-blue-skin',
         label: 'A man with blue skin',
-        route: 'computed',
-        fullMatch: 'A human being with blue skin.',
+        // On the checklist since the visual details moved to a later pass (DECISIONS.md, "What the
+        // first run codes, and what waits"); until then it was computed from the blue-skin feature.
+        route: 'checklist',
+        fullMatch: "A human being with blue skin, who is not a deity or other religious figure, and whose color isn't explained by how they died.",
         partialMatch: null,
-        words: [], neverMatch: [], computedRule: 'personWithBlueSkin', pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
-        traceability: 'Blue skin otherwise points to Hindu deities (the visual-feature map), which the rule leaves out, as it does a dead person shown as at death.',
+        traceability: 'Blue skin otherwise points to Hindu deities (the visual-feature map), which the wording leaves out, as it does a person whose color comes from the manner of death.',
         citations: [FIVE_PEOPLE_LITCHARTS, FIVE_PEOPLE_WIKIPEDIA],
       },
       {

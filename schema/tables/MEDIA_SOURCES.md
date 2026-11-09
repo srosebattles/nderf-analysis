@@ -65,7 +65,7 @@ its second source, and none may remain at the freeze.
 
 | Detail | Route | Full match | Partial match | About beings | Traceability | Confirmed by |
 |---|---|---|---|---|---|---|
-| A man with blue skin | computed: personWithBlueSkin | A human being with blue skin. | none | yes | Blue skin otherwise points to Hindu deities (the visual-feature map), which the rule leaves out, as it does a dead person shown as at death. | [LitCharts](https://www.litcharts.com/lit/the-five-people-you-meet-in-heaven/summary); [Wikipedia](https://en.wikipedia.org/wiki/The_Five_People_You_Meet_in_Heaven) |
+| A man with blue skin | checklist | A human being with blue skin, who is not a deity or other religious figure, and whose color isn't explained by how they died. | none | yes | Blue skin otherwise points to Hindu deities (the visual-feature map), which the wording leaves out, as it does a person whose color comes from the manner of death. | [LitCharts](https://www.litcharts.com/lit/the-five-people-you-meet-in-heaven/summary); [Wikipedia](https://en.wikipedia.org/wiki/The_Five_People_You_Meet_in_Heaven) |
 | Five people, each with a lesson | checklist | The person meets exactly five people from their life, some of them strangers, each explaining a lesson or how their lives were connected. | The person meets people from their life who each explain how their lives were connected, with no count of five. | yes | Meeting the dead is standard; exactly five, each with a lesson, is the book's. | [LitCharts](https://www.litcharts.com/lit/the-five-people-you-meet-in-heaven/summary); [Wikipedia](https://en.wikipedia.org/wiki/The_Five_People_You_Meet_in_Heaven) |
 
 ## The Shack
@@ -148,4 +148,3 @@ These resolve to no source.
 Pre-registered here; implemented from area 3's codes in the area 4 resolver.
 
 - **angelGroupOf150:** An encounter that has an angel claim, counted as a group of exactly 150.
-- **personWithBlueSkin:** An encounter with a seen blue-skin visual detail and a claim in a person category (family, a relative never met, a friend or acquaintance, clergy known personally, a known person, or an unrecognized human), with no named-figure claim, and not a dead person whose apparent condition is "as at death" (a drowned relative appearing blue).
