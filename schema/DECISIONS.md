@@ -973,15 +973,42 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   and every analysis is reported with and without them. Living status is checked again at the
   freeze.
 
+### Visual features (`tables/visual-features.ts`)
+
+- **What each coded feature points to, keyed on the figure and the feature together,** so a
+  serpent under Mary's feet is Marian imagery, a lamb that is an animal is just a lamb, and a
+  dragon beside St. George is his. A descriptive variable for three uses: iconography from
+  another tradition, whether iconography matches the claim, and what an unidentified being's
+  iconography suggests. It never touches the Jesus ladder. A review view is in
+  [tables/VISUAL_FEATURES.md](tables/VISUAL_FEATURES.md).
+- **It points to:** Christ; Mary; angel; Christian saint or clergy; monastic (Christian or
+  Buddhist); Hindu; Yama; Buddhist (the vase); Buddhist or Hindu (the lotus); folkloric devil;
+  scriptural devil; holy in general (the halo, and rays on anyone but Jesus and Mary);
+  judgment (scales, a ledger); unclear; or nothing (the general features). The finer set is
+  kept; a roll-up to traditions can be computed from it.
+- **The figure is its most specific claim:** Mary, Jesus, God, angel, named figures (by the
+  named-figures table: Hindu deity, Yama, Buddhist figure, Christian saint, other), hostile
+  being, animal, a person known in life, unidentified. Resemblance-only claims don't count,
+  since a resemblance usually comes from the iconography itself ("looked like an angel"
+  because of the wings), which would make the comparison circular.
+- **A known person's own clothes and objects point to nothing** (a deceased aunt's habit, a
+  grandfather's cross, a relative holding a baby), and **an animal's own parts point to
+  nothing** (a deer's horns, a dog's tail, a bird's wings).
+- **Ambiguous combinations are "unclear,"** never a guess: a veil, a crescent moon, or an
+  infant on an unidentified being; a serpent, dragon, or lion beside one; many arms, an animal
+  head, or blue skin on a hostile being; and any feature coded "other," which only its words
+  describe.
+- **Flowers follow their kind:** a lotus is Buddhist or Hindu on any figure, roses on Mary are
+  Marian, anything else points to nothing.
+
 ## Open
 
 - Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
   pages in notes, five as full JSON records in the private repository). The snags were
   settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
   so the coding prompt may need to code in passes.
-- Pre-registered tables: the Marian table is done; the named-figures table is drafted (about
-  400 names), with the four Christian sections and their judgment calls approved and the rest
-  under review; the visual-feature map comes after it.
+- Pre-registered tables: the Marian and named-figures tables are done and approved; the
+  visual-feature map is built and under review.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
