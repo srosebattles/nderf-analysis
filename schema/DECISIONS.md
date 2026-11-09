@@ -820,13 +820,15 @@ These weren't settled in the clusters above; they were needed to write the schem
 - **Menu answers that match no known option are "unrecognized,"** as with the religion menu.
 - **Revelation is the action "reveals knowledge" with a kind** (theological, cosmic, or about
   the future), not a separate content marker, so it isn't coded twice.
-- **Disposition needs at least one value; the experiencer's response may be empty** (nothing
-  stated), since many encounters, such as bystanders, have no stated response.
+- **Disposition needs at least one value ("not stated" included, since trial coding); the
+  experiencer's response may be empty** (nothing stated), since many encounters, such as
+  bystanders, have no stated response.
 - **Consistency rules:** "credited only" stands alone and allows no communication; "spoken"
   needs "heard" among the ways perceived, and "mind to mind" needs "mind to mind"; "none,"
-  "not stated," and an "unclear" place stand alone; one visual detail per feature; a pleasant
-  episode has no distressing content.
-- **Names invoked are recorded exactly when the disposition includes hostile.**
+  "not stated," and an "unclear" place stand alone; one visual detail per feature ("other"
+  excepted); a pleasant episode has no distressing content.
+- **Names invoked are recorded exactly when the disposition includes hostile** and the
+  encounter isn't physically present (narrowed after trial coding).
 - **In a Peak in Darien case, when the death happened** is around the same time, earlier, or
   not stated.
 - **Condition statements name the episodes their timing is relative to.**
@@ -881,9 +883,10 @@ These weren't settled in the clusters above; they were needed to write the schem
 
 ## Open
 
-- Area 3: designed and in the schema (v4 draft). Next: trial coding on practice round 1.
-  The full schema exports to about 80 KB of JSON Schema, so the coding prompt may need to
-  code in passes.
+- Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
+  pages in notes, five as full JSON records in the private repository). The snags were
+  settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
+  so the coding prompt may need to code in passes.
 - Pre-registered tables to build before the codebook is frozen: named figures (canonical
   name, subcategory, traditions); visual features, keyed on figure category and feature;
   which confessional content and Marian titles are Catholic-specific and which are shared.
