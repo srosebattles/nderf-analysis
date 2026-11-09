@@ -940,15 +940,47 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   Muslims too (Sayyidatuna Maryam); Ever-Virgin is "no" for Muslims (the Qur'an affirms the
   virginal conception and her chastity but says nothing of afterward).
 
+### Named figures (`tables/named-figures.ts`)
+
+- **Maps each canonical name to a subcategory and home traditions;** the coder writes the name
+  and only suggests a subcategory. It covers named figures, living religious leaders, named
+  angels, and named hostile beings (angels and hostile beings keep their own categories and
+  take only a name and homes from it). A readable view, generated from the table and checked
+  by a test, is in [tables/NAMED_FIGURES.md](tables/NAMED_FIGURES.md).
+- **Columns:** canonical name; aliases; kind; subcategory; year of death (or alive, unknown,
+  or not applicable); homes; note.
+- **Homes** are the traditions in whose mainstream teaching or devotion the figure is revered,
+  using the same columns as the Marian table plus the non-Trinitarian families, Jewish, Sunni,
+  Shia, Hindu, Buddhist, Sikh, Baha'i, Chinese folk or Taoist, New Age, and secular. A figure is
+  outside the experiencer's tradition when none of the area 2 candidate columns is among its
+  homes; unaffiliated experiencers are reported separately.
+- **Shared-heritage saints get their homes from the two splits:** died before Chalcedon (451),
+  every Christian column; 451 to 1054, Catholic, Eastern Orthodox, and Protestants (not
+  Oriental Orthodox: Leo the Great); Western saints from 1054 to about 1517, Catholic and
+  Protestants (not Orthodox: Francis of Assisi).
+- **Living religious leader or named figure is decided by the year of death** against the
+  experience's date, not by the coder (Padre Pio is a living religious leader for experiences
+  before 1968, a saint after).
+- **Religious or secular, decided once per name:** known mainly for faith, or on a church
+  calendar, is religious (Bach, C. S. Lewis, Wilberforce, Martin Luther King Jr.); otherwise
+  secular (Gandhi).
+- **Ambiguous names** ("Saint Teresa," "Sai Baba," a bare "Francis" or "Joseph") resolve to no
+  one: the coder writes the full name, and context decides.
+- **The coder sees the canonical names,** not subcategories or homes, and uses one when it's the
+  same person; otherwise writes the name as the text gives it, in standard form.
+- **Names not in the table:** before the freeze, they're added. After it, they're classified by
+  these written rules without looking at the experiencer's background, in a logged addendum,
+  and every analysis is reported with and without them. Living status is checked again at the
+  freeze.
+
 ## Open
 
 - Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
   pages in notes, five as full JSON records in the private repository). The snags were
   settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
   so the coding prompt may need to code in passes.
-- Pre-registered tables still to build before the codebook is frozen: named figures
-  (canonical name, subcategory, traditions); visual features, keyed on figure category and
-  feature. The Marian table is done.
+- Pre-registered tables: the Marian table is done; the named-figures table is drafted (388
+  names) and under review; the visual-feature map comes after it.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left

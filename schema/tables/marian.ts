@@ -3,6 +3,7 @@
 // classifies. Rules and reasons are in DECISIONS.md ("Pre-registered tables").
 import { z } from 'zod';
 import { type ConfessionalKind, type Encounter, type Tradition, ConfessionalKind as ConfessionalKindSchema, countKeyword } from '../codebook-schema.ts';
+import { columnsFor } from './traditions.ts';
 
 export const MARIAN_TABLE_VERSION = '1.0';
 
@@ -148,27 +149,14 @@ export function marianItems(e: Encounter): MarianItems {
 
 // ─── Mismatch against the experiencer's tradition ───────────────────────────────────────
 
-/** The columns that may describe a tradition from area 2. More than one when area 2 leaves it
- *  open (Orthodox with no branch, Protestant with no family, a bare "Christian"); then an item is
- *  a mismatch only if every candidate column rejects it. Empty: the table doesn't apply (Hindu,
- *  Latter-day Saints, unaffiliated, …); Mary in those accounts is a cross-tradition question. */
+/** The Marian columns for a tradition coded in area 2, from the shared mapping
+ *  (traditions.ts): both Muslim branches share one column here. Empty: the table doesn't apply
+ *  (Hindu, Latter-day Saints, unaffiliated, …); Mary in those accounts is a cross-tradition
+ *  question. More than one when area 2 leaves it open; an item is then a mismatch only if
+ *  every candidate column rejects it. */
 export function tableColumns(t: Tradition): TableTradition[] {
-  switch (t.family) {
-    case 'catholic': return ['catholic'];
-    case 'orthodox': return t.branch === 'eastern' ? ['eastern_orthodox'] : t.branch === 'oriental' ? ['oriental_orthodox'] : ORTHODOX;
-    case 'protestant':
-      switch (t.protestantFamily) {
-        case 'lutheran': return ['lutheran'];
-        case 'anglican': return ['anglican'];
-        case 'reformed_presbyterian': return ['reformed'];
-        case 'methodist_wesleyan': return ['methodist'];
-        case 'unspecified': return ['lutheran', 'anglican', 'reformed', 'methodist', 'other_protestant'];
-        default: return ['other_protestant'];
-      }
-    case 'christian_unspecified': return [...CHRISTIAN];
-    case 'muslim': return ['muslim'];
-    default: return [];
-  }
+  const cols = columnsFor(t).map((c) => (c === 'muslim_sunni' || c === 'muslim_shia' ? 'muslim' : c));
+  return [...new Set(cols)].filter((c): c is TableTradition => (TableTradition.options as readonly string[]).includes(c));
 }
 
 /** confessional: official_only counts as compatible. lived: it counts as a mismatch. Both are
