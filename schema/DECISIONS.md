@@ -915,7 +915,10 @@ cluster at a time, like area 3. Decided so far (November 2026):
   Be Me* (2012). A source's own page, if it is in the corpus, is left out of its own test.
 - **What makes a detail idiosyncratic.** It must pass all five tests:
   - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
-    colors," not "animals in heaven");
+    colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
+    enough: a dead relative recognized afterward from a photo of them young; a sibling lost in
+    a miscarriage whom the experiencer didn't know about; Jesus's purple sash and white
+    robe;
   - traceable to the source: not in scripture, standard liturgy or religious art, Moody,
     earlier sources on the list, or NDERF's question wording. The pearly gates (Revelation 21)
     fail for *90 Minutes in Heaven*; "morning stars" (Job 38:7) and "dominions" (Colossians
@@ -1009,13 +1012,23 @@ cluster at a time, like area 3. Decided so far (November 2026):
   - its own list of every book, film, show, or other work the person names or compares their
     experience to, in any genre: the name (title or creator), the medium, whether they read or
     saw it or are comparing to it, the timing, and evidence. It is blind: it records all named
-    media, not only the sources;
+    media, not only the sources. Unnamed media count too when the person compares their
+    experience to them ("just like the near-death books I'd read," "like the movies about
+    heaven"), with the name left empty. Media used figuratively, for how something looked
+    or felt, don't ("my life played like a movie"): that describes a life review's
+    format, it's very common, and it isn't about influence;
   - on each checklist hit, whether the person ties it to a work nearby.
+
+  Every account gets a flag, computed from that list rather than coded, for whether the person
+  compares their experience to a book or film, on the source list or off it.
 - **Names are matched to sources by rule,** against a pre-registered list of each source's
   titles, authors, subjects, and spelling variants, normalized like the named-figures lookup.
   The rule runs over the main pass's exposure titles, authors, and named works, and over area
   4's own list. Titles not on the list count as other media. The most-named titles over time
-  are reported as exploratory only; none is added to the test after the freeze.
+  are reported as exploratory only; none is added to the test after the freeze. A work tied to
+  a source but public before it goes on the list as a related work, with its own date and no
+  details: Akiane Kramarik's painting *Prince of Peace*, which the boy in *Heaven Is for Real*
+  picked as the Jesus he saw, had been public for years before the book.
 - **What the direct measure is used for:**
   - a validity check: an account naming a source before that source's date points to a dating
     or coding error and is flagged;
@@ -1140,6 +1153,29 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   describe.
 - **Flowers follow their kind:** a lotus is Buddhist or Hindu on any figure, roses on Mary are
   Marian, anything else points to nothing.
+
+### Area 4's sources and details (`tables/media-sources.ts`)
+
+- **Each source records:** how readers met it (as a true account or as fiction) and whether it
+  was invented; its date of first wide availability and any later boosts, each with two
+  independent citations; the titles and people that identify it when an account names it;
+  its own NDERF page, if any, to leave out of its own test; and its details. A related work
+  has a date and names but no details.
+- **Each detail records:** its route (computed from area 3, a word rule, or the checklist); its
+  full and partial matches, which for checklist details are the wording the coder sees and so
+  never name a source; whether it is about beings; why it passes the traceability test, and
+  which parts fail on their own; and two independent citations. A citation is listed only
+  after the page has been read in full.
+- **Dates are a year, a month, or a day;** a cut falls on the stated period's first day. When
+  sources disagree, the earlier date is used, so nothing counted as told before could have
+  borrowed.
+- **Names match as whole words** after the named-figures normalization, so a field that adds words
+  around a title (a subtitle, or the word "film") still names its source. Ambiguous names ("Heaven Is Real," also the Newsweek cover story
+  for *Proof of Heaven*) resolve to no source. A test checks that no checklist wording names a
+  source. A review view, generated from the table and checked by a test, is in
+  [tables/MEDIA_SOURCES.md](tables/MEDIA_SOURCES.md).
+- **Approved so far:** *Heaven Is for Real* (six details, all on the checklist) and its related
+  work, Akiane Kramarik's *Prince of Peace*.
 
 ## Open
 
