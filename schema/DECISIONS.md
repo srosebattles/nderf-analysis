@@ -889,6 +889,40 @@ were reviewed and approved in November 2026, after trial coding.
   aftereffect rather than part of the encounter question, kept because it's cheap and
   rarely recorded elsewhere.
 
+## Area 4: influence from widely read accounts (in progress)
+
+Whether idiosyncratic details from widely read accounts turn up in later ones. Designed one
+cluster at a time, like area 3. Decided so far (November 2026):
+
+- **Which sources qualify.** A source must be widely read (a bestseller-list run, a film, or
+  major press coverage) and must be a single account with concrete content. Compilations and
+  research books (Moody's *Life After Life*, Jeffrey Long's books) are recorded only as named
+  exposures, never in the detail test. *Life After Life* is a composite of the generic features,
+  which are excluded by definition, and Athappilly et al. (2006) already compared those
+  features before and after 1975.
+- **Dates.** Each source has a date of first wide availability, confirmed in two independent
+  sources, and dates for later boosts (a film, a bestseller-list peak). All of them are
+  pre-registered. A source that first appeared on NDERF itself is dated from that posting, with
+  the book as a boost: Anita Moorjani's account was on NDERF in 2006, six years before *Dying to
+  Be Me* (2012). A source's own page, if it is in the corpus, is left out of its own test.
+- **What makes a detail idiosyncratic.** It must pass all five tests:
+  - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
+    colors," not "animals in heaven");
+  - traceable to the source: not in scripture, standard liturgy or religious art, Moody,
+    earlier sources on the list, or NDERF's question wording. The pearly gates (Revelation 21)
+    fail for *90 Minutes in Heaven*; "morning stars" (Job 38:7) and "dominions" (Colossians
+    1:16) fail for the *Urantia Book*, while its coined names ("Salvington," "Nebadon,"
+    "Thought Adjuster") pass;
+  - confirmed: found in the source itself, or described specifically by two independent
+    secondary sources, with the citations kept in the table;
+  - recognizable from the text: a coder can say yes or no from the words on the page, without
+    the experiencer naming the source;
+  - expected to be rare: judged in advance, since measuring it in the corpus before the freeze
+    would mean reading accounts. The accounts from before publication then measure it; a
+    detail that turns out to be common shows no effect but weakens the test.
+- **Scope:** any idiosyncratic detail, not only details about beings. Details about beings are
+  reported separately, since they bear on the main question.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1010,8 +1044,9 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - Pre-registered tables: all three (Marian, named figures, visual features) are built and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
-- Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
-  example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
-  ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
-  to area 4's pre-registered details, never guessed at by the coder. Candidate source noted
-  from trial coding: the *Urantia Book*.
+- Area 4: in progress (above). Source criteria, the idiosyncrasy tests, and scope are decided;
+  still open are which invented sources to include, the before-and-after comparisons, how
+  details are detected, and how explicit mentions of media join the test. Vocabulary that looks
+  borrowed from a specific text, with no stated exposure, is left to area 4's pre-registered
+  details, never guessed at by the coder. Candidate source noted from trial coding: the
+  *Urantia Book*.
