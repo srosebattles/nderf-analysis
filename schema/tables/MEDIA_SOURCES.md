@@ -122,6 +122,21 @@ its second source, and none may remain at the freeze.
 | A three-part message | checklist | A wordless message in three parts: the person is loved and cherished, has nothing to fear, and can do nothing wrong. | The person is told there is nothing they can do wrong, without the other two parts. | yes | Being loved, and having nothing to fear, are common in NDE accounts on their own, so only the three together count. | [ReKnew, 2012-10-30](https://reknew.org/2012/10/review-of-proof-of-heaven-eben-alexander/); [timothychow.net, 2018-06](https://timothychow.net/reviews/alexander.html) |
 | "Earthworm's-eye view" | word rule: earthworm's-eye view, earthworm-eye view | The phrase "earthworm's-eye view," with or without the hyphen, apostrophe, or s. | none | no | "Worm's-eye view" is an ordinary idiom and is not matched; the earthworm form is the book's. | [timothychow.net, 2018-06](https://timothychow.net/reviews/alexander.html); [Society for Psychical Research](https://www.spr.ac.uk/node/8493) |
 
+## Decoys
+
+Made-up details that no known source has, mixed into the checklist at random and worded like the real
+ones. Their hit rate measures false positives plus coincidence.
+
+| Decoy | Full match | Partial match | About beings | Nearest found (searched) |
+|---|---|---|---|---|
+| A name tag in a script the person can read but does not know | The person is given or wears their own name tag or badge, with their name on it in a script or language they do not know but can read. | The person is given or wears their own name tag or badge in the otherworldly part of the experience, with no unfamiliar script. | no | Afterlife waiting rooms with tickets or badges (Beetlejuice; a short story). The wording keeps clear of a new name written on a white stone (Revelation 2:17) and names written in a book (Revelation 20), and of staff name tags in a hospital. (2026-11-09) |
+| A white hedgehog as a guide | A white hedgehog, not the person's own pet, leads or guides them. | A hedgehog of another color, not the person's own pet, leads or guides them. | yes | Dream-meaning and spirit-animal sites that give hedgehogs general meanings. White hedgehogs are kept as pets, hence the exclusion; animal guides in general are real, hence the hedgehog. (2026-11-09) |
+| A man who will not put down his hockey stick | A man refuses to put down his hockey stick or skates when an angel or other being tells him he must, to enter a paradise. | none | yes | Hockey-in-heaven jokes, and a satirical piece in which a famous player arrives in heaven and plays pond hockey. Refusing to let go of something in order to enter heaven is the structure of C. S. Lewis's The Great Divorce, so nothing looser than the equipment counts. (2026-11-09) |
+| Dark figures carrying empty birdcages | Shadowy or dark figures carry empty birdcages. | none | yes | Birds as souls of the dead, in widespread folklore, which is why a partial match on birds would be inflated; nothing has figures carrying empty cages. (2026-11-09) |
+| A staircase of folded paper | A staircase made of folded paper. | none | no | An origami fold called the Devil's Staircase, and stock paper-art of stairways to heaven; neither is a story or belief about an afterlife. (2026-11-09) |
+| A bicycle in the tunnel | The person rides a bicycle through the tunnel, or toward the light. | none | no | A tunnel ride likened to a fairground ride, and fiction about cycling in heaven; nothing with a bicycle in the tunnel. (2026-11-09) |
+| A giant moth of light that speaks in colors | A giant moth made of light speaks or communicates with the person through colors. | none | yes | Moth folklore (souls of the dead in Celtic tradition) and spirit-animal sites, which is why a moth alone is no partial match; nothing has one made of light that communicates in colors. (2026-11-09) |
+
 ## Ambiguous names
 
 These resolve to no source.

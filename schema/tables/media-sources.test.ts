@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { DatedEvent, Detail, MEDIA_SOURCES, MediaSource, PartialDate, cutDate, editDistance, matchSources, sourceById, unconfirmedDetails, wordRuleHits } from './media-sources.ts';
+import { DECOYS, DatedEvent, Detail, MEDIA_SOURCES, MediaSource, PartialDate, cutDate, editDistance, matchSources, sourceById, unconfirmedDetails, wordRuleHits } from './media-sources.ts';
 import { normalizeName } from './named-figures.ts';
 
 const cite = (outlet: string) => ({ outlet, title: 'a review', author: null, published: '2011', url: 'https://example.org/review' });
@@ -81,9 +81,9 @@ test('names resolve by whole words; ambiguous and unlisted names resolve to no s
   assert.ok('unlisted' in matchSources('Heavenly Realms'));
 });
 
-test('checklist wording never names a source', () => {
+test('checklist wording, decoys included, never names a source', () => {
   const names = MEDIA_SOURCES.flatMap((s) => [...s.names.titles, ...s.names.people]).map(normalizeName);
-  for (const d of MEDIA_SOURCES.flatMap((s) => s.details).filter((d) => d.route === 'checklist')) {
+  for (const d of [...MEDIA_SOURCES.flatMap((s) => s.details).filter((d) => d.route === 'checklist'), ...DECOYS]) {
     for (const wording of [d.fullMatch, d.partialMatch ?? '']) {
       const w = normalizeName(wording);
       for (const n of names) assert.ok(!new RegExp(`(?<![\\p{L}\\p{N}])${n}(?![\\p{L}\\p{N}])`, 'u').test(w), `${d.id} names "${n}"`);

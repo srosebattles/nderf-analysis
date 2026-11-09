@@ -2,7 +2,7 @@
 //   node tools/render-media-sources.ts          (writes the file)
 // A test checks that the file matches the table, so it can't go stale.
 import fs from 'node:fs';
-import { AMBIGUOUS_NAMES, COMPUTED_RULES, type Citation, type DatedEvent, MEDIA_SOURCES, MEDIA_SOURCES_TABLE_VERSION } from '../schema/tables/media-sources.ts';
+import { AMBIGUOUS_NAMES, COMPUTED_RULES, DECOYS, type Citation, type DatedEvent, MEDIA_SOURCES, MEDIA_SOURCES_TABLE_VERSION } from '../schema/tables/media-sources.ts';
 
 export const OUTPUT = new URL('../schema/tables/MEDIA_SOURCES.md', import.meta.url);
 
@@ -40,6 +40,11 @@ export function render(): string {
       const label = d.pendingCheck === null ? d.label : `${d.label} (**pending:** ${d.pendingCheck})`;
       lines.push(`| ${cell(label)} | ${cell(route)} | ${cell(d.fullMatch)} | ${cell(d.partialMatch ?? 'none')} | ${d.aboutBeings ? 'yes' : 'no'} | ${cell(d.traceability)} | ${d.citations.map(citation).join('; ')} |`);
     }
+  }
+  lines.push('', '## Decoys', '', 'Made-up details that no known source has, mixed into the checklist at random and worded like the real', 'ones. Their hit rate measures false positives plus coincidence.', '');
+  lines.push('| Decoy | Full match | Partial match | About beings | Nearest found (searched) |', '|---|---|---|---|---|');
+  for (const d of DECOYS) {
+    lines.push(`| ${cell(d.label)} | ${cell(d.fullMatch)} | ${cell(d.partialMatch ?? 'none')} | ${d.aboutBeings ? 'yes' : 'no'} | ${cell(d.nearestFound)} (${d.searched}) |`);
   }
   lines.push('', '## Ambiguous names', '', 'These resolve to no source.', '');
   for (const [name, why] of Object.entries(AMBIGUOUS_NAMES)) lines.push(`- "${name}": ${why}`);

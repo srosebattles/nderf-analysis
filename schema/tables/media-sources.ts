@@ -767,6 +767,97 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
   }
 }
 
+// ─── Decoys ─────────────────────────────────────────────────────────────────────────────
+
+/** A made-up detail that no known source has, mixed into the checklist at random and worded like
+ *  the real ones, so the coder can't tell them apart. Its hit rate measures the coder's false
+ *  positives plus coincidence. Each was searched on the web first (with NDERF's own sites
+ *  excluded, so no account text came back), and the nearest things found are recorded. */
+export const Decoy = z.strictObject({
+  id: z.string().regex(/^decoy(-[a-z0-9]+)+$/),
+  label: z.string().min(1),
+  fullMatch: z.string().min(1),
+  partialMatch: z.string().nullable(),
+  aboutBeings: z.boolean(),
+  /** The nearest things the web search found, and why they don't make the decoy a real detail. */
+  nearestFound: z.string().min(1),
+  searched: PartialDate,
+});
+export type Decoy = z.infer<typeof Decoy>;
+
+export const DECOYS: readonly Decoy[] = z.array(Decoy).parse([
+  {
+    id: 'decoy-name-tag',
+    label: 'A name tag in a script the person can read but does not know',
+    fullMatch: 'The person is given or wears their own name tag or badge, with their name on it in a script or language they do not know but can read.',
+    partialMatch: 'The person is given or wears their own name tag or badge in the otherworldly part of the experience, with no unfamiliar script.',
+    aboutBeings: false,
+    nearestFound: 'Afterlife waiting rooms with tickets or badges (Beetlejuice; a short story). The wording keeps clear of a new name written on a white stone (Revelation 2:17) and names written in a book (Revelation 20), and of staff name tags in a hospital.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-white-hedgehog',
+    label: 'A white hedgehog as a guide',
+    fullMatch: "A white hedgehog, not the person's own pet, leads or guides them.",
+    partialMatch: "A hedgehog of another color, not the person's own pet, leads or guides them.",
+    aboutBeings: true,
+    nearestFound: 'Dream-meaning and spirit-animal sites that give hedgehogs general meanings. White hedgehogs are kept as pets, hence the exclusion; animal guides in general are real, hence the hedgehog.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-hockey-stick',
+    label: 'A man who will not put down his hockey stick',
+    fullMatch: 'A man refuses to put down his hockey stick or skates when an angel or other being tells him he must, to enter a paradise.',
+    partialMatch: null,
+    aboutBeings: true,
+    nearestFound: 'Hockey-in-heaven jokes, and a satirical piece in which a famous player arrives in heaven and plays pond hockey. Refusing to let go of something in order to enter heaven is the structure of C. S. Lewis\'s The Great Divorce, so nothing looser than the equipment counts.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-empty-birdcages',
+    label: 'Dark figures carrying empty birdcages',
+    fullMatch: 'Shadowy or dark figures carry empty birdcages.',
+    partialMatch: null,
+    aboutBeings: true,
+    nearestFound: 'Birds as souls of the dead, in widespread folklore, which is why a partial match on birds would be inflated; nothing has figures carrying empty cages.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-paper-staircase',
+    label: 'A staircase of folded paper',
+    fullMatch: 'A staircase made of folded paper.',
+    partialMatch: null,
+    aboutBeings: false,
+    nearestFound: 'An origami fold called the Devil\'s Staircase, and stock paper-art of stairways to heaven; neither is a story or belief about an afterlife.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-bicycle-tunnel',
+    label: 'A bicycle in the tunnel',
+    fullMatch: 'The person rides a bicycle through the tunnel, or toward the light.',
+    partialMatch: null,
+    aboutBeings: false,
+    nearestFound: 'A tunnel ride likened to a fairground ride, and fiction about cycling in heaven; nothing with a bicycle in the tunnel.',
+    searched: '2026-11-09',
+  },
+  {
+    id: 'decoy-moth-of-light',
+    label: 'A giant moth of light that speaks in colors',
+    fullMatch: 'A giant moth made of light speaks or communicates with the person through colors.',
+    partialMatch: null,
+    aboutBeings: true,
+    nearestFound: 'Moth folklore (souls of the dead in Celtic tradition) and spirit-animal sites, which is why a moth alone is no partial match; nothing has one made of light that communicates in colors.',
+    searched: '2026-11-09',
+  },
+]);
+
+{
+  const detailIds = new Set(MEDIA_SOURCES.flatMap((s) => s.details.map((d) => d.id)));
+  const ids = DECOYS.map((d) => d.id);
+  const dup = ids.find((id, i) => ids.indexOf(id) !== i || detailIds.has(id));
+  if (dup) throw new Error(`decoy id "${dup}" is used twice`);
+}
+
 /** Names that could mean more than one source. They resolve to nothing; the analysis reports them. */
 export const AMBIGUOUS_NAMES: Readonly<Record<string, string>> = {
   'heaven is real': 'Heaven Is for Real misremembered, or the Newsweek cover story for Proof of Heaven ("Heaven Is Real")',

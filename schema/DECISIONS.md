@@ -1208,7 +1208,17 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   Heaven* (three), *Embraced by the Light* (three, two of them waiting for a second source,
   to be checked by hand against the book before the pipeline runs), the *Urantia Book* (one
   word rule over its coined names), *The Shack* (four), *Deathly Hallows* (two), and *The Five
-  People You Meet in Heaven* (two). Decoys come next.
+  People You Meet in Heaven* (two).
+- **Decoys** are in the table too (`DECOYS`), each with the nearest things a web search found
+  (NDERF's own sites excluded from the search) and the date it was searched. Approved: a name
+  tag in a script the person can read but doesn't know, a white hedgehog as a guide, and a man
+  who won't put down his hockey stick (all three suggested by the project's author); dark
+  figures carrying empty birdcages, a staircase of folded paper, a bicycle in the tunnel, and a
+  giant moth of light that speaks in colors (for a New Age flavor). Rejected for having a source
+  after all: a freckled Jesus (the hadith of the Night Journey
+  describes Jesus with freckles), a white salamander as a guide (the forged "Salamander
+  Letter"), and light codes received as keys (New Age writing already calls light codes
+  keys).
 
 ## Open
 
