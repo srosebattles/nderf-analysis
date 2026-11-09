@@ -1062,6 +1062,13 @@ cluster at a time, like area 3. Decided so far (November 2026):
     the detail present, and the source named as read between the experience and the telling.
 - **Naming the source doesn't remove a hit from the main test,** which asks whether details
   spread at all, acknowledged or not. Open and unacknowledged hits are reported side by side.
+- **Output schema** (`area4-schema.ts`), in files of its own joined on account ID: the area 4
+  pass's record (the checklist items in the random order shown, so a missing item fails
+  validation; each hit's item, full or partial match, own experience or mention, episode, and
+  any work it's tied to; and the list of named or compared-to media), checked against the main
+  coded record from the same run; and the word-rule counts per part, in a derived file of their
+  own. The prompt shows the coder neutral item codes, which the pipeline maps back to the
+  table's ids, so no id hints at a source. The area 4 pass's JSON Schema is about 7 KB.
 
 ## Pre-registered tables
 
