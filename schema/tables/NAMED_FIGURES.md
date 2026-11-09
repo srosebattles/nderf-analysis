@@ -228,14 +228,14 @@ figure is revered.
 
 | Name | Died | Homes | Also matches | Note |
 |---|---|---|---|---|
-| Adam |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  |  |
+| Adam |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian, Baha'i |  | Baha'i writings name him among God's messengers. |
 | Eve |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | hawwa | Named in Islamic tradition, not in the Qur'an. |
 | Enoch |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  | Muslim home by the common identification with Idris. |
-| Noah |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | nuh |  |
+| Noah |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian, Baha'i | nuh |  |
 | Abraham |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian, Baha'i | ibrahim |  |
 | Sarah |  | all Christian, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  |  |
 | Isaac |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | ishaq |  |
-| Ishmael |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | ismail | Honored chiefly in Islam. |
+| Ishmael |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | ismail | Honored chiefly in Islam; a scriptural figure for all three. |
 | Jacob |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | yaqub, israel the patriarch |  |
 | Rachel |  | all Christian, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  |  |
 | Joseph son of Jacob |  | all Christian, Muslim, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | yusuf |  |
@@ -257,7 +257,7 @@ figure is revered.
 | Esther |  | all Christian, Jewish, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  |  |
 | Zechariah father of John the Baptist |  | all Christian, Muslim, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | zakariya |  |
 | Elizabeth mother of John the Baptist |  | all Christian, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian |  |  |
-| John the Baptist |  | all Christian, Muslim, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | yahya |  |
+| John the Baptist |  | all Christian, Muslim, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | yahya | Also central for Mandaeans (no column). |
 | Joseph husband of Mary |  | all Christian, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | saint joseph | Devotion to him as a patron is chiefly Catholic; as a biblical figure he is shared. |
 | Peter |  | all Christian, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | saint peter, simon peter |  |
 | Andrew |  | all Christian, Latter-day Saints, Jehovah's Witnesses, other non-Trinitarian | saint andrew |  |
@@ -409,13 +409,48 @@ figure is revered.
 | Tenzin Gyatso, the 14th Dalai Lama | alive | Buddhist | the dalai lama, dalai lama |  |
 | Mata Amritanandamayi | alive | Hindu | amma, ammachi |  |
 
-## Other religious figures and leaders (10)
+## Jewish figures after the Bible (4)
+
+| Name | Died | Homes | Also matches | Note |
+|---|---|---|---|---|
+| Maimonides | 1204 | Jewish | rambam |  |
+| Isaac Luria | 1572 | Jewish | the ari |  |
+| Baal Shem Tov | 1760 | Jewish |  |  |
+| Menachem Mendel Schneerson | 1994 | Jewish | the lubavitcher rebbe, the rebbe | A living religious leader for experiences before 1994. |
+
+## Hindu and Sikh saints and poets (5)
+
+| Name | Died | Homes | Also matches | Note |
+|---|---|---|---|---|
+| Adi Shankaracharya | unknown | Hindu | shankara, adi shankara | Eighth century. |
+| Kabir | 1518 | Hindu, Sikh |  | His verses are in the Guru Granth Sahib; born among Muslim weavers, revered by Sufis too. |
+| Chaitanya Mahaprabhu | 1534 | Hindu |  | Revered by Gaudiya Vaishnavas (ISKCON) as Krishna himself. |
+| Mirabai | 1547 | Hindu | meera, meerabai |  |
+| Tulsidas | 1623 | Hindu |  |  |
+
+## Chinese folk and Taoist figures (5)
+
+| Name | Died | Homes | Also matches | Note |
+|---|---|---|---|---|
+| Laozi | unknown | Chinese folk or Taoist | lao tzu, lao tse |  |
+| Confucius | about 479 BCE | Chinese folk or Taoist | kongzi | Venerated in temples; religious by that veneration. |
+| Jade Emperor |  | Chinese folk or Taoist |  |  |
+| Mazu |  | Chinese folk or Taoist | tianhou |  |
+| Guan Yu | 220 | Chinese folk or Taoist, Buddhist | guan di, guan gong | A deified general; a guardian in Chinese Buddhism. |
+
+## New Age and esoteric figures (3)
 
 | Name | Died | Homes | Also matches | Note |
 |---|---|---|---|---|
 | Kuthumi |  | New Age |  | An Ascended Master of Theosophy. |
 | El Morya |  | New Age |  | An Ascended Master of Theosophy. |
 | Saint Germain, the Ascended Master |  | New Age |  | Not Germanus of Paris or of Auxerre; a bare "Saint Germain" is ambiguous. |
+
+## Other religious figures and leaders (8)
+
+| Name | Died | Homes | Also matches | Note |
+|---|---|---|---|---|
+| Zoroaster | unknown | Baha'i | zarathustra | Zoroastrians have no column (area 2 "other"); Baha'i writings name him among God's messengers. |
 | Shenouda III | 2012 | Oriental Orthodox | pope shenouda |  |
 | Benedict XVI | 2022 | Catholic | pope benedict |  |
 | Francis (pope) | 2025 | Catholic | pope francis |  |

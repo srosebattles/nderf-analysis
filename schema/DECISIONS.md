@@ -979,8 +979,9 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   pages in notes, five as full JSON records in the private repository). The snags were
   settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
   so the coding prompt may need to code in passes.
-- Pre-registered tables: the Marian table is done; the named-figures table is drafted (388
-  names) and under review; the visual-feature map comes after it.
+- Pre-registered tables: the Marian table is done; the named-figures table is drafted (about
+  400 names), with the four Christian sections and their judgment calls approved and the rest
+  under review; the visual-feature map comes after it.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left

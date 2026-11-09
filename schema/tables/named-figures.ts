@@ -313,14 +313,14 @@ export const NAMED_FIGURES: readonly NamedEntry[] = z.array(NamedEntry).parse([
   prot('Desmond Tutu', 2021, ['anglican'], { note: 'A living religious leader for experiences before 2021.' }),
 
   // ── Biblical figures ──
-  bib('Adam', 'not_applicable', ABRAHAMIC),
+  bib('Adam', 'not_applicable', [...ABRAHAMIC, 'bahai'], { note: 'Baha\'i writings name him among God\'s messengers.' }),
   bib('Eve', 'not_applicable', ABRAHAMIC, { aliases: ['hawwa'], note: 'Named in Islamic tradition, not in the Qur\'an.' }),
   bib('Enoch', 'not_applicable', ABRAHAMIC, { note: 'Muslim home by the common identification with Idris.' }),
-  bib('Noah', 'not_applicable', ABRAHAMIC, { aliases: ['nuh'] }),
+  bib('Noah', 'not_applicable', [...ABRAHAMIC, 'bahai'], { aliases: ['nuh'] }),
   bib('Abraham', 'not_applicable', [...ABRAHAMIC, 'bahai'], { aliases: ['ibrahim'] }),
   bib('Sarah', 'not_applicable', HEBREW_BIBLE),
   bib('Isaac', 'not_applicable', ABRAHAMIC, { aliases: ['ishaq'] }),
-  bib('Ishmael', 'not_applicable', ABRAHAMIC, { aliases: ['ismail'], note: 'Honored chiefly in Islam.' }),
+  bib('Ishmael', 'not_applicable', ABRAHAMIC, { aliases: ['ismail'], note: 'Honored chiefly in Islam; a scriptural figure for all three.' }),
   bib('Jacob', 'not_applicable', ABRAHAMIC, { aliases: ['yaqub', 'israel the patriarch'] }),
   bib('Rachel', 'not_applicable', HEBREW_BIBLE),
   bib('Joseph son of Jacob', 'not_applicable', ABRAHAMIC, { aliases: ['yusuf'] }),
@@ -342,7 +342,7 @@ export const NAMED_FIGURES: readonly NamedEntry[] = z.array(NamedEntry).parse([
   bib('Esther', 'not_applicable', HEBREW_BIBLE),
   bib('Zechariah father of John the Baptist', 'not_applicable', [...BIBLE_READERS, ...MUSLIM], { aliases: ['zakariya'] }),
   bib('Elizabeth mother of John the Baptist', 'not_applicable', BIBLE_READERS),
-  bib('John the Baptist', 'not_applicable', [...BIBLE_READERS, ...MUSLIM], { aliases: ['yahya'] }),
+  bib('John the Baptist', 'not_applicable', [...BIBLE_READERS, ...MUSLIM], { aliases: ['yahya'], note: 'Also central for Mandaeans (no column).' }),
   bib('Joseph husband of Mary', 'not_applicable', BIBLE_READERS, {
     aliases: ['saint joseph'],
     note: 'Devotion to him as a patron is chiefly Catholic; as a biblical figure he is shared.',
@@ -496,7 +496,31 @@ export const NAMED_FIGURES: readonly NamedEntry[] = z.array(NamedEntry).parse([
     note: 'Not Germanus of Paris or of Auxerre; a bare "Saint Germain" is ambiguous.',
   }),
 
+  // ── Jewish figures after the Bible ──
+  other('Maimonides', 1204, ['jewish'], { aliases: ['rambam'] }),
+  other('Isaac Luria', 1572, ['jewish'], { aliases: ['the ari'] }),
+  other('Baal Shem Tov', 1760, ['jewish']),
+  other('Menachem Mendel Schneerson', 1994, ['jewish'], { aliases: ['the lubavitcher rebbe', 'the rebbe'], note: 'A living religious leader for experiences before 1994.' }),
+
+  // ── Hindu and Sikh saints and poets before the modern gurus ──
+  other('Adi Shankaracharya', 'unknown', ['hindu'], { aliases: ['shankara', 'adi shankara'], note: 'Eighth century.' }),
+  other('Kabir', 1518, ['hindu', 'sikh'], { note: 'His verses are in the Guru Granth Sahib; born among Muslim weavers, revered by Sufis too.' }),
+  other('Chaitanya Mahaprabhu', 1534, ['hindu'], { note: 'Revered by Gaudiya Vaishnavas (ISKCON) as Krishna himself.' }),
+  other('Mirabai', 1547, ['hindu'], { aliases: ['meera', 'meerabai'] }),
+  other('Tulsidas', 1623, ['hindu']),
+
+  // ── Chinese folk and Taoist figures ──
+  other('Laozi', 'unknown', ['chinese_folk_or_taoist'], { aliases: ['lao tzu', 'lao tse'] }),
+  other('Confucius', -479, ['chinese_folk_or_taoist'], { aliases: ['kongzi'], note: 'Venerated in temples; religious by that veneration.' }),
+  other('Jade Emperor', 'not_applicable', ['chinese_folk_or_taoist']),
+  other('Mazu', 'not_applicable', ['chinese_folk_or_taoist'], { aliases: ['tianhou'] }),
+  other('Guan Yu', 220, ['chinese_folk_or_taoist', 'buddhist'], { aliases: ['guan di', 'guan gong'], note: 'A deified general; a guardian in Chinese Buddhism.' }),
+
   // ── Other religious leaders (living ones are living religious leaders) ──
+  other('Zoroaster', 'unknown', ['bahai'], {
+    aliases: ['zarathustra'],
+    note: 'Zoroastrians have no column (area 2 "other"); Baha\'i writings name him among God\'s messengers.',
+  }),
   other('Shenouda III', 2012, ['oriental_orthodox'], { aliases: ['pope shenouda'] }),
   other('Benedict XVI', 2022, ['catholic'], { aliases: ['pope benedict'] }),
   other('Francis (pope)', 2025, ['catholic'], { aliases: ['pope francis'] }),

@@ -47,7 +47,12 @@ const SECTIONS: [string, (e: NamedEntry) => boolean][] = [
   ['Latter-day Saint figures', (e) => e.subcategory === 'latter_day_saint_figure'],
   ["Baha'i figures", (e) => e.subcategory === 'bahai_figure'],
   ['Modern gurus and teachers', (e) => e.subcategory === 'modern_guru_or_teacher'],
-  ['Other religious figures and leaders', (e) => e.subcategory === 'other_religious_figure' && !e.homes.some((h) => h.startsWith('muslim'))],
+  ['Jewish figures after the Bible', (e) => e.subcategory === 'other_religious_figure' && e.homes[0] === 'jewish'],
+  ['Hindu and Sikh saints and poets', (e) => e.subcategory === 'other_religious_figure' && e.homes[0] === 'hindu'],
+  ['Chinese folk and Taoist figures', (e) => e.subcategory === 'other_religious_figure' && e.homes[0] === 'chinese_folk_or_taoist'],
+  ['New Age and esoteric figures', (e) => e.subcategory === 'other_religious_figure' && e.homes[0] === 'new_age'],
+  ['Other religious figures and leaders', (e) => e.subcategory === 'other_religious_figure' &&
+    !['jewish', 'hindu', 'chinese_folk_or_taoist', 'new_age'].includes(e.homes[0]) && !e.homes.some((h) => h.startsWith('muslim'))],
   ['Named angels', (e) => e.kind === 'angel'],
   ['Named hostile beings', (e) => e.kind === 'hostile_being'],
   ['Non-religious historical figures and celebrities', (e) => e.subcategory === 'non_religious_historical_figure'],
