@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test schema/*.test.ts schema/tables/*.test.ts",
     "check:overlap": "node tools/check-overlap.ts",
-    "render:tables": "node tools/render-named-figures.ts && node tools/render-visual-features.ts"
+    "render:tables": "node tools/render-named-figures.ts && node tools/render-visual-features.ts && node tools/render-media-sources.ts"
   },
   "dependencies": {
     "zod": "4.6.7"

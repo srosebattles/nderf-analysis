@@ -889,6 +889,187 @@ were reviewed and approved in November 2026, after trial coding.
   aftereffect rather than part of the encounter question, kept because it's cheap and
   rarely recorded elsewhere.
 
+## Area 4: influence from widely read accounts (in progress)
+
+Whether idiosyncratic details from widely read accounts turn up in later ones. Designed one
+cluster at a time, like area 3. Decided so far (November 2026):
+
+- **One project, one freeze, one coding run, with area 4 kept apart inside it.** Area 4's
+  details must be fixed before any coded results are seen, since reading results would show
+  the very content it looks for; so it is frozen with the main codebook, and a separate later
+  project, which would also mean a second full coding run, is ruled out. Inside the project,
+  area 4 has its own schema module, its own output file (joined on account ID, so the main
+  coded record doesn't grow), its own pass in the same batch run (so the encounter coder never
+  sees the list of details, which could prime it), and its own report.
+
+- **Which sources qualify.** A source must be widely read (a bestseller-list run, a film, or
+  major press coverage) and must be a single account with concrete content. Compilations and
+  research books (Moody's *Life After Life*, Jeffrey Long's books) are recorded only as named
+  exposures, never in the detail test. *Life After Life* is a composite of the generic features,
+  which are excluded by definition, and Athappilly et al. (2006) already compared those
+  features before and after 1975.
+- **Dates.** Each source has a date of first wide availability, confirmed in two independent
+  sources, and dates for later boosts (a film, a bestseller-list peak). All of them are
+  pre-registered. A source that first appeared on NDERF itself would be dated from that posting,
+  with the book as a boost (Anita Moorjani's account was on NDERF in 2006, six years before
+  *Dying to Be Me*, though her account was later dropped; see below). A source's own page, if it
+  is in the corpus, is left out of its own test. A practice page that suggested a source is not:
+  it stays in that source's counts, the table records it, and the write-up says the source was
+  suggested by the practice set (the *Urantia Book*, by a practice page whose vocabulary
+  resembles the book's without naming it).
+- **What makes a detail idiosyncratic.** It must pass all five tests:
+  - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
+    colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
+    enough: a dead relative recognized afterward from a photo of them young; a sibling lost in
+    a miscarriage whom the experiencer didn't know about; Jesus's purple sash and white
+    robe;
+  - traceable to the source: not in scripture, standard liturgy or religious art, Moody,
+    earlier sources on the list, or NDERF's question wording. The pearly gates (Revelation 21)
+    fail for *90 Minutes in Heaven*; "morning stars" (Job 38:7) and "dominions" (Colossians
+    1:16) fail for the *Urantia Book*, while its coined names ("Salvington," "Nebadon,"
+    "Thought Adjuster") pass;
+  - confirmed: found in the source itself, or described specifically by two independent
+    secondary sources, with the citations kept in the table;
+  - recognizable from the text: a coder can say yes or no from the words on the page, without
+    the experiencer naming the source;
+  - expected to be rare: judged in advance, since measuring it in the corpus before the freeze
+    would mean reading accounts. The accounts from before publication then measure it; a
+    detail that turns out to be common shows no effect but weakens the test.
+- **Scope:** any idiosyncratic detail, not only details about beings. Details about beings are
+  reported separately, since they bear on the main question.
+- **Sources kept and dropped** (November 2026). Dropped: *Dying to Be Me* (Moorjani) and *90
+  Minutes in Heaven*, whose content is mostly ideas or scriptural images rather than concrete
+  idiosyncratic details; mentions of them still count as other NDE media. Kept despite coming
+  before NDERF's first posting: *Embraced by the Light* (Eadie), whose details include some
+  genuinely idiosyncratic images, tested only by the weaker experienced-before-versus-after
+  comparison. Also dropped: *Saved by the Light* (Brinkley), which comes before NDERF's first
+  posting and whose best confirmed detail, a "cathedral of knowledge," isn't specific enough.
+- **The remaining sources are drafted and approved as a batch,** outside the repository, and
+  written in only after approval.
+- **Invented sources give the cleanest test.** When the content was made up, finding it later
+  means it was borrowed or it's chance, never a shared real experience. Included:
+  - *The Boy Who Came Back from Heaven* (2010), retracted by its subject in January 2015:
+    believed when read, invented in fact. Not a withdrawal control, since copies kept
+    circulating after 2015.
+  - Three works of fiction: *The Shack* (2007; film 2017), *Harry Potter and the Deathly
+    Hallows* (2007; film 2011), for its "King's Cross" chapter, and *The Five People You Meet
+    in Heaven* (2003). In the code and tables the second is called *Deathly Hallows*, which is
+    easier for a reader to place than the chapter's name. *Five People* has few accounts posted before it (about 200, before 2003).
+    Its Blue Man also gives a second reading of blue skin, which the visual-feature map reads
+    as Hindu imagery.
+
+  Considered and left out: *What Dreams May Come* (film, 1998: released before NDERF's first
+  posting, so nothing was told before it); *Coco* (built from Día de Muertos tradition, so
+  borrowing and shared tradition can't be told apart); *The Good Place* (its core idea, deeds
+  tallied for judgment, is traditional); *Soul* (too few accounts posted since 2020); and older
+  classics such as *The Great Divorce* (nearly every experience comes after them, so there's
+  no comparison group).
+- **Believed versus invented** is pre-registered as a secondary, descriptive comparison: whether
+  details from accounts that were believed when read (the Malarkey book included) turn up more
+  often than details from fiction. Fiction's rates may be near zero.
+- **Three groups per source:** told before (posted before the source's date, so nobody could
+  have borrowed: the baseline); experienced before but told after (only the telling could
+  borrow); and experienced after (the experience itself, or the telling, could be shaped). The
+  posting date stands in for the telling: recent pages are posted within days of submission,
+  and older pages' lag is unknown (NDERF's running numbers are on only 126 pages and don't
+  follow submission order). The experience date is the page's first qualifying episode's.
+- **Accounts posted in the first six months after a source's date are left out,** since they
+  could belong to either side, and a book takes months to reach its readers.
+- **Sources from before NDERF's first posting (1999)** have no told-before group. They get only
+  a weaker comparison of their own: experienced before versus after, measured against the decoys.
+- **Controls for general trends,** since questionnaire forms, who finds NDERF, and account length
+  all changed over the same years:
+  - wrong dates: each source's details are also tested at every other source's date, and should
+    rise only at their own;
+  - decoys: made-up details found in no source should stay flat;
+  - questionnaire form: details found in the narrative are the main measure, with questionnaire
+    answers secondary, compared within each form and adjusted for account length. Form D's
+    named-figures item ("for example: Jesus, Muhammad, Buddha") arrived in 2011, a year after
+    *Heaven Is for Real*; form C, posted from 2007 to 2011, crosses 2010 and gives a check
+    within a single form.
+- **The main test is pooled:** every source's details, lined up by time since that source's own
+  date, compared with the wrong dates. Each source is also reported on its own, as description.
+  Broad encounter rates (Jesus before and after 2010) are plotted against the source dates as
+  description only: they aren't idiosyncratic, and form D arrived in those years too.
+- **Which accounts:** exactly the main analysis's set (firsthand, qualifying episodes), with the
+  same flags and sensitivity analyses, including the one that drops translated pages.
+- **Three ways to find a detail; each detail gets exactly one, chosen in the table:**
+  - computed from area 3's codes, when they already record everything the detail needs (the
+    Blue Man of *Five People* is the blue-skin feature on an unrecognized man; a named painting
+    is in the image comparisons). This is blind by construction: the encounter coder fills
+    those fields without knowing anyone looks for them;
+  - a fixed word rule for coined words (the *Urantia Book*'s names, "Elousia"), counted like the
+    Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
+    runs over the names area 3 copies for every being. Words are compared in lowercase, with
+    apostrophes removed and hyphens separating words. A single rule word of eight letters or
+    more may differ by up to two letters (an insertion, a deletion, a substitution, or two
+    neighbors swapped), since misspellings and translations garble them; shorter words, and
+    phrases of more than one word, must match exactly (so "thought adjusted" can't count as
+    "Thought Adjuster"). Each rule lists the ordinary words within reach that never count,
+    found once with a public English word list (dwyl/english-words): "midway" for "midwayer,"
+    and "moronic" and the Spanish "morenita" for "morontia." The rule is defined once in code
+    (`wordRuleHits`) and tested;
+  - the model checklist, area 4's own pass, for the rest: details with no field and no unique
+    word.
+- **The checklist.** Each item describes its detail plainly and never names its source or says
+  why it's there; items come in random order, mixed with decoys. Each hit records:
+  - a full or partial match: every part of the combination, or only some. Only full matches
+    count in the main test; partial ones are a sensitivity check;
+  - whether it's the person's own experience or a mention of someone else's account. Only their
+    own counts; mentions belong to the direct measure;
+  - its episode: the pass runs after the main passes and receives their episode list, so hits
+    can be checked against the qualifying rules. The main coder never sees area 4's list;
+  - evidence.
+- **Decoys:** made-up details of the same kinds and specificity, about one for every two real
+  details, each searched on the web first so that no known source has it, and pre-registered
+  with the rest. In the checklist only: that's where a coder's false positives arise, and an
+  invented word would never turn up.
+- **A hit counts when both coding models find it,** with "either model" as a sensitivity check.
+  Hits aren't reviewed by hand as part of the test.
+- **Explicit mentions of media.** The main pass already codes exposures, comparisons to a named
+  work, identities worked out from reading or media, and the person's own view of influence,
+  and the prior-knowledge item is recorded by rule. Exposure's scope (NDEs, the afterlife,
+  spiritual beings) leaves out fiction that isn't about those topics, so the area 4 pass adds:
+  - its own list of every book, film, show, or other work the person names or compares their
+    experience to, in any genre: the name (title or creator), the medium, whether they read or
+    saw it or are comparing to it, the timing, and evidence. It is blind: it records all named
+    media, not only the sources. Unnamed media count too when the person compares their
+    experience to them ("just like the near-death books I'd read," "like the movies about
+    heaven"), with the name left empty. Media used figuratively, for how something looked
+    or felt, don't ("my life played like a movie"): that describes a life review's
+    format, it's very common, and it isn't about influence;
+  - on each checklist hit, whether the person ties it to a work nearby.
+
+  Every account gets a flag, computed from that list rather than coded, for whether the person
+  compares their experience to a book or film, on the source list or off it.
+- **Names are matched to sources by rule,** against a pre-registered list of each source's
+  titles, authors, subjects, and spelling variants, normalized like the named-figures lookup.
+  The rule runs over the main pass's exposure titles, authors, and named works, and over area
+  4's own list. Titles not on the list count as other media. The most-named titles over time
+  are reported as exploratory only; none is added to the test after the freeze. A work tied to
+  a source but public before it goes on the list as a related work, with its own date and no
+  details: Akiane Kramarik's painting *Prince of Peace*, which the boy in *Heaven Is for Real*
+  picked as the Jesus he saw, had been public for years before the book.
+- **What the direct measure is used for:**
+  - a validity check: an account naming a source before that source's date points to a dating
+    or coding error and is flagged;
+  - open versus unacknowledged borrowing: for each detail hit, whether the same account names
+    that source anywhere (descriptive);
+  - detail rates by stated exposure (names the source, names other NDE media, states none) and
+    by the prior-knowledge answer (secondary; "states none" doesn't mean none, since exposure is
+    coded only when explicit);
+  - the cleanest single case, described: experienced before the source's date, told after it,
+    the detail present, and the source named as read between the experience and the telling.
+- **Naming the source doesn't remove a hit from the main test,** which asks whether details
+  spread at all, acknowledged or not. Open and unacknowledged hits are reported side by side.
+- **Output schema** (`area4-schema.ts`), in files of its own joined on account ID: the area 4
+  pass's record (the checklist items in the random order shown, so a missing item fails
+  validation; each hit's item, full or partial match, own experience or mention, episode, and
+  any work it's tied to; and the list of named or compared-to media), checked against the main
+  coded record from the same run; and the word-rule counts per part, in a derived file of their
+  own. The prompt shows the coder neutral item codes, which the pipeline maps back to the
+  table's ids, so no id hints at a source. The area 4 pass's JSON Schema is about 7 KB.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1001,6 +1182,51 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - **Flowers follow their kind:** a lotus is Buddhist or Hindu on any figure, roses on Mary are
   Marian, anything else points to nothing.
 
+### Area 4's sources and details (`tables/media-sources.ts`)
+
+- **Each source records:** how readers met it (as a true account or as fiction) and whether it
+  was invented; its date of first wide availability and any later boosts, each with two
+  independent citations; the titles and people that identify it when an account names it;
+  its own NDERF page, if any, to leave out of its own test; and its details. A related work
+  has a date and names but no details.
+- **Each detail records:** its route (computed from area 3, a word rule, or the checklist); its
+  full and partial matches, which for checklist details are the wording the coder sees and so
+  never name a source; whether it is about beings; why it passes the traceability test, and
+  which parts fail on their own; and two independent citations. A citation is listed only
+  after the page has been read in full. A detail still waiting for its second source can be
+  listed with one, with a note of what remains to check; none may remain at the freeze, which
+  a check enforces.
+- **Dates are a year, a month, or a day;** a cut falls on the stated period's first day. When
+  sources disagree, the earlier date is used, so nothing counted as told before could have
+  borrowed.
+- **Names match as whole words** after the named-figures normalization, so a field that adds words
+  around a title (a subtitle, or the word "film") still names its source. Ambiguous names ("Heaven Is Real," also the Newsweek cover story
+  for *Proof of Heaven*) resolve to no source. A test checks that no checklist wording names a
+  source. A review view, generated from the table and checked by a test, is in
+  [tables/MEDIA_SOURCES.md](tables/MEDIA_SOURCES.md).
+- **The overlap check can reveal the corpus.** It reports how many accounts contain each
+  five-word sequence of our wording, so when that wording describes a detail, a match tells us
+  something about accounts that are otherwise unread until the freeze. So details are approved
+  before their wording first goes through the check; after that, a match can change only the
+  wording, never whether a detail stays; and every such match is logged privately and
+  disclosed in the pre-registration.
+- **Approved:** *Heaven Is for Real* (six details) and its related work, Akiane Kramarik's
+  *Prince of Peace*; then, as a batch, *The Boy Who Came Back from Heaven* (two), *Proof of
+  Heaven* (three), *Embraced by the Light* (three, two of them waiting for a second source,
+  to be checked by hand against the book before the pipeline runs), the *Urantia Book* (one
+  word rule over its coined names), *The Shack* (four), *Deathly Hallows* (two), and *The Five
+  People You Meet in Heaven* (two).
+- **Decoys** are in the table too (`DECOYS`), each with the nearest things a web search found
+  (NDERF's own sites excluded from the search) and the date it was searched. Approved: a name
+  tag in a script the person can read but doesn't know, a white hedgehog as a guide, and a man
+  who won't put down his hockey stick (all three suggested by the project's author); dark
+  figures carrying empty birdcages, a staircase of folded paper, a bicycle in the tunnel, and a
+  giant moth of light that speaks in colors (for a New Age flavor). Rejected for having a source
+  after all: a freckled Jesus (the hadith of the Night Journey
+  describes Jesus with freckles), a white salamander as a guide (the forged "Salamander
+  Letter"), and light codes received as keys (New Age writing already calls light codes
+  keys).
+
 ## Open
 
 - Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
@@ -1010,8 +1236,8 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 - Pre-registered tables: all three (Marian, named figures, visual features) are built and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
-- Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
-  example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
-  ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
-  to area 4's pre-registered details, never guessed at by the coder. Candidate source noted
-  from trial coding: the *Urantia Book*.
+- Area 4: designed (above). Next: the sources-and-details table (every detail confirmed by two
+  independent sources, approved one source at a time), the schema module and its tests, and
+  trial coding on practice round 1. Vocabulary that looks borrowed from a specific text, with
+  no stated exposure, is left to area 4's pre-registered details, never guessed at by the
+  coder. Candidate source noted from trial coding: the *Urantia Book*.
