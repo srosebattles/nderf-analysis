@@ -1024,6 +1024,11 @@ export const Invocation = obj({
 
 /** One being, or a group, met in one episode. Holds only what is described in the narrative or
  *  an answer's comment: a box ticked with nothing described creates no encounter. */
+export const ConfessionalKind = z.enum([
+  'rosary', 'scapular', 'purgatory', 'novena', 'intercedes', 'invoked', 'apparition_title', 'other_devotion',
+]);
+export type ConfessionalKind = z.infer<typeof ConfessionalKind>;
+
 export const Encounter = obj({
   encounterId: z.string(), // `${episodeId}/e1`
   episodeId: z.string(),
@@ -1071,8 +1076,11 @@ export const Encounter = obj({
   })),
   places: z.array(z.enum(['earthly', 'transitional', 'otherworldly', 'unclear'])).min(1),
   /** On any encounter where it appears; which items are Catholic-specific is decided at analysis. */
+  /** Which traditions each item fits is decided by the pre-registered table (tables/marian.ts),
+   *  never by the coder. 'intercedes': she prays for someone; 'invoked': someone prays to her
+   *  or asks her prayers. The traditions draw their line between the two. */
   confessionalContent: z.array(obj({
-    kind: z.enum(['rosary', 'scapular', 'purgatory', 'novena', 'intercession', 'apparition_title', 'other_devotion']),
+    kind: ConfessionalKind,
     words: CopiedText,
     evidence: z.array(Evidence).min(1),
   })),

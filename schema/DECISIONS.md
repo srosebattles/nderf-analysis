@@ -554,10 +554,12 @@ has an item on the age of the deceased, so all of this comes from the text.
 
 - **Mary's three levels, mostly computed.** Any encounter with a Mary claim is at least level
   two. Level three is a Mary encounter with confessional content, recorded as a list on any
-  encounter where it appears: rosary, scapular, purgatory, novena, intercession, an apparition
-  title, or other devotion, with the words kept. Visible rosaries and scapulars also count
-  through the visual features. Which content is Catholic-specific is decided per item in an
-  analysis-time table, never by the coder. Titles need this most: "Mother of God" is not
+  encounter where it appears: rosary, scapular, purgatory, novena, intercession (she prays
+  for someone) or invocation (someone prays to her or asks her prayers), an apparition title,
+  or other devotion, with the words kept. The traditions draw their line between intercession
+  and invocation, so they're coded apart. Visible rosaries and scapulars also count through the
+  visual features. Which traditions each item fits is decided in a pre-registered table (below),
+  never by the coder. Titles need this most: "Mother of God" is not
   Catholic-specific (the Orthodox Theotokos; the Formula of Concord, Solid Declaration VIII),
   while apparition titles (Guadalupe, Fatima, Lourdes) are. Level one is computed from
   unidentified female beings who are part of the experience and interact with the
@@ -887,15 +889,66 @@ were reviewed and approved in November 2026, after trial coding.
   aftereffect rather than part of the encounter question, kept because it's cheap and
   rarely recorded elsewhere.
 
+## Pre-registered tables
+
+Built before the holdout is read and frozen with the codebook. The coder never classifies;
+these tables do, at analysis time. Each lives in `schema/tables/`, validated and tested.
+
+### Marian titles and confessional content (`tables/marian.ts`)
+
+- **Each item lists how well it fits each tradition,** not a yes/no "Catholic-specific," and a
+  mismatch is computed against the experiencer's own tradition from area 2. "Catholic-specific"
+  is just the items that fit Catholics alone. This handles cases a yes/no can't: an Orthodox
+  experiencer meeting Mary as intercessor isn't a mismatch, but meeting the Immaculate
+  Conception is; a Muslim meeting the Virgin Mary isn't one at all.
+- **Columns,** aligned with area 2: Catholic, Eastern Orthodox, Oriental Orthodox, Lutheran,
+  Anglican, Reformed, Methodist, other Protestant, Muslim. Reformed and Methodist are their own
+  columns because their classical teaching differs from other Protestants' (Ever-Virgin).
+- **Each cell is one of three values:**
+  - yes: the tradition's teaching holds or allows it, and its clergy and best-educated laity
+    normally hold it ("Mother of God" for Lutherans and Anglicans);
+  - official only: its confessions, formularies, or classical divines hold or allow it, but
+    it's disputed even among clergy and educated laity today (Ever-Virgin for Lutherans,
+    Anglicans, Reformed, and Methodists: the Smalcald Articles and the Formula of Concord;
+    Pearson's *Exposition of the Creed*; the Second Helvetic Confession; Wesley's *Letter to a
+    Roman Catholic*);
+  - no: rejected, or foreign to the tradition's teaching and practice.
+
+  Minority movements (Anglo-Catholic use of the rosary) don't change a cell. "Holds or allows"
+  because a mismatch is about what a tradition excludes, not what it requires: Mary praying for
+  a particular person fits Lutheran and Anglican teaching, while invoking her doesn't.
+- **The mismatch is pre-registered both ways:** official only counted as compatible (the
+  confessional view) and as a mismatch (the lived-religion view).
+- **Matching:** content kinds come from the encounter's coded content (a rosary seen counts);
+  titles are matched, whole words and case-insensitive, in the words of Mary claims and of
+  apparition titles. Every matching entry counts, so "Our Lady of Guadalupe" is both "Our
+  Lady" and Guadalupe. An encounter is a mismatch if any item it matches is rejected by the
+  experiencer's tradition.
+- **Area 2 traditions map to columns;** where area 2 leaves it open (Orthodox with no branch,
+  Protestant with no family, a bare "Christian"), every candidate column is tried and an item
+  is a mismatch only if all of them reject it. For traditions with no column (Hindu,
+  Latter-day Saints, unaffiliated), the table doesn't apply: Mary in those accounts is a
+  cross-tradition question.
+- **Titles and devotions the table doesn't cover** are added before the freeze. After it, they
+  are reported as unclassified and never counted as a mismatch, with a sensitivity check that
+  counts them.
+- **Judgment calls recorded in the table's notes:** a bare "immaculate" is left out (Orthodox
+  hymnody and some Anglican divines use it of her); Co-Redemptrix stays Catholic despite *Mater
+  Populi Fidelis* (2025) calling it always inappropriate, since it's Catholic devotional
+  language either way and nearly every account predates the note; Zeitoun fits Oriental
+  Orthodox (approved by the Coptic Church) and isn't foreign to Catholics; "Our Lady" fits
+  Muslims too (Sayyidatuna Maryam); Ever-Virgin is "no" for Muslims (the Qur'an affirms the
+  virginal conception and her chastity but says nothing of afterward).
+
 ## Open
 
 - Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
   pages in notes, five as full JSON records in the private repository). The snags were
   settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
   so the coding prompt may need to code in passes.
-- Pre-registered tables to build before the codebook is frozen: named figures (canonical
-  name, subcategory, traditions); visual features, keyed on figure category and feature;
-  which confessional content and Marian titles are Catholic-specific and which are shared.
+- Pre-registered tables still to build before the codebook is frozen: named figures
+  (canonical name, subcategory, traditions); visual features, keyed on figure category and
+  feature. The Marian table is done.
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left

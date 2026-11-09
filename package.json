@@ -7,7 +7,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "node --test schema/*.test.ts",
+    "test": "node --test schema/*.test.ts schema/tables/*.test.ts",
     "check:overlap": "node tools/check-overlap.ts"
   },
   "dependencies": {
