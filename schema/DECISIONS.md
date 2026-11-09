@@ -976,6 +976,32 @@ cluster at a time, like area 3. Decided so far (November 2026):
   description only: they aren't idiosyncratic, and form D arrived in those years too.
 - **Which accounts:** exactly the main analysis's set (firsthand, qualifying episodes), with the
   same flags and sensitivity analyses, including the one that drops translated pages.
+- **Three ways to find a detail; each detail gets exactly one, chosen in the table:**
+  - computed from area 3's codes, when they already record everything the detail needs (the
+    Blue Man of *Five People* is the blue-skin feature on an unrecognized man; a named painting
+    is in the image comparisons). This is blind by construction: the encounter coder fills
+    those fields without knowing anyone looks for them;
+  - a fixed word rule for coined words (the *Urantia Book*'s names, "Sarayu"), counted like the
+    Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
+    runs over the names area 3 copies for every being, and allows a set number of differing
+    letters in long, rare words, since misspellings and translations garble them;
+  - the model checklist, area 4's own pass, for the rest: details with no field and no unique
+    word.
+- **The checklist.** Each item describes its detail plainly and never names its source or says
+  why it's there; items come in random order, mixed with decoys. Each hit records:
+  - a full or partial match: every part of the combination, or only some. Only full matches
+    count in the main test; partial ones are a sensitivity check;
+  - whether it's the person's own experience or a mention of someone else's account. Only their
+    own counts; mentions belong to the direct measure;
+  - its episode: the pass runs after the main passes and receives their episode list, so hits
+    can be checked against the qualifying rules. The main coder never sees area 4's list;
+  - evidence.
+- **Decoys:** made-up details of the same kinds and specificity, about one for every two real
+  details, each searched on the web first so that no known source has it, and pre-registered
+  with the rest. In the checklist only: that's where a coder's false positives arise, and an
+  invented word would never turn up.
+- **A hit counts when both coding models find it,** with "either model" as a sensitivity check.
+  Hits aren't reviewed by hand as part of the test.
 
 ## Pre-registered tables
 
@@ -1099,8 +1125,8 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   approved. At the freeze: check living status in the named-figures table, and log any names
   added after it in an addendum.
 - Area 4: in progress (above). Source criteria, the idiosyncrasy tests, scope, the invented
-  sources, and the before-and-after comparisons are decided; still open are how details are
-  detected and how explicit mentions of media join the test. Then the sources-and-details
+  sources, the before-and-after comparisons, and detection are decided; still open is how
+  explicit mentions of media join the test. Then the sources-and-details
   table, the schema module, and trial coding. Vocabulary that looks
   borrowed from a specific text, with no stated exposure, is left to area 4's pre-registered
   details, never guessed at by the coder. Candidate source noted from trial coding: the
