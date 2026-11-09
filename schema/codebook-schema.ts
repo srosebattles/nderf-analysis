@@ -11,9 +11,9 @@
 //   (private) nderf-raw-data/llm-raw/<runId>/   raw LLM responses, which contain quotes
 // The Resolved* views at the bottom are computed from both by pre-registered rules, not stored.
 //
-// This is everything the project wants to know, not what one run codes. The first run codes the
-// fields the main question, the Jesus ladder, and area 4 read; passes.ts lists the fields that
-// wait for a later pass.
+// This is everything the project wants to know, not what one run codes. The first run codes
+// whatever needs every account; passes.ts lists the detail that waits for a later pass, which
+// runs only on the accounts the first run flags.
 //
 // No account text in this repository. Strings copied from accounts are capped at
 // MAX_COPIED_WORDS (enforced below), and `npm run check:overlap` confirms before each commit

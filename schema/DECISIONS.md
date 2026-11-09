@@ -1080,10 +1080,11 @@ Decided in November 2026, after a review of the whole plan. The schema is everyt
 project wants to know; it is not all coded at once. The field list is in
 [passes.ts](passes.ts), with tests.
 
-- **The first run answers who was met, by whom, and under what circumstances.** It codes:
-  - area 1: episodes, reporter, circumstance and its flags, child and age, dates, tone, whether
-    the surroundings are reported as alive, and the stated conditions that raise the
-    hallucination flag;
+- **The first run answers who was met, by whom, and under what circumstances, and codes
+  whatever else needs every account.** It codes:
+  - area 1: episodes, reporter, circumstance and its flags, child and age, dates, tone, the
+    experiencer's own labels, whether the surroundings are reported as alive, every stated
+    condition, and psychiatric medication;
   - area 2: religion and heritage statements, and country and language claims;
   - encounters as a census: how each being was perceived, physical presence, count, every
     identity claim in full (with the relationship and any religious role), vital status and
@@ -1093,11 +1094,15 @@ project wants to know; it is not all coded at once. The field list is in
     every account whenever they are coded, so waiting would save nothing, and the Jesus ladder
     reads them;
   - every mention of Jesus;
-  - the provenance that bears on influence: exposures, prior devotion, memory history, and the
-    experiencer's own view of influence;
+  - all of provenance: exposures, prior devotion, memory history, and the experiencer's own
+    view of influence, which bear on area 4; and reception and telling (prior tellings, a
+    telling that varies, reactions, disclaimers, natural explanations, predispositions, and a
+    longing to return), which like doctrine needs every account whenever it is coded;
   - area 4's pass, which has to be in this run (area 4, above).
-- **Everything else waits for a later pass.** Most of these run only on the accounts the first
-  run flags, and an account is flagged when either coding model's first run flags it.
+- **Everything else waits for a later pass, and every later pass runs only on the accounts the
+  first run flags.** An account is flagged when either coding model's first run flags it. That
+  is the test for waiting: detail that can be coded on a fraction of the accounts waits, and
+  anything that needs every account is in the first run.
 
   | Later pass | Codes | Runs on accounts with |
   |---|---|---|
@@ -1106,12 +1111,12 @@ project wants to know; it is not all coded at once. The field list is in
   | People in detail | time since death, apparent age and condition, how a death was learned, a death soon after, future children, how a living person's presence is explained, friend types, closeness, animal details | a person known in life, a relative never met, a child not yet born, or an animal |
   | What beings do | disposition, actions, communication, response, Christ-specific content, denials | any encounter |
   | Hostile beings and distress | hostile iconography, names invoked, distressing content | a hostile-being claim, or an episode whose tone is distressing or mixed |
-  | Reception and telling | prior tellings, a telling that varies, reactions, disclaimers, natural explanations, predispositions, a longing to return, psychiatric medication, the experiencer's own labels, and conditions outside the flag | every account |
 
 - **Why.** Every pass in the first run needs a prompt, a pilot, and a check against hand coding
   before the freeze, so each field kept out of it is less to get right before anything can
-  run. On the five full trial records, the fields that wait came to roughly one third of
-  the output, and they carry most of the cross-field rules. Token cost is the smaller saving.
+  run. On the five full trial records, the fields that wait came to about thirty percent of
+  the output, and they carry most of the encounter's cross-field rules. Token cost is the
+  smaller saving.
 - **The designs are frozen now; the prompts come later.** The later passes' fields, lists, and
   tables (the Marian table, the visual-feature map) are frozen with the codebook, so nothing
   the first run shows can shape them. Each pass's prompt is written and piloted on the
@@ -1123,9 +1128,8 @@ project wants to know; it is not all coded at once. The field list is in
 - **A pass also codes what its computed views read.** Mary's levels read whether she interacts
   (actions, communication) and whether a rosary or scapular is seen (visual details), so the
   Marian pass codes those for its own encounters. The rule for names invoked reads disposition,
-  so the hostile pass codes it, along with the experiencer's labels, since torment that the
-  experiencer doesn't call hell is that pass's question. The pass that owns such a field, when
-  it runs, leaves those entries as coded.
+  so the hostile pass codes it. The pass that owns such a field, when it runs, leaves those
+  entries as coded.
 - **Mary's level two comes from the first run** (a Mary claim). Levels one and three need the
   Marian pass.
 - **Models.** A later pass may have to use models released after the first run. Every pass

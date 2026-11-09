@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { ConditionType, HALLUCINATION_FLAG_CONDITIONS } from './codebook-schema.ts';
-import { LATER_CONDITION_TYPES, LATER_CONDITION_TYPES_PASS, LATER_PASSES, laterPassOf, schemaAt } from './passes.ts';
+import { LATER_PASSES, laterPassOf, schemaAt } from './passes.ts';
 
 test('every listed field exists in the coded record', () => {
   for (const pass of LATER_PASSES) {
@@ -54,8 +53,12 @@ test('the first run codes everything the main question, the Jesus ladder, and ar
     'encounters[].imageComparisons', 'encounters[].sameBeingAs',
     // The Jesus ladder reads the mentions and, through them, the doctrinal statements.
     'jesusMentions', 'doctrinalStatements',
-    // Area 4's direct measure, and what selects accounts for the later passes.
+    // Area 4's direct measure.
     'provenance.exposures', 'provenance.priorDevotion', 'provenance.memory', 'provenance.influenceStatements',
+    // Reception and telling: it needs every account, so waiting would save nothing.
+    'provenance.priorTellings', 'provenance.tellingVaries', 'provenance.reactions', 'provenance.disclaimers',
+    'provenance.naturalExplanations', 'provenance.predispositions', 'longingToReturn',
+    'episodes[].psychiatricMedication', 'episodes[].experiencerLabels',
   ];
   for (const path of firstRun) {
     assert.ok(schemaAt(path) !== null, `no such field ${path}`);
@@ -72,11 +75,4 @@ test('the Marian pass supplies everything Mary\'s levels read beyond the first r
     assert.ok(supplied.includes(`encounters[].${key}`), `the Marian pass doesn't code ${key}`);
   }
   for (const key of ['identity', 'apparentSex', 'presence']) assert.equal(laterPassOf(`encounters[].${key}`), null);
-});
-
-test('condition types split cleanly between the first run and the later pass', () => {
-  assert.equal(LATER_CONDITION_TYPES.length + HALLUCINATION_FLAG_CONDITIONS.length, ConditionType.options.length);
-  assert.ok(LATER_CONDITION_TYPES.every((c) => !HALLUCINATION_FLAG_CONDITIONS.includes(c)));
-  assert.ok(LATER_CONDITION_TYPES.includes('autism') && LATER_CONDITION_TYPES.includes('other_mental_health'));
-  assert.ok(LATER_PASSES.some((p) => p.id === LATER_CONDITION_TYPES_PASS));
 });

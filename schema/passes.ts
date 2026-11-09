@@ -1,21 +1,22 @@
 // Which fields of the main coded record wait for a later pass (DECISIONS.md, "What the first run
 // codes, and what waits"). The schema in codebook-schema.ts is everything the project wants to
-// know; the first run codes only what the main question, the Jesus ladder, and area 4 read.
-// Every field not listed here belongs to the first run. Nothing is removed from the schema: a
+// know; the first run codes what the main question, the Jesus ladder, and area 4 read, and
+// anything else that needs every account. What waits is detail that can be coded on only the
+// accounts the first run flags. Every field not listed here belongs to the first run. Nothing is removed from the schema: a
 // later pass fills its fields in on the encounters and episodes the first run recorded.
 //
 // Paths are into CodedRecord: `encounters[].vital.timeSinceDeath` is that field on every
 // encounter. A listed path covers everything beneath it.
 
 import { z } from 'zod';
-import { CodedRecord, ConditionType, HALLUCINATION_FLAG_CONDITIONS } from './codebook-schema.ts';
+import { CodedRecord } from './codebook-schema.ts';
 
 export interface LaterPass {
   id: string;
   label: string;
-  /** flagged: only accounts the first run flags (see `runsOn`). all: every account. */
-  scope: 'flagged' | 'all';
-  /** Which accounts, in words. An account is flagged when either coding model's first run flags it. */
+  /** Which accounts the pass runs on, in words. Every later pass runs only on accounts the first
+   *  run flags, and an account is flagged when either coding model's first run flags it. A pass
+   *  that would need every account belongs in the first run instead. */
   runsOn: string;
   /** The fields this pass owns. No field is owned by two passes. */
   fields: readonly string[];
@@ -28,7 +29,6 @@ export const LATER_PASSES: readonly LaterPass[] = [
   {
     id: 'marian',
     label: 'Mary in detail',
-    scope: 'flagged',
     runsOn: 'An encounter with a Mary claim, or an unidentified female being who is part of the experience.',
     fields: ['encounters[].confessionalContent', 'encounters[].maternalLanguage'],
     // Mary's levels (resolve-area3.ts) also read whether she interacts and whether a rosary or scapular is seen.
@@ -37,7 +37,6 @@ export const LATER_PASSES: readonly LaterPass[] = [
   {
     id: 'appearance',
     label: 'What beings look like',
-    scope: 'flagged',
     runsOn: 'Any encounter.',
     fields: ['encounters[].representation', 'encounters[].visualDetails', 'encounters[].places'],
     alsoCodes: [],
@@ -45,7 +44,6 @@ export const LATER_PASSES: readonly LaterPass[] = [
   {
     id: 'people',
     label: 'People in detail',
-    scope: 'flagged',
     runsOn: 'An encounter with a person known in life, a relative never met, a child not yet born, or an animal.',
     fields: [
       'encounters[].vital.deathLearned', 'encounters[].vital.diedSoonAfter', 'encounters[].vital.futureChild',
@@ -58,7 +56,6 @@ export const LATER_PASSES: readonly LaterPass[] = [
   {
     id: 'conduct',
     label: 'What beings do',
-    scope: 'flagged',
     runsOn: 'Any encounter.',
     fields: [
       'encounters[].disposition', 'encounters[].actions', 'encounters[].christSpecificContent',
@@ -69,32 +66,12 @@ export const LATER_PASSES: readonly LaterPass[] = [
   {
     id: 'hostile_and_distress',
     label: 'Hostile beings and distress',
-    scope: 'flagged',
     runsOn: 'An encounter with a hostile-being claim, or an episode whose tone is distressing or mixed.',
     fields: ['encounters[].hostileIconography', 'encounters[].invocation', 'episodes[].distressingContent'],
-    // The invocation rule reads disposition; torment with no "hell" label needs the labels.
-    alsoCodes: ['encounters[].disposition', 'episodes[].experiencerLabels'],
-  },
-  {
-    id: 'reception_and_telling',
-    label: 'Reception and telling',
-    scope: 'all',
-    runsOn: 'Every account.',
-    fields: [
-      'provenance.priorTellings', 'provenance.tellingVaries', 'provenance.reactions', 'provenance.disclaimers',
-      'provenance.naturalExplanations', 'provenance.predispositions', 'longingToReturn',
-      'episodes[].psychiatricMedication', 'episodes[].experiencerLabels',
-    ],
-    alsoCodes: [],
+    // The invocation rule reads disposition.
+    alsoCodes: ['encounters[].disposition'],
   },
 ];
-
-/** Condition statements are split by type, not by field: the first run records the types that
- *  raise the hallucination flag; the rest wait for the reception-and-telling pass. */
-export const LATER_CONDITION_TYPES: readonly ConditionType[] = ConditionType.options.filter(
-  (c) => !HALLUCINATION_FLAG_CONDITIONS.includes(c),
-);
-export const LATER_CONDITION_TYPES_PASS = 'reception_and_telling';
 
 /** The later pass that owns a field, or null when the first run codes it. A path beneath a listed
  *  field belongs to that field's pass. */
