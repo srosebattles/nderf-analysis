@@ -1,9 +1,9 @@
 // Output schema for coding NDERF accounts, in zod: the single source for both the TypeScript
 // types (z.infer) and the runtime check every record must pass before it is written.
-// v4 DRAFT: areas 1 (eligibility and provenance) and 2 (religious background) are designed and
-// were revised after trial-coding the first fifty practice accounts. Area 3 (encounters,
-// doctrinal statements, mentions of Jesus, and how the memory came to be told) is designed but
-// not yet trial-coded. Decisions, their reasons, and open questions: DECISIONS.md.
+// v4 DRAFT: areas 1 (eligibility and provenance), 2 (religious background), and 3 (encounters,
+// doctrinal statements, mentions of Jesus, and how the memory came to be told) are designed and
+// were revised after trial-coding the first fifty practice accounts. Area 4 has its own module,
+// area4-schema.ts. Decisions, their reasons, and open questions: DECISIONS.md.
 //
 // Files, joined on accountId:
 //   derived/accounts.jsonl                  rules only; regenerated whenever the parser changes
@@ -770,7 +770,6 @@ export type NamedFigureSubcategory = z.infer<typeof NamedFigureSubcategory>;
 /** Our own spelling, not copied text, so variant spellings and titles of one figure group together. */
 export const CanonicalName = z.string().min(1).max(80);
 
-
 export const FriendType = z.enum([
   'childhood_friend', 'school_friend_or_classmate', 'close_friend', 'coworker', 'military_comrade',
   'neighbor', 'mentor_or_teacher', 'acquaintance', 'unspecified',
@@ -1022,13 +1021,13 @@ export const Invocation = obj({
   message: 'names and an effect need invoked: yes',
 });
 
-/** One being, or a group, met in one episode. Holds only what is described in the narrative or
- *  an answer's comment: a box ticked with nothing described creates no encounter. */
 export const ConfessionalKind = z.enum([
   'rosary', 'scapular', 'purgatory', 'novena', 'intercedes', 'invoked', 'apparition_title', 'other_devotion',
 ]);
 export type ConfessionalKind = z.infer<typeof ConfessionalKind>;
 
+/** One being, or a group, met in one episode. Holds only what is described in the narrative or
+ *  an answer's comment: a box ticked with nothing described creates no encounter. */
 export const Encounter = obj({
   encounterId: z.string(), // `${episodeId}/e1`
   episodeId: z.string(),
@@ -1075,9 +1074,8 @@ export const Encounter = obj({
     evidence: z.array(Evidence).min(1),
   })),
   places: z.array(z.enum(['earthly', 'transitional', 'otherworldly', 'unclear'])).min(1),
-  /** On any encounter where it appears; which items are Catholic-specific is decided at analysis. */
-  /** Which traditions each item fits is decided by the pre-registered table (tables/marian.ts),
-   *  never by the coder. 'intercedes': she prays for someone; 'invoked': someone prays to her
+  /** Recorded on any encounter where it appears. Which traditions each item fits is decided at
+   *  analysis by the pre-registered table (tables/marian.ts), never by the coder. 'intercedes': she prays for someone; 'invoked': someone prays to her
    *  or asks her prayers. The traditions draw their line between the two. */
   confessionalContent: z.array(obj({
     kind: ConfessionalKind,
@@ -1224,8 +1222,6 @@ export const DoctrinalStatement = obj({
 });
 export type DoctrinalStatement = z.infer<typeof DoctrinalStatement>;
 
-// ─── Area 3: every mention of Jesus ─────────────────────────────────────────────────────
-
 // ─── Area 3: provenance (how the memory came to be told) ───────────────────────────────
 
 const EpisodeIds = z.array(z.string()).min(1);
@@ -1257,8 +1253,8 @@ export const PriorDevotion = obj({
   evidence: z.array(Evidence).min(1),
 }).refine((d) => d.category !== 'named_figure' || d.name !== null, { message: 'a named figure needs a canonical name' });
 
-/** More than one can apply; nothing stated means no entries. */
-/** recovered_later only for explicit remembering ("then I remembered the rest"); understanding
+/** More than one can apply; nothing stated means no entries.
+ *  recovered_later only for explicit remembering ("then I remembered the rest"); understanding
  *  that grows over time is not a memory event, and an ambiguous "the picture keeps filling in"
  *  isn't coded. */
 export const MemoryEvent = obj({
@@ -1341,8 +1337,10 @@ export const Provenance = obj({
 });
 export type Provenance = z.infer<typeof Provenance>;
 
-/** The narrative of a part, or one questionnaire item: the "place" of a Jesus mention. */
-/** For Jesus mentions: the narrative, or the questionnaire as a whole (not item by item). */
+// ─── Area 3: every mention of Jesus ─────────────────────────────────────────────────────
+
+/** The "place" of a Jesus mention: the narrative of a part, or that part's questionnaire as a
+ *  whole (not item by item). */
 export const placeOf = (s: SourceRef) =>
   s.kind === 'narrative' ? `narrative:${s.part}` : s.kind === 'qa' ? `questionnaire:${s.part}` : `${s.kind}:${JSON.stringify(s)}`;
 
@@ -1391,7 +1389,6 @@ export const JesusMention = obj({
   if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or all in the questionnaire');
 });
 export type JesusMention = z.infer<typeof JesusMention>;
-
 
 export const CodedRecord = obj({
   accountId: z.string().min(1),

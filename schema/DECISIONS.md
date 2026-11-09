@@ -1,8 +1,11 @@
 # Codebook decisions
 
-Decisions behind [codebook-schema.ts](codebook-schema.ts), schema v3 draft (November 2026).
-Everything here was decided from the data's structure and metadata (field coverage,
-questionnaire wording, menu values, editor tags) before any account text was read.
+Decisions behind [codebook-schema.ts](codebook-schema.ts) and
+[area4-schema.ts](area4-schema.ts), schema v4 draft (November 2026). Areas 1 and 2 were first
+decided from the data's structure and metadata (field coverage, questionnaire wording, menu
+values, editor tags) before any account text was read, then revised after trial-coding practice
+round 1 (fifty pages). Areas 3 and 4 were designed after that round was read. No account
+outside the practice set has been read.
 
 ## Conventions
 
@@ -192,11 +195,11 @@ questionnaire wording, menu values, editor tags) before any account text was rea
   beliefs" item is where people most naturally describe what they believed before. This
   matters most for forms A–C, where text is the only source of affiliation.
 
-## Area 3: encounters (in progress)
+## Area 3: encounters
 
 What to capture is set out in [area3-requirements.md](area3-requirements.md); how it is modeled
-is decided here. Designed one cluster at a time, after reading practice round 1. Everything
-below is in the schema (v4 draft); trial coding comes next.
+is decided here. Designed one cluster at a time, after reading practice round 1, then
+trial-coded on that round and revised. Everything below is in the schema (v4 draft).
 
 ### Identity: how and when a being was identified
 
@@ -889,10 +892,11 @@ were reviewed and approved in November 2026, after trial coding.
   aftereffect rather than part of the encounter question, kept because it's cheap and
   rarely recorded elsewhere.
 
-## Area 4: influence from widely read accounts (in progress)
+## Area 4: influence from widely read accounts
 
 Whether idiosyncratic details from widely read accounts turn up in later ones. Designed one
-cluster at a time, like area 3. Decided so far (November 2026):
+cluster at a time, like area 3 (November 2026). Its resolver and its trial coding are still to
+come (see Open).
 
 - **One project, one freeze, one coding run, with area 4 kept apart inside it.** Area 4's
   details must be fixed before any coded results are seen, since reading results would show
@@ -1229,15 +1233,28 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 
 ## Open
 
-- Area 3: designed, in the schema (v4 draft), and trial-coded on practice round 1 (all fifty
-  pages in notes, five as full JSON records in the private repository). The snags were
-  settled in clusters and written in. The full schema exports to about 80 KB of JSON Schema,
-  so the coding prompt may need to code in passes.
-- Pre-registered tables: all three (Marian, named figures, visual features) are built and
-  approved. At the freeze: check living status in the named-figures table, and log any names
-  added after it in an addendum.
-- Area 4: designed (above). Next: the sources-and-details table (every detail confirmed by two
-  independent sources, approved one source at a time), the schema module and its tests, and
-  trial coding on practice round 1. Vocabulary that looks borrowed from a specific text, with
-  no stated exposure, is left to area 4's pre-registered details, never guessed at by the
-  coder. Candidate source noted from trial coding: the *Urantia Book*.
+Designed and written in: areas 1 to 4, the schema (v4 draft) with area 4's module, and the four
+pre-registered tables (Marian, named figures, visual features, and area 4's sources and
+details). Areas 1 to 3 were trial-coded on practice round 1 (all fifty pages in notes, five as
+full JSON records in the private repository) and the snags settled.
+
+Not built yet:
+
+- The rules-only derived file (questionnaire form, menu answers, dates, lengths, keyword
+  counts, and area 4's word-rule counts). The keyword and word-rule counts run only after the
+  freeze.
+- The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
+  to about 7 KB), so coding will run in passes; how to split them is undecided.
+- The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
+  and area 4's trial coding.
+- The pre-registration.
+
+To settle before the freeze:
+
+- Which two models code, and how their disagreements are handled outside area 4.
+- What the holdout is used for.
+- The hypotheses, the country groups for the culture analysis, and where to pre-register.
+- Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
+  must be empty at the freeze).
+- Living status in the named-figures table is rechecked at the freeze, and names added after it
+  are logged in an addendum.

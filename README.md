@@ -14,8 +14,9 @@ Analysis of near-death experience accounts from [NDERF](https://www.nderf.org), 
    trial-coding the first practice round. Covers eligibility, provenance, religious
    background, and encounters, with [pre-registered tables](schema/tables/) that classify what
    the coder records. Area 4, whether details from widely read accounts turn up in later ones,
-   is designed, and its [sources and details](schema/tables/MEDIA_SOURCES.md) are being added
-   one source at a time.
+   is designed too, with its own [schema module](schema/area4-schema.ts) and its
+   [sources and details](schema/tables/MEDIA_SOURCES.md). What is still open is listed in the
+   decisions' last section.
 3. [Practice set and holdout](samples/), drawn with a fixed seed before any coding: practice
    rounds are read freely while the codebook is built; the holdout stays unread until it is
    frozen.
