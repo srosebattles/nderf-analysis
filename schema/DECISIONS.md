@@ -807,9 +807,10 @@ and trial coding should check them.
   mention or an encounter; or, the other way, dismissing "Jesús" in untranslated Spanish, or
   "Isa" in a Muslim's account, as only a name.
 
-### Choices made while writing the schema (for review)
+### Choices made while writing the schema
 
-These weren't settled in the clusters above; they were needed to write the schema.
+These weren't settled in the clusters above; they were needed to write the schema. All ten
+were reviewed and approved in November 2026, after trial coding.
 
 - **Canonical names are never given to people known in ordinary life** (family, relatives
   never met, friends, clergy known personally, unrecognized humans), for privacy: their
@@ -829,8 +830,8 @@ These weren't settled in the clusters above; they were needed to write the schem
   excepted); a pleasant episode has no distressing content.
 - **Names invoked are recorded exactly when the disposition includes hostile** and the
   encounter isn't physically present (narrowed after trial coding).
-- **In a Peak in Darien case, when the death happened** is around the same time, earlier, or
-  not stated.
+- **In a Peak in Darien case, when the death happened** is around the same time (hours or
+  days from the experience), earlier, or not stated.
 - **Condition statements name the episodes their timing is relative to.**
 
 ### Provenance: how the memory came to be told
@@ -895,7 +896,6 @@ These weren't settled in the clusters above; they were needed to write the schem
 - Pre-registered tables to build before the codebook is frozen: named figures (canonical
   name, subcategory, traditions); visual features, keyed on figure category and feature;
   which confessional content and Marian titles are Catholic-specific and which are shared.
-- Review of the choices made while writing the schema (above).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
   ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
