@@ -45,7 +45,7 @@ test('each route carries exactly what it needs', () => {
   assert.equal(Detail.safeParse({ ...detail, words: ['Nebadon'] }).success, false);
   assert.equal(Detail.safeParse({ ...detail, route: 'computed' }).success, false);
   assert.equal(Detail.safeParse({ ...detail, route: 'computed', computedRule: 'someRule' }).success, false); // not a known rule
-  assert.equal(Detail.safeParse({ ...detail, route: 'computed', computedRule: 'personWithBlueSkin' }).success, true);
+  assert.equal(Detail.safeParse({ ...detail, route: 'computed', computedRule: 'angelGroupOf150' }).success, true);
 });
 
 test('related works have no details, fiction is invented, and boosts come after the first date', () => {

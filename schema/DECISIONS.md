@@ -998,9 +998,9 @@ come (see Open).
 - **Which accounts:** exactly the main analysis's set (firsthand, qualifying episodes), with the
   same flags and sensitivity analyses, including the one that drops translated pages.
 - **Three ways to find a detail; each detail gets exactly one, chosen in the table:**
-  - computed from area 3's codes, when they already record everything the detail needs (the
-    Blue Man of *Five People* is the blue-skin feature on an unrecognized man; a named painting
-    is in the image comparisons). This is blind by construction: the encounter coder fills
+  - computed from area 3's codes, when the first run's codes already record everything the
+    detail needs (a group of exactly 150 angels is the count, on an encounter that has an
+    angel claim; a named painting is in the image comparisons). This is blind by construction: the encounter coder fills
     those fields without knowing anyone looks for them;
   - a fixed word rule for coined words (the *Urantia Book*'s names, "Elousia"), counted like the
     Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
@@ -1130,10 +1130,11 @@ project wants to know; it is not all coded at once. The field list is in
   Marian pass.
 - **Models.** A later pass may have to use models released after the first run. Every pass
   records its own, and the write-up says which coded what.
-- **Area 4's blue-skin detail moves to the checklist.** It was computed from the blue-skin
+- **Area 4's blue-skin detail moved to the checklist.** It was computed from the blue-skin
   visual feature, which now waits, and area 4 has to be complete in the first run. Its
-  checklist wording is approved before it is written into the table. The detail about a
-  group of 150 angels stays computed: it reads the count.
+  checklist wording, approved before it was written into the table, leaves out deities and
+  other religious figures and a color explained by the manner of death, as the computed rule
+  did. The detail about a group of 150 angels stays computed: it reads the count.
 
 ## Pre-registered tables
 
@@ -1316,8 +1317,6 @@ To settle before the freeze:
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
-- The checklist wording for area 4's blue-skin detail, which the table still lists as
-  computed.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
   must be empty at the freeze).
 - Living status in the named-figures table is rechecked at the freeze, and names added after it
