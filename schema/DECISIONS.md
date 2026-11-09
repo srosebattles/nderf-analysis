@@ -894,6 +894,14 @@ were reviewed and approved in November 2026, after trial coding.
 Whether idiosyncratic details from widely read accounts turn up in later ones. Designed one
 cluster at a time, like area 3. Decided so far (November 2026):
 
+- **One project, one freeze, one coding run, with area 4 kept apart inside it.** Area 4's
+  details must be fixed before any coded results are seen, since reading results would show
+  the very content it looks for; so it is frozen with the main codebook, and a separate later
+  project, which would also mean a second full coding run, is ruled out. Inside the project,
+  area 4 has its own schema module, its own output file (joined on account ID, so the main
+  coded record doesn't grow), its own pass in the same batch run (so the encounter coder never
+  sees the list of details, which could prime it), and its own report.
+
 - **Which sources qualify.** A source must be widely read (a bestseller-list run, a film, or
   major press coverage) and must be a single account with concrete content. Compilations and
   research books (Moody's *Life After Life*, Jeffrey Long's books) are recorded only as named
