@@ -231,15 +231,16 @@ export const ReligionFieldValue = z.discriminatedUnion('format', [
 ]);
 export type ReligionFieldValue = z.infer<typeof ReligionFieldValue>;
 
-const Belief = z.enum(['definitely', 'probably', 'uncertain', 'probably_not', 'does_not', 'unknown']);
+/** 'unknown' is NDERF's own menu option; 'unrecognized' is an answer that matches no option. */
+const Belief = z.enum(['definitely', 'probably', 'uncertain', 'probably_not', 'does_not', 'unknown', 'unrecognized']);
 
 /** Per part, by rule. */
 export const DerivedReligionFields = obj({
   prior: finding(ReligionFieldValue), // 'not_asked' when the form lacks the item
   now: finding(ReligionFieldValue),
-  practicesChanged: finding(z.enum(['yes', 'no', 'uncertain'])),
+  practicesChanged: finding(z.enum(['yes', 'no', 'uncertain', 'unrecognized'])),
   /** Form D only. Answered after the experience, about before it. */
-  priorImportance: finding(z.enum(['not', 'slightly', 'moderately', 'greatly', 'unknown'])),
+  priorImportance: finding(z.enum(['not', 'slightly', 'moderately', 'greatly', 'unknown', 'unrecognized'])),
   priorBeliefInGod: finding(Belief),
   priorBeliefInAfterlife: finding(Belief),
 });
@@ -346,8 +347,9 @@ export const ProvenanceItemAnswers = obj({
   sharedWithOthers: finding(YesNoUncertain), // "Have you ever shared this experience with others?"
   realityShortlyAfter: finding(Reality), // "…shortly (days to weeks) after it happened?"
   realityNow: finding(Reality),
-  /** Compared with other life events around the time of the experience. */
-  memoryAccuracy: finding(z.enum(['more', 'as', 'less', 'unrecognized'])),
+  /** Compared with other life events around the time of the experience. 'do_not_know' is the
+   *  menu's own fourth option ("I do not know how my remembrance of the experience compares…"). */
+  memoryAccuracy: finding(z.enum(['more', 'as', 'less', 'do_not_know', 'unrecognized'])),
 });
 export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
 

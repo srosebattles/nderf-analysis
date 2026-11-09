@@ -57,12 +57,16 @@ outside the practice set has been read.
   | Form | What identifies it | Parts | First posted (5th–95th percentile) |
   |---|---|---|---|
   | none | no questionnaire | 220 | 1999–2022 |
-  | A | orientation field, no "deceased or religious spirits" item, "The experience included" checklist | ~740 | 2001–2012 |
-  | B | orientation field, spirits item, no checklist | 519 | 2004–2007 |
-  | C | orientation field, spirits item, checklist | 1,486 | 2007–2011 |
-  | D | affiliation menu, named-religious-figures item, before/after belief items | 1,425 | 2011–2017 |
-  | E | menu and named-figures item, no checklist or before/after items | 980 | 2018–2025 |
-  | F | short form: no spirits item; "deceased (or alive) beings" becomes "deceased beings" | 379 | 2025–2026 |
+  | A | no affiliation menu (an orientation field, or no religion item at all), no "deceased or religious spirits" item, "The experience included" checklist | 748 | 2001–2012 |
+  | B | orientation field, spirits item, no checklist | 527 | 2004–2007 |
+  | C | orientation field, spirits item, checklist | 1,490 | 2007–2011 |
+  | D | affiliation menu, named-religious-figures item, before/after belief items | 1,452 | 2011–2017 |
+  | E | menu and named-figures item, no checklist or before/after items | 1,026 | 2018–2025 |
+  | F | short form: no spirits item; "deceased (or alive) beings" becomes "deceased beings" | 382 | 2025–2026 |
+  | irregular | a questionnaire that fits none of these | 199 | |
+
+  The counts are the parser's (`derive/questionnaire.ts`; `npm run check:derive` prints them);
+  the posting years are from the earlier hand count and shift little.
 
   The affiliation menu and the named-figures item arrived together in form D, so comparisons
   of religion and named-figure encounters across forms are confounded with the prompt. Form is
@@ -846,7 +850,7 @@ were reviewed and approved in November 2026, after trial coding.
   experience?"), whether it was shared ("Have you ever shared this experience with others?"),
   belief in its reality shortly after and now (definitely real, probably real, probably not
   real, definitely not real), and memory accuracy compared with other events of the time
-  (more, as, or less accurately). Comments after the answers are read by the coder like any
+  (more, as, or less accurately, with a fourth option for not knowing). Comments after the answers are read by the coder like any
   other text.
 - **Exposure** is a coded statement linked to its episodes, limited to books, films, talks,
   accounts, and other media about NDEs, the afterlife, or spiritual beings (a religious
@@ -1306,9 +1310,11 @@ full JSON records in the private repository) and the snags settled.
 
 Not built yet:
 
-- The rules-only derived file (questionnaire form, menu answers, dates, lengths, keyword
-  counts, and area 4's word-rule counts). The keyword and word-rule counts run only after the
-  freeze.
+- Most of the rules-only derived file. Built and tested: the questionnaire side
+  (`derive/questionnaire.ts`: form, items asked, menu answers, the religion field, the
+  life-threat item, and lengths). Still to build: dates, NDERF's editorial layer, posting
+  dates, and country and language tags. The Jesus keyword counts and area 4's word-rule counts
+  run only after the freeze.
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
   to about 7 KB). The first run codes only part of it (above); how to split that part into
   passes is undecided.
@@ -1318,6 +1324,12 @@ Not built yet:
 
 To settle before the freeze:
 
+- The checklist prints only the boxes a person ticked, so a form A or C submission with nothing
+  ticked carries no checklist at all: about eighty-six parts look like form A without it (now
+  irregular), and about twenty-seven parts counted as form B were posted outside form B's
+  years and may be form C. For these the checklist answers read "not asked" where "asked,
+  nothing ticked" may be true.
+- Seventy-three parts look like form E but have no named-figures item (now irregular).
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
