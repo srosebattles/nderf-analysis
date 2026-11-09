@@ -31,11 +31,12 @@ export function render(): string {
     for (const b of s.boosts) lines.push(`- **Boost:** ${dated(b)}`);
     lines.push(`- **Names matched:** ${[...s.names.titles, ...s.names.people].join('; ')}`);
     if (s.ownNderfAccountIds.length > 0) lines.push(`- **Own NDERF page, left out of its own test:** ${s.ownNderfAccountIds.join(', ')}`);
+    if (s.suggestedByAccountIds.length > 0) lines.push(`- **Suggested by practice page, kept in the counts and flagged in the write-up:** ${s.suggestedByAccountIds.join(', ')}`);
     if (s.note) lines.push(`- **Note:** ${s.note}`);
     if (s.details.length === 0) continue;
     lines.push('', '| Detail | Route | Full match | Partial match | About beings | Traceability | Confirmed by |', '|---|---|---|---|---|---|---|');
     for (const d of s.details) {
-      const route = d.route === 'word_rule' ? `word rule: ${d.words.join(', ')}` : d.route === 'computed' ? `computed: ${d.computedRule}` : ROUTE[d.route];
+      const route = d.route === 'word_rule' ? `word rule: ${d.words.join(', ')}${d.neverMatch.length ? ` (never: ${d.neverMatch.join(', ')})` : ''}` : d.route === 'computed' ? `computed: ${d.computedRule}` : ROUTE[d.route];
       const label = d.pendingCheck === null ? d.label : `${d.label} (**pending:** ${d.pendingCheck})`;
       lines.push(`| ${cell(label)} | ${cell(route)} | ${cell(d.fullMatch)} | ${cell(d.partialMatch ?? 'none')} | ${d.aboutBeings ? 'yes' : 'no'} | ${cell(d.traceability)} | ${d.citations.map(citation).join('; ')} |`);
     }

@@ -1,17 +1,18 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { DatedEvent, Detail, MEDIA_SOURCES, MediaSource, PartialDate, cutDate, matchSources, unconfirmedDetails } from './media-sources.ts';
+import { DatedEvent, Detail, MEDIA_SOURCES, MediaSource, PartialDate, cutDate, editDistance, matchSources, sourceById, unconfirmedDetails, wordRuleHits } from './media-sources.ts';
 import { normalizeName } from './named-figures.ts';
 
 const cite = (outlet: string) => ({ outlet, title: 'a review', author: null, published: '2011', url: 'https://example.org/review' });
 const event = { event: 'book published', date: '2010-11', citations: [cite('A'), cite('B')], note: '' };
 const detail = {
   id: 'invented-detail', label: 'x', route: 'checklist', fullMatch: 'a staircase of folded paper', partialMatch: null,
-  words: [], computedRule: null, aboutBeings: false, traceability: 'x', citations: [cite('A'), cite('B')], pendingCheck: null,
+  words: [], neverMatch: [], computedRule: null, aboutBeings: false, traceability: 'x', citations: [cite('A'), cite('B')], pendingCheck: null,
 };
 const source = {
   id: 'invented-source', title: 'x', medium: 'book', role: 'source', relatedTo: null, presentedAs: 'true', invented: false,
-  firstWideAvailability: event, boosts: [], names: { titles: ['x'], people: [] }, ownNderfAccountIds: [], details: [], note: '',
+  firstWideAvailability: event, boosts: [], names: { titles: ['x'], people: [] }, ownNderfAccountIds: [], suggestedByAccountIds: [],
+  details: [], note: '',
 };
 
 test('dates are real years, months, or days, and a cut falls on the period\'s first day', () => {
@@ -94,4 +95,29 @@ test('the review view (MEDIA_SOURCES.md) matches the table', async () => {
   const fs = await import('node:fs');
   const { OUTPUT, render } = await import('../../tools/render-media-sources.ts');
   assert.equal(fs.readFileSync(OUTPUT, 'utf8'), render(), 'run: node tools/render-media-sources.ts');
+});
+
+test('word rules: long words allow two edits, shorter words and phrases match exactly, and ordinary words never count', () => {
+  assert.equal(editDistance('salvington', 'salvingtom'), 1);
+  assert.equal(editDistance('nebadon', 'nebdaon'), 1); // swapped neighbors count once
+  const urantia = sourceById('urantia-book')!.details[0];
+  const hits = (text: string) => wordRuleHits(text, urantia);
+  assert.deepEqual(hits('a voice from Salvington'), ['salvington']);
+  assert.deepEqual(hits('a voice from Salvingtom'), ['salvingtom']); // one letter off, ten letters long
+  assert.deepEqual(hits('a voice from Salgton'), []); // three letters off
+  assert.deepEqual(hits('Havona, not Havana'), ['havona']);
+  assert.deepEqual(hits('Satan and Satania'), ['satania']);
+  assert.deepEqual(hits('my Thought Adjuster'), ['thought adjuster']);
+  assert.deepEqual(hits('my thought adjusted itself'), []);
+  assert.deepEqual(hits('midway through, the midwayers'), ['midwayers']);
+  assert.deepEqual(hits('una morenita; a morontial body'), ['morontial']); // counted once, though two rule words reach it
+  const earthworm = sourceById('proof-of-heaven')!.details.find((d) => d.id === 'proof-earthworm')!;
+  for (const text of ["an earthworm's-eye view", 'an earthworms eye view', 'an earthworm-eye view', 'an Earthworm Eye View']) {
+    assert.equal(wordRuleHits(text, earthworm).length, 1, text);
+  }
+  assert.deepEqual(wordRuleHits("a worm's-eye view", earthworm), []);
+});
+
+test('a practice page that suggested a source is recorded on it', () => {
+  assert.deepEqual(sourceById('urantia-book')!.suggestedByAccountIds, ['1alejandro_m_nde']);
 });

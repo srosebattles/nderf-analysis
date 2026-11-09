@@ -913,7 +913,10 @@ cluster at a time, like area 3. Decided so far (November 2026):
   pre-registered. A source that first appeared on NDERF itself would be dated from that posting,
   with the book as a boost (Anita Moorjani's account was on NDERF in 2006, six years before
   *Dying to Be Me*, though her account was later dropped; see below). A source's own page, if it
-  is in the corpus, is left out of its own test.
+  is in the corpus, is left out of its own test. A practice page that suggested a source is not:
+  it stays in that source's counts, the table records it, and the write-up says the source was
+  suggested by the practice set (the *Urantia Book*, by a practice page whose vocabulary
+  resembles the book's without naming it).
 - **What makes a detail idiosyncratic.** It must pass all five tests:
   - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
     colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
@@ -995,10 +998,17 @@ cluster at a time, like area 3. Decided so far (November 2026):
     Blue Man of *Five People* is the blue-skin feature on an unrecognized man; a named painting
     is in the image comparisons). This is blind by construction: the encounter coder fills
     those fields without knowing anyone looks for them;
-  - a fixed word rule for coined words (the *Urantia Book*'s names, "Sarayu"), counted like the
+  - a fixed word rule for coined words (the *Urantia Book*'s names, "Elousia"), counted like the
     Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
-    runs over the names area 3 copies for every being, and allows a set number of differing
-    letters in long, rare words, since misspellings and translations garble them;
+    runs over the names area 3 copies for every being. Words are compared in lowercase, with
+    apostrophes removed and hyphens separating words. A single rule word of eight letters or
+    more may differ by up to two letters (an insertion, a deletion, a substitution, or two
+    neighbors swapped), since misspellings and translations garble them; shorter words, and
+    phrases of more than one word, must match exactly (so "thought adjusted" can't count as
+    "Thought Adjuster"). Each rule lists the ordinary words within reach that never count,
+    found once with a public English word list (dwyl/english-words): "midway" for "midwayer,"
+    and "moronic" and the Spanish "morenita" for "morontia." The rule is defined once in code
+    (`wordRuleHits`) and tested;
   - the model checklist, area 4's own pass, for the rest: details with no field and no unique
     word.
 - **The checklist.** Each item describes its detail plainly and never names its source or says

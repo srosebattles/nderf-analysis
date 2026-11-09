@@ -71,8 +71,11 @@ export const Detail = z.strictObject({
   fullMatch: z.string().min(1),
   /** Counted only in a sensitivity analysis; null when nothing short of a full match tells us anything. */
   partialMatch: z.string().nullable(),
-  /** word_rule only: the words, matched whole and case-insensitive. */
+  /** word_rule only: the words or phrases, matched by wordRuleHits. */
   words: z.array(z.string().min(1)),
+  /** word_rule only: ordinary words within reach of a long rule word, which never count
+   *  ("midway" for "midwayer"). Found with an English word list; see DECISIONS.md. */
+  neverMatch: z.array(z.string().min(1)),
   /** computed only: the name of the rule that computes it from area 3's codes. */
   computedRule: z.string().nullable(),
   /** Reported separately, since details about beings bear on the main question. */
@@ -87,6 +90,7 @@ export const Detail = z.strictObject({
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message: `${d.id}: ${message}` });
   if (d.pendingCheck === null && !independent(d.citations)) issue('a confirmed detail needs two independent citations');
   if ((d.route === 'word_rule') !== (d.words.length > 0)) issue('words are given exactly for word rules');
+  if (d.route !== 'word_rule' && d.neverMatch.length > 0) issue('neverMatch is for word rules only');
   if ((d.route === 'computed') !== (d.computedRule !== null)) issue('computedRule is given exactly for computed details');
   if (d.computedRule !== null && !(d.computedRule in COMPUTED_RULES)) issue(`unknown computed rule "${d.computedRule}"`);
 });
@@ -115,6 +119,8 @@ export const MediaSource = z.strictObject({
   }),
   /** The source's own account on NDERF, if it is in the corpus: left out of its own test. */
   ownNderfAccountIds: z.array(z.string()),
+  /** Practice pages that suggested this source. They stay in its counts; the write-up says so. */
+  suggestedByAccountIds: z.array(z.string()),
   details: z.array(Detail),
   note: z.string(),
 }).superRefine((s, ctx) => {
@@ -199,6 +205,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
       people: ['Burpo', 'Todd Burpo', 'Colton Burpo', 'Sonja Burpo', 'Colton', 'Lynn Vincent'],
     },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'hifr-horse',
@@ -206,7 +213,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'A horse that belongs to Jesus or that he rides, described as rainbow-colored or as having many colors.',
         partialMatch: 'A horse described as rainbow-colored or as having many colors, not tied to Jesus.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Christ on a white horse is Revelation 19, and a rainbow around the throne is Revelation 4; neither counts. Only a many-colored horse belonging to Jesus is the book\'s.',
         citations: [
@@ -221,7 +228,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The Holy Spirit appears blue or bluish.',
         partialMatch: null,
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Christian art shows the Holy Spirit as a white dove; no tradition found makes the Spirit blue.',
         citations: [NOZAKI, ROHANE],
@@ -232,7 +239,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The marks on Jesus\'s hands or feet are called "markers."',
         partialMatch: null,
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'The wounds themselves are in the Gospels and in all Christian art; only the word is the book\'s.',
         citations: [
@@ -246,7 +253,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'God is enthroned, with Jesus at his right and the angel Gabriel at his left.',
         partialMatch: 'The angel Gabriel at the left of God\'s throne, without Jesus at the right.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Jesus at God\'s right hand is scripture. Jewish tradition puts Gabriel at the left: the bedtime Shema asks for Michael at one\'s right and Gabriel at the left, and a midrash places four angels around the throne (sources differ on where it puts Gabriel). Only the combination is the book\'s.',
         citations: [NOZAKI, ELLIS],
@@ -257,7 +264,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'Jesus moves straight up and down, likened to an elevator or a lift.',
         partialMatch: 'Jesus is the only one without wings among winged beings, with no likeness to an elevator.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Christ rising (the Ascension) is scripture, and the dead having wings is a folk image; the elevator is the book\'s.',
         citations: [
@@ -272,7 +279,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The person is given homework or assignments while in heaven.',
         partialMatch: 'Jesus is the person\'s teacher in heaven, with no homework.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: false,
         traceability: 'Being taught in heaven isn\'t new, and area 3 already codes a being who teaches; homework is the book\'s.',
         citations: [ELLIS, LEONARD],
@@ -302,6 +309,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     boosts: [],
     names: { titles: ['Prince of Peace'], people: ['Akiane Kramarik', 'Akiane'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [],
     note: 'The boy in Heaven Is for Real picked this painting as the Jesus he saw. "Prince of Peace" is also a biblical title (Isaiah 9:6), but names are matched only in fields that name a work, never in running text.',
   },
@@ -325,6 +333,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     boosts: [],
     names: { titles: ['The Urantia Book', 'Urantia'], people: [] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: ['1alejandro_m_nde'],
     details: [{
       id: 'urantia-coined-names',
       label: "The book's coined names",
@@ -335,6 +344,10 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         'Nebadon', 'Salvington', 'Jerusem', 'Edentia', 'Uversa', 'Orvonton', 'Havona', 'Norlatiadek', 'Satania',
         'Divinington', 'Caligastia', 'Thought Adjuster', 'Thought Adjusters', 'Mystery Monitor', 'Mystery Monitors',
         'morontia', 'morontial', 'midwayer', 'midwayers',
+      ],
+      neverMatch: [
+        'salpingion', 'fronton', 'boronia', 'gomontia', 'montia', 'morenita', 'moronic', 'moronity', 'strontia',
+        'midway', 'midways', 'mislayer', 'mislayers', 'missayer',
       ],
       computedRule: null,
       pendingCheck: null,
@@ -349,7 +362,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
           'https://archive.urantiabook.org/studies/Halvorson/UrantiaBookEtymology.pdf'),
       ],
     }],
-    note: 'Practice page 8 is what suggested this source; whether to leave it out of this test is an open question.',
+    note: 'Suggested by a practice page whose vocabulary resembles the book\'s without naming it. That page stays in the counts, and the write-up says so.',
   },
   {
     id: 'embraced-by-the-light',
@@ -371,6 +384,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     boosts: [],
     names: { titles: ['Embraced by the Light'], people: ['Betty Eadie', 'Betty J. Eadie', 'Eadie'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'eadie-three-monks',
@@ -378,7 +392,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'Three men who look like monks meet the person just after they leave the body.',
         partialMatch: 'Monk-like figures meet the person, but not three, or not at the start.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: "Single monk-like figures appear in other accounts; three together, as the experience begins, are the book's.",
         citations: [
@@ -393,7 +407,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'Prayers are seen rising from earth as beams or threads of light, with angels answering them.',
         partialMatch: 'Prayers are seen as light, without angels answering them.',
-        words: [], computedRule: null,
+        words: [], neverMatch: [], computedRule: null,
         pendingCheck: 'A second source: a page reference in the book, to be checked by hand before the pipeline runs.',
         aboutBeings: true,
         traceability: "Prayers rising like incense are Revelation 8 and Psalm 141; as beams of light, with angels answering each one, they are the book's.",
@@ -408,7 +422,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'A room where spirits weave cloth or clothing on looms, for new arrivals or for others.',
         partialMatch: 'Spirits weaving, with no looms.',
-        words: [], computedRule: null,
+        words: [], neverMatch: [], computedRule: null,
         pendingCheck: 'A second source: a page reference in the book, to be checked by hand before the pipeline runs.',
         aboutBeings: true,
         traceability: 'No tradition found.',
@@ -444,6 +458,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     }],
     names: { titles: ['The Five People You Meet in Heaven'], people: ['Mitch Albom', 'Albom'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'five-people-blue-skin',
@@ -451,7 +466,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'computed',
         fullMatch: 'A human being with blue skin.',
         partialMatch: null,
-        words: [], computedRule: 'personWithBlueSkin', pendingCheck: null,
+        words: [], neverMatch: [], computedRule: 'personWithBlueSkin', pendingCheck: null,
         aboutBeings: true,
         traceability: 'Blue skin otherwise points to Hindu deities (the visual-feature map), which the rule leaves out, as it does a dead person shown as at death.',
         citations: [FIVE_PEOPLE_LITCHARTS, FIVE_PEOPLE_WIKIPEDIA],
@@ -462,7 +477,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The person meets exactly five people from their life, some of them strangers, each explaining a lesson or how their lives were connected.',
         partialMatch: 'The person meets people from their life who each explain how their lives were connected, with no count of five.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: "Meeting the dead is standard; exactly five, each with a lesson, is the book's.",
         citations: [FIVE_PEOPLE_LITCHARTS, FIVE_PEOPLE_WIKIPEDIA],
@@ -500,6 +515,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     }],
     names: { titles: ['The Shack'], people: ['William Paul Young', 'William P. Young', 'Wm. Paul Young'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'shack-god-as-black-woman',
@@ -507,7 +523,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'God (the Father) appears as a Black or African American woman.',
         partialMatch: 'God appears as a woman.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'God as a woman alone has older sources (Divine Mother traditions, Goddess spirituality, maternal images of God in Isaiah), and "Papa" alone is "Abba" (Romans 8).',
         citations: [SHACK_WIKIPEDIA, CHALLIES],
@@ -518,7 +534,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The Holy Spirit appears as an Asian woman, or is called Sarayu.',
         partialMatch: 'The Holy Spirit appears as a woman.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'A feminine Spirit has older roots (early Syriac Christianity). "Sarayu" is not a word rule: it is also a sacred river in Hindu tradition and a common Indian given name.',
         citations: [SHACK_WIKIPEDIA, CHALLIES],
@@ -529,7 +545,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'God (the Father) appears as an older Native American man.',
         partialMatch: null,
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: "For Native American experiencers the Creator as an elder may come from their own tradition; it counts all the same, and the analysis can look at it by tradition.",
         citations: [
@@ -545,6 +561,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         fullMatch: 'The word "Elousia."',
         partialMatch: null,
         words: ['Elousia'],
+        neverMatch: [],
         computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Coined in the book, from Hebrew and Greek words for God and being.',
@@ -589,6 +606,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
       people: ['J. K. Rowling', 'Rowling'],
     },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'deathly-hallows-creature',
@@ -596,7 +614,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'A small, flayed or raw-skinned, infant-like creature, whimpering or suffering, which the person is told cannot be helped.',
         partialMatch: 'The same creature, without being told it cannot be helped.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'No tradition found.',
         citations: [DH_REACTOR, DH_WIKIBOOKS],
@@ -607,7 +625,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The in-between place appears as a railway station, bright, clean, and empty, or in white mist.',
         partialMatch: 'A train that will take the person onward, with no station.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: false,
         traceability: 'Trains to glory are an old gospel-song image, so a train alone is only partial.',
         citations: [
@@ -639,6 +657,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     boosts: [],
     names: { titles: ['The Boy Who Came Back from Heaven'], people: ['Malarkey', 'Alex Malarkey', 'Kevin Malarkey'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'malarkey-moldy-teeth',
@@ -646,7 +665,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'The devil, or a demon, has moldy teeth.',
         partialMatch: 'The devil has no ears, or hair made of fire, without moldy teeth.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: "The three heads also reported are Dante's Satan, so they are not used. Moldy teeth are the book's.",
         citations: [
@@ -661,7 +680,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'computed',
         fullMatch: 'Exactly 150 angels.',
         partialMatch: null,
-        words: [], computedRule: 'angelGroupOf150', pendingCheck: null,
+        words: [], neverMatch: [], computedRule: 'angelGroupOf150', pendingCheck: null,
         aboutBeings: true,
         traceability: 'No scriptural or traditional count of 150; the numbers in Revelation are 144,000 and "ten thousand times ten thousand."',
         citations: [HANEGRAAFF, GRAHAM],
@@ -695,6 +714,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
     }],
     names: { titles: ['Proof of Heaven'], people: ['Eben Alexander'] },
     ownNderfAccountIds: [],
+    suggestedByAccountIds: [],
     details: [
       {
         id: 'proof-butterfly',
@@ -702,7 +722,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: "The person rides on a butterfly or on a butterfly's wing.",
         partialMatch: null,
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: false,
         traceability: "Butterflies as souls are old symbolism, but riding one is the book's. In the book a girl rides with him; she is not required.",
         citations: [BOYD, CHOW, RUFFLES],
@@ -713,7 +733,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         route: 'checklist',
         fullMatch: 'A wordless message in three parts: the person is loved and cherished, has nothing to fear, and can do nothing wrong.',
         partialMatch: 'The person is told there is nothing they can do wrong, without the other two parts.',
-        words: [], computedRule: null, pendingCheck: null,
+        words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: true,
         traceability: 'Being loved, and having nothing to fear, are common in NDE accounts on their own, so only the three together count.',
         citations: [BOYD, CHOW],
@@ -722,9 +742,10 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         id: 'proof-earthworm',
         label: '"Earthworm\'s-eye view"',
         route: 'word_rule',
-        fullMatch: 'The phrase "earthworm\'s-eye view," with or without the hyphen and apostrophe.',
+        fullMatch: 'The phrase "earthworm\'s-eye view," with or without the hyphen, apostrophe, or s.',
         partialMatch: null,
-        words: ["earthworm's-eye view"],
+        words: ["earthworm's-eye view", 'earthworm-eye view'],
+        neverMatch: [],
         computedRule: null, pendingCheck: null,
         aboutBeings: false,
         traceability: '"Worm\'s-eye view" is an ordinary idiom and is not matched; the earthworm form is the book\'s.',
@@ -750,6 +771,51 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
 export const AMBIGUOUS_NAMES: Readonly<Record<string, string>> = {
   'heaven is real': 'Heaven Is for Real misremembered, or the Newsweek cover story for Proof of Heaven ("Heaven Is Real")',
 };
+
+// ─── Word rules ─────────────────────────────────────────────────────────────────────────
+
+/** A single rule word this long or longer may differ by up to WORD_RULE_MAX_EDITS letters. */
+export const WORD_RULE_MIN_FUZZY_LENGTH = 8;
+export const WORD_RULE_MAX_EDITS = 2;
+
+/** Lowercase, apostrophes removed, hyphens and other punctuation separating words. */
+const wordTokens = (s: string): string[] =>
+  s.normalize('NFC').toLowerCase().replace(/['\u2018\u2019]/g, '').match(/[\p{L}\p{N}]+/gu) ?? [];
+
+/** Optimal string alignment distance: insertions, deletions, substitutions, and swapped neighbors. */
+export function editDistance(a: string, b: string): number {
+  const d: number[][] = Array.from({ length: a.length + 1 }, (_, i) => Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)));
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[a.length][b.length];
+}
+
+/** The pre-registered word rule (DECISIONS.md, area 4), run in the derived file after the freeze.
+ *  Text and rule words are compared in lowercase with apostrophes removed; hyphens separate words.
+ *  A single rule word of eight letters or more matches a word within two edits of it, unless that
+ *  word is in the detail's neverMatch list; shorter words, and phrases of more than one word,
+ *  must match exactly. Returns each match, once per position in the text. */
+export function wordRuleHits(text: string, rule: Pick<Detail, 'words' | 'neverMatch'>): string[] {
+  const tokens = wordTokens(text);
+  const never = new Set(rule.neverMatch.flatMap(wordTokens));
+  const hits = new Map<number, string>();
+  for (const phrase of rule.words.map(wordTokens)) {
+    if (phrase.length === 1 && phrase[0].length >= WORD_RULE_MIN_FUZZY_LENGTH) {
+      tokens.forEach((t, i) => {
+        if (!never.has(t) && editDistance(t, phrase[0]) <= WORD_RULE_MAX_EDITS) hits.set(i, t);
+      });
+    } else {
+      for (let i = 0; i + phrase.length <= tokens.length; i++) {
+        if (phrase.every((w, k) => tokens[i + k] === w)) hits.set(i, tokens.slice(i, i + phrase.length).join(' '));
+      }
+    }
+  }
+  return [...hits.entries()].sort((a, b) => a[0] - b[0]).map(([, w]) => w);
+}
 
 // ─── Lookup ─────────────────────────────────────────────────────────────────────────────
 
