@@ -1223,6 +1223,8 @@ export type DoctrinalStatement = z.infer<typeof DoctrinalStatement>;
 const EpisodeIds = z.array(z.string()).min(1);
 const Trigger = z.enum(['media', 'therapy_or_hypnosis', 'other_people', 'spontaneous', 'not_stated']);
 
+/** Media or accounts about NDEs, the afterlife, or spiritual beings only. A religious
+ *  upbringing is background; unrelated content (a survival tip from TV) isn't exposure. */
 export const Exposure = obj({
   episodeIds: EpisodeIds,
   medium: z.enum(['book', 'film_or_tv', 'article', 'talk_or_conference', 'another_persons_account', 'online', 'other']),
@@ -1248,6 +1250,9 @@ export const PriorDevotion = obj({
 }).refine((d) => d.category !== 'named_figure' || d.name !== null, { message: 'a named figure needs a canonical name' });
 
 /** More than one can apply; nothing stated means no entries. */
+/** recovered_later only for explicit remembering ("then I remembered the rest"); understanding
+ *  that grows over time is not a memory event, and an ambiguous "the picture keeps filling in"
+ *  isn't coded. */
 export const MemoryEvent = obj({
   episodeIds: EpisodeIds,
   kind: z.enum(['remembered_all_along', 'recovered_later', 'recognized_as_nde_later']),

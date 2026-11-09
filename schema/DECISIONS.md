@@ -842,7 +842,10 @@ These weren't settled in the clusters above; they were needed to write the schem
   real, definitely not real), and memory accuracy compared with other events of the time
   (more, as, or less accurately). Comments after the answers are read by the coder like any
   other text.
-- **Exposure** is a coded statement linked to its episodes: the medium (book, film or TV,
+- **Exposure** is a coded statement linked to its episodes, limited to books, films, talks,
+  accounts, and other media about NDEs, the afterlife, or spiritual beings (a religious
+  upbringing is background; unrelated content, such as a survival tip from TV, isn't
+  exposure): the medium (book, film or TV,
   article, talk or conference, another person's account, online, or other); the title if
   named, with the words kept, which gives area 4 a direct measure; the author, speaker, or
   presenter if named (public figures only: a friend who told their own experience is never
@@ -855,7 +858,9 @@ These weren't settled in the clusters above; they were needed to write the schem
 - **Memory history,** each with a trigger where one applies (media, therapy or hypnosis,
   other people, spontaneous, or not stated): remembered all along; recovered later; or only
   later understood to have been an NDE. More than one can apply (part recovered and the whole
-  recognized after the same TV program). Nothing stated: no entries.
+  recognized after the same TV program). Nothing stated: no entries. "Recovered later" needs
+  explicit remembering ("then I remembered the rest"); understanding that grows over time
+  isn't a memory event, and an ambiguous "the picture keeps filling in" isn't coded.
 - **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
   other, with the words kept), private only, or this is the first telling. Plus a flag when
   the person says their telling varies or their memory is uncertain.
@@ -893,4 +898,6 @@ These weren't settled in the clusters above; they were needed to write the schem
 - Review of the choices made while writing the schema (above).
 - Area 4 and beyond, planned: idiosyncratic details from widely read NDE accounts (for
   example, *Heaven Is for Real*), to look for cultural influence from those accounts on later
-  ones.
+  ones. Vocabulary that looks borrowed from a specific text, with no stated exposure, is left
+  to area 4's pre-registered details, never guessed at by the coder. Candidate source noted
+  from trial coding: the *Urantia Book*.
