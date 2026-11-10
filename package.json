@@ -10,7 +10,8 @@
     "test": "node --test schema/*.test.ts schema/tables/*.test.ts derive/*.test.ts tools/*.test.ts",
     "check:overlap": "node tools/check-overlap.ts",
     "render:tables": "node tools/render-named-figures.ts && node tools/render-visual-features.ts && node tools/render-media-sources.ts",
-    "check:derive": "node tools/check-derive.ts"
+    "check:derive": "node tools/check-derive.ts",
+    "derive": "node tools/derive.ts"
   },
   "dependencies": {
     "zod": "4.6.7"

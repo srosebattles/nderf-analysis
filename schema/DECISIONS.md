@@ -1354,9 +1354,11 @@ Not built yet:
   dates, NDERF's editorial layer and search-site fields, and the country and language claims in
   NDERF's tags. `npm run check:derive` builds every record and reports how well the rules read
   the pages, without showing which options were picked. The Jesus keyword counts (null in the
-  record until then) and area 4's word-rule counts run only after the freeze. Nothing writes
-  the derived file yet: where it lives and when it is first generated are still to decide
-  (below).
+  record until then) and area 4's word-rule counts run only after the freeze. Decided
+  (November 2026): before the freeze, records are written only for the practice pages, to the
+  private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
+  there), since the records hold per-account answers to the items about beings, which are
+  close to outcomes. The full file is generated at the freeze, with the pipeline.
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
   to about 7 KB). The first run codes only part of it (above); how to split that part into
   passes is undecided.
@@ -1366,11 +1368,8 @@ Not built yet:
 
 To settle before the freeze:
 
-- Where the derived file lives and when it is first generated. It holds per-account menu
-  answers, including the items about beings, which are close to outcomes, and some short
-  strings copied from the page (a date as written, NDERF's tags). The keyword counts are
-  already held back until the freeze; the question is whether the rest is generated now for
-  every account, or only for the practice pages until then.
+- Whether the full derived file is published in this repository. It holds short strings
+  copied from the page (a date as written) and NDERF's tags.
 - Seventy-three parts look like form E but have no named-figures item (now irregular).
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.
