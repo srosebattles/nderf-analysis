@@ -144,6 +144,22 @@ outside the practice set has been read.
   qualifying experience. Prior religion is resolved as of the first qualifying experience.
   Pages with more than one qualifying experience are flagged and dropped in a sensitivity
   analysis. A repeated identical experience is one episode, flagged recurrent.
+- **The experience date is parsed by rule** from the Background field, which is free text in
+  many formats (`derive/dates.ts`), to a year, month, and day with a precision and flags.
+  Nothing is guessed: a date with no readable year stays unparsed (about two percent of the
+  parts that have the field: "unknown," an age, "twenty years ago," a year in another
+  calendar). The conventions, each recorded by a flag:
+  - "3/4/1990" is read month first, since NDERF's forms are American, and flagged as
+    ambiguous (about 520 parts). A first number over twelve makes it day first, and so does a
+    month-first reading that would fall after the posting when the day-first reading doesn't.
+  - A two-digit year is the latest century that keeps the experience before the posting.
+  - A zero day or month means that part wasn't given.
+  - A span ("1979 or 1980") takes its first year, as approximate. Several dates usually mean
+    several episodes: the earliest year is kept, and the coder dates each episode from the text.
+  - A date after the first posting is flagged, not corrected.
+- **Posting dates** are NDERF's, from the index listings. A year before NDERF existed or after
+  the crawl is a typo on a listing (one is dated 1009): it is kept as written, flagged, and
+  never counts as the first posting.
 - **Child** means twelve or younger at the experience; teens are not children for this
   purpose. A stated age is recorded when given.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
@@ -1320,10 +1336,11 @@ full JSON records in the private repository) and the snags settled.
 
 Not built yet:
 
-- Most of the rules-only derived file. Built and tested: the questionnaire side
+- Part of the rules-only derived file. Built and tested: the questionnaire side
   (`derive/questionnaire.ts`: form, items asked, menu answers, the religion field, the
-  life-threat item, and lengths). Still to build: dates, NDERF's editorial layer, posting
-  dates, and country and language tags. The Jesus keyword counts and area 4's word-rule counts
+  life-threat item, and lengths) and dates (`derive/dates.ts`: the experience date, posting
+  dates, and gender). Still to build: NDERF's editorial layer, country and language tags, and
+  putting the pieces together into one record per account. The Jesus keyword counts and area 4's word-rule counts
   run only after the freeze.
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
   to about 7 KB). The first run codes only part of it (above); how to split that part into
