@@ -20,8 +20,29 @@ export interface ScrapedPart {
   qa: ScrapedQA[];
 }
 
+/** One entry on an NDERF index page. All of it is NDERF's wording, not the experiencer's. */
+export interface ScrapedListing {
+  /** NDERF's classification on the listing: 'NDE', 'Secondhand NDE', … */
+  type_label: string | null;
+  /** NDERF's editor tag: usually a country, a language, or a flag such as 'Exceptional Experience'. */
+  tag: string | null;
+}
+
 export interface ScrapedAccount {
   id: string;
   sha256: string | null;
   parts: ScrapedPart[];
+  /** NDERF's classification on the page itself, raw. */
+  page_classification?: string | null;
+  exceptional?: boolean;
+  /** Greyson NDE Scale score; only search-app pages show it. */
+  greyson_score?: number | null;
+  /** Search-app pages only: Country, Gender, Age, Date Experienced, Date Submitted. */
+  quick_facts?: Record<string, string> | null;
+  /** ISO dates from the index listings: when NDERF posted the account. */
+  posted_dates?: string[];
+  fetched_at?: string | null;
+  listings?: ScrapedListing[];
+  /** Only for accounts added from the search site's listing. */
+  search_listing?: { classification?: string[]; experienced?: (string | null)[] } | null;
 }

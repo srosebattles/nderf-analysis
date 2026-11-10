@@ -1341,9 +1341,11 @@ Not built yet:
 
 - Part of the rules-only derived file. Built and tested: the questionnaire side
   (`derive/questionnaire.ts`: form, items asked, menu answers, the religion field, the
-  life-threat item, and lengths) and dates (`derive/dates.ts`: the experience date, posting
-  dates, and gender). Still to build: NDERF's editorial layer, country and language tags, and
-  putting the pieces together into one record per account. The Jesus keyword counts and area 4's word-rule counts
+  life-threat item, and lengths), dates (`derive/dates.ts`: the experience date, posting
+  dates, and gender), and NDERF's editorial layer (`derive/editorial.ts`: classification
+  tokens, tag flags, and the countries and languages its tags name). Still to build: the search
+  site's own fields for accounts matched by number (age band, AI-inferred country, experience
+  date, form version), and putting the pieces together into one record per account. The Jesus keyword counts and area 4's word-rule counts
   run only after the freeze.
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
   to about 7 KB). The first run codes only part of it (above); how to split that part into

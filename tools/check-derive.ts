@@ -4,19 +4,22 @@
 //
 // Runs the parsers over every part and prints how well they read the pages: how many parts fall
 // on each questionnaire form; for each item, how many parts asked it, left it blank, or gave an
-// answer that opens with no known option; how precisely the experience date could be read; and
-// question wordings (NDERF's form text) that look like a tracked item but match no pattern.
+// answer that opens with no known option; how precisely the experience date could be read; how
+// NDERF's classification labels and editor tags were read (its own wording, listed where no rule
+// fits); and question wordings (NDERF's form text) that look like a tracked item but match no
+// pattern.
 //
 // It never prints which options were picked, so it can run before the codebook is frozen
 // without showing anything about what accounts contain, and it never prints account text.
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { DerivedPart } from '../schema/codebook-schema.ts';
+import { CountryClaim, DerivedPart, LanguageClaim, NderfEditorial } from '../schema/codebook-schema.ts';
 import type { ScrapedAccount } from '../derive/input.ts';
 
-type Listed = ScrapedAccount & { posted_dates?: string[]; fetched_at?: string | null; quick_facts?: Record<string, string> | null };
+type Listed = ScrapedAccount;
 import { deriveBackground, derivePosting } from '../derive/dates.ts';
+import { classTokens, deriveEditorial, deriveTagClaims, placesInTag } from '../derive/editorial.ts';
 import { deriveQuestionnaire, itemOf, normalizeLabel } from '../derive/questionnaire.ts';
 
 const dataDir = process.argv[2];
@@ -44,6 +47,13 @@ let formANothingTicked = 0;
 const precisions = new Map<string, number>();
 const dateFlags = new Map<string, number>();
 let noFirstPosting = 0;
+let accounts = 0;
+let editorialInvalid = 0;
+let withCountry = 0;
+let withLanguage = 0;
+const translated = new Map<string, number>();
+const unfitLabels = new Map<string, number>();
+const unknownPlaces = new Map<string, number>();
 
 const tally = (name: string, finding: { status: string; value?: unknown }) => {
   if (finding.status === 'not_asked') return;
@@ -62,6 +72,21 @@ for (const file of readdirSync(accountsDir).filter((f) => f.endsWith('.jsonl')).
     const account = JSON.parse(line) as Listed;
     const posting = derivePosting(account.posted_dates ?? [], account.fetched_at ?? null, account.quick_facts ?? null);
     if (posting.firstPosted === null) noFirstPosting += 1;
+    accounts += 1;
+    const editorial = deriveEditorial(account);
+    const claims = deriveTagClaims(account);
+    if (!NderfEditorial.safeParse(editorial).success || claims.countries.some((c) => !CountryClaim.safeParse(c).success) || (claims.language !== null && !LanguageClaim.safeParse(claims.language).success)) editorialInvalid += 1;
+    if (claims.countries.length > 0) withCountry += 1;
+    if (claims.language !== null) {
+      withLanguage += 1;
+      translated.set(claims.language.translated, (translated.get(claims.language.translated) ?? 0) + 1);
+    }
+    for (const label of [editorial.classificationRaw.page, ...editorial.classificationRaw.listings]) {
+      if (label !== null && classTokens(label).includes('other') && !/\bothers?\b/i.test(label)) unfitLabels.set(label, (unfitLabels.get(label) ?? 0) + 1);
+    }
+    for (const listing of account.listings ?? []) {
+      for (const place of listing.tag ? placesInTag(listing.tag) : []) if (!place.known) unknownPlaces.set(place.raw, (unknownPlaces.get(place.raw) ?? 0) + 1);
+    }
     account.parts.forEach((part, index) => {
       parts += 1;
       const { backgroundDate } = deriveBackground(part, posting.firstPosted, index === 0 ? (account.quick_facts ?? null) : null);
@@ -97,5 +122,9 @@ console.log(`\nLife-threat item: ${lifeThreatNoAnswer} answered with no leading 
 console.log(`\nExperience date, by precision: ${[...precisions].map(([k, n]) => `${k} ${n}`).join(', ')}.`);
 console.log(`Date flags: ${[...dateFlags].map(([k, n]) => `${k} ${n}`).join(', ')}.`);
 console.log(`${noFirstPosting} accounts have no usable posting date.`);
+const list = (m: Map<string, number>) => [...m].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} (${n})`).join('; ') || 'none';
+console.log(`\nNDERF's editorial layer, ${accounts} accounts: ${editorialInvalid} fail the schema; ${withCountry} have a country in a tag; ${withLanguage} have a language tag (translated: ${list(translated)}).`);
+console.log(`Classification labels that fit no rule (NDERF's wording): ${list(unfitLabels)}.`);
+console.log(`Places named in tags that aren't in the table: ${list(unknownPlaces)}.`);
 console.log('\nQuestion wordings that look like a tracked item but match no pattern:');
 for (const [q, n] of [...unmatched].sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(4)}  ${q.slice(0, 170)}`);
