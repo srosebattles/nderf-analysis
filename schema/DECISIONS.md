@@ -34,7 +34,10 @@ outside the practice set has been read.
   from any narrative or free-text answer appears in our prose and code (which never hold
   copied text; examples are invented), and no seven-word sequence, one longer than the cap,
   appears in data files, which catches a passage split across several copied strings. NDERF's
-  question wording and menu labels are form text, not account text, and may be quoted.
+  question wording and menu labels are form text, not account text, and may be quoted. The
+  check leaves them out (`tools/form-text.ts`): they turn up inside responses wherever a menu
+  label couldn't be split from the comment after it, and listing them would also show how
+  often each option was picked.
 - **The cap was raised from four words to six** (November 2026). Four-word sequences are
   already mostly unique to one account (sixty-nine percent in the practice pages, against
   ninety-five percent for six), and the account ID is published with the coded data, so the

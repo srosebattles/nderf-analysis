@@ -73,7 +73,7 @@ test('the life-threat item: answer, ticked causes from the front, and the severi
   assert.deepEqual(parseLifeThreat("Yes Accident 'Life threatening event, but not clinical death'"), {
     answer: 'yes', causes: ['Accident'], severity: 'life_threatening_not_clinical_death',
   });
-  assert.deepEqual(parseLifeThreat('Uncertain. Accident. Direct head injury. Clinical death (cessation of breathing or heart function or brain function). A kayak tipped.'), {
+  assert.deepEqual(parseLifeThreat('Uncertain. Accident. Direct head injury. Clinical death (cessation of breathing or heart function or brain function). Kayak tipped.'), {
     answer: 'uncertain', causes: ['Accident', 'Direct head injury'], severity: 'clinical_death',
   });
   // Two ticked causes printed with no space between them.

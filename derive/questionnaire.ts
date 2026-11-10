@@ -230,6 +230,26 @@ function gluedCause(text: string): { value: string; rest: string } | null {
   return null;
 }
 
+// ─── NDERF's menu labels, for the overlap check ─────────────────────────────────────────
+
+/** Every menu label above, plus the full wording of the labels the tables shorten. The overlap
+ *  check (tools/check-overlap.ts) leaves these out, as it does NDERF's question wording: they
+ *  are form text, not account text, though they turn up inside responses wherever the scraper
+ *  couldn't split a long label from the comment after it. Only NDERF's own wording belongs
+ *  here. */
+export const MENU_LABELS: readonly string[] = [
+  ...[
+    YES_NO_UNCERTAIN, SAW_SENSED, MYSTICAL_BEING, REALITY, MEMORY_ACCURACY, IMPORTANCE, BELIEF_IN_GOD, BELIEF_IN_AFTERLIFE,
+    CHECKLIST_UNEARTHLY_BEINGS, CHECKLIST_DECEASED_PERSONS, ORIENTATION, RELIGION_MENU, CAUSE_OPTIONS, SEVERITY,
+  ].flatMap((options: Options<unknown>) => options.map(([label]) => label)),
+  'Other',
+  'I encountered a definite being, or a voice clearly of mystical or unearthly origin',
+  'I remember the experience more accurately than other life events that occurred around the time of the experience',
+  'I remember the experience as accurately as other life events that occurred around the time of the experience',
+  'I remember the experience less accurately than other life events that occurred around the time of the experience',
+  'I do not know how my remembrance of the experience compares to my remembrance of other life events that occurred around the time of the experience',
+];
+
 // ─── One part ───────────────────────────────────────────────────────────────────────────
 
 export interface DerivedQuestionnaire {
