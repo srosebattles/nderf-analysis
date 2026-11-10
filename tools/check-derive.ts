@@ -14,6 +14,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DerivedPart } from '../schema/codebook-schema.ts';
 import type { ScrapedAccount } from '../derive/input.ts';
+
+type Listed = ScrapedAccount & { posted_dates?: string[] };
 import { deriveQuestionnaire, itemOf, normalizeLabel } from '../derive/questionnaire.ts';
 
 const dataDir = process.argv[2];
@@ -36,6 +38,8 @@ let parts = 0;
 let invalid = 0;
 let lifeThreatNoAnswer = 0;
 let lifeThreatNoSeverity = 0;
+let flagged = 0;
+let formANothingTicked = 0;
 
 const tally = (name: string, finding: { status: string; value?: unknown }) => {
   if (finding.status === 'not_asked') return;
@@ -51,10 +55,12 @@ const accountsDir = join(dataDir, 'accounts');
 for (const file of readdirSync(accountsDir).filter((f) => f.endsWith('.jsonl')).sort()) {
   for (const line of readFileSync(join(accountsDir, file), 'utf8').split('\n')) {
     if (!line.trim()) continue;
-    const account = JSON.parse(line) as ScrapedAccount;
+    const account = JSON.parse(line) as Listed;
     account.parts.forEach((part, index) => {
       parts += 1;
-      const d = deriveQuestionnaire(part, index);
+      const d = deriveQuestionnaire(part, index, account.posted_dates?.[0] ?? null);
+      if (d.questionnaire.flags.length > 0) flagged += 1;
+      if (d.questionnaire.form === 'A' && !part.qa.some((x) => itemOf(x.question) === 'checklist')) formANothingTicked += 1;
       if (!Shape.safeParse(d).success) invalid += 1;
       forms.set(d.questionnaire.form, (forms.get(d.questionnaire.form) ?? 0) + 1);
       for (const [name, f] of Object.entries({ ...d.beingItems, ...d.provenanceItems, ...d.religionField })) tally(name, f);
@@ -73,6 +79,7 @@ for (const file of readdirSync(accountsDir).filter((f) => f.endsWith('.jsonl')).
 console.log(`${parts} parts; ${invalid} whose derived values fail the schema.`);
 console.log('\nQuestionnaire form:');
 for (const form of ['none', 'A', 'B', 'C', 'D', 'E', 'F', 'irregular']) console.log(`  ${form.padEnd(10)} ${String(forms.get(form) ?? 0).padStart(5)}`);
+console.log(`\n${formANothingTicked} form A parts have nothing ticked on the checklist; ${flagged} form B parts are flagged as possibly form C with nothing ticked.`);
 console.log('\nItem                          asked  blank  unrecognized');
 for (const [name, t] of items) {
   console.log(`  ${name.padEnd(27)} ${String(t.asked).padStart(5)}  ${String(t.blank).padStart(5)}  ${String(t.unrecognized).padStart(5)}  (${((100 * t.unrecognized) / Math.max(1, t.asked - t.blank)).toFixed(1)}%)`);

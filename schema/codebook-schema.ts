@@ -384,7 +384,15 @@ export type KeywordHits = z.infer<typeof KeywordHits>;
 
 export const DerivedPart = obj({
   index: Index,
-  questionnaire: obj({ form: QuestionnaireForm, itemsAsked: ItemsAsked }),
+  questionnaire: obj({
+    form: QuestionnaireForm,
+    itemsAsked: ItemsAsked,
+    /** The checklist prints only the boxes ticked, so a form C submission with nothing ticked
+     *  looks like form B. A form B part first posted after form B's years (2004 to 2007) keeps
+     *  its form and gets this flag: its checklist answers read "not asked" and may be "asked,
+     *  nothing ticked". */
+    flags: z.array(z.enum(['may_be_form_c_nothing_ticked'])),
+  }),
   /** The experiencer's own answer, parsed by rule, including the sub-menu of causes and
    *  severity most forms add. Sometimes the only place the cause appears. */
   lifeThreat: finding(LifeThreatAnswer),

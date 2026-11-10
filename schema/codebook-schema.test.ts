@@ -52,6 +52,7 @@ const derived: DerivedRecordType = {
           deceasedBeings: 'deceased_or_alive', mysticalBeing: true, anyBeings: true,
           experienceIncludedChecklist: true, lifeThreat: true,
         },
+        flags: [],
       },
       lifeThreat: {
         status: 'present',

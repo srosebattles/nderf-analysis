@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { DerivedPart, NON_TRADITION_OPTIONS, NderfReligionOption } from '../schema/codebook-schema.ts';
 import type { ScrapedPart, ScrapedQA } from './input.ts';
-import { assignForm, deriveQuestionnaire, itemOf, lengthsOf, matchOption, normalizeLabel, parseLifeThreat, traditionOf } from './questionnaire.ts';
+import { assignForm, deriveQuestionnaire, formFlags, itemOf, lengthsOf, matchOption, normalizeLabel, parseLifeThreat, traditionOf } from './questionnaire.ts';
 
 // Question wording and menu labels are NDERF's form text. Everything a person might have typed
 // is invented.
@@ -150,6 +150,31 @@ test('form A has no spirits item, and may have no religion item at all', () => {
   assert.equal(valueOf(none.religionField.prior), 'not_asked');
 });
 
+test('the checklist prints only ticked boxes: form A with nothing ticked is still form A', () => {
+  // No checklist rows, but the page asks about deceased (or alive) beings and has none of the
+  // items about beings that every later form has.
+  const d = derive([qa(Q.lifeThreat, 'Illness'), qa(Q.deceasedOrAlive, 'No'), qa(Q.religionNow, 'Liberal')]);
+  assert.equal(d.questionnaire.form, 'A');
+  assert.equal(d.questionnaire.itemsAsked.experienceIncludedChecklist, true); // asked, nothing ticked
+  assert.equal(valueOf(d.beingItems.checklistUnearthlyBeings), false);
+  assert.equal(valueOf(d.beingItems.checklistDeceasedPersons), false);
+  // An item from a later form rules form A out.
+  assert.equal(derive([qa(Q.lifeThreat, 'Yes'), qa(Q.deceasedOrAlive, 'No'), qa(Q.mystical, 'No')]).questionnaire.form, 'irregular');
+  assert.equal(derive([qa(Q.lifeThreat, 'Yes'), qa(Q.shared, 'No')]).questionnaire.form, 'irregular');
+});
+
+test('a form B part posted after form B\'s years is flagged, and keeps its form', () => {
+  assert.deepEqual(formFlags('B', '2007-12-30'), []);
+  assert.deepEqual(formFlags('B', '2009-03-01'), ['may_be_form_c_nothing_ticked']);
+  assert.deepEqual(formFlags('B', null), []);
+  assert.deepEqual(formFlags('C', '2009-03-01'), []);
+  const late = deriveQuestionnaire(part(FORM_B), 0, '2010-06-15');
+  assert.equal(late.questionnaire.form, 'B');
+  assert.deepEqual(late.questionnaire.flags, ['may_be_form_c_nothing_ticked']);
+  assert.equal(valueOf(late.beingItems.checklistUnearthlyBeings), 'not_asked');
+  assert.deepEqual(derive(FORM_B).questionnaire.flags, []);
+});
+
 const FORM_E = [
   qa(Q.lifeThreat, 'No'), qa(Q.anyBeings, 'Neither'), qa(Q.spirits, 'No'), qa(Q.deceasedOrAlive, 'Yes'), qa(Q.named, 'Uncertain. Hard to say.'),
   qa(Q.memory, 'I remember the experience more accurately than other life events that occurred around the time of th'),
@@ -204,7 +229,7 @@ test('pages with no questionnaire, and forms that fit no definition', () => {
   const none = deriveQuestionnaire(part([]), 0);
   assert.equal(none.questionnaire.form, 'none');
   assert.equal(none.lifeThreat.status, 'not_asked');
-  assert.equal(derive([qa(Q.lifeThreat, 'Yes'), qa(Q.deceasedOrAlive, 'No')]).questionnaire.form, 'irregular');
+  assert.equal(derive([qa(Q.lifeThreat, 'Yes'), qa(Q.anyBeings, 'No'), qa(Q.deceasedOrAlive, 'No')]).questionnaire.form, 'irregular');
   const items = derive(FORM_E).questionnaire.itemsAsked;
   assert.equal(assignForm(part(FORM_E), { ...items, namedReligiousFigures: false }, false), 'irregular');
 });

@@ -57,16 +57,26 @@ outside the practice set has been read.
   | Form | What identifies it | Parts | First posted (5th–95th percentile) |
   |---|---|---|---|
   | none | no questionnaire | 220 | 1999–2022 |
-  | A | no affiliation menu (an orientation field, or no religion item at all), no "deceased or religious spirits" item, "The experience included" checklist | 748 | 2001–2012 |
+  | A | no affiliation menu (an orientation field, or no religion item at all), no "deceased or religious spirits" item, "The experience included" checklist | 834 | 2001–2012 |
   | B | orientation field, spirits item, no checklist | 527 | 2004–2007 |
   | C | orientation field, spirits item, checklist | 1,490 | 2007–2011 |
   | D | affiliation menu, named-religious-figures item, before/after belief items | 1,452 | 2011–2017 |
   | E | menu and named-figures item, no checklist or before/after items | 1,026 | 2018–2025 |
   | F | short form: no spirits item; "deceased (or alive) beings" becomes "deceased beings" | 382 | 2025–2026 |
-  | irregular | a questionnaire that fits none of these | 199 | |
+  | irregular | a questionnaire that fits none of these | 113 | |
 
   The counts are the parser's (`derive/questionnaire.ts`; `npm run check:derive` prints them);
   the posting years are from the earlier hand count and shift little.
+
+  The checklist prints only the boxes a person ticked, so a submission with nothing ticked
+  shows no checklist at all. Two rules follow (November 2026):
+  - Form A is also known by what it lacks: a part that asks about deceased (or alive) beings,
+    has no affiliation menu, and has none of the items about beings that every later form has
+    is form A even with no checklist rows (eighty-six parts). Its checklist answers are
+    "asked, nothing ticked," not "not asked."
+  - Form B has no checklist, and form C with nothing ticked looks the same. A form B part first
+    posted after form B's years (2004 to 2007) keeps its form and is flagged (twenty-seven
+    parts): its checklist answers read "not asked" and may be "asked, nothing ticked."
 
   The affiliation menu and the named-figures item arrived together in form D, so comparisons
   of religion and named-figure encounters across forms are confounded with the prompt. Form is
@@ -1324,11 +1334,6 @@ Not built yet:
 
 To settle before the freeze:
 
-- The checklist prints only the boxes a person ticked, so a form A or C submission with nothing
-  ticked carries no checklist at all: about eighty-six parts look like form A without it (now
-  irregular), and about twenty-seven parts counted as form B were posted outside form B's
-  years and may be form C. For these the checklist answers read "not asked" where "asked,
-  nothing ticked" may be true.
 - Seventy-three parts look like form E but have no named-figures item (now irregular).
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.

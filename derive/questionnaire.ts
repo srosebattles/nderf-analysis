@@ -233,7 +233,7 @@ function gluedCause(text: string): { value: string; rest: string } | null {
 // ─── One part ───────────────────────────────────────────────────────────────────────────
 
 export interface DerivedQuestionnaire {
-  questionnaire: { form: QuestionnaireForm; itemsAsked: ItemsAsked };
+  questionnaire: { form: QuestionnaireForm; itemsAsked: ItemsAsked; flags: 'may_be_form_c_nothing_ticked'[] };
   lifeThreat: Finding<LifeThreatAnswer>;
   beingItems: BeingItemAnswers;
   provenanceItems: ProvenanceItemAnswers;
@@ -251,13 +251,17 @@ export function lengthsOf(part: ScrapedPart): Lengths {
   return { narrativeWords, questionnaireFreeTextWords, totalWords: narrativeWords + questionnaireFreeTextWords };
 }
 
-/** Forms are told apart by the items present, never by dates (DECISIONS.md, area 1). */
+/** Forms are told apart by the items present, never by dates (DECISIONS.md, area 1). `items`
+ *  is what the page shows; the checklist shows only when a box was ticked. */
 export function assignForm(part: ScrapedPart, items: ItemsAsked, hasBeforeAfterItems: boolean): QuestionnaireForm {
   if (part.qa.length === 0) return 'none';
   const { religionField, deceasedOrReligiousSpirits: spirits, experienceIncludedChecklist: checklist, namedReligiousFigures: named } = items;
   if (items.deceasedBeings === 'deceased_only' && !spirits) return 'F';
   // Form A has no religion-before item, and some form A parts carry no religion item at all.
-  if (religionField !== 'affiliation_menu' && !spirits && checklist) return 'A';
+  // With nothing ticked on its checklist, form A is still known by what it lacks: it asks about
+  // deceased (or alive) beings and has none of the items about beings that every later form has.
+  const formAWithNothingTicked = items.deceasedBeings === 'deceased_or_alive' && !items.anyBeings && !items.mysticalBeing;
+  if (religionField !== 'affiliation_menu' && !spirits && (checklist || formAWithNothingTicked)) return 'A';
   if (religionField === 'orientation') {
     if (spirits && !checklist) return 'B';
     if (spirits && checklist) return 'C';
@@ -269,7 +273,13 @@ export function assignForm(part: ScrapedPart, items: ItemsAsked, hasBeforeAfterI
   return 'irregular';
 }
 
-export function deriveQuestionnaire(part: ScrapedPart, partIndex: number): DerivedQuestionnaire {
+/** Form B was posted from 2004 to 2007. A later form B part may be form C with nothing ticked,
+ *  which the page can't show; it keeps its form and is flagged. `firstPosted` is an ISO date. */
+export const FORM_B_LAST_YEAR = 2007;
+export const formFlags = (form: QuestionnaireForm, firstPosted: string | null): 'may_be_form_c_nothing_ticked'[] =>
+  form === 'B' && firstPosted !== null && Number(firstPosted.slice(0, 4)) > FORM_B_LAST_YEAR ? ['may_be_form_c_nothing_ticked'] : [];
+
+export function deriveQuestionnaire(part: ScrapedPart, partIndex: number, firstPosted: string | null = null): DerivedQuestionnaire {
   // The first question of each kind; the checklist prints one question per box ticked.
   const first = new Map<ItemKey, { qa: ScrapedQA; qaIndex: number }>();
   const ticked: { qa: ScrapedQA; qaIndex: number }[] = [];
@@ -290,7 +300,7 @@ export function deriveQuestionnaire(part: ScrapedPart, partIndex: number): Deriv
     return { status: 'present', value: matchOption(item.qa.response, options)?.value ?? 'unrecognized', evidence: evidence(item.qaIndex) };
   };
   const box = (options: Options<true>): Finding<boolean> => {
-    if (ticked.length === 0) return { status: 'not_asked' };
+    if (!itemsAsked.experienceIncludedChecklist) return { status: 'not_asked' };
     const hit = ticked.find((t) => matchOption(t.qa.response, options) !== null);
     return { status: 'present', value: hit !== undefined, evidence: hit ? evidence(hit.qaIndex) : [] };
   };
@@ -340,9 +350,12 @@ export function deriveQuestionnaire(part: ScrapedPart, partIndex: number): Deriv
     lifeThreat: first.has('lifeThreat'),
   };
   const hasBeforeAfterItems = first.has('priorBeliefInGod') || first.has('priorBeliefInAfterlife') || first.has('priorImportance');
+  const form = assignForm(part, itemsAsked, hasBeforeAfterItems);
+  // Form A always asks the checklist, whether or not a box was ticked.
+  if (form === 'A') itemsAsked.experienceIncludedChecklist = true;
 
   return {
-    questionnaire: { form: assignForm(part, itemsAsked, hasBeforeAfterItems), itemsAsked },
+    questionnaire: { form, itemsAsked, flags: formFlags(form, firstPosted) },
     lifeThreat,
     beingItems: {
       anyBeings: menu('anyBeings', SAW_SENSED),
