@@ -43,11 +43,11 @@ On invented text only, so no account has been sent anywhere yet:
 
 ## Still open
 
-- **Data terms.** Coding through a personal subscription sends the accounts through it. Check
-  that the account's setting for using conversations to train models is off before any account
-  is sent; NDERF permits private research use only.
-- **Usage limits.** How many accounts a subscription's limits allow per day isn't known; a run on
-  a few practice pages would show it.
+- **Data terms.** Coding through a personal subscription sends the accounts through it, so the
+  account's setting for using conversations to train models must be off; NDERF permits private
+  research use only. Confirmed off by the project's author (November 10, 2026).
+- **Usage limits.** The plan is Claude Pro, whose usage resets in five-hour windows. How much of
+  a window one account uses isn't known; the probe on a few practice pages will show it.
 - **Quotes.** The pipeline turns a short quote from the coder into character offsets. The
   model-facing schema needs a quote field for that, and the step that locates and strips it.
 - **The real passes.** How to split the first run into passes, and each pass's prompt.
