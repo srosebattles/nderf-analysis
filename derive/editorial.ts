@@ -3,14 +3,15 @@
 // about an account, kept as an input and never as a gate (DECISIONS.md, Conventions); none of it
 // is the experiencer's text.
 //
-// Not here yet: the search site's own fields for accounts matched by number (age band,
-// AI-inferred country, experience date, form version).
+// The search site's own fields (age band, AI-inferred country, and the rest) come from
+// search-site.ts and are passed in.
 
 import {
   type CountryClaim, type CountryRole, type Evidence, type LanguageClaim, type NderfClassToken, type NderfEditorial,
   NderfClassToken as ClassTokens,
 } from '../schema/codebook-schema.ts';
-import type { ScrapedAccount } from './input.ts';
+import type { ScrapedAccount, SearchEntry } from './input.ts';
+import { searchSiteFields } from './search-site.ts';
 
 const squash = (s: string) => s.replace(/\s+/g, ' ').trim();
 
@@ -72,12 +73,14 @@ const isHedged = (label: string) => /\bvs\.?(\s|$)|\bor\b/i.test(label);
 const CONTENT_WARNING = /trigger warning|reader discretion|\bcaution\b|disturbing|mature readers|graphic|adult content|\bwarning\b/i;
 const NON_WESTERN = /non-?\s?western/i;
 
-export function deriveEditorial(account: ScrapedAccount): NderfEditorial {
+/** `entry` is the account's search-site entry, if it has one (matchSearchEntries). */
+export function deriveEditorial(account: ScrapedAccount, entry: SearchEntry | null = null): NderfEditorial {
   const listings = (account.listings ?? []).map((l) => l.type_label).filter((l): l is string => l !== null && squash(l) !== '');
   const searchSite = account.search_listing?.classification ?? [];
   const page = account.page_classification ? squash(account.page_classification) : null;
   const labels = [...(page ? [page] : []), ...listings, ...searchSite];
   const tokens = new Set(labels.flatMap(classTokens));
+  const site = searchSiteFields(entry, account.quick_facts ?? null);
   const tagsRaw = [...new Set((account.listings ?? []).map((l) => l.tag).filter((t): t is string => t !== null && squash(t) !== '').map(squash))];
   return {
     classificationRaw: { page, listings, searchSite },
@@ -87,19 +90,18 @@ export function deriveEditorial(account: ScrapedAccount): NderfEditorial {
     tagsRaw,
     contentWarning: tagsRaw.some((t) => CONTENT_WARNING.test(t)),
     nonWesternLabel: tagsRaw.some((t) => NON_WESTERN.test(t)),
-    greysonScore: account.greyson_score ?? null,
-    ageBand: null,
-    countryAi: null,
-    experienceDate: account.search_listing?.experienced?.find((d): d is string => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) ?? null,
-    formVersion: null,
+    ...site,
+    greysonScore: account.greyson_score ?? site.greysonScore,
+    experienceDate: site.experienceDate ?? account.search_listing?.experienced?.find((d): d is string => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) ?? null,
   };
 }
 
 // ─── Countries named in tags ────────────────────────────────────────────────────────────
 
-/** Every place NDERF's tags name, as NDERF spells it (misspellings included), to ISO 3166-1.
- *  A part of a country maps to the country; null is a place with no single code. The United
- *  States is never tagged. */
+/** Every place NDERF names, as NDERF spells it (misspellings included), to ISO 3166-1: in its
+ *  tags, its search app's quick facts, and its search site's AI-inferred country. A part of a
+ *  country maps to the country (a US state to the US); null is a place with no single code (a
+ *  former country, a town that could be in several). */
 const PLACES: Readonly<Record<string, string | null>> = {
   algeria: 'DZ', algiers: 'DZ', argentina: 'AR', australia: 'AU', tasmania: 'AU', austria: 'AT', bangladesh: 'BD', belarus: 'BY',
   belgium: 'BE', bolivia: 'BO', brazil: 'BR', bulgaria: 'BG', canada: 'CA', chile: 'CL', 'easter island': 'CL', china: 'CN',
@@ -119,6 +121,11 @@ const PLACES: Readonly<Record<string, string | null>> = {
   turkey: 'TR', uae: 'AE', 'united arab emirates': 'AE', uk: 'GB', 'united kingdom': 'GB', 'united kingsom': 'GB', england: 'GB',
   scotland: 'GB', wales: 'GB', 'great britain': 'GB', ukraine: 'UA', uruguay: 'UY', uzbekistan: 'UZ', venezuela: 'VE',
   vietnam: 'VN', yemen: 'YE', usa: 'US', 'united states': 'US',
+  // Further names in the search site's AI-inferred country.
+  afghanistan: 'AF', gambia: 'GM', grenada: 'GD', moldova: 'MD', nepal: 'NP', serbia: 'RS', 'isle of man': 'IM',
+  'northern ireland': 'GB', 'russian federation': 'RU', 'iran, islamic republic of': 'IR',
+  'united states minor outlying islands': 'UM', alabama: 'US', illinois: 'US', texas: 'US', utah: 'US',
+  'netherlands antilles': null, 'serbia and montenegro': null, antarctica: null, clinton: null, mesa: null, peebles: null, silex: null,
   // Named, but no one country today.
   europe: null, czechoslovakia: null, yugoslavia: null, jerusalem: null,
 };
@@ -132,6 +139,10 @@ const ROLE_WORDS: readonly (readonly [RegExp, CountryRole])[] = [
 const PLACE_PHRASE = /\b(originally from|initially from|from|living in|lives in|resides in|happened in|occurred in|born in|raised in|moved to)\s+(?:the\s+)?/gi;
 /** Where a place name ends: punctuation, or the words that start the next thing a tag says. */
 const PLACE_END = /\s*(?:[.;,(!]|\s-|\boriginal(?:ly)?\b|\btranslated\b|\bwhere\b|\bnow\b|\bliving\b|\bnarrative\b|\bin\b|\bexperience\b|\binitially\b|\bmultimedia\b|\bnon-western\b|\bbut\b|\band lives\b|\band shared\b|\bwho\b|\bcurrently\b|$)/i;
+
+/** The ISO code for a place NDERF names, or null when it names no single country or isn't in
+ *  the table. */
+export const countryCode = (place: string): string | null => PLACES[place.trim().toLowerCase()] ?? null;
 
 export interface TagPlace { raw: string; country: string | null; role: CountryRole; known: boolean }
 

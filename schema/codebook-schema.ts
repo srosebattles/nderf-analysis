@@ -398,11 +398,12 @@ export const DerivedPart = obj({
   lifeThreat: finding(LifeThreatAnswer),
   beingItems: BeingItemAnswers,
   provenanceItems: ProvenanceItemAnswers,
-  /** One entry per keyword in JESUS_KEYWORDS_BROAD, zeros included. */
+  /** One entry per keyword in JESUS_KEYWORDS_BROAD, zeros included. Null until counted: the
+   *  counts run only after the codebook is frozen. */
   jesusKeywordHits: z.array(KeywordHits).refine(
     (hits) => hits.length === JESUS_KEYWORDS_BROAD.length && JESUS_KEYWORDS_BROAD.every((k) => hits.some((h) => h.keyword === k)),
     { message: 'one entry per keyword in JESUS_KEYWORDS_BROAD' },
-  ),
+  ).nullable(),
   backgroundDate: ParsedDate,
   gender: z.string().nullable(), // Background field as written ('Female', 'Male')
   religionField: DerivedReligionFields,
@@ -417,6 +418,8 @@ export const DerivedRecord = obj({
   nderf: NderfEditorial,
   posting: Posting,
   parts: z.array(DerivedPart),
+  /** NDERF's claims: its editor tags, its search app's quick facts, and its search site's
+   *  AI-inferred country (each claim's source says which). */
   tagClaims: obj({ countries: z.array(CountryClaim), language: LanguageClaim.nullable() }),
   lengths: Lengths, // whole account
 });

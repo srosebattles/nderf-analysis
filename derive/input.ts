@@ -26,10 +26,14 @@ export interface ScrapedListing {
   type_label: string | null;
   /** NDERF's editor tag: usually a country, a language, or a flag such as 'Exceptional Experience'. */
   tag: string | null;
+  /** NDERF's number(s) after the classification. */
+  nderf_numbers?: number[];
 }
 
 export interface ScrapedAccount {
   id: string;
+  /** The canonical page URL. */
+  url?: string;
   sha256: string | null;
   parts: ScrapedPart[];
   /** NDERF's classification on the page itself, raw. */
@@ -44,5 +48,22 @@ export interface ScrapedAccount {
   fetched_at?: string | null;
   listings?: ScrapedListing[];
   /** Only for accounts added from the search site's listing. */
-  search_listing?: { classification?: string[]; experienced?: (string | null)[] } | null;
+  search_listing?: { entry_number?: number; classification?: string[]; experienced?: (string | null)[] } | null;
+}
+
+/** One entry in the search site's listing (raw/search.nderf.org/api/listing/*.json). Only the
+ *  fields the derived file reads: the entry also carries a snippet of the account and NDERF's
+ *  summary, which are never read. */
+export interface SearchEntry {
+  ENTRYNUM: string | number;
+  URL?: string | null;
+  /** The search site's AI-inferred country, as given. */
+  COUNTRY_AI?: string | null;
+  /** NDERF's age band. */
+  AGE?: string | null;
+  form_version?: string | null;
+  EXPDATE?: (string | null)[] | null;
+  POSTDATE?: (string | null)[] | null;
+  experiences?: { ENTRYNUM?: number | string; EXPDATE?: string | null; POSTDATE?: string | null }[] | null;
+  metadata?: { greyson?: number | null } | null;
 }

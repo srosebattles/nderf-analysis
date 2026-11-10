@@ -163,6 +163,15 @@ outside the practice set has been read.
 - **Posting dates** are NDERF's, from the index listings. A year before NDERF existed or after
   the crawl is a typo on a listing (one is dated 1009): it is kept as written, flagged, and
   never counts as the first posting.
+- **The search site's fields** (NDERF's age band, its AI-inferred country, an experience date,
+  the questionnaire's form version, and the Greyson score) are attached to an account only when
+  its entry links to the account's own page, or, failing that, when exactly one account carries
+  the entry's number and their postings are at most 365 days apart: the two sites'
+  numbers don't always line up (`derive/search-site.ts`). That matches 778 accounts. The
+  scraper's further matching by name finds pages the archive is missing; it isn't used to
+  attach fields. The AI-inferred country keeps NDERF's value as given: a US state is the US, a
+  town or a former country gets no code, and a blank, "unknown," or a single letter makes no
+  claim.
 - **Child** means twelve or younger at the experience; teens are not children for this
   purpose. A stated age is recorded when given.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
@@ -1339,14 +1348,15 @@ full JSON records in the private repository) and the snags settled.
 
 Not built yet:
 
-- Part of the rules-only derived file. Built and tested: the questionnaire side
-  (`derive/questionnaire.ts`: form, items asked, menu answers, the religion field, the
-  life-threat item, and lengths), dates (`derive/dates.ts`: the experience date, posting
-  dates, and gender), and NDERF's editorial layer (`derive/editorial.ts`: classification
-  tokens, tag flags, and the countries and languages its tags name). Still to build: the search
-  site's own fields for accounts matched by number (age band, AI-inferred country, experience
-  date, form version), and putting the pieces together into one record per account. The Jesus keyword counts and area 4's word-rule counts
-  run only after the freeze.
+- The rules-only derived file's keyword counts. Everything else is built and tested
+  (`derive/`): one record per account, validated against the schema, with the questionnaire
+  (form, items asked, menu answers, the religion field, the life-threat item, and lengths),
+  dates, NDERF's editorial layer and search-site fields, and the country and language claims in
+  NDERF's tags. `npm run check:derive` builds every record and reports how well the rules read
+  the pages, without showing which options were picked. The Jesus keyword counts (null in the
+  record until then) and area 4's word-rule counts run only after the freeze. Nothing writes
+  the derived file yet: where it lives and when it is first generated are still to decide
+  (below).
 - The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
   to about 7 KB). The first run codes only part of it (above); how to split that part into
   passes is undecided.
@@ -1356,6 +1366,11 @@ Not built yet:
 
 To settle before the freeze:
 
+- Where the derived file lives and when it is first generated. It holds per-account menu
+  answers, including the items about beings, which are close to outcomes, and some short
+  strings copied from the page (a date as written, NDERF's tags). The keyword counts are
+  already held back until the freeze; the question is whether the rest is generated now for
+  every account, or only for the practice pages until then.
 - Seventy-three parts look like form E but have no named-figures item (now irregular).
 - Which two models code, and how their disagreements are handled outside area 4.
 - What the holdout is used for.
