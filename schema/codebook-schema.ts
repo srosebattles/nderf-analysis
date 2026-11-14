@@ -1407,21 +1407,22 @@ export const JesusMention = obj({
 });
 export type JesusMention = z.infer<typeof JesusMention>;
 
+/** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
+ *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
+export const NonExperiencerText = obj({
+  source: SourceRef,
+  span: Span,
+  kind: z.enum(['editor_note', 'reader_comment', 'transcription_credit', 'boilerplate']),
+});
+export type NonExperiencerText = z.infer<typeof NonExperiencerText>;
+
 export const CodedRecord = obj({
   accountId: z.string().min(1),
   sourceSha256: z.string().regex(/^[0-9a-f]{64}$/), // must match the derived record, or the join fails loudly
   run: CodingRun,
   parts: z.array(CodedPart),
   episodes: z.array(Episode),
-  /** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
-   *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
-  nonExperiencerText: z.array(
-    obj({
-      source: SourceRef,
-      span: Span,
-      kind: z.enum(['editor_note', 'reader_comment', 'transcription_credit', 'boilerplate']),
-    }),
-  ),
+  nonExperiencerText: z.array(NonExperiencerText),
   textClaims: obj({ countries: z.array(CountryClaim), language: LanguageClaim.nullable() }), // source: 'self_report'
   background: Background,
   /** Area 1: stated conditions (flag resolved per episode at analysis time). */

@@ -1,6 +1,7 @@
 // What the coder sees for one account: only what the experiencer wrote, with NDERF's question
-// wording so answers make sense (DECISIONS.md, Conventions). Never NDERF's classification, tags,
-// summary, posting dates, or the account ID, which carries NDERF's classification in its name
+// wording so answers make sense (DECISIONS.md, Conventions), and the date the experiencer
+// entered for the experience. Never NDERF's classification, tags, summary, posting dates, the
+// other Background fields, or the account ID, which carries NDERF's classification in its name
 // ("…_probable_nde"). The coder gets a neutral key instead, and the runner maps it back.
 //
 // Every passage is labeled with the place the schema's evidence points to (`narrative:<part>`,
@@ -20,6 +21,8 @@ export function renderForCoder(account: ScrapedAccount, key: string): CoderInput
   const blocks: string[] = [`ACCOUNT ${key}`];
   account.parts.forEach((part, p) => {
     if (account.parts.length > 1) blocks.push(`=== PART ${p} ===`);
+    const dates = Object.entries(part.background ?? {}).filter(([label]) => /^date\b/i.test(label) && tidy(part.background[label]) !== '');
+    if (dates.length > 0) blocks.push(`--- background:${p} ---\n${dates.map(([label, value]) => `${label}: ${tidy(value)}`).join('\n')}`);
     blocks.push(`--- narrative:${p} ---\n${tidy(part.narrative) || '(no narrative)'}`);
     part.qa.forEach((q, i) => {
       blocks.push(`--- qa:${p}:${i} ---\nQ: ${tidy(q.question)}\nA: ${tidy(q.response) || '(blank)'}`);

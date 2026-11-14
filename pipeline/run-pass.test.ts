@@ -15,14 +15,14 @@ const MODEL = 'claude-sonnet-5-5';
 const ACCOUNT: ScrapedAccount = {
   id: '1example_x_probable_nde', sha256: null, page_classification: 'Probable NDE',
   listings: [{ type_label: 'Probable NDE', tag: 'Exceptional Experience. From Norway.' }],
-  parts: [{ heading: null, narrative: 'A lantern, a bridge, and then nothing.', background: { Gender: 'Female' }, qa: [{ section: null, question: 'Did you see an unearthly light?', response: 'Yes  Dim and blue', answer: 'Yes', comment: 'Dim and blue' }] }],
+  parts: [{ heading: null, narrative: 'A lantern, a bridge, and then nothing.', background: { Gender: 'Female', 'Date NDE Occurred': 'Spring 1977' }, qa: [{ section: null, question: 'Did you see an unearthly light?', response: 'Yes  Dim and blue', answer: 'Yes', comment: 'Dim and blue' }] }],
 };
 
 test('the coder sees only the experiencer\'s words and NDERF\'s questions, under a neutral key', () => {
   const { key, text } = renderForCoder(ACCOUNT, neutralKey(6));
   assert.equal(key, 'A0007');
   assert.match(text, /^ACCOUNT A0007/);
-  assert.match(text, /--- narrative:0 ---\nA lantern, a bridge, and then nothing\./);
+  assert.match(text, /--- background:0 ---\nDate NDE Occurred: Spring 1977\n\n--- narrative:0 ---\nA lantern, a bridge, and then nothing\./);
   assert.match(text, /--- qa:0:0 ---\nQ: Did you see an unearthly light\?\nA: Yes {2}Dim and blue/);
   for (const hidden of ['probable', 'Probable', 'Exceptional', 'Norway', '1example', 'Female']) assert.ok(!text.includes(hidden), hidden);
 });

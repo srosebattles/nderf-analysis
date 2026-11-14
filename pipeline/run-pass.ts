@@ -27,6 +27,9 @@ export interface PassDefinition<T = unknown> {
   schema: z.ZodType<T>;
   /** What the model is constrained to: the schema's shape and allowed values. */
   jsonSchema: object;
+  /** Turns the coder's answer (with the account ID put back) into the form the schema checks,
+   *  such as quotes into offsets, and lists problems the coder should fix on a retry. */
+  prepare?: (answer: unknown, account: ScrapedAccount) => { value: unknown; problems: string[] };
 }
 
 export interface RunOptions {
@@ -100,14 +103,17 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
         // A call the wrong model served, or that failed outright, isn't the coder's mistake to fix.
         continue;
       }
-      const parsed = pass.schema.safeParse(restoreAccountId(result.structuredOutput, key, account.id));
-      if (parsed.success) {
+      const restored = restoreAccountId(result.structuredOutput, key, account.id);
+      const prepared = pass.prepare ? pass.prepare(restored, account) : { value: restored, problems: [] };
+      const parsed = pass.schema.safeParse(prepared.value);
+      const issues = [...prepared.problems.map((p) => `- ${p}`), ...(parsed.success ? [] : [listIssues(parsed.error)])];
+      if (parsed.success && prepared.problems.length === 0) {
         ok = true;
         problem = null;
         writeFileSync(join(dir, `${account.id}.coded.json`), JSON.stringify(parsed.data, null, 2) + '\n');
       } else {
-        problem = `invalid: ${parsed.error.issues.length} problem(s)`;
-        userText = `${text}\nYour previous answer for this account broke these rules:\n${listIssues(parsed.error)}\n\nYour previous answer:\n${JSON.stringify(result.structuredOutput)}\n\nCode the account again, following every rule.\n`;
+        problem = `invalid: ${prepared.problems.length + (parsed.success ? 0 : parsed.error.issues.length)} problem(s)`;
+        userText = `${text}\nYour previous answer for this account broke these rules:\n${issues.join('\n')}\n\nYour previous answer:\n${JSON.stringify(result.structuredOutput)}\n\nCode the account again, following every rule.\n`;
       }
     }
     return { accountId: account.id, key, ok, attempts, problem, ...total };

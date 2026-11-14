@@ -1182,6 +1182,50 @@ project wants to know; it is not all coded at once. The field list is in
   other religious figures and a color explained by the manner of death, as the computed rule
   did. The detail about a group of 150 angels stays computed: it reads the count.
 
+## How the coding runs
+
+Decided in November 2026, after a prototype and a probe on the practice pages
+([pipeline/](../pipeline/README.md)).
+
+- **In-session, through Claude Code, on the project author's own subscription,** not through the
+  paid API. One fresh Claude Code process codes one account for one pass, so nothing carries
+  over between accounts. The coding prompt replaces Claude Code's own; tools, settings, and
+  customizations are off, and nothing is saved by Claude Code. The model is pinned, and a call
+  any other model served is rejected. The answer is constrained to the pass's JSON Schema and
+  validated again with zod. The Claude Code version is fixed for a whole run and recorded. The
+  API would be added only if the run's length, a usage cap, or a Claude Code change forced it.
+- **The first run is four passes,** each one fresh call per account, in this order:
+
+  | Pass | Codes | Given |
+  |---|---|---|
+  | A | parts and episodes; eligibility (reporter, circumstance, child and age, dates, tone, the experiencer's own labels, surroundings reported as alive, psychiatric medication); text that isn't the experiencer's; country and language in the text; religion and heritage statements; stated conditions; all of provenance; a longing to return | the account |
+  | B | the encounters, as a census | the account and A's episodes |
+  | C | doctrinal statements and every mention of Jesus | the account, A's episodes, and B's encounters |
+  | D | area 4's checklist and list of media | the account and A's episodes |
+
+  Mentions of Jesus are coded with doctrine, not with the encounters, because a mention can
+  point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
+  split in two, with provenance as its own pass, only if its pilot shows the need, since every
+  pass reads the whole account again.
+- **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
+  B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
+  later pass knows which is which. Labels describe the account, so they stay in the private
+  raw output and are never published with the coded data.
+- **Each pass's prompt is plain text in the repository:** a shared file of conventions
+  (`prompts/common.md`) and one file per pass, sent unchanged as the system prompt and
+  fingerprinted in every run's log. The prompt is the same for every account, so it is cached;
+  what changes per account (area 4's shuffled checklist) goes in with the account. Prompts
+  restate the rules here as instructions, with invented examples, and a test checks that every
+  value a pass's schema allows is explained in its prompt. They are drafted by Claude, reviewed
+  by the author, piloted on the practice pages against the hand coding, and frozen with the
+  codebook. A skill (Claude Code's packaged instructions) was considered and set aside: it is
+  loaded through Claude Code's own machinery, so the exact text the coder received couldn't be
+  stated, and it would mean turning customizations back on.
+- **Evidence is located from quotes.** The coder gives, for each piece of evidence, the place
+  (narrative or questionnaire item) and a short exact quote; the pipeline finds the quote,
+  stores character offsets, and drops it (Conventions, above). Text that isn't the
+  experiencer's is given by its opening and closing words.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1359,9 +1403,9 @@ Not built yet:
   private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
   there), since the records hold per-account answers to the items about beings, which are
   close to outcomes. The full file is generated at the freeze, with the pipeline.
-- The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
-  to about 7 KB). The first run codes only part of it (above); how to split that part into
-  passes is undecided.
+- The four passes' prompts, and the pieces that come with them: first-run versions of the
+  schemas, locating quotes, and joining the passes into one record (How the coding runs,
+  above). Pass A first.
 - The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
   and area 4's trial coding.
 - The pre-registration.
@@ -1371,7 +1415,8 @@ To settle before the freeze:
 - Whether the full derived file is published in this repository. It holds short strings
   copied from the page (a date as written) and NDERF's tags.
 - Seventy-three parts look like form E but have no named-figures item (now irregular).
-- Which two models code, and how their disagreements are handled outside area 4.
+- Which model codes, and whether a second model codes all accounts or a reliability subsample;
+  how disagreements are handled outside area 4. Settled from the pilot's results.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`

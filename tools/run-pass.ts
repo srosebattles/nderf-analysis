@@ -10,10 +10,14 @@
 import { readFileSync } from 'node:fs';
 import { readAccounts } from '../derive/load.ts';
 import { neutralKey, renderForCoder } from '../pipeline/coder-input.ts';
+import { PASS_A } from '../pipeline/pass-a.ts';
 import { PROBE_RELIGION } from '../pipeline/probe-pass.ts';
 import { type LogLine, type PassDefinition, runPass } from '../pipeline/run-pass.ts';
 
-const PASSES: Record<string, PassDefinition> = { [PROBE_RELIGION.id]: PROBE_RELIGION as PassDefinition };
+const PASSES: Record<string, PassDefinition> = {
+  [PASS_A.id]: PASS_A as PassDefinition,
+  [PROBE_RELIGION.id]: PROBE_RELIGION as PassDefinition,
+};
 
 const argv = process.argv.slice(2);
 const flag = (name: string) => argv.includes(`--${name}`);
