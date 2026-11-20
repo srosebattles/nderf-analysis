@@ -34,7 +34,10 @@ outside the practice set has been read.
   from any narrative or free-text answer appears in our prose and code (which never hold
   copied text; examples are invented), and no seven-word sequence, one longer than the cap,
   appears in data files, which catches a passage split across several copied strings. NDERF's
-  question wording and menu labels are form text, not account text, and may be quoted.
+  question wording and menu labels are form text, not account text, and may be quoted. The
+  check leaves them out (`tools/form-text.ts`): they turn up inside responses wherever a menu
+  label couldn't be split from the comment after it, and listing them would also show how
+  often each option was picked.
 - **The cap was raised from four words to six** (November 2026). Four-word sequences are
   already mostly unique to one account (sixty-nine percent in the practice pages, against
   ninety-five percent for six), and the account ID is published with the coded data, so the
@@ -57,12 +60,26 @@ outside the practice set has been read.
   | Form | What identifies it | Parts | First posted (5th–95th percentile) |
   |---|---|---|---|
   | none | no questionnaire | 220 | 1999–2022 |
-  | A | orientation field, no "deceased or religious spirits" item, "The experience included" checklist | ~740 | 2001–2012 |
-  | B | orientation field, spirits item, no checklist | 519 | 2004–2007 |
-  | C | orientation field, spirits item, checklist | 1,486 | 2007–2011 |
-  | D | affiliation menu, named-religious-figures item, before/after belief items | 1,425 | 2011–2017 |
-  | E | menu and named-figures item, no checklist or before/after items | 980 | 2018–2025 |
-  | F | short form: no spirits item; "deceased (or alive) beings" becomes "deceased beings" | 379 | 2025–2026 |
+  | A | no affiliation menu (an orientation field, or no religion item at all), no "deceased or religious spirits" item, "The experience included" checklist | 834 | 2001–2012 |
+  | B | orientation field, spirits item, no checklist | 527 | 2004–2007 |
+  | C | orientation field, spirits item, checklist | 1,490 | 2007–2011 |
+  | D | affiliation menu, named-religious-figures item, before/after belief items | 1,452 | 2011–2017 |
+  | E | menu and named-figures item, no checklist or before/after items | 1,026 | 2018–2025 |
+  | F | short form: no spirits item; "deceased (or alive) beings" becomes "deceased beings" | 382 | 2025–2026 |
+  | irregular | a questionnaire that fits none of these | 113 | |
+
+  The counts are the parser's (`derive/questionnaire.ts`; `npm run check:derive` prints them);
+  the posting years are from the earlier hand count and shift little.
+
+  The checklist prints only the boxes a person ticked, so a submission with nothing ticked
+  shows no checklist at all. Two rules follow (November 2026):
+  - Form A is also known by what it lacks: a part that asks about deceased (or alive) beings,
+    has no affiliation menu, and has none of the items about beings that every later form has
+    is form A even with no checklist rows (eighty-six parts). Its checklist answers are
+    "asked, nothing ticked," not "not asked."
+  - Form B has no checklist, and form C with nothing ticked looks the same. A form B part first
+    posted after form B's years (2004 to 2007) keeps its form and is flagged (twenty-seven
+    parts): its checklist answers read "not asked" and may be "asked, nothing ticked."
 
   The affiliation menu and the named-figures item arrived together in form D, so comparisons
   of religion and named-figure encounters across forms are confounded with the prompt. Form is
@@ -130,6 +147,31 @@ outside the practice set has been read.
   qualifying experience. Prior religion is resolved as of the first qualifying experience.
   Pages with more than one qualifying experience are flagged and dropped in a sensitivity
   analysis. A repeated identical experience is one episode, flagged recurrent.
+- **The experience date is parsed by rule** from the Background field, which is free text in
+  many formats (`derive/dates.ts`), to a year, month, and day with a precision and flags.
+  Nothing is guessed: a date with no readable year stays unparsed (about two percent of the
+  parts that have the field: "unknown," an age, "twenty years ago," a year in another
+  calendar). The conventions, each recorded by a flag:
+  - "3/4/1990" is read month first, since NDERF's forms are American, and flagged as
+    ambiguous (about 520 parts). A first number over twelve makes it day first, and so does a
+    month-first reading that would fall after the posting when the day-first reading doesn't.
+  - A two-digit year is the latest century that keeps the experience before the posting.
+  - A zero day or month means that part wasn't given.
+  - A span ("1979 or 1980") takes its first year, as approximate. Several dates usually mean
+    several episodes: the earliest year is kept, and the coder dates each episode from the text.
+  - A date after the first posting is flagged, not corrected.
+- **Posting dates** are NDERF's, from the index listings. A year before NDERF existed or after
+  the crawl is a typo on a listing (one is dated 1009): it is kept as written, flagged, and
+  never counts as the first posting.
+- **The search site's fields** (NDERF's age band, its AI-inferred country, an experience date,
+  the questionnaire's form version, and the Greyson score) are attached to an account only when
+  its entry links to the account's own page, or, failing that, when exactly one account carries
+  the entry's number and their postings are at most 365 days apart: the two sites'
+  numbers don't always line up (`derive/search-site.ts`). That matches 778 accounts. The
+  scraper's further matching by name finds pages the archive is missing; it isn't used to
+  attach fields. The AI-inferred country keeps NDERF's value as given: a US state is the US, a
+  town or a former country gets no code, and a blank, "unknown," or a single letter makes no
+  claim.
 - **Child** means twelve or younger at the experience; teens are not children for this
   purpose. A stated age is recorded when given.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
@@ -846,7 +888,7 @@ were reviewed and approved in November 2026, after trial coding.
   experience?"), whether it was shared ("Have you ever shared this experience with others?"),
   belief in its reality shortly after and now (definitely real, probably real, probably not
   real, definitely not real), and memory accuracy compared with other events of the time
-  (more, as, or less accurately). Comments after the answers are read by the coder like any
+  (more, as, or less accurately, with a fourth option for not knowing). Comments after the answers are read by the coder like any
   other text.
 - **Exposure** is a coded statement linked to its episodes, limited to books, films, talks,
   accounts, and other media about NDEs, the afterlife, or spiritual beings (a religious
@@ -1140,6 +1182,52 @@ project wants to know; it is not all coded at once. The field list is in
   other religious figures and a color explained by the manner of death, as the computed rule
   did. The detail about a group of 150 angels stays computed: it reads the count.
 
+## How the coding runs
+
+Decided in November 2026, after a prototype and a probe on the practice pages
+([pipeline/](../pipeline/README.md)).
+
+- **In-session, through Claude Code, on the project author's own subscription,** not through the
+  paid API. One fresh Claude Code process codes one account for one pass, so nothing carries
+  over between accounts. The coding prompt replaces Claude Code's own; tools, settings, and
+  customizations are off, and nothing is saved by Claude Code. The model is pinned, and a call
+  any other model served is rejected. The answer is constrained to the pass's JSON Schema and
+  validated again with zod. The Claude Code version is fixed for a whole run and recorded. The
+  API would be added only if the run's length, a usage cap, or a Claude Code change forced it.
+- **The first run is four passes,** each one fresh call per account, in this order:
+
+  | Pass | Codes | Given |
+  |---|---|---|
+  | A | parts and episodes; eligibility (reporter, circumstance, child and age, dates, tone, the experiencer's own labels, surroundings reported as alive, psychiatric medication); text that isn't the experiencer's; country and language in the text; religion and heritage statements; stated conditions; all of provenance; a longing to return | the account |
+  | B | the encounters, as a census | the account and A's episodes |
+  | C | doctrinal statements and every mention of Jesus | the account, A's episodes, and B's encounters |
+  | D | area 4's checklist and list of media | the account and A's episodes |
+
+  Mentions of Jesus are coded with doctrine, not with the encounters, because a mention can
+  point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
+  split in two, with provenance as its own pass, only if its pilot shows the need, since every
+  pass reads the whole account again.
+- **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
+  B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
+  later pass knows which is which. Labels describe the account, so they stay in the private
+  raw output and are never published with the coded data.
+- **Each pass's prompt is plain text in the repository:** a shared file of conventions
+  (`prompts/common.md`) and one file per pass, sent unchanged as the system prompt and
+  fingerprinted in every run's log. The prompt is the same for every account, so it is cached;
+  what changes per account (area 4's shuffled checklist) goes in with the account. The schema
+  already gives the coder every field and allowed value, so a prompt explains only what the
+  schema can't: what counts, what doesn't, and values whose meaning isn't plain from their
+  names, with invented examples. A test checks that every field and value a prompt names
+  exists in the schema, so a prompt can't go stale silently. Prompts are drafted by Claude, reviewed
+  by the author, piloted on the practice pages against the hand coding, and frozen with the
+  codebook. A skill (Claude Code's packaged instructions) was considered and set aside: it is
+  loaded through Claude Code's own machinery, so the exact text the coder received couldn't be
+  stated, and it would mean turning customizations back on.
+- **Evidence is located from quotes.** The coder gives, for each piece of evidence, the place
+  (narrative or questionnaire item) and a short exact quote; the pipeline finds the quote,
+  stores character offsets, and drops it (Conventions, above). Text that isn't the
+  experiencer's is given by its opening and closing words.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1306,19 +1394,31 @@ full JSON records in the private repository) and the snags settled.
 
 Not built yet:
 
-- The rules-only derived file (questionnaire form, menu answers, dates, lengths, keyword
-  counts, and area 4's word-rule counts). The keyword and word-rule counts run only after the
-  freeze.
-- The coding pipeline. The main schema exports to about 116 KB of JSON Schema (area 4's pass
-  to about 7 KB). The first run codes only part of it (above); how to split that part into
-  passes is undecided.
+- The rules-only derived file's keyword counts. Everything else is built and tested
+  (`derive/`): one record per account, validated against the schema, with the questionnaire
+  (form, items asked, menu answers, the religion field, the life-threat item, and lengths),
+  dates, NDERF's editorial layer and search-site fields, and the country and language claims in
+  NDERF's tags. `npm run check:derive` builds every record and reports how well the rules read
+  the pages, without showing which options were picked. The Jesus keyword counts (null in the
+  record until then) and area 4's word-rule counts run only after the freeze. Decided
+  (November 2026): before the freeze, records are written only for the practice pages, to the
+  private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
+  there), since the records hold per-account answers to the items about beings, which are
+  close to outcomes. The full file is generated at the freeze, with the pipeline.
+- The four passes' prompts, and the pieces that come with them: first-run versions of the
+  schemas, locating quotes, and joining the passes into one record (How the coding runs,
+  above). Pass A first.
 - The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
   and area 4's trial coding.
 - The pre-registration.
 
 To settle before the freeze:
 
-- Which two models code, and how their disagreements are handled outside area 4.
+- Whether the full derived file is published in this repository. It holds short strings
+  copied from the page (a date as written) and NDERF's tags.
+- Seventy-three parts look like form E but have no named-figures item (now irregular).
+- Which model codes, and whether a second model codes all accounts or a reliability subsample;
+  how disagreements are handled outside area 4. Settled from the pilot's results.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`

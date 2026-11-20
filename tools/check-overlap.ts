@@ -16,22 +16,27 @@
 // each; it never prints account text. Ordinary phrases ("at the time of the") will match, so
 // read the list: anything that isn't plainly generic wording needs rewriting before it is
 // committed.
+//
+// NDERF's own form text is left out: question wording and menu labels are not account text and
+// may be quoted, but they turn up in responses wherever the scraper couldn't split a menu label
+// from the comment after it. Sequences that are form text (tools/form-text.ts) are counted and
+// not listed, which also keeps the check from showing how often a menu option was picked.
 
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { MENU_LABELS } from '../derive/questionnaire.ts';
 import { MAX_COPIED_WORDS } from '../schema/codebook-schema.ts';
+import { formTextMatcher, words } from './form-text.ts';
 
 const PROSE_WINDOW = 5;
 const DATA_WINDOW = MAX_COPIED_WORDS + 1;
 const windowFor = (file: string) => (file.endsWith('.jsonl') ? DATA_WINDOW : PROSE_WINDOW);
 
 interface Account {
-  parts: Array<{ narrative: string; qa: Array<{ answer: string | null; comment: string | null; response: string }> }>;
+  parts: Array<{ narrative: string; qa: Array<{ question: string; answer: string | null; comment: string | null; response: string }> }>;
 }
 
-const words = (s: string) =>
-  s.toLowerCase().normalize('NFKC').replace(/[’‘]/g, "'").match(/[\p{L}\p{N}']+/gu) ?? [];
 const nGrams = (ws: string[], n: number) =>
   ws.slice(0, Math.max(0, ws.length - n + 1)).map((_, i) => ws.slice(i, i + n).join(' '));
 
@@ -60,11 +65,13 @@ for (const file of files) {
 // Free text only: the narrative, plus each answer's comment (or the whole response when it has
 // no leading menu answer). Menu labels and question wording are form text, not account text.
 const hits = new Map<string, { n: number; accounts: number }>();
+const questions = new Set<string>();
 const accountsDir = join(dataDir, 'accounts');
 for (const name of readdirSync(accountsDir).filter((f) => f.endsWith('.jsonl'))) {
   for (const line of readFileSync(join(accountsDir, name), 'utf8').split('\n')) {
     if (!line.trim()) continue;
     const account = JSON.parse(line) as Account;
+    for (const p of account.parts) for (const q of p.qa) questions.add(q.question);
     const texts = account.parts.flatMap((p) => [
       p.narrative,
       ...p.qa.map((q) => q.comment ?? (q.answer === null ? q.response : '')),
@@ -80,8 +87,11 @@ for (const name of readdirSync(accountsDir).filter((f) => f.endsWith('.jsonl')))
   }
 }
 
+const isFormText = formTextMatcher(questions, MENU_LABELS);
+const listed = [...hits].filter(([g]) => !isFormText(g));
 const checked = [...ours].map(([n, seqs]) => `${seqs.size} ${n}-word`).join(', ');
-console.log(`${files.length} files, ${checked} sequences checked, ${hits.size} found in accounts.`);
-for (const [g, { n, accounts }] of [...hits].sort((a, b) => b[1].accounts - a[1].accounts)) {
+console.log(`${files.length} files, ${checked} sequences checked, ${listed.length} found in accounts.`);
+console.log(`${hits.size - listed.length} more are NDERF's question wording or menu labels (form text) and are not listed.`);
+for (const [g, { n, accounts }] of listed.sort((a, b) => b[1].accounts - a[1].accounts)) {
   console.log(`${String(accounts).padStart(5)} accounts | ${n} words | ${g} | ${ours.get(n)?.get(g)}`);
 }

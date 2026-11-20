@@ -52,7 +52,10 @@ export function resolveJesus(
   if (derived.accountId !== coded.accountId) throw new Error('derived and coded records are for different accounts');
   const qualifies = (episodeId: string | null | undefined) => episodeId != null && qualifyingEpisodeIds.includes(episodeId);
 
-  const hits = derived.parts.flatMap((p) => p.jesusKeywordHits);
+  const hits = derived.parts.flatMap((p) => {
+    if (p.jesusKeywordHits === null) throw new Error(`${derived.accountId}: the keyword counts aren't in the derived record yet (they run after the freeze)`);
+    return p.jesusKeywordHits;
+  });
   const keywordRung = (ownWordsOnly: boolean) => {
     const any = (list: readonly JesusKeyword[]) =>
       hits.some((h) => list.includes(h.keyword) && h.narrative + h.answers + (ownWordsOnly ? 0 : h.questionWording) > 0);

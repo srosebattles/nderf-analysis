@@ -231,15 +231,16 @@ export const ReligionFieldValue = z.discriminatedUnion('format', [
 ]);
 export type ReligionFieldValue = z.infer<typeof ReligionFieldValue>;
 
-const Belief = z.enum(['definitely', 'probably', 'uncertain', 'probably_not', 'does_not', 'unknown']);
+/** 'unknown' is NDERF's own menu option; 'unrecognized' is an answer that matches no option. */
+const Belief = z.enum(['definitely', 'probably', 'uncertain', 'probably_not', 'does_not', 'unknown', 'unrecognized']);
 
 /** Per part, by rule. */
 export const DerivedReligionFields = obj({
   prior: finding(ReligionFieldValue), // 'not_asked' when the form lacks the item
   now: finding(ReligionFieldValue),
-  practicesChanged: finding(z.enum(['yes', 'no', 'uncertain'])),
+  practicesChanged: finding(z.enum(['yes', 'no', 'uncertain', 'unrecognized'])),
   /** Form D only. Answered after the experience, about before it. */
-  priorImportance: finding(z.enum(['not', 'slightly', 'moderately', 'greatly', 'unknown'])),
+  priorImportance: finding(z.enum(['not', 'slightly', 'moderately', 'greatly', 'unknown', 'unrecognized'])),
   priorBeliefInGod: finding(Belief),
   priorBeliefInAfterlife: finding(Belief),
 });
@@ -346,8 +347,9 @@ export const ProvenanceItemAnswers = obj({
   sharedWithOthers: finding(YesNoUncertain), // "Have you ever shared this experience with others?"
   realityShortlyAfter: finding(Reality), // "…shortly (days to weeks) after it happened?"
   realityNow: finding(Reality),
-  /** Compared with other life events around the time of the experience. */
-  memoryAccuracy: finding(z.enum(['more', 'as', 'less', 'unrecognized'])),
+  /** Compared with other life events around the time of the experience. 'do_not_know' is the
+   *  menu's own fourth option ("I do not know how my remembrance of the experience compares…"). */
+  memoryAccuracy: finding(z.enum(['more', 'as', 'less', 'do_not_know', 'unrecognized'])),
 });
 export type ProvenanceItemAnswers = z.infer<typeof ProvenanceItemAnswers>;
 
@@ -382,17 +384,26 @@ export type KeywordHits = z.infer<typeof KeywordHits>;
 
 export const DerivedPart = obj({
   index: Index,
-  questionnaire: obj({ form: QuestionnaireForm, itemsAsked: ItemsAsked }),
+  questionnaire: obj({
+    form: QuestionnaireForm,
+    itemsAsked: ItemsAsked,
+    /** The checklist prints only the boxes ticked, so a form C submission with nothing ticked
+     *  looks like form B. A form B part first posted after form B's years (2004 to 2007) keeps
+     *  its form and gets this flag: its checklist answers read "not asked" and may be "asked,
+     *  nothing ticked". */
+    flags: z.array(z.enum(['may_be_form_c_nothing_ticked'])),
+  }),
   /** The experiencer's own answer, parsed by rule, including the sub-menu of causes and
    *  severity most forms add. Sometimes the only place the cause appears. */
   lifeThreat: finding(LifeThreatAnswer),
   beingItems: BeingItemAnswers,
   provenanceItems: ProvenanceItemAnswers,
-  /** One entry per keyword in JESUS_KEYWORDS_BROAD, zeros included. */
+  /** One entry per keyword in JESUS_KEYWORDS_BROAD, zeros included. Null until counted: the
+   *  counts run only after the codebook is frozen. */
   jesusKeywordHits: z.array(KeywordHits).refine(
     (hits) => hits.length === JESUS_KEYWORDS_BROAD.length && JESUS_KEYWORDS_BROAD.every((k) => hits.some((h) => h.keyword === k)),
     { message: 'one entry per keyword in JESUS_KEYWORDS_BROAD' },
-  ),
+  ).nullable(),
   backgroundDate: ParsedDate,
   gender: z.string().nullable(), // Background field as written ('Female', 'Male')
   religionField: DerivedReligionFields,
@@ -407,6 +418,8 @@ export const DerivedRecord = obj({
   nderf: NderfEditorial,
   posting: Posting,
   parts: z.array(DerivedPart),
+  /** NDERF's claims: its editor tags, its search app's quick facts, and its search site's
+   *  AI-inferred country (each claim's source says which). */
   tagClaims: obj({ countries: z.array(CountryClaim), language: LanguageClaim.nullable() }),
   lengths: Lengths, // whole account
 });
@@ -1394,21 +1407,22 @@ export const JesusMention = obj({
 });
 export type JesusMention = z.infer<typeof JesusMention>;
 
+/** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
+ *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
+export const NonExperiencerText = obj({
+  source: SourceRef,
+  span: Span,
+  kind: z.enum(['editor_note', 'reader_comment', 'transcription_credit', 'boilerplate']),
+});
+export type NonExperiencerText = z.infer<typeof NonExperiencerText>;
+
 export const CodedRecord = obj({
   accountId: z.string().min(1),
   sourceSha256: z.string().regex(/^[0-9a-f]{64}$/), // must match the derived record, or the join fails loudly
   run: CodingRun,
   parts: z.array(CodedPart),
   episodes: z.array(Episode),
-  /** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
-   *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
-  nonExperiencerText: z.array(
-    obj({
-      source: SourceRef,
-      span: Span,
-      kind: z.enum(['editor_note', 'reader_comment', 'transcription_credit', 'boilerplate']),
-    }),
-  ),
+  nonExperiencerText: z.array(NonExperiencerText),
   textClaims: obj({ countries: z.array(CountryClaim), language: LanguageClaim.nullable() }), // source: 'self_report'
   background: Background,
   /** Area 1: stated conditions (flag resolved per episode at analysis time). */
