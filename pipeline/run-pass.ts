@@ -9,6 +9,7 @@
 // is retried once, in a fresh call, with the problems listed; one that fails again is logged and
 // nothing is kept as coded. A run is resumable: accounts already in the log are skipped.
 
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -67,15 +68,18 @@ const listIssues = (error: z.ZodError) => error.issues.slice(0, 40).map((i) => `
 export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAccount[], opts: RunOptions): Promise<LogLine[]> {
   const dir = join(opts.dataDir, 'llm-raw', opts.runId);
   mkdirSync(dir, { recursive: true });
+  // Claude Code updates itself; a run must not change version partway, since that can change
+  // how requests are put together.
+  const claudeCodeVersion = execFileSync(opts.executable ?? 'claude', ['--version'], { encoding: 'utf8' }).trim();
   const manifest = {
-    runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort,
+    runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort, claudeCodeVersion,
     systemPromptSha256: sha256(pass.systemPrompt), jsonSchemaSha256: sha256(JSON.stringify(pass.jsonSchema)),
     accounts: accounts.map((a) => a.id),
   };
   const manifestFile = join(dir, 'run.json');
   if (existsSync(manifestFile)) {
     const held = JSON.parse(readFileSync(manifestFile, 'utf8'));
-    for (const k of ['pass', 'passVersion', 'model', 'effort', 'systemPromptSha256', 'jsonSchemaSha256'] as const) {
+    for (const k of ['pass', 'passVersion', 'model', 'effort', 'claudeCodeVersion', 'systemPromptSha256', 'jsonSchemaSha256'] as const) {
       if (held[k] !== manifest[k]) throw new Error(`run ${opts.runId} was started with a different ${k}; start a new run`);
     }
   } else {

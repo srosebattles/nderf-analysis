@@ -2,6 +2,10 @@
 // Stands in for `claude -p` in tests. Reads the arguments and stdin, and answers as the test
 // asks through FAKE_CLAUDE_SCRIPT: a JSON list of answers, one per call, kept in a counter file.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+if (process.argv[2] === '--version') {
+  process.stdout.write(`${process.env.FAKE_CLAUDE_VERSION ?? '9.9.9'} (Claude Code)\n`);
+  process.exit(0);
+}
 const script = JSON.parse(process.env.FAKE_CLAUDE_SCRIPT ?? '[]');
 const counter = process.env.FAKE_CLAUDE_COUNTER;
 const n = counter && existsSync(counter) ? Number(readFileSync(counter, 'utf8')) : 0;
