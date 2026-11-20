@@ -4,24 +4,29 @@ import type { ScrapedAccount } from '../derive/input.ts';
 import { PassA } from '../schema/first-run.ts';
 import { PASS_A, PASS_A_PROMPT, preparePassA } from './pass-a.ts';
 
-/** Every value the coder may give: each enum value and constant in the schema it's shown. */
-function allowedValues(schema: unknown): Set<string> {
-  const values = new Set<string>();
+/** Every value and every field name in the schema the coder is shown. */
+function schemaNames(schema: unknown): Set<string> {
+  const names = new Set<string>();
   const walk = (node: unknown) => {
     if (Array.isArray(node)) return node.forEach(walk);
     if (!node || typeof node !== 'object') return;
     const n = node as Record<string, unknown>;
-    if (Array.isArray(n.enum)) for (const v of n.enum) if (typeof v === 'string') values.add(v);
-    if (typeof n.const === 'string') values.add(n.const);
+    if (Array.isArray(n.enum)) for (const v of n.enum) if (typeof v === 'string') names.add(v);
+    if (typeof n.const === 'string') names.add(n.const);
+    if (n.properties && typeof n.properties === 'object') for (const k of Object.keys(n.properties)) names.add(k);
     Object.values(n).forEach(walk);
   };
   walk(schema);
-  return values;
+  return names;
 }
 
-test('the prompt explains every value pass A allows', () => {
-  const missing = [...allowedValues(PASS_A.jsonSchema)].filter((v) => !PASS_A_PROMPT.includes(`\`${v}\``));
-  assert.deepEqual(missing, []);
+test('every field and value the prompt names exists in the schema', () => {
+  // The schema gives the coder every field and value; the prompt explains only some, by name.
+  // A name the schema doesn't have means the prompt has gone stale.
+  const known = schemaNames(PASS_A.jsonSchema);
+  const named = [...PASS_A_PROMPT.matchAll(/`([a-z][A-Za-z0-9_.]*)`/g)].flatMap((m) => m[1].split('.'));
+  const stale = [...new Set(named)].filter((n) => !known.has(n) && n !== 'null');
+  assert.deepEqual(stale, []);
 });
 
 test('the coder is shown quotes, never offsets, and only places it can see', () => {

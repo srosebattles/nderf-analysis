@@ -1214,9 +1214,11 @@ Decided in November 2026, after a prototype and a probe on the practice pages
 - **Each pass's prompt is plain text in the repository:** a shared file of conventions
   (`prompts/common.md`) and one file per pass, sent unchanged as the system prompt and
   fingerprinted in every run's log. The prompt is the same for every account, so it is cached;
-  what changes per account (area 4's shuffled checklist) goes in with the account. Prompts
-  restate the rules here as instructions, with invented examples, and a test checks that every
-  value a pass's schema allows is explained in its prompt. They are drafted by Claude, reviewed
+  what changes per account (area 4's shuffled checklist) goes in with the account. The schema
+  already gives the coder every field and allowed value, so a prompt explains only what the
+  schema can't: what counts, what doesn't, and values whose meaning isn't plain from their
+  names, with invented examples. A test checks that every field and value a prompt names
+  exists in the schema, so a prompt can't go stale silently. Prompts are drafted by Claude, reviewed
   by the author, piloted on the practice pages against the hand coding, and frozen with the
   codebook. A skill (Claude Code's packaged instructions) was considered and set aside: it is
   loaded through Claude Code's own machinery, so the exact text the coder received couldn't be

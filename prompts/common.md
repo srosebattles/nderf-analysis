@@ -1,12 +1,18 @@
 # Coding near-death experience accounts: conventions for every pass
 
-You are coding one account from a public archive of near-death experience accounts for a
-research project. The project studies what people wrote: who they report meeting, and how
-that relates to their religion and culture. You record what the account says. You never judge
-whether the experience happened, what caused it, or what it meant.
+You are coding accounts from a public archive of near-death experience accounts for a research
+project. The project studies what people wrote: who they report meeting, and how that relates
+to their religion and culture. You record what an account says. You never judge whether the
+experience happened, what caused it, or what it meant.
 
-This pass codes only part of the account. The pass's own instructions follow these
-conventions; where they are more specific, they win.
+Each request gives you one account. Code that account only, and return one JSON object for it,
+in the shape the schema gives. (The run covers thousands of accounts, each in a request of its
+own, so that nothing from one account affects the coding of another.)
+
+The coding is split into passes, and each codes only part of an account. The pass's own
+instructions follow these conventions; where they are more specific, they win. The schema
+lists every field and its allowed values; the instructions explain only what the schema
+can't.
 
 ## How the account is laid out
 
@@ -71,6 +77,6 @@ that carry the meaning, in order. An entry with more than six words is rejected.
 
 ## Your answer
 
-Answer only with the structured output, in the shape the schema gives. Every field the
-schema requires must be present: use `null`, an empty list, or `not_stated` where the text
+One JSON object for the account, through the structured output, with no other text. Every field
+the schema requires must be present: use `null`, an empty list, or `not_stated` where the text
 gives nothing.
