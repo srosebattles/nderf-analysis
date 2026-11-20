@@ -96,11 +96,12 @@ test('a run keeps the answer, the raw result, and a log line; the account text g
   assert.match(stdin, /^ACCOUNT A0001/);
   // Resumable: a second run skips the account.
   assert.deepEqual(await run(), []);
-  assert.equal(JSON.parse(readFileSync(join(dir, 'run.json'), 'utf8')).claudeCodeVersion, '9.9.9 (Claude Code)');
-  // A different Claude Code version can't continue the run.
+  assert.equal(line.claudeCodeVersion, '9.9.9 (Claude Code)');
+  // A different Claude Code version continues the run, and the manifest records both.
   process.env.FAKE_CLAUDE_VERSION = '10.0.0';
-  await assert.rejects(run(), /different claudeCodeVersion/);
+  assert.deepEqual(await run(), []);
   delete process.env.FAKE_CLAUDE_VERSION;
+  assert.deepEqual(JSON.parse(readFileSync(join(dir, 'run.json'), 'utf8')).claudeCodeVersions, ['9.9.9 (Claude Code)', '10.0.0 (Claude Code)']);
 });
 
 test('an invalid answer is retried once with its problems; a second failure keeps nothing', async () => {

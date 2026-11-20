@@ -3,7 +3,8 @@
 //
 //   <data>/llm-raw/<runId>/run.json                   what was run: pass, model, effort, hashes
 //   <data>/llm-raw/<runId>/<accountId>.<n>.json       each attempt's full result (contains quotes)
-//   <data>/llm-raw/<runId>/log.jsonl                  one line per account: outcome, tokens, time
+//   <data>/llm-raw/<runId>/log.jsonl                  one line per account: outcome, tokens, time,
+//                                                     and the Claude Code version that coded it
 //
 // An answer is validated with the pass's zod schema, cross-field rules included. One that fails
 // is retried once, in a fresh call, with the problems listed; one that fails again is logged and
@@ -48,6 +49,8 @@ export interface RunOptions {
 export interface LogLine {
   accountId: string;
   key: string;
+  /** Claude Code's version for this account's calls (`claude --version`). */
+  claudeCodeVersion: string;
   ok: boolean;
   attempts: number;
   problem: string | null;
@@ -68,22 +71,27 @@ const listIssues = (error: z.ZodError) => error.issues.slice(0, 40).map((i) => `
 export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAccount[], opts: RunOptions): Promise<LogLine[]> {
   const dir = join(opts.dataDir, 'llm-raw', opts.runId);
   mkdirSync(dir, { recursive: true });
-  // Claude Code updates itself; a run must not change version partway, since that can change
-  // how requests are put together.
+  // Claude Code's version isn't controlled (a cloud session gets whatever its image has), so it
+  // is recorded instead: on every log line, and in the manifest as each version a run has seen.
+  // What decides the coding (prompt, schema, model, effort) can't change partway.
   const claudeCodeVersion = execFileSync(opts.executable ?? 'claude', ['--version'], { encoding: 'utf8' }).trim();
   const manifest = {
-    runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort, claudeCodeVersion,
+    runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort,
     systemPromptSha256: sha256(pass.systemPrompt), jsonSchemaSha256: sha256(JSON.stringify(pass.jsonSchema)),
     accounts: accounts.map((a) => a.id),
   };
   const manifestFile = join(dir, 'run.json');
   if (existsSync(manifestFile)) {
     const held = JSON.parse(readFileSync(manifestFile, 'utf8'));
-    for (const k of ['pass', 'passVersion', 'model', 'effort', 'claudeCodeVersion', 'systemPromptSha256', 'jsonSchemaSha256'] as const) {
+    for (const k of ['pass', 'passVersion', 'model', 'effort', 'systemPromptSha256', 'jsonSchemaSha256'] as const) {
       if (held[k] !== manifest[k]) throw new Error(`run ${opts.runId} was started with a different ${k}; start a new run`);
     }
+    const seen: string[] = held.claudeCodeVersions ?? [];
+    if (!seen.includes(claudeCodeVersion)) {
+      writeFileSync(manifestFile, JSON.stringify({ ...held, claudeCodeVersions: [...seen, claudeCodeVersion] }, null, 2) + '\n');
+    }
   } else {
-    writeFileSync(manifestFile, JSON.stringify({ ...manifest, started: new Date().toISOString() }, null, 2) + '\n');
+    writeFileSync(manifestFile, JSON.stringify({ ...manifest, claudeCodeVersions: [claudeCodeVersion], started: new Date().toISOString() }, null, 2) + '\n');
   }
   const logFile = join(dir, 'log.jsonl');
   const done = new Set(existsSync(logFile) ? readFileSync(logFile, 'utf8').split('\n').filter(Boolean).map((l) => (JSON.parse(l) as LogLine).accountId) : []);
@@ -120,7 +128,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
         userText = `${text}\nYour previous answer for this account broke these rules:\n${issues.join('\n')}\n\nYour previous answer:\n${JSON.stringify(result.structuredOutput)}\n\nCode the account again, following every rule.\n`;
       }
     }
-    return { accountId: account.id, key, ok, attempts, problem, ...total };
+    return { accountId: account.id, key, claudeCodeVersion, ok, attempts, problem, ...total };
   };
 
   const lines: LogLine[] = [];

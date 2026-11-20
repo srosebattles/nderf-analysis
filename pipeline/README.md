@@ -24,10 +24,11 @@ npm run pass -- ../nderf-raw-data --pass probe-religion --model claude-sonnet-5-
   again with zod, cross-field rules included. A failure is retried once, in a fresh call, with
   the problems listed; a second failure is logged and nothing is kept.
 - **Everything is kept privately** (`run-pass.ts`): each attempt's full result, the coded answer,
-  and a log line per account with tokens and time, under `<data>/llm-raw/<runId>/`. A run is
-  resumable, and refuses to continue if the prompt, schema, model, effort, or Claude Code
-  version changed. (For a run of several weeks, also turn off Claude Code's automatic
-  updates.)
+  and a log line per account with tokens, time, and the Claude Code version, under
+  `<data>/llm-raw/<runId>/`. A run is resumable, and refuses to continue if the prompt, schema,
+  model, or effort changed. Claude Code's version isn't controlled, since a cloud session gets
+  whatever its image has: each account records the version that coded it, and the run's
+  manifest lists every version it has seen.
 
 ## What was checked (November 10, 2026)
 

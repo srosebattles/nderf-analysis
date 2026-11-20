@@ -1192,8 +1192,12 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   over between accounts. The coding prompt replaces Claude Code's own; tools, settings, and
   customizations are off, and nothing is saved by Claude Code. The model is pinned, and a call
   any other model served is rejected. The answer is constrained to the pass's JSON Schema and
-  validated again with zod. The Claude Code version is fixed for a whole run and recorded. The
-  API would be added only if the run's length, a usage cap, or a Claude Code change forced it.
+  validated again with zod. The Claude Code version is recorded for each account rather than
+  controlled (decided November 20, 2026): a cloud session gets whatever version its image has,
+  so a run of several weeks can't hold one. What decides the coding (prompt, schema, model,
+  effort) is fixed for a run, and the write-up says which versions coded what, as it does for
+  models. The API would be added only if the run's length, a usage cap, or a Claude Code
+  change forced it.
 - **The first run is four passes,** each one fresh call per account, in this order:
 
   | Pass | Codes | Given |
