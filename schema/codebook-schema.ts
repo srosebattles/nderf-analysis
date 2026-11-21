@@ -1079,8 +1079,10 @@ export const Encounter = obj({
   episodeId: z.string(),
   /** An encounter in another episode that the text says is the same being. */
   sameBeingAs: z.string().nullable(),
-  /** 'credited_only': credited with something in the experience but never perceived. */
-  perceivedBy: z.array(z.enum(['seen', 'heard', 'sensed_presence', 'touched', 'mind_to_mind', 'credited_only'])).min(1),
+  /** 'credited_only': credited with something in the experience but never perceived.
+   *  'not_stated': the text gives no way, as for a being in an experience mentioned only in
+   *  passing ("four experiences with angels"). Each of these two stands alone. */
+  perceivedBy: z.array(z.enum(['seen', 'heard', 'sensed_presence', 'touched', 'mind_to_mind', 'credited_only', 'not_stated'])).min(1),
   /** Whether a person was really there (usually seen from out of the body) or met within the experience. */
   presence: z.enum(['physically_present', 'part_of_experience', 'unclear']),
   /** An individual given an identity or description of its own, or a group. */
@@ -1221,6 +1223,9 @@ export function encounterCoreIssues(e: {
   const issues: [string, (string | number)[]][] = [];
   if (e.perceivedBy.includes('credited_only') && e.perceivedBy.length > 1) {
     issues.push(["'credited_only' means never perceived, so it stands alone", ['perceivedBy']]);
+  }
+  if (e.perceivedBy.includes('not_stated') && e.perceivedBy.length > 1) {
+    issues.push(["'not_stated' stands alone", ['perceivedBy']]);
   }
   const keys = e.identity.map((c) => `${c.category}|${c.name ?? ''}|${c.when}`);
   if (new Set(keys).size !== keys.length) issues.push(['one claim per referent per timing', ['identity']]);

@@ -22,10 +22,14 @@ met.
 - Any being the person perceives during an episode, by any means: `seen`, `heard`,
   `sensed_presence`, `touched`, or `mind_to_mind`, as many as apply. The person's own body never
   counts.
-- `credited_only`: a being credited with something in the experience but never perceived (sent
-  back with nothing seen or heard; a pull the person later puts down to a deity), or one only
-  inferred from something else (a crack of sound taken to be a demon's whip, which is also a
-  `hedged` claim). It stands alone.
+- `credited_only`: a being credited with something that happened within the experience but never
+  perceived (sent back with nothing seen or heard; a pull the person later puts down to a deity),
+  or one only inferred from something else in it (a crack of sound taken to be a demon's whip,
+  which is also a `hedged` claim). It stands alone. A belief about something outside the
+  experience is not an encounter: that God saved them in the accident, or gave them words to say
+  afterward.
+- `not_stated`, also alone: the text gives no way the being was perceived, as for beings in an
+  experience mentioned only in passing ("there were angels on other occasions too").
 - A force is a being only when the text gives it a will or a voice, or calls it a being or a
   presence. "A presence urging me to return" is an encounter; "I was pulled back" isn't. A
   hostile phenomenon with no agent (a storm of light striking from every side) isn't a being
@@ -141,11 +145,19 @@ The earlier pass recorded those.
   `protestant_saint_or_luminary`.
 - `living_religious_leader`: a religious leader still living then, not known personally, of any
   tradition.
+- **Medical staff and patients.** The person's own doctor, nurse, therapist, or carer, known to
+  them, and a patient the person cared for, are `friend_or_acquaintance`. Staff the person
+  doesn't know are `unrecognized_human`, usually one group.
 - **People known in ordinary life** are `family`, `relative_never_met`, `friend_or_acquaintance`,
   `clergy_known_personally`, or `known_person_relationship_not_stated` ("people I knew"). They
   are recorded by their relationship, never by their personal name, so that nobody can be
   identified: `name` stays null, and copied `words` leave the name out ("my aunt," not "my aunt
-  Ruth"). They need `vital`.
+  Ruth"). They need `vital`. An `unrecognized_human` gets no `name` either; a name the being
+  gives itself goes in `words`.
+  - `tie` is given for exactly these four: `family`, `relative_never_met`,
+    `friend_or_acquaintance`, and `clergy_known_personally`, and is null for every other
+    category. A friend's `tie` is still given, with `relationship` null and `religiousRole` null
+    unless they were clergy: what kind of friend waits for a later pass.
   - `tie.relationship` for family and relatives never met: the role, the sex from a gendered
     word or pronouns (never from a name), the number of "greats," the side, and the link. A child
     who died before birth or was not yet born is a child or sibling by role.

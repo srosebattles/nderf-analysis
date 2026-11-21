@@ -92,6 +92,8 @@ test('pass B\'s rules', () => {
   assert.equal(check(answer([encounter(), encounter({ encounterId: '1example_x_nde#2/e1', episodeId: '1example_x_nde#2', label: 'b', sameBeingAs: '1example_x_nde#1/e1' })])), true);
   // The encounter's own rules that the first run keeps.
   assert.equal(check(answer([encounter({ perceivedBy: ['credited_only', 'seen'] })])), false);
+  assert.equal(check(answer([encounter({ perceivedBy: ['not_stated', 'seen'] })])), false);
+  assert.equal(check(answer([encounter({ perceivedBy: ['not_stated'] })])), true);
   assert.equal(check(answer([encounter({ identity: [claim(), claim()] })])), false); // one claim per referent per timing
   const aunt = claim({ category: 'family', tie: { relationship: { role: 'aunt_or_uncle', sex: 'female', greats: 0, side: 'not_stated', link: 'not_stated', words: 'my aunt' }, religiousRole: null } });
   assert.equal(check(answer([encounter({ identity: [aunt] })])), false); // vital status required

@@ -351,6 +351,10 @@ trial-coded on that round and revised. Everything below is in the schema (v4 dra
   heard) also gets an entry, marked "credited only," so it can be counted or dropped. Who sends
   people back is one of the roles. So does a being the experiencer only infers from something
   else (a crack of sound taken to be a demon's whip): a hedged claim, credited only.
+  "Credited" means within the experience: a belief about something outside it (that God saved
+  the person in the accident, or gave them words afterward) is not an encounter. A being in an
+  experience mentioned only in passing ("there were angels on other occasions too") is perceived "not
+  stated," which, like "credited only," stands alone (pass B pilot, November 2026).
 - **A force isn't treated as a being unless the text gives it a will or a voice,** or calls it a being or
   presence. "A presence urging me to return" is an encounter; "I was pulled back" is
   not. The same goes for a hostile phenomenon with no agent (hail of light striking from every
@@ -513,7 +517,10 @@ trial-coded on that round and revised. Everything below is in the schema (v4 dra
   doctor, nurse, therapist, or paid carer). Anyone else known through work who isn't a
   coworker or mentor (a client, a customer, an employer) is "other professional." Unpaid care
   within a family stays with family, where closeness covers it; a chaplain is clergy. Medical
-  staff seen at the scene are usually strangers: a group of unrecognized people, no tie.
+  staff seen at the scene are usually strangers: a group of unrecognized people, no tie. The friend
+  types wait for the people pass; the first run codes the category, so its prompt says that the
+  person's own clinician, or a patient they cared for, is a friend or acquaintance (pass B pilot,
+  November 2026).
 - **People known in life whose relationship isn't stated** ("people I knew") have their own
   category, since they could be family or friends. Like family and friends, they need vital
   status and never get a canonical name.
