@@ -49,7 +49,8 @@ the event as reported, not its credibility.
     the emergency too;
   - `anesthesia_without_complication`: under anesthesia with no complication reported;
   - an overdose, alcohol poisoning included, is never an inducer: it is `illness_or_injury` with
-    the `overdose` flag.
+    the `overdose` flag. A clinician's dosing error (too much anesthetic) is an overdose too,
+    `accidental`.
 - `psychoactiveMedicationAtOnset`: a psychoactive medication given as the experience began,
   during a real illness or injury (ketamine for a procedure).
 - `closeness` comes from the body's side only:
@@ -75,8 +76,8 @@ the event as reported, not its credibility.
 
 - `describesExperience` is `partial` when just a portion of the experience, or a summary, is given.
 - `tone` is `mixed` only when a distressing phase is described: a stretch of the experience, not
-  a moment's alarm (such as at seeing one's own body). Distress after returning to the body
-  doesn't count.
+  a moment's alarm (such as at seeing one's own body). Alarm or confusion at the start, before
+  the experience settles, doesn't count, and neither does distress after returning to the body.
 - `experiencerLabels` records only a label the person uses ("I was in hell"). Never apply one
   yourself: a frightening place the person doesn't call hell gets no label.
 - `surroundingsAlive` is true when the setting itself (land, water, plants, the light) is reported

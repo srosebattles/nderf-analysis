@@ -98,11 +98,13 @@ outside the practice set has been read.
   no threat and no inducer (premonitions, someone else's death) are excluded. We classify the
   reported event, not its credibility: a complication the experiencer reports counts.
 - **Flagged, not excluded:** overdoses (alcohol counts as a drug, so alcohol poisoning is an
-  overdose), suicide attempts, and a psychoactive medication given as the experience began
-  during a real illness or injury (e.g. ketamine for a procedure). Sensitivity analyses drop
-  flagged episodes. The resolver also sets the overdose flag when the life-threat item's cause
-  menu ticks "Drug or medication overdose," since the coder may not read that menu and the
-  cause is sometimes given nowhere else (pass A pilot, November 2026).
+  overdose, and so is a clinician's dosing error such as too much anesthetic, since a drug in
+  excess is the same confound), suicide attempts, and a psychoactive medication given as the
+  experience began during a real illness or injury (e.g. ketamine for a procedure).
+  Sensitivity analyses drop flagged episodes. The resolver also sets the overdose flag when
+  the life-threat item's cause menu ticks "Drug or medication overdose," since the coder may
+  not read that menu and the cause is sometimes given nowhere else (pass A pilot, November
+  2026).
 - **Conditions that can produce hallucinations or delusions are recorded, and flagged, not
   excluded** (added while designing area 3). Each stated condition is a statement with:
   - its type: psychotic disorder (schizophrenia, schizoaffective, delusional disorder, brief
@@ -1477,7 +1479,13 @@ To settle before the freeze:
   copied from the page (a date as written) and NDERF's tags.
 - Seventy-three parts look like form E but have no named-figures item (now irregular).
 - Which model codes, and whether a second model codes all accounts or a reliability subsample;
-  how disagreements are handled outside area 4. Settled from the pilot's results.
+  how disagreements are handled outside area 4. Settled from the pilot's results. Decided so
+  far (November 2026): the main coder is the larger of the two models piloted, at high effort.
+  On fifty practice pages it fixed nearly every difference from the hand coding that the
+  smaller model at low effort left, recorded about twice as many provenance entries, and used
+  about as much of the plan's limits per page (the exact model and the usage are in each run's
+  private manifest and notes). The smaller model at high effort is piloted next, on the same
+  prompt, to settle the second model.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
