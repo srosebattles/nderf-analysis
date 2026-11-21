@@ -79,7 +79,8 @@ Every encounter has at least one claim in `identity`.
 - `words`: the term or terms as written ("the Lord," "a man in white").
 - **The referent comes only from the text, never from the person's background.** "God" stays
   `god`, even in a Christian's account. A second claim, `jesus`, only when the text gives grounds:
-  the person equates them, the figure bears wounds, it's called the Son.
+  the person equates them, it's called the Son, or it bears a marker unique to him, such as the
+  wounds of the crucifixion.
 - A remark about the referent rather than the being met (that a figure from one tradition can
   look like one from another) is not a claim.
 - The question wording ("for example: Jesus, Muhammad, Buddha") is the archive's, never a claim.
@@ -126,9 +127,9 @@ The earlier pass recorded those.
   canonical names below when it's the same person, so that every spelling and title of one
   figure groups together; otherwise it's the name as the text gives it, in standard English
   form.
-- A **saint** is anyone a Christian community holds in reverence as one, whether or not it has a
-  formal canonization process: a figure on a Lutheran or Anglican calendar is a saint as much as
-  one canonized in Rome or glorified by an Orthodox church. A name that could
+- A **saint** is any departed Christian whom a Christian community holds in reverence, with or
+  without any calendar or canonization: a Baptist church's deep respect for Billy Graham makes
+  him a saint for this purpose as much as Rome's canonization makes Padre Pio one. A name that could
   be several people (a bare "Saint Teresa" or "Francis") gets the full name only when the context
   decides it. A named angel or hostile being keeps its own category and takes its `name` from the
   same list.
@@ -190,8 +191,9 @@ For people known in life and animals, and for anyone else whose status the text 
 - Timing an identity `during` because the story is told in order.
 - Taking "felt it was" for a hedge.
 - Filing an angel under a church.
-- Using a Catholic-centered idea of a saint: canonization isn't what makes one, and when a
-  saint died, not who recognized them, decides `suggestedSubcategory`.
+- Using a Catholic-centered idea of a saint: reverence by a Christian community makes one, not
+  canonization or a calendar, and when a saint died, not who recognized them, decides
+  `suggestedSubcategory`.
 - Coding the question wording's examples as beings.
 - Making a simile, or a ticked box with nothing described, an encounter.
 - Merging beings the text doesn't equate, or linking episodes the text doesn't link.

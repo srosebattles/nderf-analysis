@@ -459,10 +459,12 @@ trial-coded on that round and revised. Everything below is in the schema (v4 dra
   Protestant saint or luminary, biblical figure, a tradition's figures, non-religious
   historical figure) and to its traditions, which can be several (Jesus is also Isa; Mary,
   Maryam; Moses, Musa).
-- **A saint is anyone a Christian community holds in reverence as one,** whether or not it has
-  a formal canonization process (a figure on a Lutheran or Anglican calendar as much as one
-  canonized in Rome); the coding prompt says so, since a model's default idea of a saint is
-  Catholic (November 2026).
+- **A saint is any departed Christian whom a Christian community holds in reverence,** with or
+  without a calendar or canonization: Baptists, who have no sanctoral calendar, revere Billy
+  Graham as surely as Rome has canonized Padre Pio. The coding prompt says so, since a model's
+  default idea of a saint is Catholic (November 2026). Jesus claims stay as decided: the text
+  names him, calls the figure the Son, or shows a marker unique to him, such as the wounds of
+  the crucifixion.
 - **Saints are grouped by when they lived and which split divides them, not by who canonized
   them.** An early or medieval saint is shared heritage: anyone who died before the East-West
   schism (1054), church fathers included, and Western saints who died between 1054 and the
