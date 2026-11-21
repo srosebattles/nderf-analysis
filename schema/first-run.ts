@@ -1,6 +1,6 @@
 // The first run's passes (DECISIONS.md, "How the coding runs"): what each pass returns, checked
 // with zod, and the form the coder is shown, in which evidence is a quote rather than offsets.
-// Pass A so far; passes B to D follow the same pattern.
+// Passes A to C so far; pass D follows the same pattern.
 //
 // The first run codes only some of the main record's fields (passes.ts lists the ones that
 // wait), so some of its objects are first-run versions: the episode without its distressing
@@ -9,9 +9,9 @@
 
 import { z } from 'zod';
 import {
-  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, CodedRecord, ConditionStatement, CountryClaim, Encounter,
-  encounterCoreIssues, Episode, Evidence, IdentityClaim, identityClaimIssues, LanguageClaim, NonExperiencerText, PersonTie,
-  Provenance, Vital,
+  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, CodedRecord, ConditionStatement, CountryClaim, DoctrinalStatement,
+  doctrineAndMentionIssues, Encounter, encounterCoreIssues, Episode, Evidence, IdentityClaim, identityClaimIssues, JesusMention,
+  LanguageClaim, NonExperiencerText, PersonTie, Provenance, Vital,
 } from './codebook-schema.ts';
 
 const obj = z.strictObject;
@@ -140,6 +140,40 @@ export const PassB = obj({
 });
 export type PassB = z.infer<typeof PassB>;
 
+// ─── Pass C: doctrinal statements and every mention of Jesus ────────────────────────────
+
+/** A being pass C found conveying a doctrine, or called Jesus, that pass B's encounters don't
+ *  include. Pass C can't add an encounter (DECISIONS.md, How the coding runs): the statement or
+ *  mention that needs it is left out, and the page goes on a list to rerun pass B. */
+export const MissingEncounter = obj({ episodeId: z.string(), description: Label, evidence: z.array(Evidence).min(1) });
+
+/** The episode an encounter ID names: `A0042#1/e2` is in `A0042#1`. Pass C knows the encounters
+ *  only by ID; the pipeline checks the IDs against pass B's list (pipeline/pass-c.ts). */
+const episodeOfEncounterId = (id: string) => (/^[^#/]+#\d+\/e\d+$/.test(id) ? id.slice(0, id.lastIndexOf('/')) : undefined);
+
+/** Pass C: doctrinal statements and every mention of Jesus, linked to pass A's episodes and pass
+ *  B's encounters. Neither type reads a field that waits for a later pass, so both are the full
+ *  schema's. Whether the episodes and encounters linked to exist, and whether every encounter
+ *  with a Jesus claim has its mention, is checked by the pipeline, which knows the lists. */
+export const PassC = obj({
+  doctrinalStatements: z.array(DoctrinalStatement),
+  jesusMentions: z.array(JesusMention),
+  missingEncounters: z.array(MissingEncounter),
+  missingEpisodes: z.array(MissingEpisode),
+}).superRefine((r, ctx) => {
+  const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
+  const ids = r.doctrinalStatements.map((d) => d.doctrineId);
+  if (ids.some((id) => !/^[^#/]+\/d\d+$/.test(id)) || new Set(ids.map((id) => id.split('/')[0])).size > 1) {
+    issue('a doctrineId is the account key, "/d", and a number', ['doctrinalStatements']);
+  }
+  const links = doctrineAndMentionIssues(r.doctrinalStatements, r.jesusMentions, {
+    encounterEpisode: episodeOfEncounterId,
+    episodeExists: () => true,
+  });
+  for (const [message, path] of links) issue(message, path);
+});
+export type PassC = z.infer<typeof PassC>;
+
 // ─── What the coder is shown ────────────────────────────────────────────────────────────
 
 /** Where a passage is, as the account's labels give it. The coder sees only narratives and
@@ -184,7 +218,7 @@ export function wireJsonSchema(schema: z.ZodType): Record<string, unknown> {
   }) as Record<string, unknown>;
 }
 
-// ─── The first-run record: passes A and B joined ────────────────────────────────────────
+// ─── The first-run record: passes A to C joined ─────────────────────────────────────────
 
 /** What coded one pass of a record: its run, and the settings and versions recorded there. */
 export const PassCoding = obj({
@@ -201,17 +235,32 @@ export type PassCoding = z.infer<typeof PassCoding>;
 const passAFields = PassA.shape;
 const passBFields = PassB.shape;
 
+/** The mentions of kind encounter that call a being Jesus when pass B gave it no Jesus claim:
+ *  the passes disagree on the main outcome, so the page is listed for a pass B rerun (DECISIONS.md,
+ *  How the coding runs). */
+export function mentionsWithoutJesusClaim(r: { encounters: readonly FirstRunEncounter[]; jesusMentions: readonly JesusMention[] }): number[] {
+  const claimed = new Set(r.encounters.filter((e) => e.identity.some((c) => c.category === 'jesus')).map((e) => e.encounterId));
+  return r.jesusMentions.flatMap((m, i) => (m.kind === 'encounter' && m.refersTo === 'jesus' && m.encounterId !== null && !claimed.has(m.encounterId) ? [i] : []));
+}
+
 /** One page's first run, for the main coder only (the second model is compared pass by pass):
- *  pass A's fields and pass B's, side by side as in the full schema, with a header saying what
- *  coded each pass. Private, since it holds the episode and encounter labels. Pass C joins it
- *  later. Each pass's own rules are checked again, and so are the links between them. */
+ *  pass A's fields, pass B's, and pass C's, side by side as in the full schema, with a header
+ *  saying what coded each pass. Private, since it holds the episode and encounter labels. Each
+ *  pass's own rules are checked again, and so are the links between them. `missingEpisodes` is
+ *  pass B's; what pass C needed and the earlier passes left out is in `passCMissing`. */
 export const FirstRunRecord = obj({
   accountId: z.string().min(1),
-  coding: obj({ passA: PassCoding, passB: PassCoding }),
+  coding: obj({ passA: PassCoding, passB: PassCoding, passC: PassCoding }),
   ...passAFields,
   ...passBFields,
-  /** Pass B found a being in an experience pass A left out: the page is rerun through pass A. */
+  doctrinalStatements: PassC.shape.doctrinalStatements,
+  jesusMentions: PassC.shape.jesusMentions,
+  passCMissing: obj({ encounters: PassC.shape.missingEncounters, episodes: PassC.shape.missingEpisodes }),
+  /** Pass B or pass C found an experience pass A left out: the page is rerun from pass A. */
   needsPassARerun: z.boolean(),
+  /** Pass C found a being pass B left out, or a mention calling a being Jesus that pass B gave no
+   *  Jesus claim: the page is rerun from pass B. */
+  needsPassBRerun: z.boolean(),
 }).superRefine((r, ctx) => {
   const forward = (pass: string, result: z.ZodSafeParseResult<unknown>) => {
     if (!result.success) for (const i of result.error.issues) ctx.addIssue({ code: 'custom', message: `${pass}: ${i.message}`, path: i.path });
@@ -219,6 +268,10 @@ export const FirstRunRecord = obj({
   const pick = (shape: Record<string, unknown>) => Object.fromEntries(Object.keys(shape).map((k) => [k, (r as Record<string, unknown>)[k]]));
   forward('pass A', PassA.safeParse(pick(passAFields)));
   forward('pass B', PassB.safeParse(pick(passBFields)));
+  forward('pass C', PassC.safeParse({
+    doctrinalStatements: r.doctrinalStatements, jesusMentions: r.jesusMentions,
+    missingEncounters: r.passCMissing.encounters, missingEpisodes: r.passCMissing.episodes,
+  }));
   const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
   const episodes = new Set(r.episodes.map((e) => e.episodeId));
   r.episodes.forEach((e, i) => {
@@ -227,6 +280,26 @@ export const FirstRunRecord = obj({
   r.encounters.forEach((e, i) => {
     if (!episodes.has(e.episodeId)) issue(`encounter ${e.encounterId} is in episode ${e.episodeId}, which pass A doesn't have`, ['encounters', i, 'episodeId']);
   });
-  if (r.needsPassARerun !== (r.missingEpisodes.length > 0)) issue('needsPassARerun is true exactly when pass B found a missing episode', ['needsPassARerun']);
+  // Pass C's links: statements and mentions to real episodes and encounters, in the same episode;
+  // every encounter with a Jesus claim with its affirmative mention; timing that follows the link.
+  r.doctrinalStatements.forEach((d, i) => {
+    if (!d.doctrineId.startsWith(`${r.accountId}/d`)) issue(`statement ${d.doctrineId} isn't this account's`, ['doctrinalStatements', i, 'doctrineId']);
+  });
+  const encounterEpisode = new Map(r.encounters.map((e) => [e.encounterId, e.episodeId]));
+  const links = doctrineAndMentionIssues(r.doctrinalStatements, r.jesusMentions, {
+    encounterEpisode: (id) => encounterEpisode.get(id),
+    episodeExists: (id) => episodes.has(id),
+    jesusClaimEncounters: r.encounters.filter((e) => e.identity.some((c) => c.category === 'jesus')).map((e) => e.encounterId),
+  });
+  for (const [message, path] of links) issue(message, path);
+  r.passCMissing.encounters.forEach((m, i) => {
+    if (!episodes.has(m.episodeId)) issue(`a being pass C found is in episode ${m.episodeId}, which pass A doesn't have`, ['passCMissing', 'encounters', i, 'episodeId']);
+  });
+  const missingEpisode = r.missingEpisodes.length > 0 || r.passCMissing.episodes.length > 0;
+  if (r.needsPassARerun !== missingEpisode) issue('needsPassARerun is true exactly when pass B or pass C found a missing episode', ['needsPassARerun']);
+  const missingFromB = r.passCMissing.encounters.length > 0 || mentionsWithoutJesusClaim(r).length > 0;
+  if (r.needsPassBRerun !== missingFromB) {
+    issue('needsPassBRerun is true exactly when pass C found a missing being, or a mention calling a being Jesus without a Jesus claim', ['needsPassBRerun']);
+  }
 });
 export type FirstRunRecord = z.infer<typeof FirstRunRecord>;

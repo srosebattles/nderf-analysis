@@ -5,6 +5,8 @@
 //     --effort low --practice [--limit 5] [--run-id <id>] [--concurrency 1] [--dry-run]
 //
 // Pass B also takes --episodes-from <pass A run ID>: the run whose episodes it codes encounters in.
+// Pass C takes --episodes-from and --encounters-from <pass B run ID>: the runs whose episodes and
+// encounters it links to (the pass B run must have used the same pass A run).
 //
 // --dry-run prints what would be sent (sizes only, never account text) and calls nothing.
 // Only the practice pages can be run before the freeze.
@@ -14,6 +16,7 @@ import { readAccounts } from '../derive/load.ts';
 import { neutralKey, renderForCoder } from '../pipeline/coder-input.ts';
 import { PASS_A } from '../pipeline/pass-a.ts';
 import { passB } from '../pipeline/pass-b.ts';
+import { passC } from '../pipeline/pass-c.ts';
 import { PROBE_RELIGION } from '../pipeline/probe-pass.ts';
 import { type LogLine, type PassDefinition, RunStopped, runPass } from '../pipeline/run-pass.ts';
 
@@ -32,13 +35,22 @@ const PASSES: Record<string, () => PassDefinition> = {
     }
     return passB(dataDir, from) as PassDefinition;
   },
+  'pass-c': () => {
+    const episodes = value('episodes-from');
+    const encounters = value('encounters-from');
+    if (!episodes || !encounters) {
+      console.error('pass C needs --episodes-from <pass A run> and --encounters-from <pass B run>');
+      process.exit(1);
+    }
+    return passC(dataDir, episodes, encounters) as PassDefinition;
+  },
   [PROBE_RELIGION.id]: () => PROBE_RELIGION as PassDefinition,
 };
 const pass = PASSES[value('pass') ?? '']?.();
 const model = value('model');
 const effort = (value('effort') ?? 'low') as 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 if (!dataDir || !pass || !model || !flag('practice')) {
-  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--episodes-from <run ID>] [--limit n] [--run-id id] [--concurrency n] [--dry-run]`);
+  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--episodes-from <run ID>] [--encounters-from <run ID>] [--limit n] [--run-id id] [--concurrency n] [--dry-run]`);
   process.exit(1);
 }
 

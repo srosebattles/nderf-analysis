@@ -61,8 +61,14 @@ On invented text only, so no account has been sent anywhere yet:
   thinking on one call, none on the other). Agreement between runs needs measuring like
   agreement between coders.
 
+## Passes that take an earlier pass's output
+
+Pass B is given a pass A run's episodes (`--episodes-from <run ID>`); pass C is given those and a
+pass B run's encounters (`--encounters-from <run ID>`); that pass B run has to share the pass A
+run. Both are recorded in the run's manifest, so a resumed run can't change them.
+
 ## Joining the passes
 
-`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --out <name>` joins the main coder's
-pass A and pass B runs into first-run records (`join.ts`), written privately to
+`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --pass-c <run ID> --out <name>` joins
+the main coder's pass A, B, and C runs into first-run records (`join.ts`), written privately to
 `<data>/first-run/<name>.jsonl`, with the pages to rerun in `<name>.reruns.json`.

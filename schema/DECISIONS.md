@@ -765,6 +765,16 @@ has an item on the age of the deceased, so all of this comes from the text.
   (an invented example: "only the gentle can stay here"). Moral and practical teachings stay
   in the encounter's actions (teaches; instructions on how to live), with their content
   uncoded.
+- **What isn't a doctrinal statement** (November 2026, while drafting pass C's prompt). That God
+  exists, or that the person believes in God, isn't one: it is on nearly every page and would
+  fill "other." Personal devotion ("I sing to Jesus at dawn") isn't one either, unless it states a
+  proposition on the list (that Jesus is God, that his death atoned for sin); it is a mention
+  of the person's own faith.
+- **One statement per doctrine, stance, source, being, and episode,** with every place it is
+  stated in its evidence and the strongest certainty any passage states, as for identity claims.
+  "Other" is exempt, since two claims under it can be unrelated (a being on one practice page
+  conveyed two). A statement names its episode only when it was conveyed, shown, or understood
+  in one; a view held before or after never does (November 2026, checked).
 - **Hell is split into three things, kept apart:** what the experience contained (distressing
   content, on the episode, below), what the experiencer calls it (below), and the doctrine
   here, for stated propositions only. When a statement says what hell is like, it records the
@@ -815,6 +825,19 @@ has an item on the age of the deceased, so all of this comes from the text.
   claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
   question wording: the named-figures item itself names Jesus, so a raw search of the pages
   would match every form D–F page.
+- **A mention's timing follows what it links to** (November 2026, while building pass C). A
+  mention linked to an encounter, or to a being's talk about Jesus, is timed during and names
+  the encounter's episode, even when the being was identified later: the claim's own timing
+  records that. A mention linked to a doctrinal statement takes the statement's timing: during,
+  in its episode, for one conveyed, shown, or understood in the experience; before or after for
+  the experiencer's own view; not stated when the statement's source isn't. A mention of an
+  encounter with a Jesus claim is affirmative: a claim offered as a question ("Was it Jesus?")
+  is a hedged claim, its certainty records the doubt, and otherwise the rule that every Jesus
+  claim has an affirmative mention would fail. "Question" is for mentions such as asking a
+  being whether Jesus sent it. A mention names its episode only when it is timed during. A
+  mention inside a doctrinal statement is of that kind only, linked to it, and isn't recorded
+  again as the person's own faith. All of this is checked, except the last, which is the
+  prompt's.
 - **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
   capitalized "Savior" mean Jesus unless the text indicates otherwise. "Lord" and "Messiah"
   alone, and a lowercase "savior" (which can mean a human rescuer), are ambiguous unless the
@@ -826,7 +849,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   ambiguous mention.
 - **The text can also tie a title to someone else.** "The Lord" tied to a named non-Christian
   figure ("Lord Krishna") or to an impersonal Absolute ("Supreme Consciousness," "the
-  Universe") refers to someone other than Jesus. Tied only to "God," it stays ambiguous,
+  Universe") refers to someone other than Jesus: it is recorded as not Jesus, under whatever
+  kind fits (a person's or place's name is always not Jesus; the schema first allowed not
+  Jesus only for names, and was corrected while drafting pass C's prompt, November 2026). Tied only to "God," it stays ambiguous,
   since a Christian's "God" can mean Christ. The experiencer's background never decides it.
 - **New Age terms built on "Christ"** ("Christ consciousness," a "Christ self") are mentions
   of kind other, ambiguous: outside the Jesus-only rungs, counted in the ones with ambiguous
@@ -1003,20 +1028,30 @@ Whether idiosyncratic details from widely read accounts turn up in later ones. D
 cluster at a time, like area 3 (November 2026). Its resolver and its trial coding are still to
 come (see Open).
 
-- **One project, one freeze, one coding run, with area 4 kept apart inside it.** Area 4's
-  details must be fixed before any coded results are seen, since reading results would show
-  the very content it looks for; so it is frozen with the main codebook, and a separate later
-  project, which would also mean a second full coding run, is ruled out. Inside the project,
-  area 4 has its own schema module, its own output file (joined on account ID, so the main
-  coded record doesn't grow), its own pass in the same batch run (so the encounter coder never
-  sees the list of details, which could prime it), and its own report.
+- **A follow-on study, with its table frozen with areas 1 to 3** (decided November 21, 2026,
+  replacing "one project, one freeze, one coding run"). Area 4's details must be fixed before
+  any coded results are seen, since areas 1 to 3's codes hold some of what it looks for (a
+  group's count, named works, the words used for a being) and reading them would show whether
+  details occur. So its table (the sources and their dates, the details and decoys, and the
+  checklist wording) is frozen with the main codebook, before the full run of passes A to C.
+  Everything else waits until areas 1 to 3 have been pre-registered, run, and analyzed: area
+  4's own pre-registration, its pass's pilot and full run, its resolver, and its report. Pass D
+  was always a pass of its own, so running it later costs no second run of the main passes, and
+  the details computed from area 3's codes read the main run. Area 4 keeps its own schema
+  module, its own output file (joined on account ID, so the main coded record doesn't grow),
+  and its own pass (so the encounter coder never sees the list of details, which could prime
+  it). Pass D's schema and prompt can still be refined after the freeze, but not the table's
+  content.
 
 - **Which sources qualify.** A source must be widely read (a bestseller-list run, a film, or
   major press coverage) and must be a single account with concrete content. Compilations and
   research books (Moody's *Life After Life*, Jeffrey Long's books) are recorded only as named
   exposures, never in the detail test. *Life After Life* is a composite of the generic features,
   which are excluded by definition, and Athappilly et al. (2006) already compared those
-  features before and after 1975.
+  features before and after 1975. A source must also have been first widely available while
+  NDERF was active, after its first posting in 1999 (November 21, 2026), so that every source
+  has accounts told before it, and no source needs a weaker comparison or its content checked
+  against a book printed decades earlier.
 - **Dates.** Each source has a date of first wide availability, confirmed in two independent
   sources, and dates for later boosts (a film, a bestseller-list peak). All of them are
   pre-registered. A source that first appeared on NDERF itself would be dated from that posting,
@@ -1024,8 +1059,8 @@ come (see Open).
   *Dying to Be Me*, though her account was later dropped; see below). A source's own page, if it
   is in the corpus, is left out of its own test. A practice page that suggested a source is not:
   it stays in that source's counts, the table records it, and the write-up says the source was
-  suggested by the practice set (the *Urantia Book*, by a practice page whose vocabulary
-  resembles the book's without naming it).
+  suggested by the practice set. (The one source a practice page suggested, the *Urantia Book*,
+  has since been dropped as older than NDERF.)
 - **What makes a detail idiosyncratic.** It must pass all five tests:
   - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
     colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
@@ -1034,9 +1069,8 @@ come (see Open).
     robe;
   - traceable to the source: not in scripture, standard liturgy or religious art, Moody,
     earlier sources on the list, or NDERF's question wording. The pearly gates (Revelation 21)
-    fail for *90 Minutes in Heaven*; "morning stars" (Job 38:7) and "dominions" (Colossians
-    1:16) fail for the *Urantia Book*, while its coined names ("Salvington," "Nebadon,"
-    "Thought Adjuster") pass;
+    fail for *90 Minutes in Heaven*; calling God "Papa" fails for *The Shack* ("Abba," Romans
+    8:15), while its coined name "Elousia" passes;
   - confirmed: found in the source itself, or described specifically by two independent
     secondary sources, with the citations kept in the table;
   - recognizable from the text: a coder can say yes or no from the words on the page, without
@@ -1048,11 +1082,12 @@ come (see Open).
   reported separately, since they bear on the main question.
 - **Sources kept and dropped** (November 2026). Dropped: *Dying to Be Me* (Moorjani) and *90
   Minutes in Heaven*, whose content is mostly ideas or scriptural images rather than concrete
-  idiosyncratic details; mentions of them still count as other NDE media. Kept despite coming
-  before NDERF's first posting: *Embraced by the Light* (Eadie), whose details include some
-  genuinely idiosyncratic images, tested only by the weaker experienced-before-versus-after
-  comparison. Also dropped: *Saved by the Light* (Brinkley), which comes before NDERF's first
-  posting and whose best confirmed detail, a "cathedral of knowledge," isn't specific enough.
+  idiosyncratic details; mentions of them still count as other NDE media. Dropped as older
+  than NDERF (November 21, 2026): *Embraced by the Light* (Eadie, 1992), first kept for some
+  genuinely idiosyncratic images, two of which still lacked a second source; and the *Urantia
+  Book* (1955), whose coined names were a word rule. *Saved by the Light* (Brinkley), also older,
+  was dropped earlier because its best confirmed detail, a "cathedral of knowledge," isn't
+  specific enough. An account that names any of them still records it, as other media.
 - **The remaining sources are drafted and approved as a batch,** outside the repository, and
   written in only after approval.
 - **Invented sources give the cleanest test.** When the content was made up, finding it later
@@ -1076,16 +1111,18 @@ come (see Open).
 - **Believed versus invented** is pre-registered as a secondary, descriptive comparison: whether
   details from accounts that were believed when read (the Malarkey book included) turn up more
   often than details from fiction. Fiction's rates may be near zero.
-- **Three groups per source:** told before (posted before the source's date, so nobody could
-  have borrowed: the baseline); experienced before but told after (only the telling could
-  borrow); and experienced after (the experience itself, or the telling, could be shaped). The
-  posting date stands in for the telling: recent pages are posted within days of submission,
-  and older pages' lag is unknown (NDERF's running numbers are on only 126 pages and don't
-  follow submission order). The experience date is the page's first qualifying episode's.
-- **Accounts posted in the first six months after a source's date are left out,** since they
-  could belong to either side, and a book takes months to reach its readers.
-- **Sources from before NDERF's first posting (1999)** have no told-before group. They get only
-  a weaker comparison of their own: experienced before versus after, measured against the decoys.
+- **Groups per source, by when the account was told and when the experience happened**
+  (revised November 21, 2026). By posting date: told before the source's date (the baseline:
+  nobody could have borrowed); told in the year after it, when a book reaches most of its
+  first readers and borrowing would first show; and told later. Accounts told after the date
+  also split by whether the experience came before it (only the telling could borrow) or after
+  it (the experience itself, or the telling, could be shaped). The same year follows each boost
+  (a film's release). The year after is a group of its own, never left out: an earlier rule
+  dropped the first six months as belonging to neither side, which would have discarded the
+  very period where borrowing would first appear. The posting date stands in for the telling:
+  recent pages are posted within days of submission, and older pages' lag is unknown (NDERF's
+  running numbers are on only 126 pages and don't follow submission order). The experience date
+  is the page's first qualifying episode's.
 - **Controls for general trends,** since questionnaire forms, who finds NDERF, and account length
   all changed over the same years:
   - wrong dates: each source's details are also tested at every other source's date, and should
@@ -1107,17 +1144,17 @@ come (see Open).
     detail needs (a group of exactly 150 angels is the count, on an encounter that has an
     angel claim; a named painting is in the image comparisons). This is blind by construction: the encounter coder fills
     those fields without knowing anyone looks for them;
-  - a fixed word rule for coined words (the *Urantia Book*'s names, "Elousia"), counted like the
+  - a fixed word rule for coined words and phrases ("Elousia," "earthworm's-eye view"), counted like the
     Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
     runs over the names area 3 copies for every being. Words are compared in lowercase, with
     apostrophes removed and hyphens separating words. A single rule word of eight letters or
     more may differ by up to two letters (an insertion, a deletion, a substitution, or two
     neighbors swapped), since misspellings and translations garble them; shorter words, and
-    phrases of more than one word, must match exactly (so "thought adjusted" can't count as
-    "Thought Adjuster"). Each rule lists the ordinary words within reach that never count,
-    found once with a public English word list (dwyl/english-words): "midway" for "midwayer,"
-    and "moronic" and the Spanish "morenita" for "morontia." The rule is defined once in code
-    (`wordRuleHits`) and tested;
+    phrases of more than one word, must match exactly. Each rule lists the ordinary words within
+    reach that never count, found once with a public English word list (dwyl/english-words), as
+    was done for the *Urantia Book*'s coined names before that source was dropped; no remaining
+    rule word is long enough to need it. The rule is defined once in code (`wordRuleHits`) and
+    tested;
   - the model checklist, area 4's own pass, for the rest: details with no field and no unique
     word.
 - **The checklist.** Each item describes its detail plainly and never names its source or says
@@ -1129,9 +1166,9 @@ come (see Open).
   - its episode: the pass runs after the main passes and receives their episode list, so hits
     can be checked against the qualifying rules. The main coder never sees area 4's list;
   - evidence.
-- **Decoys:** made-up details of the same kinds and specificity, about one for every two real
-  details, each searched on the web first so that no known source has it, and pre-registered
-  with the rest. In the checklist only: that's where a coder's false positives arise, and an
+- **Decoys:** made-up details of the same kinds and specificity, each searched on the web first
+  so that no known source has it, and pre-registered with the rest: five, against sixteen
+  checklist details (planned at about one for every two; two were dropped, November 21, 2026). In the checklist only: that's where a coder's false positives arise, and an
   invented word would never turn up.
 - **A hit counts when both coding models find it,** with "either model" as a sensitivity check.
   Hits aren't reviewed by hand as part of the test.
@@ -1202,8 +1239,10 @@ project wants to know; it is not all coded at once. The field list is in
   - all of provenance: exposures, prior devotion, memory history, and the experiencer's own
     view of influence, which bear on area 4; and reception and telling (prior tellings, a
     telling that varies, reactions, disclaimers, natural explanations, predispositions, and a
-    longing to return), which like doctrine needs every account whenever it is coded;
-  - area 4's pass, which has to be in this run (area 4, above).
+    longing to return), which like doctrine needs every account whenever it is coded.
+
+  Area 4's pass (D) also runs on every account, but as a follow-on study after areas 1 to 3 are
+  analyzed, with its table frozen now (area 4, above).
 - **Everything else waits for a later pass, and every later pass runs only on the accounts the
   first run flags.** An account is flagged when either coding model's first run flags it. That
   is the test for waiting: detail that can be coded on a fraction of the accounts waits, and
@@ -1240,7 +1279,7 @@ project wants to know; it is not all coded at once. The field list is in
 - **Models.** A later pass may have to use models released after the first run. Every pass
   records its own, and the write-up says which coded what.
 - **Area 4's blue-skin detail moved to the checklist.** It was computed from the blue-skin
-  visual feature, which now waits, and area 4 has to be complete in the first run. Its
+  visual feature, which now waits, and area 4 reads only the first run's codes and its own pass. Its
   checklist wording, approved before it was written into the table, leaves out deities and
   other religious figures and a color explained by the manner of death, as the computed rule
   did. The detail about a group of 150 angels stays computed: it reads the count.
@@ -1261,14 +1300,15 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   effort) is fixed for a run, and the write-up says which versions coded what, as it does for
   models. The API would be added only if the run's length, a usage cap, or a Claude Code
   change forced it.
-- **The first run is four passes,** each one fresh call per account, in this order:
+- **The first run is three passes, A to C, and area 4's pass D follows later** (area 4,
+  above), each one fresh call per account, in this order:
 
   | Pass | Codes | Given |
   |---|---|---|
   | A | parts and episodes; eligibility (reporter, circumstance, child and age, dates, tone, the experiencer's own labels, surroundings reported as alive, psychiatric medication); text that isn't the experiencer's; country and language in the text; religion and heritage statements; stated conditions; all of provenance; a longing to return | the account |
   | B | the encounters, as a census | the account and A's episodes |
   | C | doctrinal statements and every mention of Jesus | the account, A's episodes, and B's encounters |
-  | D | area 4's checklist and list of media | the account and A's episodes |
+  | D | area 4's checklist and list of media, after areas 1 to 3 are analyzed | the account and A's episodes |
 
   Mentions of Jesus are coded with doctrine, not with the encounters, because a mention can
   point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
@@ -1290,12 +1330,30 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   fields that wait (passes.ts) and the cross-field rules that read them; the rules it keeps
   (credited only stands alone, one claim per referent per timing, vital status for people known
   in life and animals, the identity claim's own rules) are shared code with the full schema.
+- **Pass C is given the main coder's episodes and encounters** (November 2026), for both coding
+  models, for the same reason: each episode's ID and label, and each encounter's ID, label, and
+  the categories of its identity claims, so the coder can link a title such as "the Lord" to the
+  right being and knows which encounters carry a Jesus claim, each of which needs a linked
+  mention. It runs on every page, since most doctrine is the experiencer's own view and many
+  mentions involve no being. Neither doctrinal statements nor mentions read a field that waits,
+  so pass C uses the full schema's. Like pass B, it can't add to an earlier pass: a statement or
+  mention that would need a being pass B didn't record (one that conveys a doctrine) or an
+  experience pass A didn't list is left out, the being or experience is noted with its evidence,
+  and the page goes on the list to rerun pass B or pass A, with every later pass rerun after it.
+  Before an answer is accepted, the pipeline checks that statements and mentions link only to
+  listed episodes and encounters, in their own episode, and that every encounter with a Jesus
+  claim has its mention, so the retry can fix them. A mention that calls a listed being Jesus
+  when pass B gave it no Jesus claim is kept as coded, linked to that being; the passes then
+  disagree on the main outcome, so the first-run record flags the page and lists it for a pass
+  B rerun.
 - **The first-run record** (November 2026). The full schema's single top-level record was
-  written as one model answer holding everything; under four passes no such answer exists, so
-  it is replaced, for coding, by a first-run record: passes A and B joined (pass C joins later),
-  laid out like the full schema, with a header giving each pass's run, model, effort, prompt
+  written as one model answer holding everything; under separate passes no such answer exists, so
+  it is replaced, for coding, by a first-run record: passes A to C joined (pass D's area 4
+  record is kept apart, joined on account ID), laid out like the full schema, with a header giving each pass's run, model, effort, prompt
   version, Claude Code version, and any copies cut to the cap. Each pass's own rules are checked
-  again, and so are the links between passes (every encounter is in one of pass A's episodes).
+  again, and so are the links between passes: every encounter is in one of pass A's episodes;
+  statements and mentions link only to real episodes and encounters, in the same episode; and
+  every encounter with a Jesus claim has an affirmative mention of kind encounter linked to it.
   The later passes attach to it by episode or encounter ID; the rest of the full schema stays
   the specification that is frozen and pre-registered, and supplies the building blocks.
   - It is built for the main coder only. The second model's pass B codes encounters in the main
@@ -1304,8 +1362,10 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   - It is private, since it holds the episode and encounter labels; publishing coded data is a
     later export that drops them.
   - A page that lacks a pass, or fails the checks, isn't joined and goes on a rerun list. A page
-    whose pass B found an experience pass A left out is joined, flagged, and listed for a pass A
-    rerun. A pass B run whose episodes came from another pass A run is refused outright.
+    where a later pass found something an earlier pass left out (an experience, a being, or a
+    being called Jesus with no Jesus claim from pass B) is joined, flagged, and listed for a rerun
+    of the earlier pass, and every pass after it reruns too. A run whose episodes or encounters
+    came from other runs than the ones joined is refused outright.
 - **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
   B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
   later pass knows which is which. Labels describe the account, so they stay in the private
@@ -1475,16 +1535,16 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   disclosed in the pre-registration.
 - **Approved:** *Heaven Is for Real* (six details) and its related work, Akiane Kramarik's
   *Prince of Peace*; then, as a batch, *The Boy Who Came Back from Heaven* (two), *Proof of
-  Heaven* (three), *Embraced by the Light* (three, two of them waiting for a second source,
-  to be checked by hand against the book before the pipeline runs), the *Urantia Book* (one
-  word rule over its coined names), *The Shack* (four), *Deathly Hallows* (two), and *The Five
-  People You Meet in Heaven* (two).
+  Heaven* (three), *The Shack* (four), *Deathly Hallows* (two), and *The Five People You Meet
+  in Heaven* (two). *Embraced by the Light* (three) and the *Urantia Book* (one word rule) were
+  approved in that batch and dropped on November 21, 2026, as older than NDERF.
 - **Decoys** are in the table too (`DECOYS`), each with the nearest things a web search found
   (NDERF's own sites excluded from the search) and the date it was searched. Approved: a name
   tag in a script the person can read but doesn't know, a white hedgehog as a guide, and a man
   who won't put down his hockey stick (all three suggested by the project's author); dark
-  figures carrying empty birdcages, a staircase of folded paper, a bicycle in the tunnel, and a
-  giant moth of light that speaks in colors (for a New Age flavor). Rejected for having a source
+  figures carrying empty birdcages and a bicycle in the tunnel. A staircase of folded paper and a
+  giant moth of light that speaks in colors were approved and then dropped by the project's
+  author (November 21, 2026). Rejected for having a source
   after all: a freckled Jesus (the hadith of the Night Journey
   describes Jesus with freckles), a white salamander as a guide (the forged "Salamander
   Letter"), and light codes received as keys (New Age writing already calls light codes
@@ -1512,12 +1572,13 @@ Not built yet:
   private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
   there), since the records hold per-account answers to the items about beings, which are
   close to outcomes. The full file is generated at the freeze, with the pipeline.
-- The four passes' prompts, and the pieces that come with them: first-run versions of the
+- The passes' prompts, and the pieces that come with them: first-run versions of the
   schemas, locating quotes, and joining the passes into one record (How the coding runs,
   above). Pass A first.
-- The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
-  and area 4's trial coding.
-- The pre-registration.
+- The resolvers for areas 1 and 2 (country, religion, which episodes qualify).
+- The pre-registration of areas 1 to 3.
+- After areas 1 to 3 are analyzed: area 4's pre-registration, pass D's pilot and full run, and
+  area 4's resolver (area 4, above). Its table is frozen with areas 1 to 3.
 
 To settle before the freeze:
 
@@ -1537,7 +1598,5 @@ To settle before the freeze:
   area 4's pass it codes every account, since a hit counts only when both models find it.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
-- Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
-  must be empty at the freeze).
 - Living status in the named-figures table is rechecked at the freeze, and names added after it
   are logged in an addendum.

@@ -1266,7 +1266,7 @@ export const DoctrinalStatement = obj({
   /** "During" follows the strict rule for identity timing; a questionnaire item's framing
    *  ("During your experience, did you gain information…") doesn't decide it. */
   source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_before', 'experiencer_view_after', 'not_stated']),
-  episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in
+  episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in; null otherwise
   encounterId: z.string().nullable(), // the being that conveyed it
   /** For hell_exists, as many as are stated. */
   hellQualities: z.array(z.enum([
@@ -1277,8 +1277,10 @@ export const DoctrinalStatement = obj({
 }).superRefine((d, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
   if ((d.source === 'conveyed_by_being') !== (d.encounterId !== null)) issue('encounterId is given exactly when conveyed by a being');
-  if (['conveyed_by_being', 'shown', 'understood'].includes(d.source) && d.episodeId === null) {
-    issue('a statement conveyed, shown, or understood during an experience needs its episodeId');
+  // Only a statement from the experience names its episode (November 2026); a view held before or
+  // after never does.
+  if (['conveyed_by_being', 'shown', 'understood'].includes(d.source) !== (d.episodeId !== null)) {
+    issue('episodeId is given exactly for a statement conveyed, shown, or understood during an experience');
   }
   if (d.hellQualities.length > 0 && d.doctrine !== 'hell_exists') issue('hellQualities are for hell_exists only');
 });
@@ -1410,7 +1412,7 @@ export const placeOf = (s: SourceRef) =>
  *  Jesus unless the text indicates otherwise. "Lord" and "Messiah" alone, and a lowercase
  *  "savior," are ambiguous unless the text ties them to Jesus, or to someone else: "the Lord"
  *  tied to a named non-Christian figure ("Lord Krishna") or an impersonal Absolute ("Supreme
- *  Consciousness") is not_jesus; tied only to "God" it stays ambiguous. New Age terms built on
+ *  Consciousness") is not_jesus, under whatever kind fits; tied only to "God" it stays ambiguous. New Age terms built on
  *  Christ ("Christ consciousness") are kind other, ambiguous. Derived words (Christian) don't
  *  count. Only the experiencer's text, never question wording or the person's background. One
  *  entry per kind, time, and place (the narrative, or the questionnaire), with every passage
@@ -1425,14 +1427,16 @@ export const placeOf = (s: SourceRef) =>
  *  can mean Jesus himself. When context can't tell: 'ambiguous'. */
 export const JesusMention = obj({
   words: CopiedText,
-  refersTo: z.enum(['jesus', 'ambiguous', 'not_jesus']), // not_jesus: name_of_person_or_place only
+  /** not_jesus: always for name_of_person_or_place; otherwise only for a title the text ties to
+   *  someone else ("the Lord" for a named figure of another tradition, or an impersonal Absolute). */
+  refersTo: z.enum(['jesus', 'ambiguous', 'not_jesus']),
   kind: z.enum([
     'encounter', 'talk_with_another_being', 'prayer_or_invocation', 'own_faith_or_belief',
     'doctrinal_statement', 'someone_elses', 'idiom_or_exclamation', 'church_name', 'name_of_person_or_place', 'other',
   ]),
   encounterId: z.string().nullable(), // for 'encounter' and 'talk_with_another_being'
   doctrineId: z.string().nullable(), // for 'doctrinal_statement'
-  /** The experience a mention made during it belongs to (required for 'during'). A linked
+  /** The experience a mention made during it belongs to: given exactly for 'during'. A linked
    *  encounter or doctrinal statement must be in the same episode. */
   episodeId: z.string().nullable(),
   when: z.enum(['before', 'during', 'after', 'not_stated']),
@@ -1443,14 +1447,93 @@ export const JesusMention = obj({
   const linksEncounter = m.kind === 'encounter' || m.kind === 'talk_with_another_being';
   if (linksEncounter !== (m.encounterId !== null)) issue('encounterId is given exactly for encounter and talk_with_another_being');
   if ((m.kind === 'doctrinal_statement') !== (m.doctrineId !== null)) issue('doctrineId is given exactly for doctrinal_statement');
-  if ((m.kind === 'name_of_person_or_place') !== (m.refersTo === 'not_jesus')) {
-    issue("refersTo 'not_jesus' is exactly for name_of_person_or_place");
-  }
-  if (m.when === 'during' && m.episodeId === null) issue('a mention made during an experience needs its episodeId');
+  if (m.kind === 'name_of_person_or_place' && m.refersTo !== 'not_jesus') issue("a person's or place's name has refersTo 'not_jesus'");
+  if ((m.when === 'during') !== (m.episodeId !== null)) issue('episodeId is given exactly for a mention made during an experience');
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
   if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or all in the questionnaire');
 });
 export type JesusMention = z.infer<typeof JesusMention>;
+
+/** When a doctrinal statement's source places it, which a mention linked to it takes. */
+export const DOCTRINE_TIMING: Record<DoctrinalStatement['source'], JesusMention['when']> = {
+  conveyed_by_being: 'during', shown: 'during', understood: 'during',
+  experiencer_view_before: 'before', experiencer_view_after: 'after', not_stated: 'not_stated',
+};
+
+/** What the links between statements, mentions, encounters, and episodes are checked against. */
+export interface LinkContext {
+  /** The episode an encounter is in, or undefined when there is no such encounter. */
+  encounterEpisode: (encounterId: string) => string | undefined;
+  /** Whether there is such an episode. */
+  episodeExists: (episodeId: string) => boolean;
+  /** The encounters with a Jesus claim, when the encounters are known. */
+  jesusClaimEncounters?: readonly string[];
+}
+
+/** The rules linking doctrinal statements and Jesus mentions to each other, to encounters, and
+ *  to episodes (DECISIONS.md, Doctrinal statements and Every mention of Jesus). Shared by the
+ *  full record, pass C (which knows the encounters only by their IDs), and the first-run record. */
+export function doctrineAndMentionIssues(
+  doctrines: readonly DoctrinalStatement[], mentions: readonly JesusMention[], ctx: LinkContext,
+): [string, (string | number)[]][] {
+  const issues: [string, (string | number)[]][] = [];
+  const doctrineIds = doctrines.map((d) => d.doctrineId);
+  if (new Set(doctrineIds).size !== doctrineIds.length) issues.push(['doctrineIds must be unique', ['doctrinalStatements']]);
+  const doctrineKeys = new Set<string>();
+  doctrines.forEach((d, i) => {
+    // One statement per doctrine, stance, source, being, and episode, with every place it is
+    // stated in its evidence and the strongest certainty any passage states (November 2026).
+    // "Other" is exempt, since two claims under it can be unrelated (pass C pilot).
+    const key = [d.doctrine, d.stance, d.source, d.encounterId, d.episodeId].join('|');
+    if (d.doctrine !== 'other' && doctrineKeys.has(key)) {
+      issues.push(['one statement per doctrine, stance, source, being, and episode: merge the evidence', ['doctrinalStatements', i]]);
+    }
+    doctrineKeys.add(key);
+    if (d.episodeId !== null && !ctx.episodeExists(d.episodeId)) {
+      issues.push([`doctrinal statement refers to unknown episode ${d.episodeId}`, ['doctrinalStatements', i, 'episodeId']]);
+    }
+    if (d.encounterId !== null) {
+      const episode = ctx.encounterEpisode(d.encounterId);
+      if (episode === undefined) issues.push([`doctrinal statement refers to unknown encounter ${d.encounterId}`, ['doctrinalStatements', i, 'encounterId']]);
+      else if (episode !== d.episodeId) issues.push(["the encounter must be in the statement's episode", ['doctrinalStatements', i, 'encounterId']]);
+    }
+  });
+
+  const doctrineById = new Map(doctrines.map((d) => [d.doctrineId, d]));
+  const mentionKeys = new Set<string>();
+  mentions.forEach((m, i) => {
+    const at = ['jesusMentions', i];
+    const encounterEpisode = m.encounterId !== null ? ctx.encounterEpisode(m.encounterId) : undefined;
+    if (m.encounterId !== null && encounterEpisode === undefined) issues.push([`mention refers to unknown encounter ${m.encounterId}`, [...at, 'encounterId']]);
+    const doctrine = m.doctrineId !== null ? doctrineById.get(m.doctrineId) : undefined;
+    if (m.doctrineId !== null && doctrine === undefined) issues.push([`mention refers to unknown doctrinal statement ${m.doctrineId}`, [...at, 'doctrineId']]);
+    if (m.episodeId !== null && !ctx.episodeExists(m.episodeId)) issues.push([`mention refers to unknown episode ${m.episodeId}`, [...at, 'episodeId']]);
+    const linkedEpisode = encounterEpisode ?? doctrine?.episodeId ?? undefined;
+    if (m.episodeId !== null && linkedEpisode !== undefined && linkedEpisode !== m.episodeId) {
+      issues.push(["a mention's episode must match its linked encounter or doctrinal statement", [...at, 'episodeId']]);
+    }
+    // A mention's timing follows what it links to (November 2026): an encounter, or a being's
+    // talk about Jesus, is during, in the encounter's episode, even when the being was identified
+    // later; a doctrinal statement's mention takes the statement's timing.
+    if (m.encounterId !== null && m.when !== 'during') issues.push(['a mention linked to an encounter is timed during', [...at, 'when']]);
+    if (doctrine !== undefined && m.when !== DOCTRINE_TIMING[doctrine.source]) {
+      issues.push([`a mention linked to a doctrinal statement takes its timing (${DOCTRINE_TIMING[doctrine.source]} for source ${doctrine.source})`, [...at, 'when']]);
+    }
+    if (m.kind === 'encounter' && m.encounterId !== null && ctx.jesusClaimEncounters?.includes(m.encounterId) && m.polarity !== 'affirmative') {
+      issues.push(['a mention of an encounter with a Jesus claim is affirmative; the claim records any doubt', [...at, 'polarity']]);
+    }
+    const key = [m.kind, m.when, m.refersTo, m.polarity, m.encounterId, m.doctrineId, placeOf(m.evidence[0].source)].join('|');
+    if (mentionKeys.has(key)) issues.push(['one entry per kind, time, and place: merge the evidence', at]);
+    mentionKeys.add(key);
+  });
+  // Every encounter with a Jesus claim has an affirmative mention linked to it, so the nested
+  // definitions stay nested.
+  for (const encounterId of ctx.jesusClaimEncounters ?? []) {
+    const linked = mentions.some((m) => m.kind === 'encounter' && m.encounterId === encounterId && m.refersTo === 'jesus' && m.polarity === 'affirmative');
+    if (!linked) issues.push([`encounter ${encounterId} has a Jesus claim and needs an affirmative mention of kind encounter linked to it`, ['jesusMentions']]);
+  }
+  return issues;
+}
 
 /** Text inside a narrative or answer that isn't the experiencer's (an editor's note, a
  *  reader's comment, a transcription credit, a copyright notice or link). Never coded. */
@@ -1525,49 +1608,15 @@ export const CodedRecord = obj({
     }
   });
 
-  const doctrineIds = r.doctrinalStatements.map((d) => d.doctrineId);
-  if (new Set(doctrineIds).size !== doctrineIds.length) issue('doctrineIds must be unique', ['doctrinalStatements']);
   r.doctrinalStatements.forEach((d, i) => {
     if (!d.doctrineId.startsWith(`${r.accountId}/d`)) issue('doctrineId must start with `${accountId}/d`', ['doctrinalStatements', i, 'doctrineId']);
-    if (d.episodeId !== null && !ids.includes(d.episodeId)) {
-      issue(`doctrinal statement refers to unknown episode ${d.episodeId}`, ['doctrinalStatements', i, 'episodeId']);
-    }
-    if (d.encounterId !== null) {
-      const episode = encounterEpisode.get(d.encounterId);
-      if (episode === undefined) issue(`doctrinal statement refers to unknown encounter ${d.encounterId}`, ['doctrinalStatements', i, 'encounterId']);
-      else if (episode !== d.episodeId) issue("the encounter must be in the statement's episode", ['doctrinalStatements', i, 'encounterId']);
-    }
   });
-
-  const mentionKeys = new Set<string>();
-  const doctrineEpisode = new Map(r.doctrinalStatements.map((d) => [d.doctrineId, d.episodeId]));
-  r.jesusMentions.forEach((m, i) => {
-    if (m.encounterId !== null && !encounterEpisode.has(m.encounterId)) {
-      issue(`mention refers to unknown encounter ${m.encounterId}`, ['jesusMentions', i, 'encounterId']);
-    }
-    if (m.doctrineId !== null && !doctrineIds.includes(m.doctrineId)) {
-      issue(`mention refers to unknown doctrinal statement ${m.doctrineId}`, ['jesusMentions', i, 'doctrineId']);
-    }
-    if (m.episodeId !== null && !ids.includes(m.episodeId)) {
-      issue(`mention refers to unknown episode ${m.episodeId}`, ['jesusMentions', i, 'episodeId']);
-    }
-    const linkedEpisode = m.encounterId !== null ? encounterEpisode.get(m.encounterId) : m.doctrineId !== null ? doctrineEpisode.get(m.doctrineId) : undefined;
-    if (m.episodeId !== null && linkedEpisode !== undefined && linkedEpisode !== null && linkedEpisode !== m.episodeId) {
-      issue("a mention's episode must match its linked encounter or doctrinal statement", ['jesusMentions', i, 'episodeId']);
-    }
-    const key = [m.kind, m.when, m.refersTo, m.polarity, m.encounterId, m.doctrineId, placeOf(m.evidence[0].source)].join('|');
-    if (mentionKeys.has(key)) issue('one entry per kind, time, and place: merge the evidence', ['jesusMentions', i]);
-    mentionKeys.add(key);
+  const links = doctrineAndMentionIssues(r.doctrinalStatements, r.jesusMentions, {
+    encounterEpisode: (id) => encounterEpisode.get(id),
+    episodeExists: (id) => ids.includes(id),
+    jesusClaimEncounters: r.encounters.filter((e) => e.identity.some((c) => c.category === 'jesus')).map((e) => e.encounterId),
   });
-  // Every encounter with a Jesus claim has an affirmative mention linked to it, so the nested
-  // definitions stay nested.
-  r.encounters.forEach((e, i) => {
-    if (!e.identity.some((c) => c.category === 'jesus')) return;
-    const linked = r.jesusMentions.some(
-      (m) => m.kind === 'encounter' && m.encounterId === e.encounterId && m.refersTo === 'jesus' && m.polarity === 'affirmative',
-    );
-    if (!linked) issue('an encounter with a Jesus claim needs an affirmative mention of kind encounter linked to it', ['encounters', i]);
-  });
+  for (const [message, path] of links) issue(message, path);
 });
 export type CodedRecord = z.infer<typeof CodedRecord>;
 

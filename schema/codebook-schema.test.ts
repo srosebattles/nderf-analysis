@@ -276,7 +276,7 @@ const coded: CodedRecordType = {
   jesusMentions: [
     {
       words: 'Jesus', refersTo: 'jesus', kind: 'encounter', encounterId: `${EP}/e2`, doctrineId: null,
-      episodeId: EP, when: 'after', polarity: 'affirmative', evidence: [qa(24, [9, 14])],
+      episodeId: EP, when: 'during', polarity: 'affirmative', evidence: [qa(24, [9, 14])],
     },
     {
       words: 'prayed to Jesus', refersTo: 'jesus', kind: 'prayer_or_invocation', encounterId: null, doctrineId: null,
@@ -571,7 +571,8 @@ test('a name such as Jesús is recorded as a name, never as Jesus', () => {
     episodeId: null, when: 'before', polarity: 'affirmative', evidence: [narrative(700, 714)] };
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'not_jesus' }); }), true);
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'jesus' }); }), false);
-  assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), false);
+  // A title the text ties to someone else is not_jesus too, under whatever kind fits.
+  assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), true);
 });
 
 test("a relative's report uses the kinship parts, and only a relative's", () => {
@@ -594,6 +595,37 @@ test('mentions made during an experience name their episode; Jesus claims need a
   assert.equal(parses((c) => { Object.assign(c.jesusMentions[1], { when: 'during', episodeId: EP }); }), true);
   assert.equal(parses((c) => { c.jesusMentions[0].episodeId = '1example_x_nde#2'; }), false);
   assert.equal(parses((c) => { c.jesusMentions.shift(); }), false); // the Jesus claim in e2 loses its mention
+});
+
+test("a mention's timing follows what it links to; a Jesus claim's mention is affirmative", () => {
+  // Linked to an encounter: during, even when the claim was identified later.
+  assert.equal(parses((c) => { c.jesusMentions[0].when = 'after'; }), false);
+  // Linked to a doctrinal statement: the statement's timing.
+  const linked = (doctrine: number, when: string, episodeId: string | null) => (c: Parameters<Parameters<typeof parses>[0]>[0]) => {
+    c.jesusMentions.push({
+      words: 'the Son', refersTo: 'jesus', kind: 'doctrinal_statement', encounterId: null, doctrineId: `1example_x_nde/d${doctrine}`,
+      episodeId, when: when as 'during', polarity: 'affirmative', evidence: [qa(30, [0, 7])],
+    });
+  };
+  assert.equal(parses(linked(2, 'after', null)), true); // the experiencer's view after
+  assert.equal(parses(linked(2, 'not_stated', null)), false);
+  assert.equal(parses(linked(1, 'during', EP)), true); // conveyed by a being
+  assert.equal(parses(linked(1, 'after', null)), false);
+  // Only what happens during an experience names an episode.
+  assert.equal(parses((c) => { c.doctrinalStatements[1].episodeId = EP; }), false); // a view held afterward
+  assert.equal(parses((c) => { c.jesusMentions[1].episodeId = EP; }), false); // a prayer before the experience
+  // One statement per doctrine, stance, source, being, and episode.
+  assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3' }); }), false);
+  assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3', stance: 'affirms' }); }), true);
+  const other = { doctrine: 'other', hellQualities: [] };
+  assert.equal(parses((c) => {
+    Object.assign(c.doctrinalStatements[1], other);
+    c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3', words: 'the rivers there remember' });
+  }), true); // two claims under "other" can be unrelated
+  // A Jesus claim offered as a question is a hedged claim; its mention stays affirmative.
+  // (Checked apart from the rule that such an encounter needs an affirmative mention.)
+  assert.equal(parses((c) => { c.jesusMentions.push({ ...c.jesusMentions[0], polarity: 'question', evidence: [narrative(400, 410)] }); }), false);
+  assert.equal(parses((c) => { c.jesusMentions.push({ ...c.jesusMentions[0], evidence: [narrative(400, 410)] }); }), true);
 });
 
 // ─── Area 3 resolved views ──────────────────────────────────────────────────────────────
