@@ -270,7 +270,7 @@ export const MEDIA_SOURCES: readonly MediaSource[] = z.array(MediaSource).parse(
         id: 'hifr-homework',
         label: 'Homework in heaven',
         route: 'checklist',
-        fullMatch: 'The person is given homework or assignments while in heaven.',
+        fullMatch: 'The person is given homework or school assignments to study while in heaven, as a pupil would. A task to carry out after returning to earth doesn\'t count.',
         partialMatch: 'Jesus is the person\'s teacher in heaven, with no homework.',
         words: [], neverMatch: [], computedRule: null, pendingCheck: null,
         aboutBeings: false,
