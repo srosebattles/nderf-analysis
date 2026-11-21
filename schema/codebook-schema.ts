@@ -555,6 +555,19 @@ export const ExperiencerLabel = obj({
 });
 export type ExperiencerLabel = z.infer<typeof ExperiencerLabel>;
 
+/** What `child` must be when an age is coded: 'yes' if every value is twelve or under, 'no' if
+ *  every value is thirteen or over, 'unclear' for a range across the line. */
+export function childFromAge(years: Age['years']): 'yes' | 'no' | 'unclear' {
+  const [low, high] = typeof years === 'number' ? [years, years] : years;
+  return high < 13 ? 'yes' : low >= 13 ? 'no' : 'unclear';
+}
+export const childAgreesWithAge = (e: { child: { value: string }; age: Finding<Age> }) =>
+  e.age.status !== 'present' || e.child.value === childFromAge(e.age.value.years);
+export const CHILD_AGREES_WITH_AGE = {
+  message: 'child must agree with the age: twelve or under is yes, thirteen or over is no, a range across the line is unclear',
+  path: ['child'],
+};
+
 /** Every experience of the experiencer's own on the page is an episode, including later OBEs,
  *  dreams, and visions mentioned in passing; whether it counts is decided by rule at analysis
  *  time (ResolvedEpisode). Other people's experiences described on the page are never episodes. */
@@ -569,9 +582,10 @@ export const Episode = obj({
   /** Only when the text dates this episode and Background can't (no date, or several episodes). */
   textDate: finding(ParsedDate),
   /** Twelve or younger at the experience; teens are 'no'. A number decides, stated or computed
-   *  from dates (a birth year, or "a month before I turned nine"). Without one: "little",
-   *  elementary school or younger, or a plain "as a child" -> 'yes'; teenager or high school ->
-   *  'no'; middle school or junior high -> 'unclear'. Religion is coded the same way at every age. */
+   *  from dates (a birth year, or "a month before I turned nine"), and must agree with `age`.
+   *  Without one, the coder's best judgment from any cue in the text ("just a kid," school,
+   *  marriage, a job); 'unclear' only when either is plausible. Religion is coded the same way
+   *  at every age. */
   child: obj({ value: z.enum(['yes', 'no', 'unclear']), evidence: z.array(Evidence) }),
   age: finding(Age),
   circumstance: Circumstance,
@@ -590,7 +604,7 @@ export const Episode = obj({
   surroundingsAlive: obj({ value: z.boolean(), words: CopiedText.nullable(), evidence: z.array(Evidence) }),
 }).refine((e) => e.tone !== 'pleasant' || e.distressingContent.length === 0, {
   message: 'a pleasant episode has no distressing content',
-}).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
+}).refine(childAgreesWithAge, CHILD_AGREES_WITH_AGE).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
   message: 'surroundingsAlive has words and evidence exactly when true',
 });
 export type Episode = z.infer<typeof Episode>;
@@ -612,6 +626,11 @@ export const ConditionType = z.enum([
   'other_linked_to_hallucinations', // the text links the condition to hallucinations
   // Outside the flag.
   'other_mental_health', // depression, anxiety, PTSD, and the like
+  /** Alcohol or other addiction, as stated: calling oneself an alcoholic or an addict is enough. */
+  'substance_use_disorder',
+  /** Recorded even when it caused the experience: it is linked to sleep paralysis, so a
+   *  sensitivity analysis can count it in the flag. The one physical condition recorded. */
+  'sleep_apnea',
   'autism', // including Asperger's, PDD-NOS, "on the spectrum"
   'adhd', // including ADD
   'intellectual_disability_or_developmental_delay',

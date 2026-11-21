@@ -97,9 +97,12 @@ outside the practice set has been read.
   complication are inducers: those experiences form the comparison group. Experiences with
   no threat and no inducer (premonitions, someone else's death) are excluded. We classify the
   reported event, not its credibility: a complication the experiencer reports counts.
-- **Flagged, not excluded:** overdoses (alcohol counts as a drug), suicide attempts, and a
-  psychoactive medication given as the experience began during a real illness or injury
-  (e.g. ketamine for a procedure). Sensitivity analyses drop flagged episodes.
+- **Flagged, not excluded:** overdoses (alcohol counts as a drug, so alcohol poisoning is an
+  overdose), suicide attempts, and a psychoactive medication given as the experience began
+  during a real illness or injury (e.g. ketamine for a procedure). Sensitivity analyses drop
+  flagged episodes. The resolver also sets the overdose flag when the life-threat item's cause
+  menu ticks "Drug or medication overdose," since the coder may not read that menu and the
+  cause is sometimes given nowhere else (pass A pilot, November 2026).
 - **Conditions that can produce hallucinations or delusions are recorded, and flagged, not
   excluded** (added while designing area 3). Each stated condition is a statement with:
   - its type: psychotic disorder (schizophrenia, schizoaffective, delusional disorder, brief
@@ -116,7 +119,14 @@ outside the practice set has been read.
   - the words.
 
   Recorded only when stated: never inferred from the experience's content, from a medication,
-  or from someone calling the experience a hallucination. Delirium and seizure disorders are
+  or from someone calling the experience a hallucination. Physical illnesses are never
+  conditions, nor is the illness or injury behind the experience, with one exception: sleep
+  apnea is always recorded, outside the flag, because it is linked to sleep paralysis and so to
+  perceived hostile presences; a sensitivity analysis can count it in the flag. A stated
+  addiction, alcohol included, is a substance use disorder, outside the flag; calling oneself
+  an alcoholic or an addict is enough, with no clinical term needed. (Both added after the pass
+  A pilot, November 2026, which coded heart failure, a brain haemorrhage, and sleep apnea as
+  conditions linked to hallucinations.) Delirium and seizure disorders are
   neurological rather than psychiatric but are the same confound; delirium is the standard
   skeptical explanation for experiences in intensive care. The flag is resolved per episode at
   analysis time from every type except "other mental health condition," present before or at
@@ -136,17 +146,27 @@ outside the practice set has been read.
   stabilizer, antidepressant, sedative, or other, with the words), separately from a
   psychoactive medication given as the experience began. Explicit only.
 - **Closeness to death is a covariate, not a gate:** bodily crisis, minor (fainting, a knock
-  with brief unconsciousness, a near-drowning with self-rescue), threat only, or unclear.
-  Evidence for a bodily crisis must be a described bodily event, not experiential content;
-  a bare "I died" with no physical event described is unclear. Cardiac arrest is flagged,
-  with its basis (clinician or witness, checkbox, self-report, hedged, medically induced),
-  for a strictest-definition sensitivity analysis.
+  with brief unconsciousness, a near-drowning with no bodily event described, whoever got the
+  person out), threat only, or unclear. Evidence for a bodily crisis must be a described bodily
+  event, not experiential content; a bare "I died" with no physical event described is unclear.
+  A bodily event the person reports counts even when nobody witnessed it ("I stopped breathing,"
+  alone at night) or no injury was found afterward, since the event is classified as reported,
+  not by its credibility. Cardiac arrest is flagged, with its basis (clinician or witness,
+  checkbox, self-report, hedged, medically induced), for a strictest-definition sensitivity
+  analysis. When several bases apply, the strongest the text gives is recorded: clinician or
+  witness, then self-report, then checkbox, then hedged. Medically induced means stopped on
+  purpose by clinicians, for surgery or to reset the heart's rhythm. A ticked clinical-death
+  option records cardiac arrest at least as checkbox. (The near-drowning, unwitnessed-event,
+  and basis rules were settled after the pass A pilot, November 2026.)
 - **Pages with several experiences:** every experience of the experiencer's own is recorded,
   including later OBEs and dreams; other people's experiences described on the page are not.
   Only qualifying experiences count. A being counts for the person if it appears in any
   qualifying experience. Prior religion is resolved as of the first qualifying experience.
   Pages with more than one qualifying experience are flagged and dropped in a sensitivity
-  analysis. A repeated identical experience is one episode, flagged recurrent.
+  analysis. A repeated identical experience is one episode, flagged recurrent. An experience
+  the text only says happened is still an episode, marked as not describing it; a bare count
+  with nothing to tell the experiences apart ("twice more since") is one episode, recurrent
+  (pass A pilot, November 2026).
 - **The experience date is parsed by rule** from the Background field, which is free text in
   many formats (`derive/dates.ts`), to a year, month, and day with a precision and flags.
   Nothing is guessed: a date with no readable year stays unparsed (about two percent of the
@@ -173,7 +193,13 @@ outside the practice set has been read.
   town or a former country gets no code, and a blank, "unknown," or a single letter makes no
   claim.
 - **Child** means twelve or younger at the experience; teens are not children for this
-  purpose. A stated age is recorded when given.
+  purpose. A stated age is recorded when given. The concern behind it is how reliable small
+  children are as narrators, and twelve is a convention, not a natural line. A number decides,
+  and the schema checks that child agrees with a coded age. Without a number, the coder uses its
+  best judgment from any cue in the text (being grown by then, married or working or at
+  university, is no), and unclear is only for cases where either is plausible. Finer age bands
+  were considered and rejected after the pass A pilot (November 2026): accounts with only "a
+  kid," or a range across any line, would leave the same problem at every boundary.
 - **Firsthand** means the experiencer, alone or with help (interviewed, transcribed, or typed by
   someone else). Reports by relatives or clinicians are not firsthand and are excluded from the
   primary analysis. Reporter is recorded per experience, since one page can mix both. A
@@ -185,7 +211,8 @@ outside the practice set has been read.
   origin > unspecified (a plain "From X" tag) > residence. Experience location is recorded but
   never used, since where it happened says little about how someone was raised. Within a role,
   the experiencer's own statement > NDERF's tag > search-app quick facts > the search site's
-  AI-inferred country. With no country from any of these, the person is "presumed US" (where
+  AI-inferred country. In the text, "I lived in" is residence and "grew up in" or "raised in"
+  is origin (pass A pilot, November 2026). With no country from any of these, the person is "presumed US" (where
   tags and the AI country overlap, eighty-eight percent of untagged accounts are US), unless
   the account was translated from another language, in which case it's unknown. The resolved
   country keeps its source, so stated, AI-inferred, and presumed US stay separate; stated US
@@ -218,7 +245,7 @@ outside the practice set has been read.
   Cayce meetings). Conflicts are flagged, not silently resolved.
 - **Categories.** Christian means Trinitarian: Catholic, Orthodox, Protestant, and
   Christian-unspecified. Latter-day Saints and Jehovah's Witnesses are separate categories;
-  other non-Trinitarian groups share one. Protestants are coded by family (Lutheran, Baptist,
+  other non-Trinitarian groups (Christian Science, Oneness Pentecostals) share one. Protestants are coded by family (Lutheran, Baptist,
   Pentecostal, …) and by body only when named (LCMS, PCA); there is no evangelical/mainline
   split, since denominations don't map cleanly onto it. A bare "nondenominational" is the
   nondenominational Protestant family; self-labels with no church named ("born again,
@@ -230,7 +257,21 @@ outside the practice set has been read.
   under New Age.
 - **Orientation is not affiliation.** Forms A–C's Liberal/Moderate/Conservative answer is kept
   as theological orientation. Form D's items on importance of religious life and belief in God
-  before the experience are kept as their own variables.
+  before the experience are kept as their own variables. The words typed after the orientation
+  are the person's own answer and the only affiliation those forms give, so a named affiliation
+  or stance there is always coded ("Moderate Methodist," "Liberal agnostic"). A bare "none" or
+  "nil" after it is not coded, so religion stays unknown unless something else on the page
+  states it: it may mean only that the person had nothing to add, and leaving the data missing
+  is better than miscoding it. (Pass A pilot, November 2026: the coder had been skipping the
+  typed words.)
+- **Comments on the menu answer** (pass A pilot, November 2026). One that only restates the
+  menu ("same as before") is not a statement. One that only qualifies the menu's tradition (how
+  often the person attended, how seriously they took it) is a statement with the menu's
+  tradition, the comment as its term, and a practice level, so the practice is recorded.
+- **Kinds, as the pilot showed them confused.** Upbringing is only the household the person
+  was raised in; their own "I was never religious" or "Catholic out of family habit" is an
+  identification. Leaving means leaving a religion, never a faith that grew stronger. A belief
+  (in reincarnation, in an afterlife) is not a tradition and isn't recorded as a statement.
 - **Statements prompted by the encounter** (offered to explain something in the experience,
   wherever they appear) are flagged, and a sensitivity analysis drops them from backfill.
   Flagging is by context, not by questionnaire item: the "consistent with your earthly
@@ -911,12 +952,17 @@ were reviewed and approved in November 2026, after trial coding.
   isn't a memory event, and an ambiguous "the picture keeps filling in" isn't coded.
 - **Prior tellings:** public (talks, podcasts, books, support groups such as IANDS, media,
   other, with the words kept), private only, or this is the first telling. Plus a flag when
-  the person says their telling varies or their memory is uncertain.
+  the person says their telling varies or their memory is uncertain. Coded only from words the
+  person wrote: the shared-with-others item's Yes or No is recorded by rule and never becomes a
+  telling on its own. When the person's words contradict that box, the words win at
+  resolution, since the person may have misread the question (pass A pilot, November 2026).
 - **Reception:** others' reactions (dismissed as a hallucination, a dream, imagination, drugs
   or medication, demonic, or other; ridiculed; believed or supported; kept quiet for fear of a
   reaction; shock or disbelief; or other), each with who (a clinician, family, a friend,
-  clergy, other, or not stated) and the listener's words as reported (required for "other"); disclaimers about the
-  telling ("I know how this sounds"), with the words kept; and the experiencer's own natural
+  clergy, other, or not stated) and the listener's words as reported (required for "other").
+  Doubt or disbelief with no reason given is dismissed, as other, and a mixed reaction is one
+  entry for each part (pass A pilot, November 2026). Also disclaimers about the telling ("I
+  know how this sounds"), with the words kept; and the experiencer's own natural
   explanations, with the words and a stance (considers, endorses, or rejects), plus an earlier
   stance when the text says it changed (accepted a hallucination explanation for years,
   rejects it now).
@@ -929,7 +975,8 @@ were reviewed and approved in November 2026, after trial coding.
   stated, with the words. Lifelong experiences aren't discrete episodes, so the episode link
   can't hold them; a discrete earlier experience is still an episode.
 - **A longing to return, after the experience (sensitive):** a longing to return; suicidal
-  thoughts tied to returning; or an explicit denial of suicidal thoughts, with the words.
+  thoughts tied to returning; or an explicit denial of suicidal thoughts, with the words. Only
+  after returning to the body: wanting to stay while still in the experience isn't one.
   Explicit only, never inferred, and published like the other sensitive flags. It's an
   aftereffect rather than part of the encounter question, kept because it's cheap and
   rarely recorded elsewhere.
@@ -1227,6 +1274,12 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   codebook. A skill (Claude Code's packaged instructions) was considered and set aside: it is
   loaded through Claude Code's own machinery, so the exact text the coder received couldn't be
   stated, and it would mean turning customizations back on.
+- **Copied text over the cap is cut on the retry** (pass A pilot, November 2026). A first
+  answer with a copy over six words is retried with the problem listed, as before. If the
+  retry's only remaining problem is copies over the cap, the pipeline keeps each one's first six
+  words, keeps the record, and lists the fields it cut with the account's log line, so analysis
+  can check or drop them; evidence offsets still point to the exact words. Before this, one
+  practice page in fifty was lost to the cap.
 - **Evidence is located from quotes.** The coder gives, for each piece of evidence, the place
   (narrative or questionnaire item) and a short exact quote; the pipeline finds the quote,
   stores character offsets, and drops it (Conventions, above). Text that isn't the
@@ -1400,7 +1453,9 @@ Not built yet:
 
 - The rules-only derived file's keyword counts. Everything else is built and tested
   (`derive/`): one record per account, validated against the schema, with the questionnaire
-  (form, items asked, menu answers, the religion field, the life-threat item, and lengths),
+  (form, items asked, menu answers, the religion field, the life-threat item, and lengths;
+  the life-threat item's severity is also read where a page prints a bare "Clinical death,"
+  which the pass A pilot turned up and which adds a severity to 470 parts),
   dates, NDERF's editorial layer and search-site fields, and the country and language claims in
   NDERF's tags. `npm run check:derive` builds every record and reports how well the rules read
   the pages, without showing which options were picked. The Jesus keyword counts (null in the

@@ -22,7 +22,9 @@ npm run pass -- ../nderf-raw-data --pass probe-religion --model claude-sonnet-5-
   call; a call any other model touched is rejected.
 - **Structured output.** The answer is constrained to the pass's JSON Schema, then validated
   again with zod, cross-field rules included. A failure is retried once, in a fresh call, with
-  the problems listed; a second failure is logged and nothing is kept.
+  the problems listed. If the retry's only problem is copied text over six words, each such copy
+  is cut to its first six and the record is kept, with the cut fields in the log line; any other
+  second failure is logged and nothing is kept.
 - **Everything is kept privately** (`run-pass.ts`): each attempt's full result, the coded answer,
   and a log line per account with tokens, time, and the Claude Code version, under
   `<data>/llm-raw/<runId>/`. A run is resumable, and refuses to continue if the prompt, schema,

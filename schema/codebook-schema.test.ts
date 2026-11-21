@@ -359,9 +359,16 @@ test('rejects an episode id from another account, and a part pointing at a missi
 });
 
 test('rejects a descending age range and accepts an ascending one', () => {
-  const ages = (years: unknown) => withChange(coded, (c) => { c.episodes[0].age.value.years = years; });
+  const ages = (years: unknown) => withChange(coded, (c) => { c.episodes[0].age.value.years = years; c.episodes[0].child.value = 'yes'; });
   assert.equal(CodedRecord.safeParse(ages([7, 6])).success, false);
   assert.equal(CodedRecord.safeParse(ages([6, 7])).success, true);
+});
+
+test('child must agree with a coded age', () => {
+  const aged = (years: unknown, child: string) => withChange(coded, (c) => { c.episodes[0].age.value.years = years; c.episodes[0].child.value = child; });
+  assert.equal(CodedRecord.safeParse(aged(16, 'yes')).success, false);
+  assert.equal(CodedRecord.safeParse(aged(16, 'no')).success, true);
+  assert.equal(CodedRecord.safeParse(aged([11, 14], 'unclear')).success, true);
 });
 
 test('menu options that carry no tradition must have tradition null, and the rest must not', () => {
@@ -528,7 +535,7 @@ test('ids and links across the record', () => {
 });
 
 test('the hallucination flag excludes other mental health conditions and neurodevelopmental labels', () => {
-  for (const outside of ['other_mental_health', 'autism', 'adhd', 'intellectual_disability_or_developmental_delay'] as const) {
+  for (const outside of ['other_mental_health', 'substance_use_disorder', 'sleep_apnea', 'autism', 'adhd', 'intellectual_disability_or_developmental_delay'] as const) {
     assert.equal(HALLUCINATION_FLAG_CONDITIONS.includes(outside), false);
   }
   assert.equal(HALLUCINATION_FLAG_CONDITIONS.includes('delirium'), true);

@@ -50,7 +50,7 @@ if (flag('dry-run')) process.exit(0);
 const runId = value('run-id') ?? `${pass.id}-${model}-${effort}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '')}`;
 const lines: LogLine[] = await runPass(pass, accounts, {
   dataDir, runId, model, effort, concurrency: Number(value('concurrency') ?? 1),
-  onAccount: (l) => console.log(`${l.key} ${l.ok ? 'ok' : `FAILED: ${l.problem}`} (${l.attempts} call${l.attempts > 1 ? 's' : ''}, ${l.outputTokens} tokens out, ${(l.durationMs / 1000).toFixed(0)} s)`),
+  onAccount: (l) => console.log(`${l.key} ${l.ok ? 'ok' : `FAILED: ${l.problem}`}${l.truncated.length ? `, cut to the cap: ${l.truncated.join(', ')}` : ''} (${l.attempts} call${l.attempts > 1 ? 's' : ''}, ${l.outputTokens} tokens out, ${(l.durationMs / 1000).toFixed(0)} s)`),
 });
 const sum = (k: keyof LogLine) => lines.reduce((n, l) => n + (l[k] as number), 0);
 console.log(`\nrun ${runId}: ${lines.filter((l) => l.ok).length} of ${lines.length} coded, ${sum('attempts')} calls`);

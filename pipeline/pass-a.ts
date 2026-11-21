@@ -30,7 +30,7 @@ export function preparePassA(answer: unknown, account: ScrapedAccount): { value:
 
 export const PASS_A: PassDefinition<PassA> = {
   id: 'pass-a',
-  version: '0.1-draft',
+  version: '0.2-draft',
   systemPrompt: PASS_A_PROMPT,
   schema: PassA,
   jsonSchema: wireJsonSchema(PassA),

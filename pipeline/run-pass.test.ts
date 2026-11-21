@@ -7,7 +7,8 @@ import { z } from 'zod';
 import type { ScrapedAccount } from '../derive/input.ts';
 import { claudeCodeArgs, forClaudeCode, readResult } from './claude-code.ts';
 import { neutralKey, renderForCoder, restoreAccountId } from './coder-input.ts';
-import { type PassDefinition, runPass } from './run-pass.ts';
+import { CopiedText } from '../schema/codebook-schema.ts';
+import { cutCopies, type PassDefinition, runPass } from './run-pass.ts';
 
 const FAKE = new URL('./fixtures/fake-claude.mjs', import.meta.url).pathname;
 const MODEL = 'claude-sonnet-5-5';
@@ -115,6 +116,23 @@ test('an invalid answer is retried once with its problems; a second failure keep
   const [bad] = await failed.run();
   assert.deepEqual([bad.ok, bad.attempts], [false, 2]);
   assert.ok(!existsSync(join(failed.dataDir, 'llm-raw', 'r1', `${ACCOUNT.id}.coded.json`)));
+});
+
+test('on the retry, copied text over the cap is cut and listed; other problems still fail', async () => {
+  const capped: PassDefinition<{ episodeId: string; words: string }> = {
+    ...PASS, id: 'capped', schema: z.strictObject({ episodeId: z.string(), words: CopiedText }) as never,
+  };
+  const long = 'one two three four five six seven eight';
+  const runCapped = (script: object[]) => {
+    const { dataDir } = runIn(script);
+    return runPass(capped as PassDefinition, [ACCOUNT], { dataDir, runId: 'r1', model: MODEL, effort: 'low', executable: FAKE });
+  };
+  const [line] = await runCapped([{ output: { episodeId: 'A0001#1', words: long } }]);
+  assert.deepEqual([line.ok, line.attempts, line.truncated], [true, 2, ['words']]);
+  // A first attempt is never cut: it is retried with the problem listed.
+  const [fixed] = await runCapped([{ output: { episodeId: 'A0001#1', words: long } }, { output: { episodeId: 'A0001#1', words: 'one two' } }]);
+  assert.deepEqual([fixed.ok, fixed.truncated], [true, []]);
+  assert.deepEqual(cutCopies({ a: [{ w: long }] }, [['a', 0, 'w']]), { a: [{ w: 'one two three four five six' }] });
 });
 
 test('a call another model served is not accepted', async () => {

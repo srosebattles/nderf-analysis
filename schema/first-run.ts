@@ -9,8 +9,8 @@
 
 import { z } from 'zod';
 import {
-  Background, CodedPart, ConditionStatement, CountryClaim, Episode, Evidence, LanguageClaim, NonExperiencerText, Provenance,
-  CodedRecord,
+  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, ConditionStatement, CountryClaim, Episode, Evidence,
+  LanguageClaim, NonExperiencerText, Provenance, CodedRecord,
 } from './codebook-schema.ts';
 
 const obj = z.strictObject;
@@ -27,7 +27,8 @@ const { distressingContent: _waits, ...episodeShape } = Episode.shape;
 export const FirstRunEpisode = obj({ ...episodeShape, label: Label })
   .refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
     message: 'surroundingsAlive has words and evidence exactly when true',
-  });
+  })
+  .refine(childAgreesWithAge, CHILD_AGREES_WITH_AGE);
 export type FirstRunEpisode = z.infer<typeof FirstRunEpisode>;
 
 /** Pass A: parts and episodes, eligibility, text that isn't the experiencer's, country and

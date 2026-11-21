@@ -80,6 +80,16 @@ test('pass A\'s own rules', () => {
   const tagged = { ...ANSWER, textClaims: { countries: [{ country: 'NO', raw: 'Norway', role: 'origin', source: 'nderf_tag', evidence: evidence('cold water') }], language: null } };
   assert.equal(check(tagged), false); // the coder's claims are self-reports only
   assert.equal(check({ ...ANSWER, episodes: [{ ...episode(1, 'x'), label: 'x'.repeat(81) }] }), false);
+  // Child must agree with a coded age: twelve or under yes, thirteen or over no, a range across unclear.
+  const aged = (years: number | [number, number], child: string) => ({
+    ...ANSWER,
+    episodes: [{ ...episode(1, 'x'), child: { value: child, evidence: [] }, age: { status: 'present', value: { years, basis: 'stated' }, evidence: evidence('cold water') } }],
+  });
+  assert.equal(check(aged(13, 'yes')), false);
+  assert.equal(check(aged(13, 'no')), true);
+  assert.equal(check(aged(12, 'yes')), true);
+  assert.equal(check(aged([12, 13], 'unclear')), true);
+  assert.equal(check(aged([14, 16], 'unclear')), false);
 });
 
 test('checks only the account can answer: every part once, IDs from this account', () => {

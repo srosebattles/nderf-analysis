@@ -7,8 +7,11 @@
 //                                                     and the Claude Code version that coded it
 //
 // An answer is validated with the pass's zod schema, cross-field rules included. One that fails
-// is retried once, in a fresh call, with the problems listed; one that fails again is logged and
-// nothing is kept as coded. A run is resumable: accounts already in the log are skipped.
+// is retried once, in a fresh call, with the problems listed. If the retry's only remaining
+// problem is copied text over the cap, each such copy is cut to its first MAX_COPIED_WORDS words
+// and the record is kept, with the cut fields listed in its log line (`truncated`). Otherwise a
+// second failure is logged and nothing is kept as coded. A run is resumable: accounts already in
+// the log are skipped.
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -16,6 +19,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } fr
 import { join } from 'node:path';
 import type { z } from 'zod';
 import type { ScrapedAccount } from '../derive/input.ts';
+import { MAX_COPIED_WORDS } from '../schema/codebook-schema.ts';
 import { type ClaudeCodeCall, type ClaudeCodeResult, runClaudeCode } from './claude-code.ts';
 import { neutralKey, renderForCoder, restoreAccountId } from './coder-input.ts';
 
@@ -52,6 +56,8 @@ export interface LogLine {
   /** Claude Code's version for this account's calls (`claude --version`). */
   claudeCodeVersion: string;
   ok: boolean;
+  /** Fields whose copied text the pipeline cut to the cap on the retry, as paths into the record. */
+  truncated: string[];
   attempts: number;
   problem: string | null;
   inputTokens: number;
@@ -64,6 +70,21 @@ export interface LogLine {
 }
 
 const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
+
+const OVER_CAP = `copied text must be at most ${MAX_COPIED_WORDS} words`;
+
+/** Cuts the copied text at each path to its first MAX_COPIED_WORDS words, in a copy of the value. */
+export function cutCopies(value: unknown, paths: (string | number)[][]): unknown {
+  const copy = structuredClone(value);
+  for (const path of paths) {
+    let node = copy as Record<string | number, unknown>;
+    for (const key of path.slice(0, -1)) node = node[key] as Record<string | number, unknown>;
+    const last = path[path.length - 1];
+    const text = node[last];
+    if (typeof text === 'string') node[last] = text.trim().split(/\s+/).slice(0, MAX_COPIED_WORDS).join(' ');
+  }
+  return copy;
+}
 
 /** The problems a zod error lists, one per line, for the retry. */
 const listIssues = (error: z.ZodError) => error.issues.slice(0, 40).map((i) => `- ${i.path.join('.') || '(top level)'}: ${i.message}`).join('\n');
@@ -103,6 +124,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
     let problem: string | null = null;
     let attempts = 0;
     let ok = false;
+    let truncated: string[] = [];
     while (attempts < 2 && !ok) {
       attempts += 1;
       const result: ClaudeCodeResult = await runClaudeCode({ model: opts.model, effort: opts.effort, systemPrompt: pass.systemPrompt, jsonSchema: pass.jsonSchema, userText, executable: opts.executable });
@@ -117,8 +139,17 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
       }
       const restored = restoreAccountId(result.structuredOutput, key, account.id);
       const prepared = pass.prepare ? pass.prepare(restored, account) : { value: restored, problems: [] };
-      const parsed = pass.schema.safeParse(prepared.value);
+      let parsed = pass.schema.safeParse(prepared.value);
       const issues = [...prepared.problems.map((p) => `- ${p}`), ...(parsed.success ? [] : [listIssues(parsed.error)])];
+      // On the retry, copied text over the cap is the one problem the pipeline fixes itself.
+      if (!parsed.success && attempts === 2 && prepared.problems.length === 0 && parsed.error.issues.every((i) => i.message === OVER_CAP)) {
+        const paths = parsed.error.issues.map((i) => i.path as (string | number)[]);
+        const cut = pass.schema.safeParse(cutCopies(prepared.value, paths));
+        if (cut.success) {
+          parsed = cut;
+          truncated = paths.map((p) => p.join('.'));
+        }
+      }
       if (parsed.success && prepared.problems.length === 0) {
         ok = true;
         problem = null;
@@ -128,7 +159,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
         userText = `${text}\nYour previous answer for this account broke these rules:\n${issues.join('\n')}\n\nYour previous answer:\n${JSON.stringify(result.structuredOutput)}\n\nCode the account again, following every rule.\n`;
       }
     }
-    return { accountId: account.id, key, claudeCodeVersion, ok, attempts, problem, ...total };
+    return { accountId: account.id, key, claudeCodeVersion, ok, truncated, attempts, problem, ...total };
   };
 
   const lines: LogLine[] = [];
