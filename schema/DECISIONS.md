@@ -1274,6 +1274,13 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
   split in two, with provenance as its own pass, only if its pilot shows the need, since every
   pass reads the whole account again.
+- **Passes B to D run on every page and every episode** (November 2026), including dreams,
+  induced experiences, and pages whose only experiences are excluded (premonitions, someone
+  else's death, contact from the dead). Induced experiences are the comparison group;
+  which experiences qualify is a pre-registered rule applied at analysis to pass A's codes, so
+  the coding doesn't decide it; and the pages that could be skipped are few (going by NDERF's
+  own labels, under two percent), so a second rule for which pages get the later passes isn't
+  worth it.
 - **Pass B is given the main coder's episodes** (November 2026). Both coding models code
   encounters in the episodes the main coder's pass A found, so encounter agreement isn't
   muddied by the two models splitting episodes differently, and the joined record has one
