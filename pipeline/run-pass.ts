@@ -34,6 +34,12 @@ export interface PassDefinition<T = unknown> {
   schema: z.ZodType<T>;
   /** What the model is constrained to: the schema's shape and allowed values. */
   jsonSchema: object;
+  /** What an earlier pass found, added after the account text (pass B gets pass A's episodes).
+   *  It must use the neutral key, never the account ID. */
+  context?: (account: ScrapedAccount, key: string) => string;
+  /** Where that context comes from (an earlier run's ID), recorded in the manifest so a resumed
+   *  run can't change it. */
+  inputs?: Record<string, string>;
   /** Turns the coder's answer (with the account ID put back) into the form the schema checks,
    *  such as quotes into offsets, and lists problems the coder should fix on a retry. */
   prepare?: (answer: unknown, account: ScrapedAccount) => { value: unknown; problems: string[] };
@@ -104,6 +110,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
   const manifest = {
     runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort,
     systemPromptSha256: sha256(pass.systemPrompt), jsonSchemaSha256: sha256(JSON.stringify(pass.jsonSchema)),
+    inputs: pass.inputs ?? {},
     accounts: accounts.map((a) => a.id),
   };
   const manifestFile = join(dir, 'run.json');
@@ -111,6 +118,9 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
     const held = JSON.parse(readFileSync(manifestFile, 'utf8'));
     for (const k of ['pass', 'passVersion', 'model', 'effort', 'systemPromptSha256', 'jsonSchemaSha256'] as const) {
       if (held[k] !== manifest[k]) throw new Error(`run ${opts.runId} was started with a different ${k}; start a new run`);
+    }
+    if (JSON.stringify(held.inputs ?? {}) !== JSON.stringify(manifest.inputs)) {
+      throw new Error(`run ${opts.runId} was started with different inputs; start a new run`);
     }
     const seen: string[] = held.claudeCodeVersions ?? [];
     if (!seen.includes(claudeCodeVersion)) {
@@ -123,7 +133,8 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
   const done = new Set(existsSync(logFile) ? readFileSync(logFile, 'utf8').split('\n').filter(Boolean).map((l) => (JSON.parse(l) as LogLine).accountId) : []);
 
   const codeOne = async (account: ScrapedAccount, position: number): Promise<LogLine> => {
-    const { key, text } = renderForCoder(account, neutralKey(position));
+    const { key, text: accountText } = renderForCoder(account, neutralKey(position));
+    const text = pass.context ? `${accountText}\n${pass.context(account, key)}` : accountText;
     const total = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0, thinkingTokens: 0, listCostUsd: 0, durationMs: 0 };
     let userText = text;
     let problem: string | null = null;

@@ -767,12 +767,12 @@ export const UNIDENTIFIED_CATEGORIES: readonly BeingCategory[] = [
   'unidentified_being',
 ];
 /** People known through ordinary life. They never get a canonical name, for privacy. */
-const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
+export const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
   'known_person_relationship_not_stated', 'unrecognized_human',
 ];
 /** Vital status is required for these. */
-const VITAL_CATEGORIES: readonly BeingCategory[] = [
+export const VITAL_CATEGORIES: readonly BeingCategory[] = [
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
   'known_person_relationship_not_stated', 'animal',
 ];
@@ -856,8 +856,18 @@ export const IdentityClaim = obj({
   /** Some passage states this claim less certainly (hedged, or only a resemblance). */
   hedgedElsewhere: z.boolean(),
   evidence: z.array(Evidence).min(1),
-}).superRefine((c, ctx) => {
-  const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
+}).superRefine((c, ctx) => identityClaimIssues(c).forEach((message) => ctx.addIssue({ code: 'custom', message })));
+export type IdentityClaim = z.infer<typeof IdentityClaim>;
+
+/** The cross-field rules for one identity claim, shared with the first run's version of it
+ *  (schema/first-run.ts), whose tie has no friend types: they wait for a later pass. */
+export function identityClaimIssues(c: {
+  category: BeingCategory; name: string | null; suggestedSubcategory: string | null;
+  when: IdentityTiming; how: readonly z.infer<typeof IdentityBasis>[]; certainty: Certainty; hedgedElsewhere: boolean;
+  tie: { relationship: unknown; religiousRole: unknown; friendTypes?: readonly unknown[] } | null;
+}): string[] {
+  const issues: string[] = [];
+  const issue = (message: string) => issues.push(message);
   if (c.hedgedElsewhere && c.certainty === 'resemblance') issue('nothing is weaker than a resemblance');
   if (c.how.includes('announced') && c.when !== 'during') issue("'announced' is during only");
   if ((c.how.includes('told_by_person') || c.how.includes('reading_or_media')) && c.when !== 'after') {
@@ -876,11 +886,11 @@ export const IdentityClaim = obj({
   if (t) {
     const kin = c.category === 'family' || c.category === 'relative_never_met';
     if (kin !== (t.relationship !== null)) issue('relationship is given exactly for family and relatives never met');
-    if ((c.category === 'friend_or_acquaintance') !== (t.friendTypes.length > 0)) issue('friendTypes are given exactly for friends');
+    if (t.friendTypes && (c.category === 'friend_or_acquaintance') !== (t.friendTypes.length > 0)) issue('friendTypes are given exactly for friends');
     if (c.category === 'clergy_known_personally' && t.religiousRole === null) issue('clergy known personally need a religious role');
   }
-});
-export type IdentityClaim = z.infer<typeof IdentityClaim>;
+  return issues;
+}
 
 /** For deceased people and animals. */
 export const TimeSinceDeath = z.discriminatedUnion('kind', [
@@ -1156,13 +1166,7 @@ export const Encounter = obj({
   const categories = e.identity.map((c) => c.category);
   const any = (list: readonly BeingCategory[]) => categories.some((c) => list.includes(c));
 
-  if (e.perceivedBy.includes('credited_only') && e.perceivedBy.length > 1) {
-    issue("'credited_only' means never perceived, so it stands alone", ['perceivedBy']);
-  }
-  const keys = e.identity.map((c) => `${c.category}|${c.name ?? ''}|${c.when}`);
-  if (new Set(keys).size !== keys.length) issue('one claim per referent per timing', ['identity']);
-
-  if (any(VITAL_CATEGORIES) && e.vital === null) issue('vital status is required for people known in life and animals', ['vital']);
+  for (const [message, path] of encounterCoreIssues(e)) issue(message, path);
   const livingInExperience = e.vital?.status === 'alive' && e.presence === 'part_of_experience' && !categories.includes('animal');
   if (livingInExperience !== (e.livingPersonExplanation !== null)) {
     issue('livingPersonExplanation is given exactly for a living person met as part of the experience', ['livingPersonExplanation']);
@@ -1208,6 +1212,23 @@ export const Encounter = obj({
   }
 });
 export type Encounter = z.infer<typeof Encounter>;
+
+/** The encounter's cross-field rules that touch only fields the first run codes, shared with
+ *  its first-run version (schema/first-run.ts). The rest wait with the fields they read. */
+export function encounterCoreIssues(e: {
+  perceivedBy: readonly string[]; identity: readonly { category: BeingCategory; name: string | null; when: string }[]; vital: unknown;
+}): [string, (string | number)[]][] {
+  const issues: [string, (string | number)[]][] = [];
+  if (e.perceivedBy.includes('credited_only') && e.perceivedBy.length > 1) {
+    issues.push(["'credited_only' means never perceived, so it stands alone", ['perceivedBy']]);
+  }
+  const keys = e.identity.map((c) => `${c.category}|${c.name ?? ''}|${c.when}`);
+  if (new Set(keys).size !== keys.length) issues.push(['one claim per referent per timing', ['identity']]);
+  if (e.identity.some((c) => has(VITAL_CATEGORIES, c.category)) && e.vital === null) {
+    issues.push(['vital status is required for people known in life and animals', ['vital']]);
+  }
+  return issues;
+}
 
 // ─── Area 3: doctrinal statements ───────────────────────────────────────────────────────
 

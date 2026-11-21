@@ -4,6 +4,8 @@
 //   npm run pass -- <path to nderf-raw-data> --pass probe-religion --model claude-sonnet-5-5 \
 //     --effort low --practice [--limit 5] [--run-id <id>] [--concurrency 1] [--dry-run]
 //
+// Pass B also takes --episodes-from <pass A run ID>: the run whose episodes it codes encounters in.
+//
 // --dry-run prints what would be sent (sizes only, never account text) and calls nothing.
 // Only the practice pages can be run before the freeze.
 
@@ -11,23 +13,32 @@ import { readFileSync } from 'node:fs';
 import { readAccounts } from '../derive/load.ts';
 import { neutralKey, renderForCoder } from '../pipeline/coder-input.ts';
 import { PASS_A } from '../pipeline/pass-a.ts';
+import { passB } from '../pipeline/pass-b.ts';
 import { PROBE_RELIGION } from '../pipeline/probe-pass.ts';
 import { type LogLine, type PassDefinition, RunStopped, runPass } from '../pipeline/run-pass.ts';
-
-const PASSES: Record<string, PassDefinition> = {
-  [PASS_A.id]: PASS_A as PassDefinition,
-  [PROBE_RELIGION.id]: PROBE_RELIGION as PassDefinition,
-};
 
 const argv = process.argv.slice(2);
 const flag = (name: string) => argv.includes(`--${name}`);
 const value = (name: string) => (argv.includes(`--${name}`) ? argv[argv.indexOf(`--${name}`) + 1] : undefined);
 const dataDir = argv[0];
-const pass = PASSES[value('pass') ?? ''];
+
+const PASSES: Record<string, () => PassDefinition> = {
+  [PASS_A.id]: () => PASS_A as PassDefinition,
+  'pass-b': () => {
+    const from = value('episodes-from');
+    if (!from) {
+      console.error('pass B needs --episodes-from <the pass A run whose episodes it codes encounters in>');
+      process.exit(1);
+    }
+    return passB(dataDir, from) as PassDefinition;
+  },
+  [PROBE_RELIGION.id]: () => PROBE_RELIGION as PassDefinition,
+};
+const pass = PASSES[value('pass') ?? '']?.();
 const model = value('model');
 const effort = (value('effort') ?? 'low') as 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 if (!dataDir || !pass || !model || !flag('practice')) {
-  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--limit n] [--run-id id] [--concurrency n] [--dry-run]`);
+  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--episodes-from <run ID>] [--limit n] [--run-id id] [--concurrency n] [--dry-run]`);
   process.exit(1);
 }
 

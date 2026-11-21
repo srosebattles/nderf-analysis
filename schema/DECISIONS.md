@@ -1260,6 +1260,15 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
   split in two, with provenance as its own pass, only if its pilot shows the need, since every
   pass reads the whole account again.
+- **Pass B is given the main coder's episodes** (November 2026). Both coding models code
+  encounters in the episodes the main coder's pass A found, so encounter agreement isn't
+  muddied by the two models splitting episodes differently, and the joined record has one
+  episode list; episode agreement is measured from the second model's own pass A on its sample.
+  Pass B can't add an episode: a being in an experience pass A left out is noted, with its
+  evidence, and the page goes on a list to rerun pass A. The first-run encounter leaves out the
+  fields that wait (passes.ts) and the cross-field rules that read them; the rules it keeps
+  (credited only stands alone, one claim per referent per timing, vital status for people known
+  in life and animals, the identity claim's own rules) are shared code with the full schema.
 - **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
   B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
   later pass knows which is which. Labels describe the account, so they stay in the private
