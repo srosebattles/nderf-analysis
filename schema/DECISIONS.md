@@ -459,6 +459,10 @@ trial-coded on that round and revised. Everything below is in the schema (v4 dra
   Protestant saint or luminary, biblical figure, a tradition's figures, non-religious
   historical figure) and to its traditions, which can be several (Jesus is also Isa; Mary,
   Maryam; Moses, Musa).
+- **A saint is anyone a Christian community holds in reverence as one,** whether or not it has
+  a formal canonization process (a figure on a Lutheran or Anglican calendar as much as one
+  canonized in Rome); the coding prompt says so, since a model's default idea of a saint is
+  Catholic (November 2026).
 - **Saints are grouped by when they lived and which split divides them, not by who canonized
   them.** An early or medieval saint is shared heritage: anyone who died before the East-West
   schism (1054), church fathers included, and Western saints who died between 1054 and the
@@ -904,7 +908,8 @@ were reviewed and approved in November 2026, after trial coding.
 
 - **Canonical names are never given to people known in ordinary life** (family, relatives
   never met, friends, clergy known personally, unrecognized humans), for privacy: their
-  relationship identifies them. Named figures and living religious leaders need one.
+  relationship identifies them. Nor are their personal names copied into any field: "my aunt,"
+  never the aunt's name, in every pass (November 2026). Named figures and living religious leaders need one.
 - **Vital status is required for people known in life and animals,** and optional for anyone
   else (a celebrity who had just died, say).
 - **A relationship's link can be "not stated"** (a plain "a relative").

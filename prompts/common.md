@@ -60,6 +60,10 @@ that carry the meaning, in order: from "a meadow brighter than any summer aftern
 remember", copy "meadow brighter than any summer afternoon". Count every word, small ones
 included. An entry with more than six words is rejected.
 
+Never copy the personal name of someone known in ordinary life (a relative, a friend, a doctor,
+the person themselves) into such a field: copy "my aunt," not "my aunt Ruth." Names of public
+figures are fine.
+
 ## Rules that hold everywhere
 
 - **Only what the text says.** Never fill in a value from the person's religion, country,

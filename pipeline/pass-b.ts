@@ -20,7 +20,7 @@ export function canonicalNameList(): string {
   return [
     '## Canonical names',
     '',
-    'When a named figure, angel, or hostile being is one of these, use the name exactly as given here.',
+    'The standard spelling of each public figure, angel, and hostile being in the table. Use it, exactly as given here, for any being on this list.',
     '',
     `Figures: ${names('figure')}.`,
     '',

@@ -59,7 +59,8 @@ met.
 - One entry for each individual given an identity or a description of its own; the rest of a
   group is one entry with a `count`. A crowd with one known person singled out is two entries.
   Physically present people of one kind (the medical staff) are one group.
-- `count` `one_or_more` is for a voice written as "he/they."
+- `count` `one_or_more`: the text can't say whether one being or several is meant, such as a
+  voice the person calls "he" in one place and "they" in another.
 - Beings the text doesn't equate are separate entries, even when they might be the same (a
   figure on a throne, a guide, and an ancestor who leads the way).
 - One entry per episode. `sameBeingAs` links an encounter to one in another episode only when
@@ -121,8 +122,13 @@ The earlier pass recorded those.
 - **Angels** are their own category, whatever the tradition: Michael is never filed under a
   church.
 - **Named figures** (saints, biblical figures, other traditions' figures, historical figures,
-  celebrities) are `named_figure`, with `name` from the canonical names below when it's the same
-  person, or otherwise the name as the text gives it, in standard English form. A name that could
+  celebrities) are `named_figure`. Their `name` is the standard spelling from the list of
+  canonical names below when it's the same person, so that every spelling and title of one
+  figure groups together; otherwise it's the name as the text gives it, in standard English
+  form.
+- A **saint** is anyone a Christian community holds in reverence as one, whether or not it has a
+  formal canonization process: a figure on a Lutheran or Anglican calendar is a saint as much as
+  one canonized in Rome or glorified by an Orthodox church. A name that could
   be several people (a bare "Saint Teresa" or "Francis") gets the full name only when the context
   decides it. A named angel or hostile being keeps its own category and takes its `name` from the
   same list.
@@ -136,7 +142,9 @@ The earlier pass recorded those.
   tradition.
 - **People known in ordinary life** are `family`, `relative_never_met`, `friend_or_acquaintance`,
   `clergy_known_personally`, or `known_person_relationship_not_stated` ("people I knew"). They
-  never get a `name`, and they need `vital`.
+  are recorded by their relationship, never by their personal name, so that nobody can be
+  identified: `name` stays null, and copied `words` leave the name out ("my aunt," not "my aunt
+  Ruth"). They need `vital`.
   - `tie.relationship` for family and relatives never met: the role, the sex from a gendered
     word or pronouns (never from a name), the number of "greats," the side, and the link. A child
     who died before birth or was not yet born is a child or sibling by role.
@@ -177,12 +185,15 @@ For people known in life and animals, and for anyone else whose status the text 
 
 ## Mistakes to avoid
 
-- Coding a being from the person's religion: a Christian's "God" as Jesus.
+- Coding a being as Jesus because the person is Christian. A Christian's "God" is `god`; it is
+  also `jesus` only when the text identifies the being as Jesus.
 - Timing an identity `during` because the story is told in order.
 - Taking "felt it was" for a hedge.
-- Filing an angel under a tradition, or treating "saint" as Catholic.
+- Filing an angel under a church.
+- Using a Catholic-centered idea of a saint: canonization isn't what makes one, and when a
+  saint died, not who recognized them, decides `suggestedSubcategory`.
 - Coding the question wording's examples as beings.
 - Making a simile, or a ticked box with nothing described, an encounter.
 - Merging beings the text doesn't equate, or linking episodes the text doesn't link.
-- Giving a canonical name to a person known in ordinary life.
+- Recording the personal name of anyone known in ordinary life, in `name` or in `words`.
 - Copying more than six words into a field with copied words.
