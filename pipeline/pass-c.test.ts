@@ -130,7 +130,10 @@ test("pass C's own rules", () => {
   // The full schema's own rules come along: conveyed by a being needs the being.
   assert.equal(check(answerWith({ doctrinalStatements: [doctrine({ encounterId: null })] })), false);
   assert.equal(check(answerWith({ jesusMentions: [mention(), prayer, { ...prayer }] })), false); // one entry per kind, time, and place
-  assert.equal(check(answerWith({ jesusMentions: [mention(), { ...prayer, refersTo: 'not_jesus' }] })), false); // not_jesus is for names
+  assert.equal(check(answerWith({ jesusMentions: [mention(), { ...prayer, kind: 'name_of_person_or_place' }] })), false); // a name is not_jesus
+  assert.equal(check(answerWith({ jesusMentions: [mention(), { ...prayer, refersTo: 'not_jesus' }] })), true); // so is a title tied to someone else
+  // Only what happens during an experience names an episode.
+  assert.equal(check(answerWith({ jesusMentions: [mention(), { ...prayer, episodeId: EP }] })), false);
 });
 
 test('the pass B run must have used the same pass A run, and every page needs both', () => {

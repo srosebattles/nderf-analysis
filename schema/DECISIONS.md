@@ -765,6 +765,15 @@ has an item on the age of the deceased, so all of this comes from the text.
   (an invented example: "only the gentle can stay here"). Moral and practical teachings stay
   in the encounter's actions (teaches; instructions on how to live), with their content
   uncoded.
+- **What isn't a doctrinal statement** (November 2026, while drafting pass C's prompt). That God
+  exists, or that the person believes in God, isn't one: it is on nearly every page and would
+  fill "other." Personal devotion ("he is my Savior") isn't one either, unless it states a
+  proposition on the list (that Jesus is God, that his death atoned for sin); it is a mention
+  of the person's own faith.
+- **One statement per doctrine, stance, source, being, and episode,** with every place it is
+  stated in its evidence and the strongest certainty any passage states, as for identity claims.
+  A statement names its episode only when it was conveyed, shown, or understood in one; a view
+  held before or after never does (November 2026, checked).
 - **Hell is split into three things, kept apart:** what the experience contained (distressing
   content, on the episode, below), what the experiencer calls it (below), and the doctrine
   here, for stated propositions only. When a statement says what hell is like, it records the
@@ -824,7 +833,10 @@ has an item on the age of the deceased, so all of this comes from the text.
   encounter with a Jesus claim is affirmative: a claim offered as a question ("Was it Jesus?")
   is a hedged claim, its certainty records the doubt, and otherwise the rule that every Jesus
   claim has an affirmative mention would fail. "Question" is for mentions such as asking a
-  being whether Jesus is real. All of this is checked.
+  being whether Jesus is real. A mention names its episode only when it is timed during. A
+  mention inside a doctrinal statement is of that kind only, linked to it, and isn't recorded
+  again as the person's own faith. All of this is checked, except the last, which is the
+  prompt's.
 - **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
   capitalized "Savior" mean Jesus unless the text indicates otherwise. "Lord" and "Messiah"
   alone, and a lowercase "savior" (which can mean a human rescuer), are ambiguous unless the
@@ -836,7 +848,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   ambiguous mention.
 - **The text can also tie a title to someone else.** "The Lord" tied to a named non-Christian
   figure ("Lord Krishna") or to an impersonal Absolute ("Supreme Consciousness," "the
-  Universe") refers to someone other than Jesus. Tied only to "God," it stays ambiguous,
+  Universe") refers to someone other than Jesus: it is recorded as not Jesus, under whatever
+  kind fits (a person's or place's name is always not Jesus; the schema first allowed not
+  Jesus only for names, and was corrected while drafting pass C's prompt, November 2026). Tied only to "God," it stays ambiguous,
   since a Christian's "God" can mean Christ. The experiencer's background never decides it.
 - **New Age terms built on "Christ"** ("Christ consciousness," a "Christ self") are mentions
   of kind other, ambiguous: outside the Jesus-only rungs, counted in the ones with ambiguous
@@ -1312,7 +1326,10 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   and the page goes on the list to rerun pass B or pass A, with every later pass rerun after it.
   Before an answer is accepted, the pipeline checks that statements and mentions link only to
   listed episodes and encounters, in their own episode, and that every encounter with a Jesus
-  claim has its mention, so the retry can fix them.
+  claim has its mention, so the retry can fix them. A mention that calls a listed being Jesus
+  when pass B gave it no Jesus claim is kept as coded, linked to that being; the passes then
+  disagree on the main outcome, so the first-run record flags the page and lists it for a pass
+  B rerun.
 - **The first-run record** (November 2026). The full schema's single top-level record was
   written as one model answer holding everything; under four passes no such answer exists, so
   it is replaced, for coding, by a first-run record: passes A and B joined (pass C joins later),

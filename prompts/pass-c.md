@@ -90,8 +90,9 @@ The doctrines whose names need a word:
 One statement, several places:
 - The same proposition can be two statements: conveyed by a being during the experience, and
   stated again as the person's own view afterward. Record both.
-- The same doctrine with the same stance and source, stated in several places, is one statement,
-  with every place in `evidence`. Its `certainty` is the strongest any passage states.
+- The same doctrine with the same stance, source, being, and episode, stated in several places,
+  is one statement, with every place in `evidence`. Its `certainty` is the strongest any passage
+  states.
 
 ## Every mention of Jesus
 
@@ -105,9 +106,10 @@ Which words count:
   `ambiguous`, unless the text ties them to Jesus ("the Lord Jesus"), which makes them `jesus`.
   Where capitals can't tell (the start of a sentence, a passage in capitals), context decides, or
   the mention is `ambiguous`.
-- A title the text ties to someone else is `not_jesus`: "the Lord" for a named figure of another
-  tradition ("Lord Shiva"), or for an impersonal Absolute ("the Lord, the one Mind of the
-  universe"). Tied only to God, it stays `ambiguous`, since a Christian's "God" can mean Christ.
+- A title the text ties to someone else is `not_jesus`, under whatever kind fits: "the Lord" for
+  a named figure of another tradition ("Lord Shiva"), or for an impersonal Absolute ("the Lord,
+  the one Mind of the universe"). Tied only to God, it stays `ambiguous`, since a Christian's
+  "God" can mean Christ.
 - New Age terms built on Christ ("Christ consciousness," "my Christ self") are kind `other`,
   `ambiguous`.
 - Derived words (Christian, Christmas, Christianity) don't count. "God" alone is never a mention

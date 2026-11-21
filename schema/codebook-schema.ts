@@ -1266,7 +1266,7 @@ export const DoctrinalStatement = obj({
   /** "During" follows the strict rule for identity timing; a questionnaire item's framing
    *  ("During your experience, did you gain information…") doesn't decide it. */
   source: z.enum(['conveyed_by_being', 'shown', 'understood', 'experiencer_view_before', 'experiencer_view_after', 'not_stated']),
-  episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in
+  episodeId: z.string().nullable(), // the experience it was conveyed, shown, or understood in; null otherwise
   encounterId: z.string().nullable(), // the being that conveyed it
   /** For hell_exists, as many as are stated. */
   hellQualities: z.array(z.enum([
@@ -1277,8 +1277,10 @@ export const DoctrinalStatement = obj({
 }).superRefine((d, ctx) => {
   const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
   if ((d.source === 'conveyed_by_being') !== (d.encounterId !== null)) issue('encounterId is given exactly when conveyed by a being');
-  if (['conveyed_by_being', 'shown', 'understood'].includes(d.source) && d.episodeId === null) {
-    issue('a statement conveyed, shown, or understood during an experience needs its episodeId');
+  // Only a statement from the experience names its episode (November 2026); a view held before or
+  // after never does.
+  if (['conveyed_by_being', 'shown', 'understood'].includes(d.source) !== (d.episodeId !== null)) {
+    issue('episodeId is given exactly for a statement conveyed, shown, or understood during an experience');
   }
   if (d.hellQualities.length > 0 && d.doctrine !== 'hell_exists') issue('hellQualities are for hell_exists only');
 });
@@ -1410,7 +1412,7 @@ export const placeOf = (s: SourceRef) =>
  *  Jesus unless the text indicates otherwise. "Lord" and "Messiah" alone, and a lowercase
  *  "savior," are ambiguous unless the text ties them to Jesus, or to someone else: "the Lord"
  *  tied to a named non-Christian figure ("Lord Krishna") or an impersonal Absolute ("Supreme
- *  Consciousness") is not_jesus; tied only to "God" it stays ambiguous. New Age terms built on
+ *  Consciousness") is not_jesus, under whatever kind fits; tied only to "God" it stays ambiguous. New Age terms built on
  *  Christ ("Christ consciousness") are kind other, ambiguous. Derived words (Christian) don't
  *  count. Only the experiencer's text, never question wording or the person's background. One
  *  entry per kind, time, and place (the narrative, or the questionnaire), with every passage
@@ -1425,14 +1427,16 @@ export const placeOf = (s: SourceRef) =>
  *  can mean Jesus himself. When context can't tell: 'ambiguous'. */
 export const JesusMention = obj({
   words: CopiedText,
-  refersTo: z.enum(['jesus', 'ambiguous', 'not_jesus']), // not_jesus: name_of_person_or_place only
+  /** not_jesus: always for name_of_person_or_place; otherwise only for a title the text ties to
+   *  someone else ("the Lord" for a named figure of another tradition, or an impersonal Absolute). */
+  refersTo: z.enum(['jesus', 'ambiguous', 'not_jesus']),
   kind: z.enum([
     'encounter', 'talk_with_another_being', 'prayer_or_invocation', 'own_faith_or_belief',
     'doctrinal_statement', 'someone_elses', 'idiom_or_exclamation', 'church_name', 'name_of_person_or_place', 'other',
   ]),
   encounterId: z.string().nullable(), // for 'encounter' and 'talk_with_another_being'
   doctrineId: z.string().nullable(), // for 'doctrinal_statement'
-  /** The experience a mention made during it belongs to (required for 'during'). A linked
+  /** The experience a mention made during it belongs to: given exactly for 'during'. A linked
    *  encounter or doctrinal statement must be in the same episode. */
   episodeId: z.string().nullable(),
   when: z.enum(['before', 'during', 'after', 'not_stated']),
@@ -1443,10 +1447,8 @@ export const JesusMention = obj({
   const linksEncounter = m.kind === 'encounter' || m.kind === 'talk_with_another_being';
   if (linksEncounter !== (m.encounterId !== null)) issue('encounterId is given exactly for encounter and talk_with_another_being');
   if ((m.kind === 'doctrinal_statement') !== (m.doctrineId !== null)) issue('doctrineId is given exactly for doctrinal_statement');
-  if ((m.kind === 'name_of_person_or_place') !== (m.refersTo === 'not_jesus')) {
-    issue("refersTo 'not_jesus' is exactly for name_of_person_or_place");
-  }
-  if (m.when === 'during' && m.episodeId === null) issue('a mention made during an experience needs its episodeId');
+  if (m.kind === 'name_of_person_or_place' && m.refersTo !== 'not_jesus') issue("a person's or place's name has refersTo 'not_jesus'");
+  if ((m.when === 'during') !== (m.episodeId !== null)) issue('episodeId is given exactly for a mention made during an experience');
   const places = new Set(m.evidence.map((ev) => placeOf(ev.source)));
   if (places.size > 1) issue('one entry per place: all its evidence is in the narrative, or all in the questionnaire');
 });
@@ -1477,7 +1479,13 @@ export function doctrineAndMentionIssues(
   const issues: [string, (string | number)[]][] = [];
   const doctrineIds = doctrines.map((d) => d.doctrineId);
   if (new Set(doctrineIds).size !== doctrineIds.length) issues.push(['doctrineIds must be unique', ['doctrinalStatements']]);
+  const doctrineKeys = new Set<string>();
   doctrines.forEach((d, i) => {
+    // One statement per doctrine, stance, source, being, and episode, with every place it is
+    // stated in its evidence and the strongest certainty any passage states (November 2026).
+    const key = [d.doctrine, d.stance, d.source, d.encounterId, d.episodeId].join('|');
+    if (doctrineKeys.has(key)) issues.push(['one statement per doctrine, stance, source, being, and episode: merge the evidence', ['doctrinalStatements', i]]);
+    doctrineKeys.add(key);
     if (d.episodeId !== null && !ctx.episodeExists(d.episodeId)) {
       issues.push([`doctrinal statement refers to unknown episode ${d.episodeId}`, ['doctrinalStatements', i, 'episodeId']]);
     }

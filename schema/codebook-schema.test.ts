@@ -571,7 +571,8 @@ test('a name such as Jesús is recorded as a name, never as Jesus', () => {
     episodeId: null, when: 'before', polarity: 'affirmative', evidence: [narrative(700, 714)] };
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'not_jesus' }); }), true);
   assert.equal(parses((c) => { c.jesusMentions.push({ ...name, refersTo: 'jesus' }); }), false);
-  assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), false);
+  // A title the text ties to someone else is not_jesus too, under whatever kind fits.
+  assert.equal(parses((c) => { c.jesusMentions[1].refersTo = 'not_jesus'; }), true);
 });
 
 test("a relative's report uses the kinship parts, and only a relative's", () => {
@@ -610,6 +611,12 @@ test("a mention's timing follows what it links to; a Jesus claim's mention is af
   assert.equal(parses(linked(2, 'not_stated', null)), false);
   assert.equal(parses(linked(1, 'during', EP)), true); // conveyed by a being
   assert.equal(parses(linked(1, 'after', null)), false);
+  // Only what happens during an experience names an episode.
+  assert.equal(parses((c) => { c.doctrinalStatements[1].episodeId = EP; }), false); // a view held afterward
+  assert.equal(parses((c) => { c.jesusMentions[1].episodeId = EP; }), false); // a prayer before the experience
+  // One statement per doctrine, stance, source, being, and episode.
+  assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3' }); }), false);
+  assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3', stance: 'affirms' }); }), true);
   // A Jesus claim offered as a question is a hedged claim; its mention stays affirmative.
   // (Checked apart from the rule that such an encounter needs an affirmative mention.)
   assert.equal(parses((c) => { c.jesusMentions.push({ ...c.jesusMentions[0], polarity: 'question', evidence: [narrative(400, 410)] }); }), false);
