@@ -69,6 +69,6 @@ run. Both are recorded in the run's manifest, so a resumed run can't change them
 
 ## Joining the passes
 
-`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --out <name>` joins the main coder's
-pass A and pass B runs into first-run records (`join.ts`), written privately to
+`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --pass-c <run ID> --out <name>` joins
+the main coder's pass A, B, and C runs into first-run records (`join.ts`), written privately to
 `<data>/first-run/<name>.jsonl`, with the pages to rerun in `<name>.reruns.json`.

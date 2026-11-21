@@ -1333,10 +1333,12 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   B rerun.
 - **The first-run record** (November 2026). The full schema's single top-level record was
   written as one model answer holding everything; under four passes no such answer exists, so
-  it is replaced, for coding, by a first-run record: passes A and B joined (pass C joins later),
-  laid out like the full schema, with a header giving each pass's run, model, effort, prompt
+  it is replaced, for coding, by a first-run record: passes A to C joined (pass D's area 4
+  record is kept apart, joined on account ID), laid out like the full schema, with a header giving each pass's run, model, effort, prompt
   version, Claude Code version, and any copies cut to the cap. Each pass's own rules are checked
-  again, and so are the links between passes (every encounter is in one of pass A's episodes).
+  again, and so are the links between passes: every encounter is in one of pass A's episodes;
+  statements and mentions link only to real episodes and encounters, in the same episode; and
+  every encounter with a Jesus claim has an affirmative mention of kind encounter linked to it.
   The later passes attach to it by episode or encounter ID; the rest of the full schema stays
   the specification that is frozen and pre-registered, and supplies the building blocks.
   - It is built for the main coder only. The second model's pass B codes encounters in the main
@@ -1345,8 +1347,10 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   - It is private, since it holds the episode and encounter labels; publishing coded data is a
     later export that drops them.
   - A page that lacks a pass, or fails the checks, isn't joined and goes on a rerun list. A page
-    whose pass B found an experience pass A left out is joined, flagged, and listed for a pass A
-    rerun. A pass B run whose episodes came from another pass A run is refused outright.
+    where a later pass found something an earlier pass left out (an experience, a being, or a
+    being called Jesus with no Jesus claim from pass B) is joined, flagged, and listed for a rerun
+    of the earlier pass, and every pass after it reruns too. A run whose episodes or encounters
+    came from other runs than the ones joined is refused outright.
 - **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
   B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
   later pass knows which is which. Labels describe the account, so they stay in the private
