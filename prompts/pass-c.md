@@ -33,13 +33,13 @@ A doctrinal statement is a proposition about God, salvation, or the afterlife th
 states as true or false, whether the person says it or a being conveys it to them. Telling
 events, however vivid, never makes one.
 
-- **Describing is not stating.** A dark, frightening place full of cries is a description and
+- **Describing is not stating.** A cold grey plain where unseen things moan is a description and
   isn't coded here. "It was hell," "now I know hell is real," or "hell is inward, nowhere you
   could walk to" interprets it, and is a statement about hell.
 - `life_after_death` only when the account states it as a claim ("the self outlasts its
   body"), never because the experience itself implies it.
 - That God exists, or that the person believes in God, is not a doctrinal statement.
-- Personal devotion ("I love Jesus," "he is my Savior") is not a doctrinal statement unless it
+- Personal devotion ("I sing to Jesus at dawn," "Jesus walks beside me") is not a doctrinal statement unless it
   states one of the propositions on the list (that Jesus is God, or that his death atoned for
   sin).
 - Moral and practical teachings ("be kind," "stop worrying about money") aren't doctrine, even
@@ -144,8 +144,8 @@ Which words count:
 - Any other mention made during an experience (a prayer said in it) is `during`, with its
   `episodeId`. A present-tense statement of faith is `after`. Otherwise `episodeId` is null.
 
-`polarity`: `negated` for a denial ("it wasn't Jesus," "I never believed in Jesus"); `question`
-for one asked ("is Jesus real?", asked of a being).
+`polarity`: `negated` for a denial ("that was not Jesus," "Jesus means nothing to me"); `question`
+for one asked ("did Jesus send you?", asked of a being).
 
 One entry per kind, time, referent, polarity, link, and place: the narrative, or the
 questionnaire as a whole. Put every passage with the same of these in one entry's `evidence`, so

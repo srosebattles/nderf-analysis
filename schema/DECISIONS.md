@@ -767,7 +767,7 @@ has an item on the age of the deceased, so all of this comes from the text.
   uncoded.
 - **What isn't a doctrinal statement** (November 2026, while drafting pass C's prompt). That God
   exists, or that the person believes in God, isn't one: it is on nearly every page and would
-  fill "other." Personal devotion ("he is my Savior") isn't one either, unless it states a
+  fill "other." Personal devotion ("I sing to Jesus at dawn") isn't one either, unless it states a
   proposition on the list (that Jesus is God, that his death atoned for sin); it is a mention
   of the person's own faith.
 - **One statement per doctrine, stance, source, being, and episode,** with every place it is
@@ -833,7 +833,7 @@ has an item on the age of the deceased, so all of this comes from the text.
   encounter with a Jesus claim is affirmative: a claim offered as a question ("Was it Jesus?")
   is a hedged claim, its certainty records the doubt, and otherwise the rule that every Jesus
   claim has an affirmative mention would fail. "Question" is for mentions such as asking a
-  being whether Jesus is real. A mention names its episode only when it is timed during. A
+  being whether Jesus sent it. A mention names its episode only when it is timed during. A
   mention inside a doctrinal statement is of that kind only, linked to it, and isn't recorded
   again as the person's own faith. All of this is checked, except the last, which is the
   prompt's.
