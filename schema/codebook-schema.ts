@@ -1483,8 +1483,11 @@ export function doctrineAndMentionIssues(
   doctrines.forEach((d, i) => {
     // One statement per doctrine, stance, source, being, and episode, with every place it is
     // stated in its evidence and the strongest certainty any passage states (November 2026).
+    // "Other" is exempt, since two claims under it can be unrelated (pass C pilot).
     const key = [d.doctrine, d.stance, d.source, d.encounterId, d.episodeId].join('|');
-    if (doctrineKeys.has(key)) issues.push(['one statement per doctrine, stance, source, being, and episode: merge the evidence', ['doctrinalStatements', i]]);
+    if (d.doctrine !== 'other' && doctrineKeys.has(key)) {
+      issues.push(['one statement per doctrine, stance, source, being, and episode: merge the evidence', ['doctrinalStatements', i]]);
+    }
     doctrineKeys.add(key);
     if (d.episodeId !== null && !ctx.episodeExists(d.episodeId)) {
       issues.push([`doctrinal statement refers to unknown episode ${d.episodeId}`, ['doctrinalStatements', i, 'episodeId']]);

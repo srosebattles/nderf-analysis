@@ -39,12 +39,16 @@ events, however vivid, never makes one.
 - `life_after_death` only when the account states it as a claim ("the self outlasts its
   body"), never because the experience itself implies it.
 - That God exists, or that the person believes in God, is not a doctrinal statement.
-- Personal devotion ("I sing to Jesus at dawn," "Jesus walks beside me") is not a doctrinal statement unless it
-  states one of the propositions on the list (that Jesus is God, or that his death atoned for
-  sin).
+- Personal devotion ("I sing to Jesus at dawn," "Jesus walks beside me") is not a doctrinal
+  statement unless it states one of the propositions on the list (that Jesus is God, or that his
+  death atoned for sin).
 - Moral and practical teachings ("be kind," "stop worrying about money") aren't doctrine, even
   when a being taught them. `other` is only for a claim about God, salvation, or the afterlife
   that the list misses (an invented example: "only the gentle can stay here").
+- `doctrineId` is the account key, "/d", and a number, in order: `A0042/d1`, `A0042/d2`.
+- `words`: the proposition itself, at most six words, copied in order. Propositions run long, so
+  keep only the words that carry it: from "what the orchard keeper told me, plainly, was that no
+  creature stays beyond mercy for long," copy "no creature stays beyond mercy".
 
 The doctrines whose names need a word:
 - `exclusivism`: Christ, or one faith, is the only way. `religious_pluralism`: every religion
@@ -92,7 +96,7 @@ One statement, several places:
   stated again as the person's own view afterward. Record both.
 - The same doctrine with the same stance, source, being, and episode, stated in several places,
   is one statement, with every place in `evidence`. Its `certainty` is the strongest any passage
-  states.
+  states. `other` is the exception: two different claims under `other` are two statements.
 
 ## Every mention of Jesus
 
@@ -134,6 +138,7 @@ Which words count:
 - `idiom_or_exclamation`: "Jesus!", "for Christ's sake".
 - `church_name`: a church named for him ("Christ the King Parish").
 - One passage can hold mentions of two kinds, such as a being met and a doctrine about him.
+- `words`: the name or title, with only the words needed to show what kind of mention it is.
 
 `when`:
 - A mention linked to an encounter, or to a being's talk about Jesus, is `during`, with that

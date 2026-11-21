@@ -103,7 +103,7 @@ export function passC(dataDir: string, episodesRunId: string, encountersRunId: s
   };
   return {
     id: 'pass-c',
-    version: '0.1-draft',
+    version: '0.2-draft',
     systemPrompt: PASS_C_PROMPT,
     schema: PassC,
     jsonSchema: wireJsonSchema(PassC),

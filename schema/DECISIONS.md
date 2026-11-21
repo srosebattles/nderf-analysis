@@ -772,8 +772,9 @@ has an item on the age of the deceased, so all of this comes from the text.
   of the person's own faith.
 - **One statement per doctrine, stance, source, being, and episode,** with every place it is
   stated in its evidence and the strongest certainty any passage states, as for identity claims.
-  A statement names its episode only when it was conveyed, shown, or understood in one; a view
-  held before or after never does (November 2026, checked).
+  "Other" is exempt, since two claims under it can be unrelated (a being on one practice page
+  conveyed two). A statement names its episode only when it was conveyed, shown, or understood
+  in one; a view held before or after never does (November 2026, checked).
 - **Hell is split into three things, kept apart:** what the experience contained (distressing
   content, on the episode, below), what the experiencer calls it (below), and the doctrine
   here, for stated propositions only. When a statement says what hell is like, it records the

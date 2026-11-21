@@ -617,6 +617,11 @@ test("a mention's timing follows what it links to; a Jesus claim's mention is af
   // One statement per doctrine, stance, source, being, and episode.
   assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3' }); }), false);
   assert.equal(parses((c) => { c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3', stance: 'affirms' }); }), true);
+  const other = { doctrine: 'other', hellQualities: [] };
+  assert.equal(parses((c) => {
+    Object.assign(c.doctrinalStatements[1], other);
+    c.doctrinalStatements.push({ ...c.doctrinalStatements[1], doctrineId: '1example_x_nde/d3', words: 'the rivers there remember' });
+  }), true); // two claims under "other" can be unrelated
   // A Jesus claim offered as a question is a hedged claim; its mention stays affirmative.
   // (Checked apart from the rule that such an encounter needs an affirmative mention.)
   assert.equal(parses((c) => { c.jesusMentions.push({ ...c.jesusMentions[0], polarity: 'question', evidence: [narrative(400, 410)] }); }), false);
