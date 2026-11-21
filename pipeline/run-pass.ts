@@ -11,7 +11,8 @@
 // problem is copied text over the cap, each such copy is cut to its first MAX_COPIED_WORDS words
 // and the record is kept, with the cut fields listed in its log line (`truncated`). Otherwise a
 // second failure is logged and nothing is kept as coded. A run is resumable: accounts already in
-// the log are skipped.
+// the log are skipped. A call that fails outright (a usage limit, a network error) stops the run
+// without logging the account, so resuming codes it again.
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -70,6 +71,10 @@ export interface LogLine {
 }
 
 const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
+
+/** The run stopped because a call failed outright; resuming picks up where it stopped. */
+export class RunStopped extends Error {}
+const CALL_FAILED = /^(call failed|no output|exited with an error|output is not JSON)/;
 
 const OVER_CAP = `copied text must be at most ${MAX_COPIED_WORDS} words`;
 
@@ -134,7 +139,10 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
       total.durationMs += result.durationMs;
       if (!result.ok) {
         problem = result.problem;
-        // A call the wrong model served, or that failed outright, isn't the coder's mistake to fix.
+        // A call that failed outright (often a usage limit) stops the run, leaving this account
+        // unlogged so a resumed run codes it. A call the wrong model served isn't the coder's
+        // mistake to fix either; it is logged as a failure.
+        if (CALL_FAILED.test(problem ?? '')) throw new RunStopped(`${account.id}: ${problem}`);
         continue;
       }
       const restored = restoreAccountId(result.structuredOutput, key, account.id);
@@ -164,14 +172,23 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
 
   const lines: LogLine[] = [];
   const queue = accounts.map((a, i) => [a, i] as const).filter(([a]) => !done.has(a.id));
+  let stopped: RunStopped | null = null;
   const worker = async () => {
-    for (let next = queue.shift(); next; next = queue.shift()) {
-      const line = await codeOne(...next);
+    for (let next = stopped ? undefined : queue.shift(); next; next = stopped ? undefined : queue.shift()) {
+      let line: LogLine;
+      try {
+        line = await codeOne(...next);
+      } catch (e) {
+        if (!(e instanceof RunStopped)) throw e;
+        stopped = e;
+        return;
+      }
       appendFileSync(logFile, JSON.stringify(line) + '\n');
       lines.push(line);
       opts.onAccount?.(line);
     }
   };
   await Promise.all(Array.from({ length: Math.max(1, opts.concurrency ?? 1) }, worker));
+  if (stopped) throw Object.assign(stopped, { lines });
   return lines;
 }

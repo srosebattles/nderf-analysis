@@ -8,7 +8,7 @@ import type { ScrapedAccount } from '../derive/input.ts';
 import { claudeCodeArgs, forClaudeCode, readResult } from './claude-code.ts';
 import { neutralKey, renderForCoder, restoreAccountId } from './coder-input.ts';
 import { CopiedText } from '../schema/codebook-schema.ts';
-import { cutCopies, type PassDefinition, runPass } from './run-pass.ts';
+import { cutCopies, type LogLine, type PassDefinition, RunStopped, runPass } from './run-pass.ts';
 
 const FAKE = new URL('./fixtures/fake-claude.mjs', import.meta.url).pathname;
 const MODEL = 'claude-sonnet-5-5';
@@ -133,6 +133,14 @@ test('on the retry, copied text over the cap is cut and listed; other problems s
   const [fixed] = await runCapped([{ output: { episodeId: 'A0001#1', words: long } }, { output: { episodeId: 'A0001#1', words: 'one two' } }]);
   assert.deepEqual([fixed.ok, fixed.truncated], [true, []]);
   assert.deepEqual(cutCopies({ a: [{ w: long }] }, [['a', 0, 'w']]), { a: [{ w: 'one two three four five six' }] });
+});
+
+test('a call that fails outright stops the run, and resuming codes that account', async () => {
+  const { run } = runIn([{ is_error: true, subtype: 'error_during_execution' }]);
+  await assert.rejects(run(), (e: Error & { lines: LogLine[] }) => e instanceof RunStopped && e.lines.length === 0);
+  process.env.FAKE_CLAUDE_SCRIPT = JSON.stringify([{ output: { episodeId: 'A0001#1', count: 1 } }]);
+  const [line] = await run();
+  assert.equal(line.ok, true);
 });
 
 test('a call another model served is not accepted', async () => {

@@ -27,7 +27,8 @@ npm run pass -- ../nderf-raw-data --pass probe-religion --model claude-sonnet-5-
   second failure is logged and nothing is kept.
 - **Everything is kept privately** (`run-pass.ts`): each attempt's full result, the coded answer,
   and a log line per account with tokens, time, and the Claude Code version, under
-  `<data>/llm-raw/<runId>/`. A run is resumable, and refuses to continue if the prompt, schema,
+  `<data>/llm-raw/<runId>/`. A call that fails outright (a usage limit, a network error) stops the
+  run without logging that account, so the same command resumes it. A run is resumable, and refuses to continue if the prompt, schema,
   model, or effort changed. Claude Code's version isn't controlled, since a cloud session gets
   whatever its image has: each account records the version that coded it, and the run's
   manifest lists every version it has seen.

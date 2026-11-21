@@ -12,7 +12,7 @@ import { readAccounts } from '../derive/load.ts';
 import { neutralKey, renderForCoder } from '../pipeline/coder-input.ts';
 import { PASS_A } from '../pipeline/pass-a.ts';
 import { PROBE_RELIGION } from '../pipeline/probe-pass.ts';
-import { type LogLine, type PassDefinition, runPass } from '../pipeline/run-pass.ts';
+import { type LogLine, type PassDefinition, RunStopped, runPass } from '../pipeline/run-pass.ts';
 
 const PASSES: Record<string, PassDefinition> = {
   [PASS_A.id]: PASS_A as PassDefinition,
@@ -48,10 +48,19 @@ console.log(`coder input per page: median ${(sizes[Math.floor(sizes.length / 2)]
 if (flag('dry-run')) process.exit(0);
 
 const runId = value('run-id') ?? `${pass.id}-${model}-${effort}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, '')}`;
-const lines: LogLine[] = await runPass(pass, accounts, {
-  dataDir, runId, model, effort, concurrency: Number(value('concurrency') ?? 1),
-  onAccount: (l) => console.log(`${l.key} ${l.ok ? 'ok' : `FAILED: ${l.problem}`}${l.truncated.length ? `, cut to the cap: ${l.truncated.join(', ')}` : ''} (${l.attempts} call${l.attempts > 1 ? 's' : ''}, ${l.outputTokens} tokens out, ${(l.durationMs / 1000).toFixed(0)} s)`),
-});
+let lines: LogLine[];
+try {
+  lines = await runPass(pass, accounts, {
+    dataDir, runId, model, effort, concurrency: Number(value('concurrency') ?? 1),
+    onAccount: (l) => console.log(`${l.key} ${l.ok ? 'ok' : `FAILED: ${l.problem}`}${l.truncated.length ? `, cut to the cap: ${l.truncated.join(', ')}` : ''} (${l.attempts} call${l.attempts > 1 ? 's' : ''}, ${l.outputTokens} tokens out, ${(l.durationMs / 1000).toFixed(0)} s)`),
+  });
+} catch (e) {
+  if (!(e instanceof RunStopped)) throw e;
+  // Usually a usage limit. The account it stopped on isn't logged, so the same command resumes.
+  console.log(`\nSTOPPED: ${e.message}\nRun the same command with --run-id ${runId} to resume.`);
+  lines = (e as RunStopped & { lines: LogLine[] }).lines;
+  process.exitCode = 2;
+}
 const sum = (k: keyof LogLine) => lines.reduce((n, l) => n + (l[k] as number), 0);
 console.log(`\nrun ${runId}: ${lines.filter((l) => l.ok).length} of ${lines.length} coded, ${sum('attempts')} calls`);
 console.log(`tokens: ${sum('inputTokens')} in, ${sum('cacheReadTokens')} cache read, ${sum('cacheWriteTokens')} cache write, ${sum('outputTokens')} out (${sum('thinkingTokens')} thinking)`);
