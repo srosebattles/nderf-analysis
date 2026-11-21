@@ -46,8 +46,8 @@ Most entries carry `evidence`: a list with one item for each place the thing is 
   it: `{ "kind": "narrative", "part": 0 }` or `{ "kind": "qa", "part": 0, "qaIndex": 12 }`.
 - `quote` is a passage copied exactly from that place, enough to find it: three to fifteen
   words, in order, spelled exactly as written, including the person's mistakes. Never
-  paraphrase, shorten with "...", or join two passages. A quote missing from its place is
-  rejected.
+  paraphrase, shorten with "...", or join two passages. In a questionnaire item, quote the
+  answer (after `A:`), never the question. A quote missing from its place is rejected.
 - `basis` is `explicit` when the text says it, or `inferred` when it follows from the text
   without being said (a computed age, for example).
 
@@ -56,7 +56,13 @@ Most entries carry `evidence`: a list with one item for each place the thing is 
 Fields such as `words`, `term`, `raw`, and `title` hold words copied from the account. They are
 limited to six words. The limit is a ceiling, not a target: copy the term, name, or title
 itself, not the sentence around it. If the telling words run longer than six, copy the six
-that carry the meaning, in order. An entry with more than six words is rejected.
+that carry the meaning, in order: from "a meadow brighter than any summer afternoon I
+remember", copy "meadow brighter than any summer afternoon". Count every word, small ones
+included. An entry with more than six words is rejected.
+
+Never copy the personal name of someone known in ordinary life (a relative, a friend, a doctor,
+the person themselves) into such a field: copy "my aunt," not "my aunt Ruth." Names of public
+figures are fine.
 
 ## Rules that hold everywhere
 

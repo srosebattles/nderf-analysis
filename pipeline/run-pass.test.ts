@@ -7,7 +7,8 @@ import { z } from 'zod';
 import type { ScrapedAccount } from '../derive/input.ts';
 import { claudeCodeArgs, forClaudeCode, readResult } from './claude-code.ts';
 import { neutralKey, renderForCoder, restoreAccountId } from './coder-input.ts';
-import { type PassDefinition, runPass } from './run-pass.ts';
+import { CopiedText } from '../schema/codebook-schema.ts';
+import { cutCopies, type LogLine, type PassDefinition, RunStopped, runPass } from './run-pass.ts';
 
 const FAKE = new URL('./fixtures/fake-claude.mjs', import.meta.url).pathname;
 const MODEL = 'claude-sonnet-5-5';
@@ -96,11 +97,12 @@ test('a run keeps the answer, the raw result, and a log line; the account text g
   assert.match(stdin, /^ACCOUNT A0001/);
   // Resumable: a second run skips the account.
   assert.deepEqual(await run(), []);
-  assert.equal(JSON.parse(readFileSync(join(dir, 'run.json'), 'utf8')).claudeCodeVersion, '9.9.9 (Claude Code)');
-  // A different Claude Code version can't continue the run.
+  assert.equal(line.claudeCodeVersion, '9.9.9 (Claude Code)');
+  // A different Claude Code version continues the run, and the manifest records both.
   process.env.FAKE_CLAUDE_VERSION = '10.0.0';
-  await assert.rejects(run(), /different claudeCodeVersion/);
+  assert.deepEqual(await run(), []);
   delete process.env.FAKE_CLAUDE_VERSION;
+  assert.deepEqual(JSON.parse(readFileSync(join(dir, 'run.json'), 'utf8')).claudeCodeVersions, ['9.9.9 (Claude Code)', '10.0.0 (Claude Code)']);
 });
 
 test('an invalid answer is retried once with its problems; a second failure keeps nothing', async () => {
@@ -114,6 +116,31 @@ test('an invalid answer is retried once with its problems; a second failure keep
   const [bad] = await failed.run();
   assert.deepEqual([bad.ok, bad.attempts], [false, 2]);
   assert.ok(!existsSync(join(failed.dataDir, 'llm-raw', 'r1', `${ACCOUNT.id}.coded.json`)));
+});
+
+test('on the retry, copied text over the cap is cut and listed; other problems still fail', async () => {
+  const capped: PassDefinition<{ episodeId: string; words: string }> = {
+    ...PASS, id: 'capped', schema: z.strictObject({ episodeId: z.string(), words: CopiedText }) as never,
+  };
+  const long = 'one two three four five six seven eight';
+  const runCapped = (script: object[]) => {
+    const { dataDir } = runIn(script);
+    return runPass(capped as PassDefinition, [ACCOUNT], { dataDir, runId: 'r1', model: MODEL, effort: 'low', executable: FAKE });
+  };
+  const [line] = await runCapped([{ output: { episodeId: 'A0001#1', words: long } }]);
+  assert.deepEqual([line.ok, line.attempts, line.truncated], [true, 2, ['words']]);
+  // A first attempt is never cut: it is retried with the problem listed.
+  const [fixed] = await runCapped([{ output: { episodeId: 'A0001#1', words: long } }, { output: { episodeId: 'A0001#1', words: 'one two' } }]);
+  assert.deepEqual([fixed.ok, fixed.truncated], [true, []]);
+  assert.deepEqual(cutCopies({ a: [{ w: long }] }, [['a', 0, 'w']]), { a: [{ w: 'one two three four five six' }] });
+});
+
+test('a call that fails outright stops the run, and resuming codes that account', async () => {
+  const { run } = runIn([{ is_error: true, subtype: 'error_during_execution' }]);
+  await assert.rejects(run(), (e: Error & { lines: LogLine[] }) => e instanceof RunStopped && e.lines.length === 0);
+  process.env.FAKE_CLAUDE_SCRIPT = JSON.stringify([{ output: { episodeId: 'A0001#1', count: 1 } }]);
+  const [line] = await run();
+  assert.equal(line.ok, true);
 });
 
 test('a call another model served is not accepted', async () => {

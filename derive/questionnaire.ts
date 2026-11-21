@@ -194,6 +194,8 @@ const SEVERITY: Options<NonNullable<LifeThreatAnswer['severity']>> = [
   ['Illness, trauma or other condition not considered life threatening', 'not_life_threatening'],
 ];
 
+const SHORT_SEVERITY: Options<'clinical_death'> = [['Clinical death', 'clinical_death']];
+
 /** The response is the menu answer, then any causes ticked, then a severity option, each run
  *  together with whatever the person typed: "Yes Accident Direct head injury. Life threatening
  *  event, but not clinical death. <their words>". Causes are read only from the front, where the
@@ -216,6 +218,10 @@ export function parseLifeThreat(response: string): LifeThreatAnswer {
     const i = rest.indexOf(normalizeLabel(label));
     if (i >= 0 && i < at) [at, severity] = [i, value];
   }
+  // Some pages print the clinical-death option as a bare "Clinical death", with no explanation
+  // after it. Read that only where the menu puts it, right after the causes, so the same words
+  // typed in a sentence aren't taken for a ticked box.
+  if (severity === null && matchOption(rest, SHORT_SEVERITY) !== null) severity = 'clinical_death';
   return { answer: opening?.value ?? null, causes, severity };
 }
 
@@ -240,7 +246,7 @@ function gluedCause(text: string): { value: string; rest: string } | null {
 export const MENU_LABELS: readonly string[] = [
   ...[
     YES_NO_UNCERTAIN, SAW_SENSED, MYSTICAL_BEING, REALITY, MEMORY_ACCURACY, IMPORTANCE, BELIEF_IN_GOD, BELIEF_IN_AFTERLIFE,
-    CHECKLIST_UNEARTHLY_BEINGS, CHECKLIST_DECEASED_PERSONS, ORIENTATION, RELIGION_MENU, CAUSE_OPTIONS, SEVERITY,
+    CHECKLIST_UNEARTHLY_BEINGS, CHECKLIST_DECEASED_PERSONS, ORIENTATION, RELIGION_MENU, CAUSE_OPTIONS, SEVERITY, SHORT_SEVERITY,
   ].flatMap((options: Options<unknown>) => options.map(([label]) => label)),
   'Other',
   'I encountered a definite being, or a voice clearly of mystical or unearthly origin',

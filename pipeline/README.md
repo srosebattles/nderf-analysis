@@ -22,12 +22,16 @@ npm run pass -- ../nderf-raw-data --pass probe-religion --model claude-sonnet-5-
   call; a call any other model touched is rejected.
 - **Structured output.** The answer is constrained to the pass's JSON Schema, then validated
   again with zod, cross-field rules included. A failure is retried once, in a fresh call, with
-  the problems listed; a second failure is logged and nothing is kept.
+  the problems listed. If the retry's only problem is copied text over six words, each such copy
+  is cut to its first six and the record is kept, with the cut fields in the log line; any other
+  second failure is logged and nothing is kept.
 - **Everything is kept privately** (`run-pass.ts`): each attempt's full result, the coded answer,
-  and a log line per account with tokens and time, under `<data>/llm-raw/<runId>/`. A run is
-  resumable, and refuses to continue if the prompt, schema, model, effort, or Claude Code
-  version changed. (For a run of several weeks, also turn off Claude Code's automatic
-  updates.)
+  and a log line per account with tokens, time, and the Claude Code version, under
+  `<data>/llm-raw/<runId>/`. A call that fails outright (a usage limit, a network error) stops the
+  run without logging that account, so the same command resumes it. A run is resumable, and refuses to continue if the prompt, schema,
+  model, or effort changed. Claude Code's version isn't controlled, since a cloud session gets
+  whatever its image has: each account records the version that coded it, and the run's
+  manifest lists every version it has seen.
 
 ## What was checked (November 10, 2026)
 
@@ -56,3 +60,9 @@ On invented text only, so no account has been sent anywhere yet:
 - **Variation.** The same invented account, coded twice, gave different amounts of output (and
   thinking on one call, none on the other). Agreement between runs needs measuring like
   agreement between coders.
+
+## Joining the passes
+
+`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --out <name>` joins the main coder's
+pass A and pass B runs into first-run records (`join.ts`), written privately to
+`<data>/first-run/<name>.jsonl`, with the pages to rerun in `<name>.reruns.json`.

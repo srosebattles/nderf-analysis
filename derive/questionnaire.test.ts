@@ -84,6 +84,10 @@ test('the life-threat item: answer, ticked causes from the front, and the severi
   });
   // Older forms give the cause with no Yes or No.
   assert.deepEqual(parseLifeThreat('Surgery-related'), { answer: null, causes: ['Surgery-related'], severity: null });
+  // A bare "Clinical death" counts only where the menu puts it, right after the causes.
+  assert.deepEqual(parseLifeThreat('No Accident Clinical death The lake was colder than I thought.'), { answer: 'no', causes: ['Accident'], severity: 'clinical_death' });
+  assert.deepEqual(parseLifeThreat('No. Drug or medication overdose. Clinical death. A long night.'), { answer: 'no', causes: ['Drug or medication overdose'], severity: 'clinical_death' });
+  assert.deepEqual(parseLifeThreat('Yes Illness The nurse said it was nearly clinical death'), { answer: 'yes', causes: ['Illness'], severity: null });
   // A cause word inside what the person typed is not a ticked box.
   assert.deepEqual(parseLifeThreat('Yes Accidentally swallowed a marble'), { answer: 'yes', causes: [], severity: null });
   assert.deepEqual(parseLifeThreat('Yes a boating mishap, then an illness'), { answer: 'yes', causes: [], severity: null });

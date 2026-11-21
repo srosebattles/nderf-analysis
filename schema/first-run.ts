@@ -9,8 +9,9 @@
 
 import { z } from 'zod';
 import {
-  Background, CodedPart, ConditionStatement, CountryClaim, Episode, Evidence, LanguageClaim, NonExperiencerText, Provenance,
-  CodedRecord,
+  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, CodedRecord, ConditionStatement, CountryClaim, Encounter,
+  encounterCoreIssues, Episode, Evidence, IdentityClaim, identityClaimIssues, LanguageClaim, NonExperiencerText, PersonTie,
+  Provenance, Vital,
 } from './codebook-schema.ts';
 
 const obj = z.strictObject;
@@ -27,7 +28,8 @@ const { distressingContent: _waits, ...episodeShape } = Episode.shape;
 export const FirstRunEpisode = obj({ ...episodeShape, label: Label })
   .refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
     message: 'surroundingsAlive has words and evidence exactly when true',
-  });
+  })
+  .refine(childAgreesWithAge, CHILD_AGREES_WITH_AGE);
 export type FirstRunEpisode = z.infer<typeof FirstRunEpisode>;
 
 /** Pass A: parts and episodes, eligibility, text that isn't the experiencer's, country and
@@ -67,6 +69,76 @@ export const PassA = obj({
   }
 });
 export type PassA = z.infer<typeof PassA>;
+
+// ─── Pass B: the encounters, as a census ────────────────────────────────────────────────
+
+/** A person's tie without friend types and closeness, which wait for the people pass. */
+const { friendTypes: _friendTypes, closeness: _closeness, ...tieShape } = PersonTie.shape;
+export const FirstRunPersonTie = obj(tieShape);
+
+export const FirstRunIdentityClaim = obj({ ...IdentityClaim.shape, tie: FirstRunPersonTie.nullable() })
+  .superRefine((c, ctx) => identityClaimIssues(c).forEach((message) => ctx.addIssue({ code: 'custom', message })));
+export type FirstRunIdentityClaim = z.infer<typeof FirstRunIdentityClaim>;
+
+/** Vital status and whether the experiencer knew; the rest (how a death was learned, time since
+ *  death, apparent age and condition, a death soon after, future children) waits for the people
+ *  pass. */
+const {
+  deathLearned: _dl, diedSoonAfter: _dsa, futureChild: _fc, timeSinceDeath: _tsd, apparentAge: _aa, apparentCondition: _ac,
+  ...vitalShape
+} = Vital.shape;
+export const FirstRunVital = obj(vitalShape).refine((v) => (v.status === 'died_before_birth') === (v.diedBeforeBirth !== null), {
+  message: 'diedBeforeBirth is given exactly for died_before_birth',
+});
+
+/** The fields of an encounter the first run codes (passes.ts lists the ones that wait). */
+const FIRST_RUN_ENCOUNTER_FIELDS = [
+  'encounterId', 'episodeId', 'sameBeingAs', 'perceivedBy', 'presence', 'count', 'familiarity', 'apparentSex', 'imageComparisons',
+  'evidence',
+] as const;
+const pick = <K extends keyof typeof Encounter.shape>(keys: readonly K[]) =>
+  Object.fromEntries(keys.map((k) => [k, Encounter.shape[k]])) as Pick<typeof Encounter.shape, K>;
+
+/** An encounter as the first run codes it, with a label that carries it to later passes. Only
+ *  the cross-field rules on these fields come along; the rest wait with their fields. */
+export const FirstRunEncounter = obj({
+  ...pick(FIRST_RUN_ENCOUNTER_FIELDS),
+  identity: z.array(FirstRunIdentityClaim).min(1),
+  vital: FirstRunVital.nullable(),
+  label: Label,
+}).superRefine((e, ctx) => {
+  for (const [message, path] of encounterCoreIssues(e)) ctx.addIssue({ code: 'custom', message, path });
+});
+export type FirstRunEncounter = z.infer<typeof FirstRunEncounter>;
+
+/** An experience pass B found a being in that pass A's episodes don't include. Pass B can't add
+ *  an episode (DECISIONS.md, How the coding runs); the page goes on a list to rerun pass A. */
+export const MissingEpisode = obj({ description: Label, evidence: z.array(Evidence).min(1) });
+
+/** Pass B: every being met, in pass A's episodes. Whether each encounter's episode is one of
+ *  those is checked by the pipeline, which knows the episode list (pipeline/pass-b.ts). */
+export const PassB = obj({
+  encounters: z.array(FirstRunEncounter),
+  missingEpisodes: z.array(MissingEpisode),
+}).superRefine((r, ctx) => {
+  const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
+  const ids = r.encounters.map((e) => e.encounterId);
+  if (new Set(ids).size !== ids.length) issue('encounterIds must be unique', ['encounters']);
+  r.encounters.forEach((e, i) => {
+    const prefix = `${e.episodeId}/e`;
+    if (!e.encounterId.startsWith(prefix) || !/^\d+$/.test(e.encounterId.slice(prefix.length))) {
+      issue('an encounterId is its episodeId, "/e", and a number', ['encounters', i, 'encounterId']);
+    }
+    if (e.sameBeingAs !== null) {
+      const other = r.encounters.find((o) => o.encounterId === e.sameBeingAs);
+      if (!other) issue(`sameBeingAs refers to unknown encounter ${e.sameBeingAs}`, ['encounters', i, 'sameBeingAs']);
+      else if (other.episodeId === e.episodeId) issue('sameBeingAs links encounters in different episodes', ['encounters', i, 'sameBeingAs']);
+    }
+  });
+  const labels = r.encounters.map((e) => e.label.toLowerCase());
+  if (new Set(labels).size !== labels.length) issue('each encounter needs its own label', ['encounters']);
+});
+export type PassB = z.infer<typeof PassB>;
 
 // ─── What the coder is shown ────────────────────────────────────────────────────────────
 
@@ -111,3 +183,50 @@ export function wireJsonSchema(schema: z.ZodType): Record<string, unknown> {
     },
   }) as Record<string, unknown>;
 }
+
+// ─── The first-run record: passes A and B joined ────────────────────────────────────────
+
+/** What coded one pass of a record: its run, and the settings and versions recorded there. */
+export const PassCoding = obj({
+  runId: z.string().min(1),
+  passVersion: z.string().min(1),
+  model: z.string().min(1),
+  effort: z.string().min(1),
+  claudeCodeVersion: z.string().min(1),
+  /** Fields whose copied text the pipeline cut to the cap on the retry. */
+  truncated: z.array(z.string()),
+});
+export type PassCoding = z.infer<typeof PassCoding>;
+
+const passAFields = PassA.shape;
+const passBFields = PassB.shape;
+
+/** One page's first run, for the main coder only (the second model is compared pass by pass):
+ *  pass A's fields and pass B's, side by side as in the full schema, with a header saying what
+ *  coded each pass. Private, since it holds the episode and encounter labels. Pass C joins it
+ *  later. Each pass's own rules are checked again, and so are the links between them. */
+export const FirstRunRecord = obj({
+  accountId: z.string().min(1),
+  coding: obj({ passA: PassCoding, passB: PassCoding }),
+  ...passAFields,
+  ...passBFields,
+  /** Pass B found a being in an experience pass A left out: the page is rerun through pass A. */
+  needsPassARerun: z.boolean(),
+}).superRefine((r, ctx) => {
+  const forward = (pass: string, result: z.ZodSafeParseResult<unknown>) => {
+    if (!result.success) for (const i of result.error.issues) ctx.addIssue({ code: 'custom', message: `${pass}: ${i.message}`, path: i.path });
+  };
+  const pick = (shape: Record<string, unknown>) => Object.fromEntries(Object.keys(shape).map((k) => [k, (r as Record<string, unknown>)[k]]));
+  forward('pass A', PassA.safeParse(pick(passAFields)));
+  forward('pass B', PassB.safeParse(pick(passBFields)));
+  const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
+  const episodes = new Set(r.episodes.map((e) => e.episodeId));
+  r.episodes.forEach((e, i) => {
+    if (!e.episodeId.startsWith(`${r.accountId}#`)) issue(`episode ${e.episodeId} isn't this account's`, ['episodes', i, 'episodeId']);
+  });
+  r.encounters.forEach((e, i) => {
+    if (!episodes.has(e.episodeId)) issue(`encounter ${e.encounterId} is in episode ${e.episodeId}, which pass A doesn't have`, ['encounters', i, 'episodeId']);
+  });
+  if (r.needsPassARerun !== (r.missingEpisodes.length > 0)) issue('needsPassARerun is true exactly when pass B found a missing episode', ['needsPassARerun']);
+});
+export type FirstRunRecord = z.infer<typeof FirstRunRecord>;

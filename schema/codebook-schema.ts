@@ -555,6 +555,19 @@ export const ExperiencerLabel = obj({
 });
 export type ExperiencerLabel = z.infer<typeof ExperiencerLabel>;
 
+/** What `child` must be when an age is coded: 'yes' if every value is twelve or under, 'no' if
+ *  every value is thirteen or over, 'unclear' for a range across the line. */
+export function childFromAge(years: Age['years']): 'yes' | 'no' | 'unclear' {
+  const [low, high] = typeof years === 'number' ? [years, years] : years;
+  return high < 13 ? 'yes' : low >= 13 ? 'no' : 'unclear';
+}
+export const childAgreesWithAge = (e: { child: { value: string }; age: Finding<Age> }) =>
+  e.age.status !== 'present' || e.child.value === childFromAge(e.age.value.years);
+export const CHILD_AGREES_WITH_AGE = {
+  message: 'child must agree with the age: twelve or under is yes, thirteen or over is no, a range across the line is unclear',
+  path: ['child'],
+};
+
 /** Every experience of the experiencer's own on the page is an episode, including later OBEs,
  *  dreams, and visions mentioned in passing; whether it counts is decided by rule at analysis
  *  time (ResolvedEpisode). Other people's experiences described on the page are never episodes. */
@@ -569,9 +582,10 @@ export const Episode = obj({
   /** Only when the text dates this episode and Background can't (no date, or several episodes). */
   textDate: finding(ParsedDate),
   /** Twelve or younger at the experience; teens are 'no'. A number decides, stated or computed
-   *  from dates (a birth year, or "a month before I turned nine"). Without one: "little",
-   *  elementary school or younger, or a plain "as a child" -> 'yes'; teenager or high school ->
-   *  'no'; middle school or junior high -> 'unclear'. Religion is coded the same way at every age. */
+   *  from dates (a birth year, or "a month before I turned nine"), and must agree with `age`.
+   *  Without one, the coder's best judgment from any cue in the text ("just a kid," school,
+   *  marriage, a job); 'unclear' only when either is plausible. Religion is coded the same way
+   *  at every age. */
   child: obj({ value: z.enum(['yes', 'no', 'unclear']), evidence: z.array(Evidence) }),
   age: finding(Age),
   circumstance: Circumstance,
@@ -590,7 +604,7 @@ export const Episode = obj({
   surroundingsAlive: obj({ value: z.boolean(), words: CopiedText.nullable(), evidence: z.array(Evidence) }),
 }).refine((e) => e.tone !== 'pleasant' || e.distressingContent.length === 0, {
   message: 'a pleasant episode has no distressing content',
-}).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
+}).refine(childAgreesWithAge, CHILD_AGREES_WITH_AGE).refine((e) => e.surroundingsAlive.value === (e.surroundingsAlive.words !== null && e.surroundingsAlive.evidence.length > 0), {
   message: 'surroundingsAlive has words and evidence exactly when true',
 });
 export type Episode = z.infer<typeof Episode>;
@@ -612,6 +626,11 @@ export const ConditionType = z.enum([
   'other_linked_to_hallucinations', // the text links the condition to hallucinations
   // Outside the flag.
   'other_mental_health', // depression, anxiety, PTSD, and the like
+  /** Alcohol or other addiction, as stated: calling oneself an alcoholic or an addict is enough. */
+  'substance_use_disorder',
+  /** Recorded even when it caused the experience: it is linked to sleep paralysis, so a
+   *  sensitivity analysis can count it in the flag. The one physical condition recorded. */
+  'sleep_apnea',
   'autism', // including Asperger's, PDD-NOS, "on the spectrum"
   'adhd', // including ADD
   'intellectual_disability_or_developmental_delay',
@@ -748,12 +767,12 @@ export const UNIDENTIFIED_CATEGORIES: readonly BeingCategory[] = [
   'unidentified_being',
 ];
 /** People known through ordinary life. They never get a canonical name, for privacy. */
-const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
+export const PRIVATE_PERSON_CATEGORIES: readonly BeingCategory[] = [
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
   'known_person_relationship_not_stated', 'unrecognized_human',
 ];
 /** Vital status is required for these. */
-const VITAL_CATEGORIES: readonly BeingCategory[] = [
+export const VITAL_CATEGORIES: readonly BeingCategory[] = [
   'family', 'relative_never_met', 'friend_or_acquaintance', 'clergy_known_personally',
   'known_person_relationship_not_stated', 'animal',
 ];
@@ -837,8 +856,18 @@ export const IdentityClaim = obj({
   /** Some passage states this claim less certainly (hedged, or only a resemblance). */
   hedgedElsewhere: z.boolean(),
   evidence: z.array(Evidence).min(1),
-}).superRefine((c, ctx) => {
-  const issue = (message: string) => ctx.addIssue({ code: 'custom', message });
+}).superRefine((c, ctx) => identityClaimIssues(c).forEach((message) => ctx.addIssue({ code: 'custom', message })));
+export type IdentityClaim = z.infer<typeof IdentityClaim>;
+
+/** The cross-field rules for one identity claim, shared with the first run's version of it
+ *  (schema/first-run.ts), whose tie has no friend types: they wait for a later pass. */
+export function identityClaimIssues(c: {
+  category: BeingCategory; name: string | null; suggestedSubcategory: string | null;
+  when: IdentityTiming; how: readonly z.infer<typeof IdentityBasis>[]; certainty: Certainty; hedgedElsewhere: boolean;
+  tie: { relationship: unknown; religiousRole: unknown; friendTypes?: readonly unknown[] } | null;
+}): string[] {
+  const issues: string[] = [];
+  const issue = (message: string) => issues.push(message);
   if (c.hedgedElsewhere && c.certainty === 'resemblance') issue('nothing is weaker than a resemblance');
   if (c.how.includes('announced') && c.when !== 'during') issue("'announced' is during only");
   if ((c.how.includes('told_by_person') || c.how.includes('reading_or_media')) && c.when !== 'after') {
@@ -857,11 +886,11 @@ export const IdentityClaim = obj({
   if (t) {
     const kin = c.category === 'family' || c.category === 'relative_never_met';
     if (kin !== (t.relationship !== null)) issue('relationship is given exactly for family and relatives never met');
-    if ((c.category === 'friend_or_acquaintance') !== (t.friendTypes.length > 0)) issue('friendTypes are given exactly for friends');
+    if (t.friendTypes && (c.category === 'friend_or_acquaintance') !== (t.friendTypes.length > 0)) issue('friendTypes are given exactly for friends');
     if (c.category === 'clergy_known_personally' && t.religiousRole === null) issue('clergy known personally need a religious role');
   }
-});
-export type IdentityClaim = z.infer<typeof IdentityClaim>;
+  return issues;
+}
 
 /** For deceased people and animals. */
 export const TimeSinceDeath = z.discriminatedUnion('kind', [
@@ -1050,8 +1079,10 @@ export const Encounter = obj({
   episodeId: z.string(),
   /** An encounter in another episode that the text says is the same being. */
   sameBeingAs: z.string().nullable(),
-  /** 'credited_only': credited with something in the experience but never perceived. */
-  perceivedBy: z.array(z.enum(['seen', 'heard', 'sensed_presence', 'touched', 'mind_to_mind', 'credited_only'])).min(1),
+  /** 'credited_only': credited with something in the experience but never perceived.
+   *  'not_stated': the text gives no way, as for a being in an experience mentioned only in
+   *  passing ("four experiences with angels"). Each of these two stands alone. */
+  perceivedBy: z.array(z.enum(['seen', 'heard', 'sensed_presence', 'touched', 'mind_to_mind', 'credited_only', 'not_stated'])).min(1),
   /** Whether a person was really there (usually seen from out of the body) or met within the experience. */
   presence: z.enum(['physically_present', 'part_of_experience', 'unclear']),
   /** An individual given an identity or description of its own, or a group. */
@@ -1137,13 +1168,7 @@ export const Encounter = obj({
   const categories = e.identity.map((c) => c.category);
   const any = (list: readonly BeingCategory[]) => categories.some((c) => list.includes(c));
 
-  if (e.perceivedBy.includes('credited_only') && e.perceivedBy.length > 1) {
-    issue("'credited_only' means never perceived, so it stands alone", ['perceivedBy']);
-  }
-  const keys = e.identity.map((c) => `${c.category}|${c.name ?? ''}|${c.when}`);
-  if (new Set(keys).size !== keys.length) issue('one claim per referent per timing', ['identity']);
-
-  if (any(VITAL_CATEGORIES) && e.vital === null) issue('vital status is required for people known in life and animals', ['vital']);
+  for (const [message, path] of encounterCoreIssues(e)) issue(message, path);
   const livingInExperience = e.vital?.status === 'alive' && e.presence === 'part_of_experience' && !categories.includes('animal');
   if (livingInExperience !== (e.livingPersonExplanation !== null)) {
     issue('livingPersonExplanation is given exactly for a living person met as part of the experience', ['livingPersonExplanation']);
@@ -1189,6 +1214,26 @@ export const Encounter = obj({
   }
 });
 export type Encounter = z.infer<typeof Encounter>;
+
+/** The encounter's cross-field rules that touch only fields the first run codes, shared with
+ *  its first-run version (schema/first-run.ts). The rest wait with the fields they read. */
+export function encounterCoreIssues(e: {
+  perceivedBy: readonly string[]; identity: readonly { category: BeingCategory; name: string | null; when: string }[]; vital: unknown;
+}): [string, (string | number)[]][] {
+  const issues: [string, (string | number)[]][] = [];
+  if (e.perceivedBy.includes('credited_only') && e.perceivedBy.length > 1) {
+    issues.push(["'credited_only' means never perceived, so it stands alone", ['perceivedBy']]);
+  }
+  if (e.perceivedBy.includes('not_stated') && e.perceivedBy.length > 1) {
+    issues.push(["'not_stated' stands alone", ['perceivedBy']]);
+  }
+  const keys = e.identity.map((c) => `${c.category}|${c.name ?? ''}|${c.when}`);
+  if (new Set(keys).size !== keys.length) issues.push(['one claim per referent per timing', ['identity']]);
+  if (e.identity.some((c) => has(VITAL_CATEGORIES, c.category)) && e.vital === null) {
+    issues.push(['vital status is required for people known in life and animals', ['vital']]);
+  }
+  return issues;
+}
 
 // ─── Area 3: doctrinal statements ───────────────────────────────────────────────────────
 
