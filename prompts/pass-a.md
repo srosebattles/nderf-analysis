@@ -164,6 +164,10 @@ hallucination.
 
 ## Provenance
 
+One answer often holds several entries of different kinds (a telling, two reactions, and a
+disclaimer); record every one, not just the first. They turn up most in the answers about
+sharing the experience, what the person knew beforehand, and whether it was real.
+
 - `exposures` are only media on near-death experiences, the afterlife, or spiritual beings. A
   religious upbringing is background, and unrelated content isn't exposure. `person` names a
   public figure only, never a private person such as a friend who told their own experience.
