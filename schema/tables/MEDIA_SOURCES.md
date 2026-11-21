@@ -30,31 +30,6 @@ its second source, and none may remain at the freeze.
 - **Names matched:** Prince of Peace; Akiane Kramarik; Akiane
 - **Note:** The boy in Heaven Is for Real picked this painting as the Jesus he saw. "Prince of Peace" is also a biblical title (Isaiah 9:6), but names are matched only in fields that name a work, never in running text.
 
-## The Urantia Book
-
-- **Kind:** book; source; presented as a true account.
-- **First widely available:** 1955-10-12, first printing (Urantia Foundation) ([Urantia Foundation](https://urantia.org/urantia-foundation); [Wikipedia](https://en.wikipedia.org/wiki/The_Urantia_Book)). Before NDERF's first posting: the weaker experienced-before-versus-after comparison only.
-- **Names matched:** The Urantia Book; Urantia
-- **Suggested by practice page, kept in the counts and flagged in the write-up:** 1alejandro_m_nde
-- **Note:** Suggested by a practice page whose vocabulary resembles the book's without naming it. That page stays in the counts, and the write-up says so.
-
-| Detail | Route | Full match | Partial match | About beings | Traceability | Confirmed by |
-|---|---|---|---|---|---|---|
-| The book's coined names | word rule: Nebadon, Salvington, Jerusem, Edentia, Uversa, Orvonton, Havona, Norlatiadek, Satania, Divinington, Caligastia, Thought Adjuster, Thought Adjusters, Mystery Monitor, Mystery Monitors, morontia, morontial, midwayer, midwayers (never: salpingion, fronton, boronia, gomontia, montia, morenita, moronic, moronity, strontia, midway, midways, mislayer, mislayers, missayer) | Any of the words. | none | no | Coined by the book; most are explained in a Urantia Book Fellowship study of its coined words. Some name beings (Thought Adjuster, midwayer, Caligastia), most name places. Left out because they are older: Melchizedek, "Ancients of Days" (Daniel), "morning stars" (Job), "dominions" (Colossians). | [Urantia Foundation, 2023](https://urantia.org/sites/default/files/study-materials/terms-and-pronunciation/Term-and-Pronunciation-List-for-The-Urantia-Book-2023-en.pdf); [Urantia Book Fellowship (archive)](https://archive.urantiabook.org/archive/studyaid/glossary_1965.htm); [Urantia Book Fellowship (archive)](https://archive.urantiabook.org/studies/Halvorson/UrantiaBookEtymology.pdf) |
-
-## Embraced by the Light
-
-- **Kind:** book; source; presented as a true account.
-- **First widely available:** 1992-12, first printing (Gold Leaf Press) ([Christian Research Institute (Equip), 2009-04-16](https://www.equip.org/?p=4162); [Dialogue: A Journal of Mormon Thought, 1996](https://dialoguejournal.com/wp-content/uploads/sbi/articles/Dialogue_V29N03_107.pdf)). Introvigne gives 1992; Abanes gives the first printing as December 1992. Before NDERF's first posting: the weaker comparison only.
-- **Names matched:** Embraced by the Light; Betty Eadie; Betty J. Eadie; Eadie
-- **Note:** Left out: a council of twelve men who send her back (the twelve apostles judging, Matthew 19:28, and for Latter-day Saints the Quorum of the Twelve); a "library of the mind" (compared by Introvigne to the Akashic records of earlier esoteric writing); pre-mortal spirits choosing their lives and the "veil of forgetfulness" (Latter-day Saint teaching).
-
-| Detail | Route | Full match | Partial match | About beings | Traceability | Confirmed by |
-|---|---|---|---|---|---|---|
-| Three monks as the experience begins | checklist | Three men who look like monks meet the person just after they leave the body. | Monk-like figures meet the person, but not three, or not at the start. | yes | Single monk-like figures appear in other accounts; three together, as the experience begins, are the book's. | [Dialogue: A Journal of Mormon Thought, 1996](https://dialoguejournal.com/wp-content/uploads/sbi/articles/Dialogue_V29N03_107.pdf); [Christian Research Institute (Equip), 2014-04-15](https://www.equip.org/articles/deceived-by-the-light/) |
-| Prayers rising from earth as light (**pending:** A second source: a page reference in the book, to be checked by hand before the pipeline runs.) | checklist | Prayers are seen rising from earth as beams or threads of light, with angels answering them. | Prayers are seen as light, without angels answering them. | yes | Prayers rising like incense are Revelation 8 and Psalm 141; as beams of light, with angels answering each one, they are the book's. | [Shortform](https://www.shortform.com/pdf/embraced-by-the-light-pdf-betty-j-eadie) |
-| A room of looms (**pending:** A second source: a page reference in the book, to be checked by hand before the pipeline runs.) | checklist | A room where spirits weave cloth or clothing on looms, for new arrivals or for others. | Spirits weaving, with no looms. | yes | No tradition found. | [Grace Evangelical Society](https://faithalone.org/?p=16324) |
-
 ## The Five People You Meet in Heaven
 
 - **Kind:** book; source; presented as fiction; invented.
@@ -133,9 +108,7 @@ ones. Their hit rate measures false positives plus coincidence.
 | A white hedgehog as a guide | A white hedgehog, not the person's own pet, leads or guides them. | A hedgehog of another color, not the person's own pet, leads or guides them. | yes | Dream-meaning and spirit-animal sites that give hedgehogs general meanings. White hedgehogs are kept as pets, hence the exclusion; animal guides in general are real, hence the hedgehog. (2026-11-09) |
 | A man who will not put down his hockey stick | A man refuses to put down his hockey stick or skates when an angel or other being tells him he must, to enter a paradise. | none | yes | Hockey-in-heaven jokes, and a satirical piece in which a famous player arrives in heaven and plays pond hockey. Refusing to let go of something in order to enter heaven is the structure of C. S. Lewis's The Great Divorce, so nothing looser than the equipment counts. (2026-11-09) |
 | Dark figures carrying empty birdcages | Shadowy or dark figures carry empty birdcages. | none | yes | Birds as souls of the dead, in widespread folklore, which is why a partial match on birds would be inflated; nothing has figures carrying empty cages. (2026-11-09) |
-| A staircase of folded paper | A staircase made of folded paper. | none | no | An origami fold called the Devil's Staircase, and stock paper-art of stairways to heaven; neither is a story or belief about an afterlife. (2026-11-09) |
 | A bicycle in the tunnel | The person rides a bicycle through the tunnel, or toward the light. | none | no | A tunnel ride likened to a fairground ride, and fiction about cycling in heaven; nothing with a bicycle in the tunnel. (2026-11-09) |
-| A giant moth of light that speaks in colors | A giant moth made of light speaks or communicates with the person through colors. | none | yes | Moth folklore (souls of the dead in Celtic tradition) and spirit-animal sites, which is why a moth alone is no partial match; nothing has one made of light that communicates in colors. (2026-11-09) |
 
 ## Ambiguous names
 

@@ -35,14 +35,13 @@ test('every date and every detail needs two independent citations', () => {
 test('a detail waiting for its second source may have one citation, and the freeze check lists it', () => {
   assert.equal(Detail.safeParse({ ...detail, citations: [cite('A')], pendingCheck: 'a page reference' }).success, true);
   assert.equal(Detail.safeParse({ ...detail, citations: [], pendingCheck: 'a page reference' }).success, false);
-  const pending = unconfirmedDetails().map((p) => p.detailId).sort();
-  assert.deepEqual(pending, ['eadie-looms', 'eadie-prayers-as-light'], 'update this list as details are confirmed; it must be empty at the freeze');
+  assert.deepEqual(unconfirmedDetails(), [], 'it must be empty at the freeze');
 });
 
 test('each route carries exactly what it needs', () => {
   assert.equal(Detail.safeParse({ ...detail, route: 'word_rule' }).success, false);
-  assert.equal(Detail.safeParse({ ...detail, route: 'word_rule', words: ['Nebadon'] }).success, true);
-  assert.equal(Detail.safeParse({ ...detail, words: ['Nebadon'] }).success, false);
+  assert.equal(Detail.safeParse({ ...detail, route: 'word_rule', words: ['Velmorrath'] }).success, true);
+  assert.equal(Detail.safeParse({ ...detail, words: ['Velmorrath'] }).success, false);
   assert.equal(Detail.safeParse({ ...detail, route: 'computed' }).success, false);
   assert.equal(Detail.safeParse({ ...detail, route: 'computed', computedRule: 'someRule' }).success, false); // not a known rule
   assert.equal(Detail.safeParse({ ...detail, route: 'computed', computedRule: 'angelGroupOf150' }).success, true);
@@ -70,14 +69,14 @@ test('names resolve by whole words; ambiguous and unlisted names resolve to no s
   assert.deepEqual(found('Akiane'), ['akiane-prince-of-peace']);
   assert.deepEqual(found('Proof of Heaven by Eben Alexander'), ['proof-of-heaven']);
   assert.deepEqual(found('the Harry Potter books'), ['deathly-hallows']);
-  assert.deepEqual(found('Embraced by the Light'), ['embraced-by-the-light']);
   assert.deepEqual(found('The Shack'), ['the-shack']);
   assert.deepEqual(found('Mitch Albom'), ['five-people-you-meet-in-heaven']);
-  assert.deepEqual(found('The Urantia Book'), ['urantia-book']);
   assert.deepEqual(found('Kevin Malarkey'), ['boy-who-came-back-from-heaven']);
   assert.deepEqual(found('Heaven Is for Real and Proof of Heaven').sort(), ['heaven-is-for-real', 'proof-of-heaven']);
   assert.ok('ambiguous' in matchSources('Heaven Is Real'));
   assert.ok('unlisted' in matchSources('Life After Life'));
+  assert.ok('unlisted' in matchSources('Embraced by the Light')); // published before NDERF: other media
+  assert.ok('unlisted' in matchSources('The Urantia Book'));
   assert.ok('unlisted' in matchSources('Heavenly Realms'));
 });
 
@@ -98,26 +97,22 @@ test('the review view (MEDIA_SOURCES.md) matches the table', async () => {
 });
 
 test('word rules: long words allow two edits, shorter words and phrases match exactly, and ordinary words never count', () => {
-  assert.equal(editDistance('salvington', 'salvingtom'), 1);
-  assert.equal(editDistance('nebadon', 'nebdaon'), 1); // swapped neighbors count once
-  const urantia = sourceById('urantia-book')!.details[0];
-  const hits = (text: string) => wordRuleHits(text, urantia);
-  assert.deepEqual(hits('a voice from Salvington'), ['salvington']);
-  assert.deepEqual(hits('a voice from Salvingtom'), ['salvingtom']); // one letter off, ten letters long
-  assert.deepEqual(hits('a voice from Salgton'), []); // three letters off
-  assert.deepEqual(hits('Havona, not Havana'), ['havona']);
-  assert.deepEqual(hits('Satan and Satania'), ['satania']);
-  assert.deepEqual(hits('my Thought Adjuster'), ['thought adjuster']);
-  assert.deepEqual(hits('my thought adjusted itself'), []);
-  assert.deepEqual(hits('midway through, the midwayers'), ['midwayers']);
-  assert.deepEqual(hits('una morenita; a morontial body'), ['morontial']); // counted once, though two rule words reach it
+  assert.equal(editDistance('velmorrath', 'velmorrah'), 1);
+  assert.equal(editDistance('quessan', 'qeussan'), 1); // swapped neighbors count once
+  // An invented rule: coined words, a phrase, and an ordinary word within reach that never counts.
+  const rule = { words: ['Velmorrath', 'Velmorraths', 'Quessan', 'Lantern Keeper', 'orvellian'], neverMatch: ['orwellian'] };
+  const hits = (text: string) => wordRuleHits(text, rule);
+  assert.deepEqual(hits('a voice from Velmorrath'), ['velmorrath']);
+  assert.deepEqual(hits('a voice from Velmorrah'), ['velmorrah']); // one letter off, ten letters long
+  assert.deepEqual(hits('a voice from Velmrth'), []); // three letters off
+  assert.deepEqual(hits('Quessan, not Quesson'), ['quessan']); // seven letters: exact only
+  assert.deepEqual(hits('my Lantern Keeper'), ['lantern keeper']);
+  assert.deepEqual(hits('my lantern kept burning'), []);
+  assert.deepEqual(hits('an orwellian, orvellian dream'), ['orvellian']);
+  assert.deepEqual(hits('the Velmorraths sang'), ['velmorraths']); // counted once, though two rule words reach it
   const earthworm = sourceById('proof-of-heaven')!.details.find((d) => d.id === 'proof-earthworm')!;
   for (const text of ["an earthworm's-eye view", 'an earthworms eye view', 'an earthworm-eye view', 'an Earthworm Eye View']) {
     assert.equal(wordRuleHits(text, earthworm).length, 1, text);
   }
   assert.deepEqual(wordRuleHits("a worm's-eye view", earthworm), []);
-});
-
-test('a practice page that suggested a source is recorded on it', () => {
-  assert.deepEqual(sourceById('urantia-book')!.suggestedByAccountIds, ['1alejandro_m_nde']);
 });

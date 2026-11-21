@@ -1048,7 +1048,10 @@ come (see Open).
   research books (Moody's *Life After Life*, Jeffrey Long's books) are recorded only as named
   exposures, never in the detail test. *Life After Life* is a composite of the generic features,
   which are excluded by definition, and Athappilly et al. (2006) already compared those
-  features before and after 1975.
+  features before and after 1975. A source must also have been first widely available while
+  NDERF was active, after its first posting in 1999 (November 21, 2026), so that every source
+  has accounts told before it, and no source needs a weaker comparison or its content checked
+  against a book printed decades earlier.
 - **Dates.** Each source has a date of first wide availability, confirmed in two independent
   sources, and dates for later boosts (a film, a bestseller-list peak). All of them are
   pre-registered. A source that first appeared on NDERF itself would be dated from that posting,
@@ -1056,8 +1059,8 @@ come (see Open).
   *Dying to Be Me*, though her account was later dropped; see below). A source's own page, if it
   is in the corpus, is left out of its own test. A practice page that suggested a source is not:
   it stays in that source's counts, the table records it, and the write-up says the source was
-  suggested by the practice set (the *Urantia Book*, by a practice page whose vocabulary
-  resembles the book's without naming it).
+  suggested by the practice set. (The one source a practice page suggested, the *Urantia Book*,
+  has since been dropped as older than NDERF.)
 - **What makes a detail idiosyncratic.** It must pass all five tests:
   - specific: a concrete thing or combination, not a category ("Jesus has a horse of many
     colors," not "animals in heaven"). Rejected from *Heaven Is for Real* as not specific
@@ -1066,9 +1069,8 @@ come (see Open).
     robe;
   - traceable to the source: not in scripture, standard liturgy or religious art, Moody,
     earlier sources on the list, or NDERF's question wording. The pearly gates (Revelation 21)
-    fail for *90 Minutes in Heaven*; "morning stars" (Job 38:7) and "dominions" (Colossians
-    1:16) fail for the *Urantia Book*, while its coined names ("Salvington," "Nebadon,"
-    "Thought Adjuster") pass;
+    fail for *90 Minutes in Heaven*; calling God "Papa" fails for *The Shack* ("Abba," Romans
+    8:15), while its coined name "Elousia" passes;
   - confirmed: found in the source itself, or described specifically by two independent
     secondary sources, with the citations kept in the table;
   - recognizable from the text: a coder can say yes or no from the words on the page, without
@@ -1080,11 +1082,12 @@ come (see Open).
   reported separately, since they bear on the main question.
 - **Sources kept and dropped** (November 2026). Dropped: *Dying to Be Me* (Moorjani) and *90
   Minutes in Heaven*, whose content is mostly ideas or scriptural images rather than concrete
-  idiosyncratic details; mentions of them still count as other NDE media. Kept despite coming
-  before NDERF's first posting: *Embraced by the Light* (Eadie), whose details include some
-  genuinely idiosyncratic images, tested only by the weaker experienced-before-versus-after
-  comparison. Also dropped: *Saved by the Light* (Brinkley), which comes before NDERF's first
-  posting and whose best confirmed detail, a "cathedral of knowledge," isn't specific enough.
+  idiosyncratic details; mentions of them still count as other NDE media. Dropped as older
+  than NDERF (November 21, 2026): *Embraced by the Light* (Eadie, 1992), first kept for some
+  genuinely idiosyncratic images, two of which still lacked a second source; and the *Urantia
+  Book* (1955), whose coined names were a word rule. *Saved by the Light* (Brinkley), also older,
+  was dropped earlier because its best confirmed detail, a "cathedral of knowledge," isn't
+  specific enough. An account that names any of them still records it, as other media.
 - **The remaining sources are drafted and approved as a batch,** outside the repository, and
   written in only after approval.
 - **Invented sources give the cleanest test.** When the content was made up, finding it later
@@ -1108,16 +1111,18 @@ come (see Open).
 - **Believed versus invented** is pre-registered as a secondary, descriptive comparison: whether
   details from accounts that were believed when read (the Malarkey book included) turn up more
   often than details from fiction. Fiction's rates may be near zero.
-- **Three groups per source:** told before (posted before the source's date, so nobody could
-  have borrowed: the baseline); experienced before but told after (only the telling could
-  borrow); and experienced after (the experience itself, or the telling, could be shaped). The
-  posting date stands in for the telling: recent pages are posted within days of submission,
-  and older pages' lag is unknown (NDERF's running numbers are on only 126 pages and don't
-  follow submission order). The experience date is the page's first qualifying episode's.
-- **Accounts posted in the first six months after a source's date are left out,** since they
-  could belong to either side, and a book takes months to reach its readers.
-- **Sources from before NDERF's first posting (1999)** have no told-before group. They get only
-  a weaker comparison of their own: experienced before versus after, measured against the decoys.
+- **Groups per source, by when the account was told and when the experience happened**
+  (revised November 21, 2026). By posting date: told before the source's date (the baseline:
+  nobody could have borrowed); told in the year after it, when a book reaches most of its
+  first readers and borrowing would first show; and told later. Accounts told after the date
+  also split by whether the experience came before it (only the telling could borrow) or after
+  it (the experience itself, or the telling, could be shaped). The same year follows each boost
+  (a film's release). The year after is a group of its own, never left out: an earlier rule
+  dropped the first six months as belonging to neither side, which would have discarded the
+  very period where borrowing would first appear. The posting date stands in for the telling:
+  recent pages are posted within days of submission, and older pages' lag is unknown (NDERF's
+  running numbers are on only 126 pages and don't follow submission order). The experience date
+  is the page's first qualifying episode's.
 - **Controls for general trends,** since questionnaire forms, who finds NDERF, and account length
   all changed over the same years:
   - wrong dates: each source's details are also tested at every other source's date, and should
@@ -1139,17 +1144,17 @@ come (see Open).
     detail needs (a group of exactly 150 angels is the count, on an encounter that has an
     angel claim; a named painting is in the image comparisons). This is blind by construction: the encounter coder fills
     those fields without knowing anyone looks for them;
-  - a fixed word rule for coined words (the *Urantia Book*'s names, "Elousia"), counted like the
+  - a fixed word rule for coined words and phrases ("Elousia," "earthworm's-eye view"), counted like the
     Jesus keywords in the derived file, and only with the pipeline after the freeze. It also
     runs over the names area 3 copies for every being. Words are compared in lowercase, with
     apostrophes removed and hyphens separating words. A single rule word of eight letters or
     more may differ by up to two letters (an insertion, a deletion, a substitution, or two
     neighbors swapped), since misspellings and translations garble them; shorter words, and
-    phrases of more than one word, must match exactly (so "thought adjusted" can't count as
-    "Thought Adjuster"). Each rule lists the ordinary words within reach that never count,
-    found once with a public English word list (dwyl/english-words): "midway" for "midwayer,"
-    and "moronic" and the Spanish "morenita" for "morontia." The rule is defined once in code
-    (`wordRuleHits`) and tested;
+    phrases of more than one word, must match exactly. Each rule lists the ordinary words within
+    reach that never count, found once with a public English word list (dwyl/english-words), as
+    was done for the *Urantia Book*'s coined names before that source was dropped; no remaining
+    rule word is long enough to need it. The rule is defined once in code (`wordRuleHits`) and
+    tested;
   - the model checklist, area 4's own pass, for the rest: details with no field and no unique
     word.
 - **The checklist.** Each item describes its detail plainly and never names its source or says
@@ -1161,9 +1166,9 @@ come (see Open).
   - its episode: the pass runs after the main passes and receives their episode list, so hits
     can be checked against the qualifying rules. The main coder never sees area 4's list;
   - evidence.
-- **Decoys:** made-up details of the same kinds and specificity, about one for every two real
-  details, each searched on the web first so that no known source has it, and pre-registered
-  with the rest. In the checklist only: that's where a coder's false positives arise, and an
+- **Decoys:** made-up details of the same kinds and specificity, each searched on the web first
+  so that no known source has it, and pre-registered with the rest: five, against sixteen
+  checklist details (planned at about one for every two; two were dropped, November 21, 2026). In the checklist only: that's where a coder's false positives arise, and an
   invented word would never turn up.
 - **A hit counts when both coding models find it,** with "either model" as a sensitivity check.
   Hits aren't reviewed by hand as part of the test.
@@ -1530,16 +1535,16 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
   disclosed in the pre-registration.
 - **Approved:** *Heaven Is for Real* (six details) and its related work, Akiane Kramarik's
   *Prince of Peace*; then, as a batch, *The Boy Who Came Back from Heaven* (two), *Proof of
-  Heaven* (three), *Embraced by the Light* (three, two of them waiting for a second source,
-  to be checked by hand against the book before the pipeline runs), the *Urantia Book* (one
-  word rule over its coined names), *The Shack* (four), *Deathly Hallows* (two), and *The Five
-  People You Meet in Heaven* (two).
+  Heaven* (three), *The Shack* (four), *Deathly Hallows* (two), and *The Five People You Meet
+  in Heaven* (two). *Embraced by the Light* (three) and the *Urantia Book* (one word rule) were
+  approved in that batch and dropped on November 21, 2026, as older than NDERF.
 - **Decoys** are in the table too (`DECOYS`), each with the nearest things a web search found
   (NDERF's own sites excluded from the search) and the date it was searched. Approved: a name
   tag in a script the person can read but doesn't know, a white hedgehog as a guide, and a man
   who won't put down his hockey stick (all three suggested by the project's author); dark
-  figures carrying empty birdcages, a staircase of folded paper, a bicycle in the tunnel, and a
-  giant moth of light that speaks in colors (for a New Age flavor). Rejected for having a source
+  figures carrying empty birdcages and a bicycle in the tunnel. A staircase of folded paper and a
+  giant moth of light that speaks in colors were approved and then dropped by the project's
+  author (November 21, 2026). Rejected for having a source
   after all: a freckled Jesus (the hadith of the Night Journey
   describes Jesus with freckles), a white salamander as a guide (the forged "Salamander
   Letter"), and light codes received as keys (New Age writing already calls light codes
@@ -1593,7 +1598,5 @@ To settle before the freeze:
   area 4's pass it codes every account, since a hit counts only when both models find it.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
-- Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
-  must be empty at the freeze).
 - Living status in the named-figures table is rechecked at the freeze, and names added after it
   are logged in an addendum.

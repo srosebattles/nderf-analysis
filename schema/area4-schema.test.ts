@@ -14,7 +14,7 @@ const record = { accountId: ID, sourceSha256: SHA, run, checklistShown: shown, h
 test('the checklist covers every checklist detail and every decoy, and only those', () => {
   const ids = CHECKLIST_ITEMS.map((i) => i.id);
   assert.ok(ids.includes('hifr-horse') && ids.includes('decoy-empty-birdcages'));
-  assert.ok(!ids.includes('urantia-coined-names')); // a word rule, never on the checklist
+  assert.ok(!ids.includes('shack-elousia')); // a word rule, never on the checklist
   assert.ok(ids.includes('five-people-blue-skin')); // on the checklist since the visual details moved to a later pass
   assert.ok(!ids.includes('malarkey-150-angels')); // computed from area 3
   assert.equal(Area4CodedRecord.safeParse(record).success, true);
@@ -57,7 +57,7 @@ test('an area 4 record is checked against the main record from the same run', ()
 
 test('the derived file counts every word-rule detail in every part, zeros included', () => {
   const counts = WORD_RULE_DETAIL_IDS.map((detailId) => ({ detailId, narrative: 0, answers: 0 }));
-  assert.ok(WORD_RULE_DETAIL_IDS.includes('urantia-coined-names'));
+  assert.ok(WORD_RULE_DETAIL_IDS.includes('shack-elousia'));
   assert.equal(Area4DerivedPart.safeParse({ index: 0, wordRules: counts }).success, true);
   assert.equal(Area4DerivedPart.safeParse({ index: 0, wordRules: counts.slice(1) }).success, false);
 });
