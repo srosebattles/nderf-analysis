@@ -12,7 +12,8 @@
     "render:tables": "node tools/render-named-figures.ts && node tools/render-visual-features.ts && node tools/render-media-sources.ts",
     "check:derive": "node tools/check-derive.ts",
     "derive": "node tools/derive.ts",
-    "pass": "node tools/run-pass.ts"
+    "pass": "node tools/run-pass.ts",
+    "join": "node tools/join.ts"
   },
   "dependencies": {
     "zod": "4.6.7"

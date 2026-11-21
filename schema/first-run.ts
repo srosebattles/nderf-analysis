@@ -183,3 +183,50 @@ export function wireJsonSchema(schema: z.ZodType): Record<string, unknown> {
     },
   }) as Record<string, unknown>;
 }
+
+// ─── The first-run record: passes A and B joined ────────────────────────────────────────
+
+/** What coded one pass of a record: its run, and the settings and versions recorded there. */
+export const PassCoding = obj({
+  runId: z.string().min(1),
+  passVersion: z.string().min(1),
+  model: z.string().min(1),
+  effort: z.string().min(1),
+  claudeCodeVersion: z.string().min(1),
+  /** Fields whose copied text the pipeline cut to the cap on the retry. */
+  truncated: z.array(z.string()),
+});
+export type PassCoding = z.infer<typeof PassCoding>;
+
+const passAFields = PassA.shape;
+const passBFields = PassB.shape;
+
+/** One page's first run, for the main coder only (the second model is compared pass by pass):
+ *  pass A's fields and pass B's, side by side as in the full schema, with a header saying what
+ *  coded each pass. Private, since it holds the episode and encounter labels. Pass C joins it
+ *  later. Each pass's own rules are checked again, and so are the links between them. */
+export const FirstRunRecord = obj({
+  accountId: z.string().min(1),
+  coding: obj({ passA: PassCoding, passB: PassCoding }),
+  ...passAFields,
+  ...passBFields,
+  /** Pass B found a being in an experience pass A left out: the page is rerun through pass A. */
+  needsPassARerun: z.boolean(),
+}).superRefine((r, ctx) => {
+  const forward = (pass: string, result: z.ZodSafeParseResult<unknown>) => {
+    if (!result.success) for (const i of result.error.issues) ctx.addIssue({ code: 'custom', message: `${pass}: ${i.message}`, path: i.path });
+  };
+  const pick = (shape: Record<string, unknown>) => Object.fromEntries(Object.keys(shape).map((k) => [k, (r as Record<string, unknown>)[k]]));
+  forward('pass A', PassA.safeParse(pick(passAFields)));
+  forward('pass B', PassB.safeParse(pick(passBFields)));
+  const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
+  const episodes = new Set(r.episodes.map((e) => e.episodeId));
+  r.episodes.forEach((e, i) => {
+    if (!e.episodeId.startsWith(`${r.accountId}#`)) issue(`episode ${e.episodeId} isn't this account's`, ['episodes', i, 'episodeId']);
+  });
+  r.encounters.forEach((e, i) => {
+    if (!episodes.has(e.episodeId)) issue(`encounter ${e.encounterId} is in episode ${e.episodeId}, which pass A doesn't have`, ['encounters', i, 'episodeId']);
+  });
+  if (r.needsPassARerun !== (r.missingEpisodes.length > 0)) issue('needsPassARerun is true exactly when pass B found a missing episode', ['needsPassARerun']);
+});
+export type FirstRunRecord = z.infer<typeof FirstRunRecord>;

@@ -60,3 +60,9 @@ On invented text only, so no account has been sent anywhere yet:
 - **Variation.** The same invented account, coded twice, gave different amounts of output (and
   thinking on one call, none on the other). Agreement between runs needs measuring like
   agreement between coders.
+
+## Joining the passes
+
+`npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --out <name>` joins the main coder's
+pass A and pass B runs into first-run records (`join.ts`), written privately to
+`<data>/first-run/<name>.jsonl`, with the pages to rerun in `<name>.reruns.json`.
