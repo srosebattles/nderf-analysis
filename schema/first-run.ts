@@ -1,6 +1,6 @@
 // The first run's passes (DECISIONS.md, "How the coding runs"): what each pass returns, checked
 // with zod, and the form the coder is shown, in which evidence is a quote rather than offsets.
-// Pass A so far; passes B to D follow the same pattern.
+// Passes A to C so far; pass D follows the same pattern.
 //
 // The first run codes only some of the main record's fields (passes.ts lists the ones that
 // wait), so some of its objects are first-run versions: the episode without its distressing
@@ -9,9 +9,9 @@
 
 import { z } from 'zod';
 import {
-  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, CodedRecord, ConditionStatement, CountryClaim, Encounter,
-  encounterCoreIssues, Episode, Evidence, IdentityClaim, identityClaimIssues, LanguageClaim, NonExperiencerText, PersonTie,
-  Provenance, Vital,
+  Background, CHILD_AGREES_WITH_AGE, childAgreesWithAge, CodedPart, CodedRecord, ConditionStatement, CountryClaim, DoctrinalStatement,
+  doctrineAndMentionIssues, Encounter, encounterCoreIssues, Episode, Evidence, IdentityClaim, identityClaimIssues, JesusMention,
+  LanguageClaim, NonExperiencerText, PersonTie, Provenance, Vital,
 } from './codebook-schema.ts';
 
 const obj = z.strictObject;
@@ -139,6 +139,40 @@ export const PassB = obj({
   if (new Set(labels).size !== labels.length) issue('each encounter needs its own label', ['encounters']);
 });
 export type PassB = z.infer<typeof PassB>;
+
+// ─── Pass C: doctrinal statements and every mention of Jesus ────────────────────────────
+
+/** A being pass C found conveying a doctrine, or called Jesus, that pass B's encounters don't
+ *  include. Pass C can't add an encounter (DECISIONS.md, How the coding runs): the statement or
+ *  mention that needs it is left out, and the page goes on a list to rerun pass B. */
+export const MissingEncounter = obj({ episodeId: z.string(), description: Label, evidence: z.array(Evidence).min(1) });
+
+/** The episode an encounter ID names: `A0042#1/e2` is in `A0042#1`. Pass C knows the encounters
+ *  only by ID; the pipeline checks the IDs against pass B's list (pipeline/pass-c.ts). */
+const episodeOfEncounterId = (id: string) => (/^[^#/]+#\d+\/e\d+$/.test(id) ? id.slice(0, id.lastIndexOf('/')) : undefined);
+
+/** Pass C: doctrinal statements and every mention of Jesus, linked to pass A's episodes and pass
+ *  B's encounters. Neither type reads a field that waits for a later pass, so both are the full
+ *  schema's. Whether the episodes and encounters linked to exist, and whether every encounter
+ *  with a Jesus claim has its mention, is checked by the pipeline, which knows the lists. */
+export const PassC = obj({
+  doctrinalStatements: z.array(DoctrinalStatement),
+  jesusMentions: z.array(JesusMention),
+  missingEncounters: z.array(MissingEncounter),
+  missingEpisodes: z.array(MissingEpisode),
+}).superRefine((r, ctx) => {
+  const issue = (message: string, path: (string | number)[]) => ctx.addIssue({ code: 'custom', message, path });
+  const ids = r.doctrinalStatements.map((d) => d.doctrineId);
+  if (ids.some((id) => !/^[^#/]+\/d\d+$/.test(id)) || new Set(ids.map((id) => id.split('/')[0])).size > 1) {
+    issue('a doctrineId is the account key, "/d", and a number', ['doctrinalStatements']);
+  }
+  const links = doctrineAndMentionIssues(r.doctrinalStatements, r.jesusMentions, {
+    encounterEpisode: episodeOfEncounterId,
+    episodeExists: () => true,
+  });
+  for (const [message, path] of links) issue(message, path);
+});
+export type PassC = z.infer<typeof PassC>;
 
 // ─── What the coder is shown ────────────────────────────────────────────────────────────
 

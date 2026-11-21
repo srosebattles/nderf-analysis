@@ -815,6 +815,16 @@ has an item on the age of the deceased, so all of this comes from the text.
   claim has an affirmative mention linked to it, which keeps the nested definitions nested. Only the experiencer's text, never
   question wording: the named-figures item itself names Jesus, so a raw search of the pages
   would match every form D–F page.
+- **A mention's timing follows what it links to** (November 2026, while building pass C). A
+  mention linked to an encounter, or to a being's talk about Jesus, is timed during and names
+  the encounter's episode, even when the being was identified later: the claim's own timing
+  records that. A mention linked to a doctrinal statement takes the statement's timing: during,
+  in its episode, for one conveyed, shown, or understood in the experience; before or after for
+  the experiencer's own view; not stated when the statement's source isn't. A mention of an
+  encounter with a Jesus claim is affirmative: a claim offered as a question ("Was it Jesus?")
+  is a hedged claim, its certainty records the doubt, and otherwise the rule that every Jesus
+  claim has an affirmative mention would fail. "Question" is for mentions such as asking a
+  being whether Jesus is real. All of this is checked.
 - **Which words count.** Jesus, Christ, Isa, Yeshua, the Son (of God), the Lamb, and a
   capitalized "Savior" mean Jesus unless the text indicates otherwise. "Lord" and "Messiah"
   alone, and a lowercase "savior" (which can mean a human rescuer), are ambiguous unless the
@@ -1290,6 +1300,19 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   fields that wait (passes.ts) and the cross-field rules that read them; the rules it keeps
   (credited only stands alone, one claim per referent per timing, vital status for people known
   in life and animals, the identity claim's own rules) are shared code with the full schema.
+- **Pass C is given the main coder's episodes and encounters** (November 2026), for both coding
+  models, for the same reason: each episode's ID and label, and each encounter's ID, label, and
+  the categories of its identity claims, so the coder can link a title such as "the Lord" to the
+  right being and knows which encounters carry a Jesus claim, each of which needs a linked
+  mention. It runs on every page, since most doctrine is the experiencer's own view and many
+  mentions involve no being. Neither doctrinal statements nor mentions read a field that waits,
+  so pass C uses the full schema's. Like pass B, it can't add to an earlier pass: a statement or
+  mention that would need a being pass B didn't record (one that conveys a doctrine) or an
+  experience pass A didn't list is left out, the being or experience is noted with its evidence,
+  and the page goes on the list to rerun pass B or pass A, with every later pass rerun after it.
+  Before an answer is accepted, the pipeline checks that statements and mentions link only to
+  listed episodes and encounters, in their own episode, and that every encounter with a Jesus
+  claim has its mention, so the retry can fix them.
 - **The first-run record** (November 2026). The full schema's single top-level record was
   written as one model answer holding everything; under four passes no such answer exists, so
   it is replaced, for coding, by a first-run record: passes A and B joined (pass C joins later),
