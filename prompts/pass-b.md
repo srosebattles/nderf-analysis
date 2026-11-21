@@ -28,8 +28,9 @@ met.
   which is also a `hedged` claim). It stands alone. A belief about something outside the
   experience is not an encounter: that God saved them in the accident, or gave them words to say
   afterward.
-- `not_stated`, also alone: the text gives no way the being was perceived, as for beings in an
-  experience mentioned only in passing ("there were angels on other occasions too").
+- `not_stated`, also alone, only for a being in an experience the text doesn't describe, one
+  mentioned only in passing ("there were angels on other occasions too"). When the text describes
+  the being or what it did, record the ways that description gives.
 - A force is a being only when the text gives it a will or a voice, or calls it a being or a
   presence. "A presence urging me to return" is an encounter; "I was pulled back" isn't. A
   hostile phenomenon with no agent (a storm of light striking from every side) isn't a being

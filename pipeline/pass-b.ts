@@ -73,7 +73,7 @@ export function passB(dataDir: string, episodesRunId: string): PassDefinition<Pa
   };
   return {
     id: 'pass-b',
-    version: '0.2-draft',
+    version: '0.3-draft',
     systemPrompt: PASS_B_PROMPT,
     schema: PassB,
     jsonSchema: wireJsonSchema(PassB),
