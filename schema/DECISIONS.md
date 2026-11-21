@@ -1028,13 +1028,20 @@ Whether idiosyncratic details from widely read accounts turn up in later ones. D
 cluster at a time, like area 3 (November 2026). Its resolver and its trial coding are still to
 come (see Open).
 
-- **One project, one freeze, one coding run, with area 4 kept apart inside it.** Area 4's
-  details must be fixed before any coded results are seen, since reading results would show
-  the very content it looks for; so it is frozen with the main codebook, and a separate later
-  project, which would also mean a second full coding run, is ruled out. Inside the project,
-  area 4 has its own schema module, its own output file (joined on account ID, so the main
-  coded record doesn't grow), its own pass in the same batch run (so the encounter coder never
-  sees the list of details, which could prime it), and its own report.
+- **A follow-on study, with its table frozen with areas 1 to 3** (decided November 21, 2026,
+  replacing "one project, one freeze, one coding run"). Area 4's details must be fixed before
+  any coded results are seen, since areas 1 to 3's codes hold some of what it looks for (a
+  group's count, named works, the words used for a being) and reading them would show whether
+  details occur. So its table (the sources and their dates, the details and decoys, and the
+  checklist wording) is frozen with the main codebook, before the full run of passes A to C.
+  Everything else waits until areas 1 to 3 have been pre-registered, run, and analyzed: area
+  4's own pre-registration, its pass's pilot and full run, its resolver, and its report. Pass D
+  was always a pass of its own, so running it later costs no second run of the main passes, and
+  the details computed from area 3's codes read the main run. Area 4 keeps its own schema
+  module, its own output file (joined on account ID, so the main coded record doesn't grow),
+  and its own pass (so the encounter coder never sees the list of details, which could prime
+  it). Pass D's schema and prompt can still be refined after the freeze, but not the table's
+  content.
 
 - **Which sources qualify.** A source must be widely read (a bestseller-list run, a film, or
   major press coverage) and must be a single account with concrete content. Compilations and
@@ -1227,8 +1234,10 @@ project wants to know; it is not all coded at once. The field list is in
   - all of provenance: exposures, prior devotion, memory history, and the experiencer's own
     view of influence, which bear on area 4; and reception and telling (prior tellings, a
     telling that varies, reactions, disclaimers, natural explanations, predispositions, and a
-    longing to return), which like doctrine needs every account whenever it is coded;
-  - area 4's pass, which has to be in this run (area 4, above).
+    longing to return), which like doctrine needs every account whenever it is coded.
+
+  Area 4's pass (D) also runs on every account, but as a follow-on study after areas 1 to 3 are
+  analyzed, with its table frozen now (area 4, above).
 - **Everything else waits for a later pass, and every later pass runs only on the accounts the
   first run flags.** An account is flagged when either coding model's first run flags it. That
   is the test for waiting: detail that can be coded on a fraction of the accounts waits, and
@@ -1265,7 +1274,7 @@ project wants to know; it is not all coded at once. The field list is in
 - **Models.** A later pass may have to use models released after the first run. Every pass
   records its own, and the write-up says which coded what.
 - **Area 4's blue-skin detail moved to the checklist.** It was computed from the blue-skin
-  visual feature, which now waits, and area 4 has to be complete in the first run. Its
+  visual feature, which now waits, and area 4 reads only the first run's codes and its own pass. Its
   checklist wording, approved before it was written into the table, leaves out deities and
   other religious figures and a color explained by the manner of death, as the computed rule
   did. The detail about a group of 150 angels stays computed: it reads the count.
@@ -1286,14 +1295,15 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   effort) is fixed for a run, and the write-up says which versions coded what, as it does for
   models. The API would be added only if the run's length, a usage cap, or a Claude Code
   change forced it.
-- **The first run is four passes,** each one fresh call per account, in this order:
+- **The first run is three passes, A to C, and area 4's pass D follows later** (area 4,
+  above), each one fresh call per account, in this order:
 
   | Pass | Codes | Given |
   |---|---|---|
   | A | parts and episodes; eligibility (reporter, circumstance, child and age, dates, tone, the experiencer's own labels, surroundings reported as alive, psychiatric medication); text that isn't the experiencer's; country and language in the text; religion and heritage statements; stated conditions; all of provenance; a longing to return | the account |
   | B | the encounters, as a census | the account and A's episodes |
   | C | doctrinal statements and every mention of Jesus | the account, A's episodes, and B's encounters |
-  | D | area 4's checklist and list of media | the account and A's episodes |
+  | D | area 4's checklist and list of media, after areas 1 to 3 are analyzed | the account and A's episodes |
 
   Mentions of Jesus are coded with doctrine, not with the encounters, because a mention can
   point to a doctrinal statement as well as to an encounter. Pass A is the largest; it would be
@@ -1332,7 +1342,7 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   disagree on the main outcome, so the first-run record flags the page and lists it for a pass
   B rerun.
 - **The first-run record** (November 2026). The full schema's single top-level record was
-  written as one model answer holding everything; under four passes no such answer exists, so
+  written as one model answer holding everything; under separate passes no such answer exists, so
   it is replaced, for coding, by a first-run record: passes A to C joined (pass D's area 4
   record is kept apart, joined on account ID), laid out like the full schema, with a header giving each pass's run, model, effort, prompt
   version, Claude Code version, and any copies cut to the cap. Each pass's own rules are checked
@@ -1557,12 +1567,13 @@ Not built yet:
   private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
   there), since the records hold per-account answers to the items about beings, which are
   close to outcomes. The full file is generated at the freeze, with the pipeline.
-- The four passes' prompts, and the pieces that come with them: first-run versions of the
+- The passes' prompts, and the pieces that come with them: first-run versions of the
   schemas, locating quotes, and joining the passes into one record (How the coding runs,
   above). Pass A first.
-- The resolvers for areas 1 and 2 (country, religion, which episodes qualify) and for area 4,
-  and area 4's trial coding.
-- The pre-registration.
+- The resolvers for areas 1 and 2 (country, religion, which episodes qualify).
+- The pre-registration of areas 1 to 3.
+- After areas 1 to 3 are analyzed: area 4's pre-registration, pass D's pilot and full run, and
+  area 4's resolver (area 4, above). Its table is frozen with areas 1 to 3.
 
 To settle before the freeze:
 
