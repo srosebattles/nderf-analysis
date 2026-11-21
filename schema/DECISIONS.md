@@ -1484,8 +1484,11 @@ To settle before the freeze:
   On fifty practice pages it fixed nearly every difference from the hand coding that the
   smaller model at low effort left, recorded about twice as many provenance entries, and used
   about as much of the plan's limits per page (the exact model and the usage are in each run's
-  private manifest and notes). The smaller model at high effort is piloted next, on the same
-  prompt, to settle the second model.
+  private manifest and notes). The second model is the smaller one, at high effort: on the
+  same fifty pages it agreed with the main coder on nearly every eligibility field, recorded
+  about two-thirds as much provenance, and used about sixty percent as much of the plan per
+  page. For passes A to C it codes a random tenth of the accounts, to measure agreement; for
+  area 4's pass it codes every account, since a hit counts only when both models find it.
 - What the holdout is used for.
 - The hypotheses, the country groups for the culture analysis, and where to pre-register.
 - Two *Embraced by the Light* details still wait for a second source (`unconfirmedDetails()`
