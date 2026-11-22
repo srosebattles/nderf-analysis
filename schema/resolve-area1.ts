@@ -62,6 +62,19 @@ export function episodeYear(e: Ep, coded: Pick<EpisodeRuleInput, 'parts'>, deriv
 /** An episode's age for ordering: a stated or computed age, the lower end of a range. */
 const ageOf = (e: Ep): number | null => (e.age.status !== 'present' ? null : typeof e.age.value.years === 'number' ? e.age.value.years : e.age.value.years[0]);
 
+/** The earliest of some episodes that the text places in time: two episodes compare by year when
+ *  both have one, else by age when both have one; when the order can't be told, the one the page
+ *  mentions first. Null for none. */
+export function earliestEpisode<E extends Ep>(candidates: readonly E[], coded: Pick<EpisodeRuleInput, 'parts'>, derived: Pick<DerivedEpisodeInput, 'parts'>): E | null {
+  const before = (a: Ep, b: Ep): boolean => {
+    const ya = episodeYear(a, coded, derived), yb = episodeYear(b, coded, derived);
+    if (ya !== null && yb !== null) return ya < yb;
+    const aa = ageOf(a), ab = ageOf(b);
+    return aa !== null && ab !== null && aa < ab;
+  };
+  return candidates.find((e) => !candidates.some((o) => o !== e && before(o, e))) ?? candidates[0] ?? null;
+}
+
 function setOf(e: Ep): Pick<ResolvedEpisode, 'firsthand' | 'analysisSet' | 'exclusionReasons'> {
   const c = e.circumstance;
   const firsthand = e.reporter.role === 'experiencer' || e.reporter.role === 'experiencer_assisted';
@@ -121,15 +134,7 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
   });
 
   const primary = coded.episodes.filter((_, i) => episodes[i].analysisSet === 'primary');
-  // The earliest the text places in time: two episodes compare by year when both have one, else
-  // by age when both have one; when the order can't be told, the one the page mentions first.
-  const before = (a: Ep, b: Ep): boolean => {
-    const ya = episodeYear(a, coded, derived), yb = episodeYear(b, coded, derived);
-    if (ya !== null && yb !== null) return ya < yb;
-    const aa = ageOf(a), ab = ageOf(b);
-    return aa !== null && ab !== null && aa < ab;
-  };
-  const first = primary.find((e) => !primary.some((o) => o !== e && before(o, e))) ?? primary[0] ?? null;
+  const first = earliestEpisode(primary, coded, derived);
 
   return {
     episodes,

@@ -1704,9 +1704,12 @@ export type ResolvedAffiliation = z.infer<typeof ResolvedAffiliation>;
  *    and upbringing fill in (basis says so). Status do_not_know / no_comment only when nothing does.
  *  - "Other Christian" is informative (christian_unspecified) and outranks upbringing; free
  *    text about the same time can make it more specific.
- *  - An affiliation or attendance stated for the same time as the menu answer is added to it,
- *    not a conflict (Catholic + attending Edgar Cayce meetings).
- *  Now: menu > 'now' statements, same rules. */
+ *  - A statement for the same time as the menu answer adds a tradition one person can hold
+ *    alongside it (Catholic + attending Edgar Cayce meetings), narrows it (Protestant made
+ *    Baptist), or conflicts with it: no religion against a religion, two different churches,
+ *    or two different kinds of no religion. A conflict is flagged and the menu wins.
+ *  Now: menu > 'now' statements > statements about after the experience, same rules.
+ *  Computed in resolve-area2.ts (DECISIONS.md, area 2, "Resolving religion"). */
 export const ResolvedReligion = obj({
   accountId: z.string().min(1),
   ruleVersion: z.string(),

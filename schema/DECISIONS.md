@@ -311,6 +311,38 @@ outside the practice set has been read.
   Flagging is by context, not by questionnaire item: the "consistent with your earthly
   beliefs" item is where people most naturally describe what they believed before. This
   matters most for forms A–C, where text is the only source of affiliation.
+- **Resolving religion** (November 22, 2026, after the final practice runs; `resolve-area2.ts`).
+  Prior religion is read as of the first qualifying episode, from the menu of the part that holds
+  it; on a page with none, as of the earliest comparison episode, else the first episode, so
+  comparison-group pages get a prior religion too.
+  - Which statements speak for that time: those timed before or at the experience. Childhood
+    statements count too when that experience happened in childhood; otherwise they, with any
+    upbringing, are the fallback. A statement with no time given decides nothing. Religion now
+    reads statements timed now, and those about the years after the experience only when none
+    is timed now; it has no fallback.
+  - Attendance sets an affiliation only when it names a church or group, so a bare "church"
+    attended a few times leaves religion unknown.
+  - A statement timed like an informative menu answer does one of three things. It
+    adds its tradition, when one person can hold both (Catholic, plus a study circle on an
+    esoteric author: Catholic and New Age). It narrows the menu's answer, when it names a
+    specific version (Protestant made Baptist; Other Christian made a named church); a bare
+    "Christian" never overrides a named church. Or it conflicts, when both can't be true of one
+    person at one time: no religion against a religion; two different churches, Christian or
+    non-Trinitarian (Catholic and Lutheran; Protestant and Jehovah's Witness); or two different
+    kinds of no religion (agnostic and atheist). A conflict is flagged and the menu's answer is
+    used. With no informative menu answer, the same test runs between the statements
+    themselves, and statements in conflict leave religion unknown, flagged.
+  - "Other or several" with no text naming a tradition leaves religion unknown, as "Do not
+    know," "No comment," an untouched "Select," and an unrecognized answer do (the first two
+    keep their own status).
+  - The practice level comes only from the statements about that time that give the resolved
+    tradition, a comment qualifying the menu included, and stays empty when they disagree. The
+    importance item stays its own variable.
+  - A resolution is flagged when a statement offered to explain the experience decided it, and
+    the resolver can run without such statements for the sensitivity analysis.
+
+  On the practice record, prior religion matches the hand resolution on all forty-eight pages
+  where the hand coding settled one, with one conflict flagged.
 
 ## Area 3: encounters
 
