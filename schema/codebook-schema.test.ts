@@ -402,6 +402,7 @@ test('resolved views enforce their consistency rules', () => {
     country: { code: 'US', role: null, source: 'presumed_us', conflict: false },
     countryGroups: [],
     language: { original: 'en', basis: 'presumed_english', translated: false },
+    sharedBeforeTelling: { value: 'yes', source: 'box' },
     qualifyingEpisodeIds: ['1example_x_nde#1'],
     firstQualifyingEpisodeId: '1example_x_nde#1',
     multipleQualifyingEpisodes: false,
@@ -411,6 +412,7 @@ test('resolved views enforce their consistency rules', () => {
   assert.equal(ResolvedAccount.safeParse({ ...account, country: { code: 'MX', role: null, source: 'presumed_us', conflict: false } }).success, false);
   assert.equal(ResolvedAccount.safeParse({ ...account, country: { code: 'MX', role: 'residence', source: 'self_report', conflict: true } }).success, false);
   assert.equal(ResolvedAccount.safeParse({ ...account, language: { original: null, basis: 'presumed_english', translated: false } }).success, false);
+  assert.equal(ResolvedAccount.safeParse({ ...account, sharedBeforeTelling: { value: 'uncertain', source: 'words' } }).success, false);
 
   const episode = {
     episodeId: '1example_x_nde#1', ruleVersion: '0.1', gapYears: 27, firsthand: true,

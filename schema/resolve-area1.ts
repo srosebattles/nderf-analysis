@@ -6,8 +6,9 @@
 
 import {
   type CodedPart, type ConditionStatement, type CountryClaim, type DerivedPart, type DerivedRecord, type Episode,
-  HALLUCINATION_FLAG_CONDITIONS, type LanguageClaim, ResolvedAccount, ResolvedEpisode,
+  HALLUCINATION_FLAG_CONDITIONS, type LanguageClaim, type PriorTelling, ResolvedAccount, ResolvedEpisode,
 } from './codebook-schema.ts';
+import type { z } from 'zod';
 
 export const AREA1_RULE_VERSION = '0.1';
 
@@ -38,8 +39,10 @@ export interface ResolvedEpisodes {
   multipleQualifyingEpisodes: boolean;
 }
 
-/** The life-threat item's cause that sets the overdose flag (pass A pilot, November 2026). */
+/** The life-threat item's causes that set the overdose flag (pass A pilot, November 2026) and
+ *  the suicide-attempt flag (November 22, 2026), since the coder may never see that menu. */
 export const OVERDOSE_CAUSE = 'Drug or medication overdose';
+export const SUICIDE_CAUSE = 'Suicide attempt';
 
 /** Conditions count toward the hallucination flag when stated as present before or at the
  *  experience, or with no time given (erring toward dropping more in the sensitivity analysis). */
@@ -111,12 +114,17 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
   if (derived.accountId !== coded.accountId) throw new Error('derived and coded records are for different accounts');
   const posted = derived.posting.firstPosted ? Number(derived.posting.firstPosted.slice(0, 4)) : null;
 
-  const overdoseFromCause = new Set<string>();
-  for (const part of derived.parts) {
-    if (part.lifeThreat.status === 'present' && part.lifeThreat.value.causes.includes(OVERDOSE_CAUSE)) {
-      for (const e of describedByQuestionnaire(coded, part.index)) overdoseFromCause.add(e.episodeId);
+  const fromCause = (cause: string) => {
+    const ids = new Set<string>();
+    for (const part of derived.parts) {
+      if (part.lifeThreat.status === 'present' && part.lifeThreat.value.causes.includes(cause)) {
+        for (const e of describedByQuestionnaire(coded, part.index)) ids.add(e.episodeId);
+      }
     }
-  }
+    return ids;
+  };
+  const overdoseFromCause = fromCause(OVERDOSE_CAUSE);
+  const suicideFromCause = fromCause(SUICIDE_CAUSE);
   const hallucination = new Set(
     coded.conditions
       .filter((c) => HALLUCINATION_FLAG_CONDITIONS.includes(c.condition) && FLAG_TIMINGS.includes(c.when))
@@ -127,7 +135,7 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
     const c = e.circumstance;
     const flags: ResolvedEpisode['flags'] = [];
     if (c.overdose !== null || overdoseFromCause.has(e.episodeId)) flags.push('overdose');
-    if (c.suicideAttempt) flags.push('suicide_attempt');
+    if (c.suicideAttempt || suicideFromCause.has(e.episodeId)) flags.push('suicide_attempt');
     if (c.psychoactiveMedicationAtOnset) flags.push('psychoactive_medication_at_onset');
     if (e.recurrent) flags.push('recurrent');
     if (opts.translated) flags.push('translated');
@@ -151,6 +159,19 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
     firstQualifyingEpisodeId: first?.episodeId ?? null,
     multipleQualifyingEpisodes: primary.length > 1,
   };
+}
+
+/** The episode prior religion and the questionnaire's page-level answers are read as of: the
+ *  first qualifying episode; on a page with none, the earliest comparison episode, else the
+ *  first episode. Undefined on a page with no episodes. */
+export function anchorEpisodeId(coded: Pick<EpisodeRuleInput, 'parts' | 'episodes'>, derived: Pick<DerivedEpisodeInput, 'parts'>, resolved: ResolvedEpisodes): string | undefined {
+  const comparison = coded.episodes.filter((e) => resolved.episodes.find((r) => r.episodeId === e.episodeId)?.analysisSet === 'comparison');
+  return resolved.firstQualifyingEpisodeId ?? earliestEpisode(comparison, coded, derived)?.episodeId ?? coded.episodes[0]?.episodeId;
+}
+
+/** The part whose questionnaire speaks for the page: the one holding the anchor episode. */
+export function anchorPartIndex(coded: Pick<EpisodeRuleInput, 'parts'>, anchorId: string | undefined): number | undefined {
+  return (coded.parts.find((p) => anchorId !== undefined && p.episodeIds.includes(anchorId)) ?? coded.parts[0])?.index;
 }
 
 // ─── Language and country ────────────────────────────────────────────────────────────────
@@ -205,9 +226,20 @@ export function resolveCountry(claims: readonly CountryClaim[], language: Langua
 /** What the account-level rules read, beyond the episode rules. */
 export interface AccountRuleInput extends EpisodeRuleInput {
   textClaims: { countries: readonly CountryClaim[]; language: LanguageClaim | null };
+  provenance: { priorTellings: readonly Pick<z.infer<typeof PriorTelling>, 'kind'>[] };
 }
 export interface DerivedAccountInput extends DerivedEpisodeInput {
   tagClaims: { countries: readonly CountryClaim[]; language: LanguageClaim | null };
+  parts: readonly (DerivedEpisodeInput['parts'][number] & { provenanceItems: Pick<DerivedPart['provenanceItems'], 'sharedWithOthers'> })[];
+}
+
+/** Whether the person had told the experience before: their own words decide whenever a telling
+ *  is coded, since the box may have been misread (pass A pilot, November 2026); otherwise the box. */
+export function resolveSharedBefore(tellings: readonly Pick<z.infer<typeof PriorTelling>, 'kind'>[], box: DerivedPart['provenanceItems']['sharedWithOthers'] | undefined): ResolvedAccount['sharedBeforeTelling'] {
+  if (tellings.some((t) => t.kind !== 'first_telling')) return { value: 'yes', source: 'words' };
+  if (tellings.length > 0) return { value: 'no', source: 'words' };
+  if (box?.status === 'present') return { value: box.value, source: 'box' };
+  return { value: box?.status === 'not_asked' ? 'not_asked' : 'not_stated', source: null };
 }
 
 /** Area 1's whole resolved view of an account: the episodes, then the account. Country groups
@@ -217,12 +249,14 @@ export function resolveAccount(
 ): { account: ResolvedAccount; episodes: ResolvedEpisodes } {
   const language = resolveLanguage(coded.textClaims.language, derived.tagClaims.language);
   const episodes = resolveEpisodes(coded, derived, { translated: language.translated === true, ruleVersion });
+  const part = anchorPartIndex(coded, anchorEpisodeId(coded, derived, episodes));
   const account = ResolvedAccount.parse({
     accountId: coded.accountId,
     ruleVersion,
     country: resolveCountry([...coded.textClaims.countries, ...derived.tagClaims.countries], language),
     countryGroups: [],
     language,
+    sharedBeforeTelling: resolveSharedBefore(coded.provenance.priorTellings, derived.parts.find((p) => p.index === part)?.provenanceItems.sharedWithOthers),
     qualifyingEpisodeIds: episodes.qualifyingEpisodeIds,
     firstQualifyingEpisodeId: episodes.firstQualifyingEpisodeId,
     multipleQualifyingEpisodes: episodes.multipleQualifyingEpisodes,

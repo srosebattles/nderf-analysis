@@ -1673,6 +1673,16 @@ export const ResolvedAccount = obj({
   }).refine((l) => l.basis === 'stated' || (l.original === 'en' && l.translated === false), {
     message: "presumed_english means original 'en', not translated",
   }),
+  /** Whether the person had told the experience before this telling. The person's own words
+   *  decide whenever a telling is coded (a first telling alone is no; any other kind is yes);
+   *  otherwise the questionnaire's box, from the part holding the first qualifying episode
+   *  (DECISIONS.md, area 3, Provenance). */
+  sharedBeforeTelling: obj({
+    value: z.enum(['yes', 'no', 'uncertain', 'unrecognized', 'not_stated', 'not_asked']),
+    source: z.enum(['words', 'box']).nullable(),
+  }).refine((v) => (v.source === 'words' ? v.value === 'yes' || v.value === 'no' : v.source === 'box' ? ['yes', 'no', 'uncertain', 'unrecognized'].includes(v.value) : ['not_stated', 'not_asked'].includes(v.value)), {
+    message: "the person's words give yes or no; the box gives its answer; with neither, not stated or not asked",
+  }),
   /** Person level: a being counts if it appears in ANY qualifying episode. Experiences that
    *  don't qualify are recorded but never counted. */
   qualifyingEpisodeIds: z.array(z.string()),

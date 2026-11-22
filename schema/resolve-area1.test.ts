@@ -1,9 +1,11 @@
 // Fixtures are invented: '1example_x_nde' is not a real account, and no text here comes from one.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import type { ConditionStatement, CountryClaim, LanguageClaim } from './codebook-schema.ts';
+import type { ConditionStatement, CountryClaim, DerivedPart, LanguageClaim, PriorTelling as PriorTellingSchema } from './codebook-schema.ts';
+import type { z } from 'zod';
+type PriorTelling = z.infer<typeof PriorTellingSchema>;
 import {
-  type DerivedEpisodeInput, type EpisodeRuleInput, OVERDOSE_CAUSE, resolveAccount, resolveCountry, resolveEpisodes, resolveLanguage,
+  type DerivedEpisodeInput, type EpisodeRuleInput, OVERDOSE_CAUSE, resolveAccount, resolveCountry, resolveEpisodes, resolveLanguage, SUICIDE_CAUSE,
 } from './resolve-area1.ts';
 
 const ID = '1example_x_nde';
@@ -151,9 +153,29 @@ test('country: presumed US only for an English page that wasn\'t translated', ()
   assert.equal(resolveCountry([], resolveLanguage(null, lang('nl', 'unknown'))).source, 'unknown');
 });
 
+type Shared = DerivedPart['provenanceItems']['sharedWithOthers'];
+const accountOf = (tellings: PriorTelling['kind'][], box: Shared, tags = { countries: [] as CountryClaim[], language: null as LanguageClaim | null }) => {
+  const input = { ...coded([episode(1), episode(2)]), textClaims: { countries: [], language: null }, provenance: { priorTellings: tellings.map((kind) => ({ kind })) } };
+  const d = derived();
+  return resolveAccount(input, { ...d, parts: d.parts.map((p) => ({ ...p, provenanceItems: { sharedWithOthers: box } })), tagClaims: tags });
+};
+const box = (value: 'yes' | 'no' | 'uncertain'): Shared => ({ status: 'present', value, evidence: [] });
+
 test('the account view: a translated page flags every episode', () => {
-  const input = { ...coded([episode(1), episode(2)]), textClaims: { countries: [], language: null } };
-  const { account, episodes } = resolveAccount(input, { ...derived(), tagClaims: { countries: [claim('CL', 'unspecified', 'nderf_tag')], language: lang('es', 'yes') } });
+  const { account, episodes } = accountOf([], box('yes'), { countries: [claim('CL', 'unspecified', 'nderf_tag')], language: lang('es', 'yes') });
   assert.deepEqual([account.country.code, account.language.translated, account.qualifyingEpisodeIds.length], ['CL', true, 2]);
   assert.ok(episodes.episodes.every((e) => e.flags.includes('translated')));
+});
+
+test("shared before this telling: the person's words beat the box", () => {
+  assert.deepEqual(accountOf(['private_only'], box('no')).account.sharedBeforeTelling, { value: 'yes', source: 'words' });
+  assert.deepEqual(accountOf(['first_telling'], box('yes')).account.sharedBeforeTelling, { value: 'no', source: 'words' });
+  assert.deepEqual(accountOf(['first_telling', 'public'], box('no')).account.sharedBeforeTelling, { value: 'yes', source: 'words' });
+  assert.deepEqual(accountOf([], box('uncertain')).account.sharedBeforeTelling, { value: 'uncertain', source: 'box' });
+  assert.deepEqual(accountOf([], { status: 'not_asked' }).account.sharedBeforeTelling, { value: 'not_asked', source: null });
+});
+
+test("the life-threat item's suicide cause sets the flag, like the overdose cause", () => {
+  const r = resolveEpisodes(coded([episode(1), episode(2, { questionnaireRefersTo: 'unclear' })]), derived(null, [SUICIDE_CAUSE]));
+  assert.deepEqual(r.episodes.map((e) => e.flags), [['suicide_attempt'], []]);
 });

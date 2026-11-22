@@ -6,7 +6,7 @@ import {
   type CodedPart, type DerivedPart, type Episode, type ReligionFieldValue, type ReligionStatement, ResolvedReligion,
   type Tradition,
 } from './codebook-schema.ts';
-import { type DerivedEpisodeInput, earliestEpisode, type EpisodeRuleInput, type ResolvedEpisodes } from './resolve-area1.ts';
+import { anchorEpisodeId, anchorPartIndex, type DerivedEpisodeInput, type EpisodeRuleInput, type ResolvedEpisodes } from './resolve-area1.ts';
 
 export const AREA2_RULE_VERSION = '0.1';
 
@@ -129,11 +129,10 @@ export function resolveReligion(
   coded: ReligionRuleInput, derived: DerivedReligionInput, episodes: ResolvedEpisodes, opts: ReligionOptions = {},
 ): ResolvedReligion {
   if (derived.accountId !== coded.accountId) throw new Error('derived and coded records are for different accounts');
-  const comparison = coded.episodes.filter((e) => episodes.episodes.find((r) => r.episodeId === e.episodeId)?.analysisSet === 'comparison');
-  const anchorId = episodes.firstQualifyingEpisodeId ?? earliestEpisode(comparison, coded, derived)?.episodeId ?? coded.episodes[0]?.episodeId;
+  const anchorId = anchorEpisodeId(coded, derived, episodes);
   const anchor = coded.episodes.find((e) => e.episodeId === anchorId);
-  const part = coded.parts.find((p) => anchorId !== undefined && p.episodeIds.includes(anchorId)) ?? coded.parts[0];
-  const fields = derived.parts.find((p) => p.index === part?.index)?.religionField;
+  const part = anchorPartIndex(coded, anchorId);
+  const fields = derived.parts.find((p) => p.index === part)?.religionField;
   const menuOf = (f: NonNullable<typeof fields>['prior'] | undefined) => (f?.status === 'present' ? f.value : null);
 
   const statements = coded.background.religionStatements

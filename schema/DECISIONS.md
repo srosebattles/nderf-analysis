@@ -193,8 +193,9 @@ outside the practice set has been read.
   answers describe (none when that's unclear); a hallucination-linked condition, from a flagged
   type whose stated timing is earlier, concurrent, concurrent but recognized later, or missing
   (erring toward dropping more in the sensitivity analysis), on the episodes the
-  statement names; a suicide attempt, a psychoactive medication at onset, and recurrence, as
-  coded; and translation, from the language rules. The first qualifying episode, as of which
+  statement names; a suicide attempt, as coded or from the same item's "Suicide attempt" cause,
+  set like the overdose flag; a psychoactive medication at onset, and recurrence, as coded; and
+  translation, from the language rules. The first qualifying episode, as of which
   prior religion, the experience date, and area 4's timing are resolved, is the earliest the text
   places in time: two episodes compare by year when both have one (the episode's own text date,
   or the background date of a part that holds only it), else by age when both have one; when the
@@ -1079,6 +1080,9 @@ were reviewed and approved in November 2026, after trial coding.
   person wrote: the shared-with-others item's Yes or No is recorded by rule and never becomes a
   telling on its own. When the person's words contradict that box, the words win at
   resolution, since the person may have misread the question (pass A pilot, November 2026).
+  As resolved (November 22, 2026; `resolve-area1.ts`): any coded telling other than "this is the
+  first" means the experience was shared before; a coded first telling alone means it wasn't;
+  with no telling coded, the box of the part holding the first qualifying episode stands.
 - **Reception:** others' reactions (dismissed as a hallucination, a dream, imagination, drugs
   or medication, demonic, or other; ridiculed; believed or supported; kept quiet for fear of a
   reaction; shock or disbelief; or other), each with who (a clinician, family, a friend,
