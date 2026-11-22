@@ -12,6 +12,7 @@ import { PassC, wireJsonSchema } from '../schema/first-run.ts';
 import { locateQuotes } from './locate.ts';
 import { episodesFrom, renderEpisodes } from './pass-b.ts';
 import type { PassDefinition } from './run-pass.ts';
+import { codedFrom, runIdsOf } from './runs.ts';
 
 const prompt = (name: string) => readFileSync(new URL(`../prompts/${name}`, import.meta.url), 'utf8');
 
@@ -21,11 +22,12 @@ export const PASS_C_PROMPT = `${prompt('common.md').trim()}\n\n${prompt('pass-c.
 interface EpisodeRef { episodeId: string; label: string }
 export interface EncounterRef { encounterId: string; label: string; categories: string[] }
 
-/** The encounters a pass B run coded for an account, or null when it coded none for it. */
+/** The encounters a pass B run, or a list of runs (runs.ts), coded for an account, or null when it
+ *  coded none for it. */
 export function encountersFrom(dataDir: string, runId: string, accountId: string): EncounterRef[] | null {
-  const file = join(dataDir, 'llm-raw', runId, `${accountId}.coded.json`);
-  if (!existsSync(file)) return null;
-  const coded = JSON.parse(readFileSync(file, 'utf8')) as { encounters: { encounterId: string; label: string; identity: { category: string }[] }[] };
+  const found = codedFrom(dataDir, runId, accountId);
+  if (!found?.coded) return null;
+  const coded = found.coded as { encounters: { encounterId: string; label: string; identity: { category: string }[] }[] };
   return coded.encounters.map((e) => ({ encounterId: e.encounterId, label: e.label, categories: [...new Set(e.identity.map((c) => c.category))] }));
 }
 
@@ -76,14 +78,16 @@ export function preparePassC(
   return { value: located.value, problems: [...problems, ...located.problems] };
 }
 
-/** The pass B run must have coded its encounters in the same pass A run's episodes. */
+/** Every pass B run must have coded its encounters in the same pass A run's (or list's) episodes. */
 function checkInputs(dataDir: string, episodesRunId: string, encountersRunId: string): void {
-  const manifest = join(dataDir, 'llm-raw', encountersRunId, 'run.json');
-  if (!existsSync(manifest)) throw new Error(`no run ${encountersRunId} in ${dataDir}`);
-  const held = JSON.parse(readFileSync(manifest, 'utf8')) as { pass: string; inputs?: Record<string, string> };
-  if (held.pass !== 'pass-b') throw new Error(`${encountersRunId} is a ${held.pass} run, not pass B`);
-  if (held.inputs?.episodesFrom !== episodesRunId) {
-    throw new Error(`pass B run ${encountersRunId} took its episodes from ${held.inputs?.episodesFrom ?? 'nowhere'}, not ${episodesRunId}`);
+  for (const runId of runIdsOf(encountersRunId)) {
+    const manifest = join(dataDir, 'llm-raw', runId, 'run.json');
+    if (!existsSync(manifest)) throw new Error(`no run ${runId} in ${dataDir}`);
+    const held = JSON.parse(readFileSync(manifest, 'utf8')) as { pass: string; inputs?: Record<string, string> };
+    if (held.pass !== 'pass-b') throw new Error(`${runId} is a ${held.pass} run, not pass B`);
+    if (held.inputs?.episodesFrom !== episodesRunId) {
+      throw new Error(`pass B run ${runId} took its episodes from ${held.inputs?.episodesFrom ?? 'nowhere'}, not ${episodesRunId}`);
+    }
   }
 }
 

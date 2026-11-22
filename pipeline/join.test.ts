@@ -115,3 +115,17 @@ test('what a later pass found missing is joined, flagged, and listed for the ear
   assert.equal(unclaimed.records[0].needsPassBRerun, true);
   assert.match(unclaimed.reruns[0].reason, /no Jesus claim/);
 });
+
+test('a pass can be a rerun of some pages plus the run it patches; each page names the run that coded it', () => {
+  const data = setUp({ encounters: [encounter()], missingEpisodes: [] }, 'a2,a1', PASS_C, { episodesFrom: 'a2,a1', encountersFrom: 'b1' });
+  const dir = join(data, 'llm-raw', 'a2');
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'run.json'), JSON.stringify({ pass: 'pass-a', passVersion: '0.2', model: 'model-x', effort: 'high', inputs: {}, accounts: [ID] }));
+  writeFileSync(join(dir, 'log.jsonl'), JSON.stringify({ accountId: ID, ok: true, claudeCodeVersion: '9.9.9', truncated: [] }) + '\n');
+  writeFileSync(join(dir, `${ID}.coded.json`), JSON.stringify(PASS_A));
+  const { records, reruns } = joinFirstRun(data, 'a2,a1', 'b1', 'c1');
+  assert.deepEqual(reruns, []);
+  assert.deepEqual([records[0].coding.passA.runId, records[0].coding.passA.passVersion], ['a2', '0.2']);
+  // The pass B run must have taken its episodes from the same list.
+  assert.throws(() => joinFirstRun(data, 'a1', 'b1', 'c1'), /took its episodes from a2,a1/);
+});

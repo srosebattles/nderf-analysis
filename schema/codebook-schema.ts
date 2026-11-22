@@ -489,8 +489,10 @@ export const Circumstance = obj({
   // Flags. None of them excludes.
   overdose: z.enum(['accidental', 'intentional', 'unclear']).nullable(), // alcohol counts as a drug
   suicideAttempt: z.boolean(),
-  /** A psychoactive medication given as the experience began, during a real illness or
-   *  injury (e.g. ketamine for a procedure). */
+  /** A psychoactive medication given as the experience began, while an illness or injury was
+   *  itself threatening life (a sedative given in an ambulance after a fall). Never with an
+   *  inducer: anesthesia for a procedure, when nothing else threatened life, is the inducer
+   *  'anesthesia_without_complication' instead (final practice runs, November 2026). */
   psychoactiveMedicationAtOnset: z.boolean(),
   /** Covariate; 'unclear' is a fine answer. Evidence for 'bodily_crisis' must point at
    *  described bodily events (arrest, bleeding, injury, resuscitation, what clinicians said),
@@ -513,6 +515,9 @@ export const Circumstance = obj({
   })
   .refine((c) => !c.psychoactiveMedicationAtOnset || c.context === 'illness_or_injury', {
     message: 'psychoactiveMedicationAtOnset needs an illness_or_injury context',
+  })
+  .refine((c) => !c.psychoactiveMedicationAtOnset || c.inducer === 'none', {
+    message: 'psychoactiveMedicationAtOnset is a flag on an experience with no inducer: a drug given while an illness or injury threatened life is the flag, and anesthesia for a procedure when nothing else threatened life is the inducer',
   });
 export type Circumstance = z.infer<typeof Circumstance>;
 

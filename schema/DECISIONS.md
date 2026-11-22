@@ -101,7 +101,11 @@ outside the practice set has been read.
   overdose, and so is a clinician's dosing error such as too much anesthetic, since a drug in
   excess is the same confound), suicide attempts, and a psychoactive medication given as the
   experience began during a real illness or injury (e.g. ketamine for a procedure).
-  Sensitivity analyses drop flagged episodes. The resolver also sets the overdose flag when
+  Sensitivity analyses drop flagged episodes. Where anesthesia ends and that flag begins
+  (decided in the final practice runs, November 2026, when a procedure's ketamine after an
+  injury was coded as both): a drug given while an illness or injury was itself threatening life
+  is the flag, with no inducer; anesthesia for a procedure when nothing else threatened life is
+  the inducer. The schema allows the flag only with no inducer. The resolver also sets the overdose flag when
   the life-threat item's cause menu ticks "Drug or medication overdose," since the coder may
   not read that menu and the cause is sometimes given nowhere else (pass A pilot, November
   2026).
@@ -1366,6 +1370,11 @@ Decided in November 2026, after a prototype and a probe on the practice pages
     being called Jesus with no Jesus claim from pass B) is joined, flagged, and listed for a rerun
     of the earlier pass, and every pass after it reruns too. A run whose episodes or encounters
     came from other runs than the ones joined is refused outright.
+- **A rerun can cover only some pages** (November 22, 2026, after a pass A prompt change in the
+  final practice runs touched four pages). It is a run of its own; a later pass and the join take
+  it and the run it patches as a list, each page from the newest run that attempted it, and each
+  joined page's header names the run and prompt version that coded it. So pages of one record
+  file can come from different prompt versions, and the header says which.
 - **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
   B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
   later pass knows which is which. Labels describe the account, so they stay in the private

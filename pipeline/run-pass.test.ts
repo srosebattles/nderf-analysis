@@ -149,3 +149,15 @@ test('a call another model served is not accepted', async () => {
   assert.equal(line.ok, false);
   assert.match(line.problem ?? '', /served by claude-opus-5-5/);
 });
+
+test('a rerun of some pages codes only those, each under its own neutral key', async () => {
+  const OTHER: ScrapedAccount = { ...ACCOUNT, id: '1example_y_probable_nde' };
+  const dataDir = mkdtempSync(join(tmpdir(), 'run-pass-test-'));
+  process.env.FAKE_CLAUDE_SCRIPT = JSON.stringify([{ output: { episodeId: 'A0002#1', count: 1 } }]);
+  process.env.FAKE_CLAUDE_COUNTER = join(dataDir, 'counter');
+  process.env.FAKE_CLAUDE_ECHO = join(dataDir, 'echo');
+  const pass = { ...PASS, schema: z.strictObject({ episodeId: z.string().startsWith('1example_y'), count: z.number() }) };
+  const lines = await runPass(pass as PassDefinition, [ACCOUNT, OTHER], { dataDir, runId: 'r2', model: MODEL, effort: 'low', executable: FAKE, only: [OTHER.id] });
+  assert.deepEqual(lines.map((l) => [l.accountId, l.key, l.ok]), [[OTHER.id, 'A0002', true]]);
+  assert.deepEqual(JSON.parse(readFileSync(join(dataDir, 'llm-raw', 'r2', 'run.json'), 'utf8')).accounts, [OTHER.id]);
+});

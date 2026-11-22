@@ -55,6 +55,10 @@ export interface RunOptions {
   executable?: string;
   /** Called once per account with what happened. */
   onAccount?: (line: LogLine) => void;
+  /** Code only these accounts (a rerun of some pages), keeping every account's position in the
+   *  list, so each keeps its neutral key. Later passes and the join take the rerun and the run it
+   *  patches as a list (runs.ts). */
+  only?: readonly string[];
 }
 
 export interface LogLine {
@@ -111,7 +115,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
     runId: opts.runId, pass: pass.id, passVersion: pass.version, model: opts.model, effort: opts.effort,
     systemPromptSha256: sha256(pass.systemPrompt), jsonSchemaSha256: sha256(JSON.stringify(pass.jsonSchema)),
     inputs: pass.inputs ?? {},
-    accounts: accounts.map((a) => a.id),
+    accounts: accounts.map((a) => a.id).filter((id) => !opts.only || opts.only.includes(id)),
   };
   const manifestFile = join(dir, 'run.json');
   if (existsSync(manifestFile)) {
@@ -182,7 +186,7 @@ export async function runPass(pass: PassDefinition, accounts: readonly ScrapedAc
   };
 
   const lines: LogLine[] = [];
-  const queue = accounts.map((a, i) => [a, i] as const).filter(([a]) => !done.has(a.id));
+  const queue = accounts.map((a, i) => [a, i] as const).filter(([a]) => !done.has(a.id) && (!opts.only || opts.only.includes(a.id)));
   let stopped: RunStopped | null = null;
   const worker = async () => {
     for (let next = stopped ? undefined : queue.shift(); next; next = stopped ? undefined : queue.shift()) {

@@ -67,6 +67,12 @@ Pass B is given a pass A run's episodes (`--episodes-from <run ID>`); pass C is 
 pass B run's encounters (`--encounters-from <run ID>`); that pass B run has to share the pass A
 run. Both are recorded in the run's manifest, so a resumed run can't change them.
 
+A rerun of some pages (`--pages 14,32`, practice page numbers) is a run of its own, under a new run
+ID. Later passes and the join then take it and the run it patches as a list, newest first
+(`--episodes-from pass-a-x-3,pass-a-x-2`; `runs.ts`): each page comes from the first run in the list
+that attempted it, never from an older run when the rerun failed, and the joined record's header
+names the run, and so the prompt version, that coded each page.
+
 ## Joining the passes
 
 `npm run join -- <data> --pass-a <run ID> --pass-b <run ID> --pass-c <run ID> --out <name>` joins
