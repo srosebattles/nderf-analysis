@@ -1370,6 +1370,11 @@ Decided in November 2026, after a prototype and a probe on the practice pages
     being called Jesus with no Jesus claim from pass B) is joined, flagged, and listed for a rerun
     of the earlier pass, and every pass after it reruns too. A run whose episodes or encounters
     came from other runs than the ones joined is refused outright.
+- **A rerun can cover only some pages** (November 22, 2026, after a pass A prompt change in the
+  final practice runs touched four pages). It is a run of its own; a later pass and the join take
+  it and the run it patches as a list, each page from the newest run that attempted it, and each
+  joined page's header names the run and prompt version that coded it. So pages of one record
+  file can come from different prompt versions, and the header says which.
 - **Labels carry episodes and encounters from pass to pass.** Pass A gives each episode, and pass
   B each encounter, a short label in the coder's own words ("the car accident at nine"), so a
   later pass knows which is which. Labels describe the account, so they stay in the private

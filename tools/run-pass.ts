@@ -8,6 +8,10 @@
 // Pass C takes --episodes-from and --encounters-from <pass B run ID>: the runs whose episodes and
 // encounters it links to (the pass B run must have used the same pass A run).
 //
+// --pages 14,32 codes only those practice pages (numbered from 1, as in the review notes): a rerun
+// of some pages, under a new run ID. Later passes and the join then take it and the run it patches
+// as a list, newest first: --episodes-from pass-a-x-3,pass-a-x-2.
+//
 // --dry-run prints what would be sent (sizes only, never account text) and calls nothing.
 // Only the practice pages can be run before the freeze.
 
@@ -50,7 +54,7 @@ const pass = PASSES[value('pass') ?? '']?.();
 const model = value('model');
 const effort = (value('effort') ?? 'low') as 'low' | 'medium' | 'high' | 'xhigh' | 'max';
 if (!dataDir || !pass || !model || !flag('practice')) {
-  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--episodes-from <run ID>] [--encounters-from <run ID>] [--limit n] [--run-id id] [--concurrency n] [--dry-run]`);
+  console.error(`usage: npm run pass -- <data> --pass <${Object.keys(PASSES).join('|')}> --model <full model ID> [--effort low] --practice [--episodes-from <run IDs>] [--encounters-from <run IDs>] [--limit n] [--pages n,n] [--run-id id] [--concurrency n] [--dry-run]`);
   process.exit(1);
 }
 
@@ -63,8 +67,14 @@ const accounts = ids.map((id) => {
   return a;
 });
 
+const pages = value('pages')?.split(',').map((n) => {
+  const id = ids[Number(n) - 1];
+  if (!Number.isInteger(Number(n)) || !id) throw new Error(`--pages: there is no practice page ${n}`);
+  return id;
+});
+
 const kb = (s: string | object) => `${(Buffer.byteLength(typeof s === 'string' ? s : JSON.stringify(s)) / 1024).toFixed(1)} KB`;
-console.log(`pass ${pass.id} ${pass.version}; model ${model}, effort ${effort}; ${accounts.length} practice pages`);
+console.log(`pass ${pass.id} ${pass.version}; model ${model}, effort ${effort}; ${pages ? `${pages.length} of ${accounts.length}` : accounts.length} practice pages`);
 console.log(`system prompt ${kb(pass.systemPrompt)}, JSON Schema ${kb(pass.jsonSchema)}`);
 const sizes = accounts.map((a, i) => Buffer.byteLength(renderForCoder(a, neutralKey(i)).text)).sort((x, y) => x - y);
 console.log(`coder input per page: median ${(sizes[Math.floor(sizes.length / 2)] / 1024).toFixed(1)} KB, largest ${(sizes[sizes.length - 1] / 1024).toFixed(1)} KB`);
@@ -74,7 +84,7 @@ const runId = value('run-id') ?? `${pass.id}-${model}-${effort}-${new Date().toI
 let lines: LogLine[];
 try {
   lines = await runPass(pass, accounts, {
-    dataDir, runId, model, effort, concurrency: Number(value('concurrency') ?? 1),
+    dataDir, runId, model, effort, concurrency: Number(value('concurrency') ?? 1), only: pages,
     onAccount: (l) => console.log(`${l.key} ${l.ok ? 'ok' : `FAILED: ${l.problem}`}${l.truncated.length ? `, cut to the cap: ${l.truncated.join(', ')}` : ''} (${l.attempts} call${l.attempts > 1 ? 's' : ''}, ${l.outputTokens} tokens out, ${(l.durationMs / 1000).toFixed(0)} s)`),
   });
 } catch (e) {

@@ -7,11 +7,16 @@
 // joined record fails its checks. A page where a later pass found something an earlier pass left
 // out (an experience, a being, a Jesus claim) is joined, flagged, and listed for a rerun of the
 // earlier pass; every pass after it reruns too, since its links point into the earlier pass.
+//
+// Each pass can be a list of runs, newest first (a rerun of some pages, then the run it patches;
+// runs.ts): each page takes its record from the first run in the list that attempted it, and its
+// header names that run.
 
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { FirstRunRecord, mentionsWithoutJesusClaim, type PassCoding } from '../schema/first-run.ts';
 import type { LogLine } from './run-pass.ts';
+import { runIdsOf } from './runs.ts';
 
 export interface Rerun { accountId: string; pass: 'pass-a' | 'pass-b' | 'pass-c'; reason: string }
 
@@ -30,6 +35,17 @@ function readRun(dataDir: string, runId: string): Run {
   const lines = existsSync(logFile) ? readFileSync(logFile, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l) as LogLine) : [];
   return { id: runId, manifest: JSON.parse(readFileSync(manifestFile, 'utf8')), log: new Map(lines.map((l) => [l.accountId, l])), dir };
 }
+
+/** The runs in a list, newest first, all of one pass. */
+function readRuns(dataDir: string, list: string, pass: keyof typeof PASS_NAME): Run[] {
+  const runs = runIdsOf(list).map((id) => readRun(dataDir, id));
+  if (runs.length === 0) throw new Error(`no ${PASS_NAME[pass]} run given`);
+  for (const r of runs) if (r.manifest.pass !== pass) throw new Error(`${r.id} is a ${r.manifest.pass} run, not ${PASS_NAME[pass]}`);
+  return runs;
+}
+
+/** The run in a list that answers for a page: the first that attempted it. */
+const runFor = (runs: Run[], accountId: string): Run | null => runs.find((r) => r.log.has(accountId)) ?? null;
 
 function coding(run: Run, accountId: string): PassCoding {
   const line = run.log.get(accountId)!;
@@ -50,26 +66,32 @@ const PASS_NAME = { 'pass-a': 'pass A', 'pass-b': 'pass B', 'pass-c': 'pass C' }
 const PASS_C_LISTS = new Set(['doctrinalStatements', 'jesusMentions', 'passCMissing']);
 
 export function joinFirstRun(dataDir: string, passARunId: string, passBRunId: string, passCRunId: string): { records: FirstRunRecord[]; reruns: Rerun[] } {
-  const a = readRun(dataDir, passARunId);
-  const b = readRun(dataDir, passBRunId);
-  const c = readRun(dataDir, passCRunId);
-  if (a.manifest.pass !== 'pass-a') throw new Error(`${passARunId} is a ${a.manifest.pass} run, not pass A`);
-  if (b.manifest.pass !== 'pass-b') throw new Error(`${passBRunId} is a ${b.manifest.pass} run, not pass B`);
-  if (c.manifest.pass !== 'pass-c') throw new Error(`${passCRunId} is a ${c.manifest.pass} run, not pass C`);
-  if (b.manifest.inputs?.episodesFrom !== passARunId) {
-    throw new Error(`pass B run ${passBRunId} took its episodes from ${b.manifest.inputs?.episodesFrom ?? 'nowhere'}, not ${passARunId}`);
+  const as = readRuns(dataDir, passARunId, 'pass-a');
+  const bs = readRuns(dataDir, passBRunId, 'pass-b');
+  const cs = readRuns(dataDir, passCRunId, 'pass-c');
+  for (const b of bs) {
+    if (b.manifest.inputs?.episodesFrom !== passARunId) {
+      throw new Error(`pass B run ${b.id} took its episodes from ${b.manifest.inputs?.episodesFrom ?? 'nowhere'}, not ${passARunId}`);
+    }
   }
-  if (c.manifest.inputs?.episodesFrom !== passARunId || c.manifest.inputs?.encountersFrom !== passBRunId) {
-    throw new Error(`pass C run ${passCRunId} took its episodes and encounters from ${c.manifest.inputs?.episodesFrom ?? 'nowhere'} and ${c.manifest.inputs?.encountersFrom ?? 'nowhere'}, not ${passARunId} and ${passBRunId}`);
+  for (const c of cs) {
+    if (c.manifest.inputs?.episodesFrom !== passARunId || c.manifest.inputs?.encountersFrom !== passBRunId) {
+      throw new Error(`pass C run ${c.id} took its episodes and encounters from ${c.manifest.inputs?.episodesFrom ?? 'nowhere'} and ${c.manifest.inputs?.encountersFrom ?? 'nowhere'}, not ${passARunId} and ${passBRunId}`);
+    }
   }
   const records: FirstRunRecord[] = [];
   const reruns: Rerun[] = [];
-  for (const accountId of a.manifest.accounts) {
-    const passA = coded(a, accountId);
-    const passB = coded(b, accountId);
-    const passC = coded(c, accountId);
+  // Every page any pass A run was given, the oldest run's order first.
+  const accounts = [...new Set([...as].reverse().flatMap((r) => r.manifest.accounts))];
+  for (const accountId of accounts) {
+    const a = runFor(as, accountId);
+    const b = runFor(bs, accountId);
+    const c = runFor(cs, accountId);
+    const passA = a && coded(a, accountId);
+    const passB = b && coded(b, accountId);
+    const passC = c && coded(c, accountId);
     const absent = !passA ? 'pass-a' : !passB ? 'pass-b' : !passC ? 'pass-c' : null;
-    if (absent || !passA || !passB || !passC) {
+    if (absent || !a || !b || !c || !passA || !passB || !passC) {
       const pass = absent ?? 'pass-a';
       reruns.push({ accountId, pass, reason: `no coded ${PASS_NAME[pass]} record` });
       continue;

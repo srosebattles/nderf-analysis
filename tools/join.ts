@@ -2,6 +2,9 @@
 //
 //   npm run join -- <path to nderf-raw-data> --pass-a <run ID> --pass-b <run ID> --pass-c <run ID> --out <name>
 //
+// Each run ID can be a list, newest first (a rerun of some pages, then the run it patches):
+// --pass-a pass-a-x-3,pass-a-x-2. Each page takes the first run in the list that attempted it.
+//
 // Writes <data>/first-run/<name>.jsonl (one record per page; private, since records hold the
 // episode and encounter labels) and <data>/first-run/<name>.reruns.json (pages to rerun, and why).
 // Prints counts only.

@@ -3,13 +3,13 @@
 // that encounter agreement isn't muddied by episodes split differently, and the joined record has
 // one episode list.
 
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
 import type { ScrapedAccount } from '../derive/input.ts';
 import { PassB, wireJsonSchema } from '../schema/first-run.ts';
 import { NAMED_FIGURES } from '../schema/tables/named-figures.ts';
 import { locateQuotes } from './locate.ts';
 import type { PassDefinition } from './run-pass.ts';
+import { codedFrom } from './runs.ts';
 
 const prompt = (name: string) => readFileSync(new URL(`../prompts/${name}`, import.meta.url), 'utf8');
 
@@ -35,11 +35,12 @@ export const PASS_B_PROMPT = `${prompt('common.md').trim()}\n\n${prompt('pass-b.
 
 interface EpisodeRef { episodeId: string; label: string }
 
-/** The episodes a pass A run coded for an account, or null when it coded none for it. */
+/** The episodes a pass A run, or a list of runs (runs.ts), coded for an account, or null when it
+ *  coded none for it. */
 export function episodesFrom(dataDir: string, runId: string, accountId: string): EpisodeRef[] | null {
-  const file = join(dataDir, 'llm-raw', runId, `${accountId}.coded.json`);
-  if (!existsSync(file)) return null;
-  const coded = JSON.parse(readFileSync(file, 'utf8')) as { episodes: EpisodeRef[] };
+  const found = codedFrom(dataDir, runId, accountId);
+  if (!found?.coded) return null;
+  const coded = found.coded as { episodes: EpisodeRef[] };
   return coded.episodes.map(({ episodeId, label }) => ({ episodeId, label }));
 }
 
