@@ -342,6 +342,19 @@ test('rejects an overdose flag without an illness or injury context', () => {
   assert.equal(CodedRecord.safeParse(bad).success, false);
 });
 
+test('the psychoactive-medication flag goes only with no inducer', () => {
+  const flagged = withChange(coded, (c) => {
+    c.episodes[0].circumstance.context = 'illness_or_injury';
+    c.episodes[0].circumstance.inducer = 'none';
+    c.episodes[0].circumstance.psychoactiveMedicationAtOnset = true;
+  });
+  assert.equal(CodedRecord.safeParse(flagged).success, true);
+  const both = withChange(flagged, (c) => {
+    c.episodes[0].circumstance.inducer = 'anesthesia_without_complication';
+  });
+  assert.equal(CodedRecord.safeParse(both).success, false);
+});
+
 test('rejects a cardiac arrest reported without a basis', () => {
   const bad = withChange(coded, (c) => { c.episodes[0].circumstance.cardiacArrest.basis = null; });
   assert.equal(CodedRecord.safeParse(bad).success, false);

@@ -52,7 +52,9 @@ the event as reported, not its credibility.
     the `overdose` flag. A clinician's dosing error (too much anesthetic) is an overdose too,
     `accidental`.
 - `psychoactiveMedicationAtOnset`: a psychoactive medication given as the experience began,
-  during a real illness or injury (ketamine for a procedure).
+  while an illness or injury was itself threatening life (a sedative given in an ambulance after
+  a fall). It is a flag, so the `inducer` stays `none`. Anesthesia for a procedure when nothing
+  else threatened life is the inducer `anesthesia_without_complication` instead; never set both.
 - `closeness` comes from the body's side only:
   - `bodily_crisis` needs a described bodily event, such as cardiac arrest, not breathing, heavy
     bleeding, a serious injury, resuscitation, or what clinicians said. A bodily event the person

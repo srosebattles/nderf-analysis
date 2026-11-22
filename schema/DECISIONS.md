@@ -101,7 +101,11 @@ outside the practice set has been read.
   overdose, and so is a clinician's dosing error such as too much anesthetic, since a drug in
   excess is the same confound), suicide attempts, and a psychoactive medication given as the
   experience began during a real illness or injury (e.g. ketamine for a procedure).
-  Sensitivity analyses drop flagged episodes. The resolver also sets the overdose flag when
+  Sensitivity analyses drop flagged episodes. Where anesthesia ends and that flag begins
+  (decided in the final practice runs, November 2026, when a procedure's ketamine after an
+  injury was coded as both): a drug given while an illness or injury was itself threatening life
+  is the flag, with no inducer; anesthesia for a procedure when nothing else threatened life is
+  the inducer. The schema allows the flag only with no inducer. The resolver also sets the overdose flag when
   the life-threat item's cause menu ticks "Drug or medication overdose," since the coder may
   not read that menu and the cause is sometimes given nowhere else (pass A pilot, November
   2026).
