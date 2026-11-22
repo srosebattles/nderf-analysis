@@ -1484,6 +1484,33 @@ Decided in November 2026, after a prototype and a probe on the practice pages
   stores character offsets, and drops it (Conventions, above). Text that isn't the
   experiencer's is given by its opening and closing words.
 
+## Pre-registration, the holdout, and the two models' disagreements
+
+Decided November 22, 2026, before the hypotheses.
+
+- **Where:** OSF Registries, with its template for analyses of existing data, whose section on
+  what the authors already know of the data holds the disclosures (the practice set, the
+  overlap check's matches, and anything else logged as seen before the freeze). The
+  registration is the frozen, dated plan. The write-up, in the project author's voice, is
+  published separately on this repository's GitHub Pages: free to differ in form and to add
+  exploratory work, it links to the registration and says plainly where the analysis departed
+  from the plan, and why. It quotes no account.
+- **The holdout is the coding's accuracy check on pages nobody tuned the prompts on,** run
+  before the full run as a go/no-go check. After the freeze, both models code the holdout, and
+  the project's author hand-codes its main outcomes without seeing any model's codes for those
+  pages: which episodes qualify, prior religion, who was met with any Jesus claims, and the Jesus
+  mentions. Agreement with the main coder is reported as the coding's accuracy. If the main coder
+  falls short of a bar stated in the registration on a main outcome, the prompt is fixed, the
+  change is recorded as a dated amendment before any analysis is run, and a fresh practice round
+  checks the fix. The holdout pages are then coded and analyzed with every other page. The bar,
+  and how many of the two hundred pages are hand-coded, are set with the analysis plan.
+- **The two models' disagreements are measured, not settled.** The main coder's codes are the
+  data. The second model's random tenth gives agreement on the main fields, reported field by
+  field; nothing is adjudicated or recoded from it, nor from the holdout comparison. Settling the
+  tenth by hand would leave it unlike the other nine tenths, would miss errors both models share,
+  and would happen after coded results exist. Area 4 is unchanged: a hit counts only when both
+  models find it.
+
 ## Pre-registered tables
 
 Built before the holdout is read and frozen with the codebook. The coder never classifies;
@@ -1687,7 +1714,9 @@ To settle before the freeze:
   about two-thirds as much provenance, and used about sixty percent as much of the plan per
   page. For passes A to C it codes a random tenth of the accounts, to measure agreement; for
   area 4's pass it codes every account, since a hit counts only when both models find it.
-- What the holdout is used for.
-- The hypotheses, the country groups for the culture analysis, and where to pre-register.
+  Disagreements are measured, not settled (above).
+- The hypotheses, the country groups for the culture analysis, the holdout check's bar, and how
+  many holdout pages are hand-coded. Where to pre-register and what the holdout is for are
+  decided (above).
 - Living status in the named-figures table is rechecked at the freeze, and names added after it
   are logged in an addendum.
