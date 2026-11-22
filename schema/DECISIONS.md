@@ -173,6 +173,34 @@ outside the practice set has been read.
   the text only says happened is still an episode, marked as not describing it; a bare count
   with nothing to tell the experiences apart ("twice more since") is one episode, recurrent
   (pass A pilot, November 2026).
+- **Which episodes qualify, as resolved** (November 22, 2026, after the final practice runs;
+  `resolve-area1.ts`). Each episode falls in one of three sets:
+  - primary (the qualifying experiences): firsthand (the experiencer, alone or with help); an
+    illness or injury, or a threat to life with no injury; no inducer; timing during, in
+    recovery afterward, or unclear (only "unrelated" excludes); and the experience described,
+    fully or partly;
+  - comparison: firsthand and described, with a known inducer (recreational drugs, meditation or
+    practice, sleep or a dream, anesthesia with no complication), whatever the context or
+    timing, since meditation and dreams come with no threat;
+  - excluded, with every reason that applies: not firsthand (a relative, a clinician, someone
+    else), no experience described, someone else's death, no threat, unrelated in time, or
+    unclear. An unclear context or inducer, or an unknown reporter, is unclear and enters
+    neither set: primary takes only experiences with no inducer, comparison only those with a
+    known one.
+
+  Flags, which never exclude: overdose, from the coded flag or from the life-threat item's
+  "Drug or medication overdose" cause, set on the episodes of that part the questionnaire
+  answers describe (none when that's unclear); a hallucination-linked condition, from a flagged
+  type whose stated timing is earlier, concurrent, concurrent but recognized later, or missing
+  (erring toward dropping more in the sensitivity analysis), on the episodes the
+  statement names; a suicide attempt, a psychoactive medication at onset, and recurrence, as
+  coded; and translation, from the language rules. The first qualifying episode, as of which
+  prior religion, the experience date, and area 4's timing are resolved, is the earliest the text
+  places in time: two episodes compare by year when both have one (the episode's own text date,
+  or the background date of a part that holds only it), else by age when both have one; when the
+  order can't be told, the one the page mentions first. Its gap is the first posting year minus
+  its year. On the practice record: fifty-four primary episodes on forty-six of fifty pages (six
+  with more than one), twelve comparison, thirty-one excluded.
 - **The experience date is parsed by rule** from the Background field, which is free text in
   many formats (`derive/dates.ts`), to a year, month, and day with a precision and flags.
   Nothing is guessed: a date with no readable year stays unparsed (about two percent of the

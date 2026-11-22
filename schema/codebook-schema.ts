@@ -1717,8 +1717,11 @@ export const ResolvedReligion = obj({
 export type ResolvedReligion = z.infer<typeof ResolvedReligion>;
 
 /** primary: firsthand, context illness_or_injury or threat_without_injury, inducer 'none',
- *  not unrelated in time, and an experience described. comparison: the same, but with a known
- *  inducer. excluded: everything else (no threat, someone else's death, not firsthand, …). */
+ *  not unrelated in time, and an experience described (fully or partly). comparison: firsthand
+ *  and described, with a known inducer, whatever the context or timing (meditation and dreams
+ *  have no threat). excluded: everything else, with every reason that applies; an unclear
+ *  context or inducer, or an unknown reporter, is 'unclear' and enters neither set.
+ *  Computed in resolve-area1.ts (DECISIONS.md, area 1). */
 export const ResolvedEpisode = obj({
   episodeId: z.string(),
   ruleVersion: z.string(),
