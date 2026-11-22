@@ -1641,25 +1641,37 @@ export const ResolvedAccount = obj({
   ruleVersion: z.string(),
   /** Role precedence: origin > unspecified > residence. Experience location is recorded but
    *  never used as the person's country. Within a role, the experiencer's own statement > NDERF
-   *  tag > search-app quick facts > NDERF's AI-inferred country. With no country from any of
-   *  these: presumed US, unless the account was translated from another language (unknown). */
+   *  tag > search-app quick facts. NDERF's AI-inferred country only when none of those names a
+   *  country, in any role. A claim naming no particular country is skipped; deciding claims that
+   *  disagree leave it unknown, flagged. With no country from any of these: presumed US, unless
+   *  the account was translated or its original language isn't English (unknown). Computed in
+   *  resolve-area1.ts. */
   country: obj({
     code: CountryCode.nullable(),
     role: z.enum(['origin', 'residence', 'unspecified']).nullable(),
     /** Keeps a US the person or NDERF's tag states apart from an AI-inferred or presumed one. */
     source: z.enum(['self_report', 'nderf_tag', 'nderf_quick_facts', 'nderf_country_ai', 'presumed_us', 'unknown']),
+    /** The deciding claims (one role, one best source) named different countries, so none is
+     *  picked: the country is unknown (DECISIONS.md, area 1). */
+    conflict: z.boolean(),
   })
     .refine((c) => (c.source === 'unknown') === (c.code === null), {
       message: "country code is null exactly when source is 'unknown'",
     })
     .refine((c) => c.source !== 'presumed_us' || (c.code === 'US' && c.role === null), {
       message: "presumed_us means code 'US' and no role",
+    })
+    .refine((c) => !c.conflict || (c.source === 'unknown' && c.role !== null), {
+      message: 'a conflict leaves the country unknown, at the role whose claims disagreed',
     }),
   countryGroups: z.array(z.string()), // ids of CountryGroup definitions it falls in
   language: obj({
-    original: LanguageCode,
+    /** Null when a translation is stated but no original language is named. */
+    original: LanguageCode.nullable(),
     basis: z.enum(['stated', 'presumed_english']),
     translated: z.boolean().nullable(),
+  }).refine((l) => l.basis === 'stated' || (l.original === 'en' && l.translated === false), {
+    message: "presumed_english means original 'en', not translated",
   }),
   /** Person level: a being counts if it appears in ANY qualifying episode. Experiences that
    *  don't qualify are recorded but never counted. */

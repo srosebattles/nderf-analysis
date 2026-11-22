@@ -1,8 +1,10 @@
 // Fixtures are invented: '1example_x_nde' is not a real account, and no text here comes from one.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import type { ConditionStatement } from './codebook-schema.ts';
-import { type DerivedEpisodeInput, type EpisodeRuleInput, OVERDOSE_CAUSE, resolveEpisodes } from './resolve-area1.ts';
+import type { ConditionStatement, CountryClaim, LanguageClaim } from './codebook-schema.ts';
+import {
+  type DerivedEpisodeInput, type EpisodeRuleInput, OVERDOSE_CAUSE, resolveAccount, resolveCountry, resolveEpisodes, resolveLanguage,
+} from './resolve-area1.ts';
 
 const ID = '1example_x_nde';
 type Ep = EpisodeRuleInput['episodes'][number];
@@ -116,4 +118,42 @@ test('an episode takes the background date only from a part that holds it alone;
   assert.deepEqual(shared.episodes.map((e) => e.gapYears), [null, null]);
   const own = resolveEpisodes(coded([episode(1, { textDate: yearDate(2005) }), episode(2)]), derived(1999));
   assert.deepEqual(own.episodes.map((e) => e.gapYears), [5, null]);
+});
+
+const claim = (country: string | null, role: CountryClaim['role'], source: CountryClaim['source']): CountryClaim => ({ country, raw: 'a place', role, source, evidence: [] });
+const lang = (originalLanguage: string | null, translated: LanguageClaim['translated'], source: LanguageClaim['source'] = 'nderf_tag'): LanguageClaim => ({ originalLanguage, translated, translator: null, source, evidence: [] });
+const english = resolveLanguage(null, null);
+
+test('language: the person\'s words, else the tag, else presumed English; translated when either says so', () => {
+  assert.deepEqual(english, { original: 'en', basis: 'presumed_english', translated: false });
+  assert.deepEqual(resolveLanguage(null, lang('es', 'yes')), { original: 'es', basis: 'stated', translated: true });
+  assert.deepEqual(resolveLanguage(lang('pt', 'unknown', 'self_report'), lang('es', 'yes')), { original: 'pt', basis: 'stated', translated: true });
+  assert.deepEqual(resolveLanguage(null, lang(null, 'yes')), { original: null, basis: 'stated', translated: true });
+  assert.deepEqual(resolveLanguage(null, lang('nl', 'unknown')), { original: 'nl', basis: 'stated', translated: null });
+});
+
+test('country: role first, then source; the AI country only when nothing else names one', () => {
+  assert.deepEqual(resolveCountry([claim('CA', 'residence', 'self_report'), claim('NZ', 'origin', 'self_report')], english), { code: 'NZ', role: 'origin', source: 'self_report', conflict: false });
+  assert.deepEqual(resolveCountry([claim('AU', 'unspecified', 'nderf_tag'), claim('IE', 'residence', 'self_report')], english), { code: 'AU', role: 'unspecified', source: 'nderf_tag', conflict: false });
+  // An AI guess never outranks the person's own residence.
+  assert.deepEqual(resolveCountry([claim('MX', 'unspecified', 'nderf_country_ai'), claim('CA', 'residence', 'self_report')], english), { code: 'CA', role: 'residence', source: 'self_report', conflict: false });
+  assert.deepEqual(resolveCountry([claim('MX', 'unspecified', 'nderf_country_ai')], english), { code: 'MX', role: 'unspecified', source: 'nderf_country_ai', conflict: false });
+});
+
+test('country: places of the experience and unnamed countries are skipped; disagreement is unknown, flagged', () => {
+  assert.deepEqual(resolveCountry([claim('NO', 'experience_location', 'self_report'), claim(null, 'origin', 'self_report'), claim('US', 'unspecified', 'nderf_country_ai')], english), { code: 'US', role: 'unspecified', source: 'nderf_country_ai', conflict: false });
+  assert.deepEqual(resolveCountry([claim('US', 'residence', 'self_report'), claim('IN', 'residence', 'self_report'), claim('GB', 'residence', 'nderf_tag')], english), { code: null, role: 'residence', source: 'unknown', conflict: true });
+});
+
+test('country: presumed US only for an English page that wasn\'t translated', () => {
+  assert.deepEqual(resolveCountry([], english), { code: 'US', role: null, source: 'presumed_us', conflict: false });
+  assert.deepEqual(resolveCountry([claim('NO', 'experience_location', 'self_report')], resolveLanguage(null, lang('es', 'yes'))), { code: null, role: null, source: 'unknown', conflict: false });
+  assert.equal(resolveCountry([], resolveLanguage(null, lang('nl', 'unknown'))).source, 'unknown');
+});
+
+test('the account view: a translated page flags every episode', () => {
+  const input = { ...coded([episode(1), episode(2)]), textClaims: { countries: [], language: null } };
+  const { account, episodes } = resolveAccount(input, { ...derived(), tagClaims: { countries: [claim('CL', 'unspecified', 'nderf_tag')], language: lang('es', 'yes') } });
+  assert.deepEqual([account.country.code, account.language.translated, account.qualifyingEpisodeIds.length], ['CL', true, 2]);
+  assert.ok(episodes.episodes.every((e) => e.flags.includes('translated')));
 });

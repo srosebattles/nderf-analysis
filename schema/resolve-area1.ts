@@ -1,11 +1,12 @@
 // Pre-registered rules that compute area 1's analysis-time views from coded and derived records:
-// which episodes qualify, their flags, and the first qualifying episode. Nothing here is coded by
-// the LLM; the definitions are in DECISIONS.md, area 1 ("Which episodes qualify, as resolved").
-// Country and language come with their own rules.
+// which episodes qualify, their flags, and the first qualifying episode; the original language
+// and whether the page was translated; and the person's country. Nothing here is coded by the
+// LLM; the definitions are in DECISIONS.md, area 1 ("Which episodes qualify, as resolved" and
+// "Country and language, as resolved").
 
 import {
-  type CodedPart, type ConditionStatement, type DerivedPart, type DerivedRecord, type Episode, HALLUCINATION_FLAG_CONDITIONS,
-  ResolvedEpisode,
+  type CodedPart, type ConditionStatement, type CountryClaim, type DerivedPart, type DerivedRecord, type Episode,
+  HALLUCINATION_FLAG_CONDITIONS, type LanguageClaim, ResolvedAccount, ResolvedEpisode,
 } from './codebook-schema.ts';
 
 export const AREA1_RULE_VERSION = '0.1';
@@ -99,7 +100,14 @@ const describedByQuestionnaire = (coded: EpisodeRuleInput, partIndex: number) =>
   return coded.episodes.filter((e) => ids.includes(e.episodeId) && (e.questionnaireRefersTo === 'this_episode' || e.questionnaireRefersTo === 'several_episodes'));
 };
 
-export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisodeInput, ruleVersion = AREA1_RULE_VERSION): ResolvedEpisodes {
+export interface EpisodeOptions {
+  /** The page was translated (resolveLanguage): every episode gets the flag. */
+  translated?: boolean;
+  ruleVersion?: string;
+}
+
+export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisodeInput, opts: EpisodeOptions = {}): ResolvedEpisodes {
+  const ruleVersion = opts.ruleVersion ?? AREA1_RULE_VERSION;
   if (derived.accountId !== coded.accountId) throw new Error('derived and coded records are for different accounts');
   const posted = derived.posting.firstPosted ? Number(derived.posting.firstPosted.slice(0, 4)) : null;
 
@@ -122,6 +130,7 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
     if (c.suicideAttempt) flags.push('suicide_attempt');
     if (c.psychoactiveMedicationAtOnset) flags.push('psychoactive_medication_at_onset');
     if (e.recurrent) flags.push('recurrent');
+    if (opts.translated) flags.push('translated');
     if (hallucination.has(e.episodeId)) flags.push('hallucination_linked_condition');
     const year = episodeYear(e, coded, derived);
     return ResolvedEpisode.parse({
@@ -142,4 +151,81 @@ export function resolveEpisodes(coded: EpisodeRuleInput, derived: DerivedEpisode
     firstQualifyingEpisodeId: first?.episodeId ?? null,
     multipleQualifyingEpisodes: primary.length > 1,
   };
+}
+
+// ─── Language and country ────────────────────────────────────────────────────────────────
+
+type Language = ResolvedAccount['language'];
+type Country = ResolvedAccount['country'];
+
+/** The original language and whether the page was translated: the person's own words, else
+ *  NDERF's tag, else presumed English. Translated when either says so. */
+export function resolveLanguage(own: LanguageClaim | null, tag: LanguageClaim | null): Language {
+  const claims = [own, tag].filter((c) => c !== null);
+  if (claims.length === 0) return { original: 'en', basis: 'presumed_english', translated: false };
+  const original = own?.originalLanguage ?? tag?.originalLanguage ?? null;
+  const said = claims.map((c) => c.translated);
+  const translated = said.includes('yes') ? true : said.includes('no') || original === 'en' ? false : null;
+  return { original, basis: 'stated', translated };
+}
+
+const ROLES = ['origin', 'unspecified', 'residence'] as const;
+const STATED_SOURCES = ['self_report', 'nderf_tag', 'nderf_quick_facts'] as const;
+
+/** The person's country: by role (origin, then a plain "from", then residence), and within a role
+ *  by source (their own words, NDERF's tag, the search app's quick facts); NDERF's AI-inferred
+ *  country only when none of those names one. Where the experience happened is never used, and a
+ *  claim naming no particular country is skipped. When the deciding claims disagree, the country
+ *  is unknown, flagged. With nothing: presumed US, unless the page was translated or its original
+ *  language isn't English. */
+export function resolveCountry(claims: readonly CountryClaim[], language: Language): Country {
+  const usable = claims.filter((c) => c.country !== null && c.role !== 'experience_location');
+  const decide = (found: readonly CountryClaim[]): Country | null => {
+    if (found.length === 0) return null;
+    const codes = [...new Set(found.map((c) => c.country))];
+    const role = found[0].role as Exclude<CountryClaim['role'], 'experience_location'>;
+    return codes.length === 1
+      ? { code: codes[0], role, source: found[0].source, conflict: false }
+      : { code: null, role, source: 'unknown', conflict: true };
+  };
+  for (const role of ROLES) {
+    for (const source of STATED_SOURCES) {
+      const found = decide(usable.filter((c) => c.role === role && c.source === source));
+      if (found) return found;
+    }
+  }
+  for (const role of ROLES) {
+    const found = decide(usable.filter((c) => c.role === role && c.source === 'nderf_country_ai'));
+    if (found) return found;
+  }
+  const english = language.original === 'en' && language.translated !== true;
+  return english ? { code: 'US', role: null, source: 'presumed_us', conflict: false } : { code: null, role: null, source: 'unknown', conflict: false };
+}
+
+/** What the account-level rules read, beyond the episode rules. */
+export interface AccountRuleInput extends EpisodeRuleInput {
+  textClaims: { countries: readonly CountryClaim[]; language: LanguageClaim | null };
+}
+export interface DerivedAccountInput extends DerivedEpisodeInput {
+  tagClaims: { countries: readonly CountryClaim[]; language: LanguageClaim | null };
+}
+
+/** Area 1's whole resolved view of an account: the episodes, then the account. Country groups
+ *  are filled in once the pre-registration defines them. */
+export function resolveAccount(
+  coded: AccountRuleInput, derived: DerivedAccountInput, ruleVersion = AREA1_RULE_VERSION,
+): { account: ResolvedAccount; episodes: ResolvedEpisodes } {
+  const language = resolveLanguage(coded.textClaims.language, derived.tagClaims.language);
+  const episodes = resolveEpisodes(coded, derived, { translated: language.translated === true, ruleVersion });
+  const account = ResolvedAccount.parse({
+    accountId: coded.accountId,
+    ruleVersion,
+    country: resolveCountry([...coded.textClaims.countries, ...derived.tagClaims.countries], language),
+    countryGroups: [],
+    language,
+    qualifyingEpisodeIds: episodes.qualifyingEpisodeIds,
+    firstQualifyingEpisodeId: episodes.firstQualifyingEpisodeId,
+    multipleQualifyingEpisodes: episodes.multipleQualifyingEpisodes,
+  });
+  return { account, episodes };
 }

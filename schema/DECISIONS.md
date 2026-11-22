@@ -252,6 +252,24 @@ outside the practice set has been read.
   country keeps its source, so stated, AI-inferred, and presumed US stay separate; stated US
   will be small, since Americans rarely say they're American. Culture is analyzed through
   country-level groupings defined in the pre-registration.
+- **Country and language, as resolved** (November 22, 2026, after the final practice runs;
+  `resolve-area1.ts`). Three refinements of the rule above:
+  - NDERF's AI-inferred country is the last resort overall, used only when neither the person,
+    a tag, nor the quick facts names a country in any role. Read literally, role came first, and
+    the AI country carries no role of its own, so an AI guess would have outranked the person's
+    own stated residence.
+  - A claim that names no particular country (an unnamed regime, a town that can't be mapped) is
+    skipped, and the next claim decides.
+  - When the deciding claims (one role, one best source) name different countries, none is
+    picked: the country is unknown, flagged, and the person isn't presumed American.
+
+  The original language comes from the person's own words, else NDERF's tag, else it is
+  presumed English; a page is translated when either says so, and every episode on it gets the
+  translated flag. When a translation is stated but no language is named, the original language
+  is left empty. A page that was translated, or whose original language isn't English, is never
+  presumed US. On the practice record: five countries from the person's own words, eighteen
+  from tags, seven from the AI country, eighteen presumed US, and two unknown (one conflict, one
+  translated page naming no country).
 - **Ethnicity** isn't asked anywhere by NDERF. Explicit heritage statements are coded in
   area 2; they are selective and can be prompted by the experience itself, so they supplement
   country and language rather than define groups.
@@ -1623,8 +1641,12 @@ these tables do, at analysis time. Each lives in `schema/tables/`, validated and
 
 Designed and written in: areas 1 to 4, the schema (v4 draft) with area 4's module, and the four
 pre-registered tables (Marian, named figures, visual features, and area 4's sources and
-details). Areas 1 to 3 were trial-coded on practice round 1 (all fifty pages in notes, five as
-full JSON records in the private repository) and the snags settled.
+details). Built since: the prompts for passes A to C (pass A 0.5-draft, pass B 0.3-draft, pass C
+0.2-draft), piloted with both coding models on the fifty practice pages and given a final
+practice run; the first-run record that joins them; and the resolvers for areas 1 and 2 (which
+episodes qualify, country, language, and religion; `resolve-area1.ts`, `resolve-area2.ts`).
+Areas 1 to 3 were trial-coded on practice round 1 (all fifty pages in notes, five as full JSON
+records in the private repository) and the snags settled.
 
 Not built yet:
 
@@ -1641,10 +1663,6 @@ Not built yet:
   private repository (`npm run derive -- <data> --practice` writes `derived/practice.jsonl`
   there), since the records hold per-account answers to the items about beings, which are
   close to outcomes. The full file is generated at the freeze, with the pipeline.
-- The passes' prompts, and the pieces that come with them: first-run versions of the
-  schemas, locating quotes, and joining the passes into one record (How the coding runs,
-  above). Pass A first.
-- The resolvers for areas 1 and 2 (country, religion, which episodes qualify).
 - The pre-registration of areas 1 to 3.
 - After areas 1 to 3 are analyzed: area 4's pre-registration, pass D's pilot and full run, and
   area 4's resolver (area 4, above). Its table is frozen with areas 1 to 3.
